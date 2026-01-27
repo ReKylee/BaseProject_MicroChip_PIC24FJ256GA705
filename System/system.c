@@ -64,11 +64,11 @@
 
 // FOSC
 #pragma config POSCMD = NONE    //Primary Oscillator Mode Select bits->Primary Oscillator disabled
-#pragma config OSCIOFCN = OFF    //OSC2 Pin Function bit->OSC2 is clock output
-#pragma config SOSCSEL = OFF    //SOSC Power Selection Configuration bits->Digital (SCLKI) mode
-#pragma config PLLSS = PLL_PRI    //PLL Secondary Selection Configuration bit->PLL is fed by the Primary oscillator
-#pragma config IOL1WAY = ON    //Peripheral pin select configuration bit->Allow only one reconfiguration
-#pragma config FCKSM = CSDCMD    //Clock Switching Mode bits->Both Clock switching and Fail-safe Clock Monitor are disabled
+#pragma config OSCIOFCN = ON    //OSC2 Pin Function bit->OSC2 is clock output
+#pragma config SOSCSEL = ON    //SOSC Power Selection Configuration bits->Digital (SCLKI) mode
+#pragma config PLLSS = PLL_FRC    //PLL Secondary Selection Configuration bit->PLL is fed by the Primary oscillator
+#pragma config IOL1WAY = OFF    //Peripheral pin select configuration bit->Allow only one reconfiguration
+#pragma config FCKSM = CSECMD    //Clock Switching Mode bits->Both Clock switching and Fail-safe Clock Monitor are disabled
 
 // FWDT
 #pragma config WDTPS = PS32768    //Watchdog Timer Postscaler bits->1:32768
@@ -100,18 +100,12 @@
 #include "delay.h"
 #include "interrupt_manager.h"
 #include "traps.h"
-#include "../i2c1_driver/i2c_simple_master.h"
-#include "../i2c1_driver/i2c1_driver.h"
-#include "../ACCEL3.h"
-#include "../i2c1_driver/i2c_master.h"
-#include "../oledDriver/oledC.h"
 
 void SYSTEM_Initialize(void) {
     PIN_MANAGER_Initialize();
     INTERRUPT_Initialize();
     CLOCK_Initialize();
-    oledC_setup();
-    ACCEL3_Initialize();
+    
 }
 
 /**

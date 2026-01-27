@@ -4,10 +4,17 @@ Tool Name:
   c:\program files\microchip\xc16\v2.10\bin\bin\..\bin/elf-ld.exe
 
 Command:
+  -TC:\\Users\\kiki\\AppData\\Local\\Temp\\tmp000009e4.00 \
+  -TC:\\Users\\kiki\\AppData\\Local\\Temp\\tmp000009e4.01 \
+  -TC:\\Users\\kiki\\AppData\\Local\\Temp\\tmp000009e4.02 \
+  -TC:\\Users\\kiki\\AppData\\Local\\Temp\\tmp000009e4.03 \
+  -TC:\\Users\\kiki\\AppData\\Local\\Temp\\tmp000009e4.04 \
+  -TC:\\Users\\kiki\\AppData\\Local\\Temp\\tmp000009e4.05 \
+  -TC:\\Users\\kiki\\AppData\\Local\\Temp\\tmp000009e4.06 \
   -p24FJ256GA705 \
   --mdfp=C:/Program Files/Microchip/MPLABX/v6.05/packs/Microchip/PIC24F-GA-GB_DFP/1.8.217/xc16 \
   -o \
-  dist/default/production/CuriosityOledBase.X.production.elf \
+  dist/default/debug/CuriosityOledBase.X.debug.elf \
   -Lc:/program files/microchip/xc16/v2.10/bin/bin/.. \
   -LC:/Program Files/Microchip/MPLABX/v6.05/packs/Microchip/PIC24F-GA-GB_DFP/1.8.217/xc16/bin/../support/PIC24F/gld \
   -Lc:/program files/microchip/xc16/v2.10/bin/bin/../../lib \
@@ -18,31 +25,34 @@ Command:
   -Lc:/program files/microchip/xc16/v2.10/bin/bin/../../support/dsPIC33C/gld \
   -Lc:/program files/microchip/xc16/v2.10/bin/bin/../../support/dsPIC33E/gld \
   -Lc:/program files/microchip/xc16/v2.10/bin/bin/../../support/dsPIC33F/gld \
-  build/default/production/adcDriver/ADC.o \
-  build/default/production/i2c1_driver/i2c1_driver.o \
-  build/default/production/i2c1_driver/i2c_master.o \
-  build/default/production/i2c1_driver/i2c_simple_master.o \
-  build/default/production/i2c1_driver/i2c_types.o \
-  build/default/production/ledDriver/LED_tests.o \
-  build/default/production/oledDriver/oledC.o \
-  build/default/production/oledDriver/oledC_shapeHandler.o \
-  build/default/production/oledDriver/oledC_shapes.o \
-  build/default/production/spiDriver/spi1_driver.o \
-  build/default/production/System/clock.o \
-  build/default/production/System/delay.o \
-  build/default/production/System/interrupt_manager.o \
-  build/default/production/System/pin_manager.o \
-  build/default/production/System/system.o \
-  build/default/production/System/traps.o \
-  build/default/production/System/where_was_i.o \
-  build/default/production/systemExtensions/systemExtensions.o \
-  build/default/production/main.o \
-  build/default/production/app.o \
-  build/default/production/ACCEL3.o \
-  build/default/production/switchDriver/Switch.o \
+  build/default/debug/adcDriver/ADC.o \
+  build/default/debug/i2c1_driver/i2c1_driver.o \
+  build/default/debug/i2c1_driver/i2c_master.o \
+  build/default/debug/i2c1_driver/i2c_simple_master.o \
+  build/default/debug/i2c1_driver/i2c_types.o \
+  build/default/debug/ledDriver/LED_tests.o \
+  build/default/debug/oledDriver/oledC.o \
+  build/default/debug/oledDriver/oledC_shapeHandler.o \
+  build/default/debug/oledDriver/oledC_shapes.o \
+  build/default/debug/spiDriver/spi1_driver.o \
+  build/default/debug/System/clock.o \
+  build/default/debug/System/delay.o \
+  build/default/debug/System/interrupt_manager.o \
+  build/default/debug/System/pin_manager.o \
+  build/default/debug/System/system.o \
+  build/default/debug/System/traps.o \
+  build/default/debug/System/where_was_i.o \
+  build/default/debug/systemExtensions/systemExtensions.o \
+  build/default/debug/main.o \
+  build/default/debug/app.o \
+  build/default/debug/ACCEL3.o \
+  build/default/debug/switchDriver/Switch.o \
   --local-stack \
   --defsym=__MPLAB_BUILD=1 \
-  -Tp24FJ256GA705.gld.00 \
+  --defsym=__MPLAB_DEBUG=1 \
+  --defsym=__DEBUG=1 \
+  --defsym=__MPLAB_DEBUGGER_PK3=1 \
+  -Tp24FJ256GA705.gld.07 \
   --stack=16 \
   --check-sections \
   --data-init \
@@ -54,10 +64,10 @@ Command:
   --stackguard=16 \
   --no-force-link \
   --smart-io \
-  -Map=dist/default/production/CuriosityOledBase.X.production.map \
+  -Map=dist/default/debug/CuriosityOledBase.X.debug.map \
   --report-mem \
   --memorysummary \
-  dist/default/production/memoryfile.xml \
+  dist/default/debug/memoryfile.xml \
   -start-group \
   --library=c99-pic30-elf \
   --library=m-elf \
@@ -75,11 +85,13 @@ c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(data_
 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(crt_start_mode_normalda.Meo)
                               (__crt_start_mode_normal)
 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(delay32da.Meo)
-                              build/default/production/i2c1_driver/i2c1_driver.o (___delay32)
+                              build/default/debug/i2c1_driver/i2c1_driver.o (___delay32)
 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatunsisf.DA_o)
-                              build/default/production/adcDriver/ADC.o (___floatunsisf)
+                              build/default/debug/adcDriver/ADC.o (___floatunsisf)
+c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(udivsi3.DA_o)
+                              build/default/debug/app.o (___udivsi3)
 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divsf3x.DA_o)
-                              build/default/production/adcDriver/ADC.o (___divsf3)
+                              build/default/debug/adcDriver/ADC.o (___divsf3)
 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(typefx.DA_o)
                               c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divsf3x.DA_o) (__typef)
 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(spackfx.DA_o)
@@ -93,7 +105,7 @@ c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(float
 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(fpack.DA_o)
                               c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatundisf.DA_o) (__fpack)
 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__sio_snprintf_dosux.DA_o)
-                              build/default/production/app.o (__snprintf_cdnopsuxX)
+                              build/default/debug/app.o (__snprintf_cdnopsuxX)
 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__fmt_d.DA_o)
                               c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__sio_snprintf_dosux.DA_o) (___fmt_d_needed)
 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__fmt_o.DA_o)
@@ -171,35 +183,43 @@ Default Scalar Model: Small
 
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
-.text                        0x100              0x139e          0x1d6d  (7533)
-.const                      0x149e               0x274           0x3ae  (942)
-.text                       0x1712              0x27a6          0x3b79  (15225)
-.dinit                      0x3eb8                0xaa            0xff  (255)
-.text                       0x3f62               0x1b8           0x294  (660)
-.init.delay32               0x411a                0x1c            0x2a  (42)
-.text                       0x4136                0x36            0x51  (81)
+.text                        0x100              0x13be          0x1d9d  (7581)
+.const                      0x14be               0x274           0x3ae  (942)
+.text                       0x1732              0x2866          0x3c99  (15513)
+.dinit                      0x3f98                0xaa            0xff  (255)
+.text                       0x4042               0x136           0x1d1  (465)
+.init.delay32               0x4178                0x1c            0x2a  (42)
+.text                       0x4194                0x66            0x99  (153)
 
-                 Total "program" memory used (bytes):         0x60a2  (24738) 9%
+                 Total "program" memory used (bytes):         0x6177  (24951) 9%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x4000]
 
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
-.nbss                        0x800                   0             0xa  (10)
-System/where_was_i.s.scn1     0x80a                   0             0x4  (4)
-.nbss                        0x80e                   0             0x6  (6)
-.ndata                       0x814                   0             0x2  (2)
-.nbss                        0x816                   0             0x2  (2)
-.ndata                       0x818                   0             0x2  (2)
-.nbss                        0x81a                   0             0x2  (2)
-.bss                         0x81c                   0           0x226  (550)
-.data                        0xa42                   0            0x20  (32)
-.bss                         0xa62                   0            0x20  (32)
-.data                        0xa82                   0            0x32  (50)
-.bss                         0xab4                   0            0x18  (24)
+reserve_data_0x800           0x800                0x1c            0x1c  (28)
+reserve_data_0x81c           0x81c                 0x2             0x2  (2)
+reserve_data_0x81e           0x81e                 0x2             0x2  (2)
+reserve_data_0x820           0x820                 0x2             0x2  (2)
+reserve_data_0x822           0x822                 0x2             0x2  (2)
+reserve_data_0x824           0x824                 0x4             0x4  (4)
+.nbss                        0x828                   0             0x2  (2)
+reserve_data_0x82a           0x82a                0x26            0x26  (38)
+.nbss                        0x850                   0             0xa  (10)
+System/where_was_i.s.scn1     0x85a                   0             0x4  (4)
+.nbss                        0x85e                   0             0x4  (4)
+.ndata                       0x862                   0             0x2  (2)
+.nbss                        0x864                   0             0x2  (2)
+.ndata                       0x866                   0             0x2  (2)
+.nbss                        0x868                   0             0x2  (2)
+.bss                         0x86a                   0           0x226  (550)
+.data                        0xa90                   0            0x20  (32)
+.bss                         0xab0                   0            0x20  (32)
+.data                        0xad0                   0            0x32  (50)
+.bss                         0xb02                   0            0x18  (24)
 
-                 Total "data" memory used (bytes):          0x2cc  (716) 4%
+                 Total "data" memory used (bytes):          0x31a  (794) 4%
 
 
 Dynamic Memory Usage
@@ -207,34 +227,34 @@ Dynamic Memory Usage
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
 heap                             0                                   0  (0)
-stack                        0xacc                              0x3d34  (15668)
+stack                        0xb1a                              0x3ce6  (15590)
 
-                 Maximum dynamic memory (bytes):         0x3d34  (15668)
+                 Maximum dynamic memory (bytes):         0x3ce6  (15590)
 
 Info: Project is using a large data memory model when small data memory model is sufficient.
 
 
 External Symbols in Data Memory (by address):
 
-                    0x0800                  _i2c1_driver_busCollisionISR
-                    0x0802                  _i2c1_driver_Masteri2cISR
-                    0x0804                  _i2c1_driver_Slavei2cISR
-                    0x080a                  _trapSrcAddr
-                    0x0816                  _spi1_interruptHandler
-                    0x0a1c                  _i2c_status
-                    0x0a42                  _fsmStateTable
-                    0x0aca                  ___errno_val
+                    0x0850                  _i2c1_driver_busCollisionISR
+                    0x0852                  _i2c1_driver_Masteri2cISR
+                    0x0854                  _i2c1_driver_Slavei2cISR
+                    0x085a                  _trapSrcAddr
+                    0x0864                  _spi1_interruptHandler
+                    0x0a6a                  _i2c_status
+                    0x0a90                  _fsmStateTable
+                    0x0b18                  ___errno_val
 
 External Symbols in Data Memory (by name):
 
-                    0x0aca                  ___errno_val
-                    0x0a42                  _fsmStateTable
-                    0x0802                  _i2c1_driver_Masteri2cISR
-                    0x0804                  _i2c1_driver_Slavei2cISR
-                    0x0800                  _i2c1_driver_busCollisionISR
-                    0x0a1c                  _i2c_status
-                    0x0816                  _spi1_interruptHandler
-                    0x080a                  _trapSrcAddr
+                    0x0b18                  ___errno_val
+                    0x0a90                  _fsmStateTable
+                    0x0852                  _i2c1_driver_Masteri2cISR
+                    0x0854                  _i2c1_driver_Slavei2cISR
+                    0x0850                  _i2c1_driver_busCollisionISR
+                    0x0a6a                  _i2c_status
+                    0x0864                  _spi1_interruptHandler
+                    0x085a                  _trapSrcAddr
 
 External Symbols in Program Memory (by address):
 
@@ -247,468 +267,470 @@ External Symbols in Program Memory (by address):
                   0x00036e                  __T1Interrupt
                   0x000386                  __DefaultInterrupt
                   0x00038c                  ___floatunsisf
-                  0x000390                  ___divsf3
-                  0x000390                  ___divsf3x
-                  0x000522                  __sdivf
-                  0x00054e                  __typef
-                  0x000582                  __spackf
-                  0x000628                  __unpackf
-                  0x00068e                  ___floatundisf
-                  0x0006ec                  __fpack
-                  0x000744                  ___sio_snprintf_dosux
-                  0x000752                  ___fmt_d
-                  0x000804                  ___fmt_o
-                  0x00086e                  ___fmt_s
-                  0x0008c2                  ___cvt_u
-                  0x000968                  ___fmt_u
-                  0x0009ba                  ___fmt_x
-                  0x000b04                  ___vsnprintf
-                  0x000b4e                  ___pop_int
-                  0x000bf6                  ___pop_ptr
-                  0x000c8c                  ___pad
-                  0x000d06                  ___fmt_state
-                  0x00100a                  ___printf_core
-                  0x00105e                  _atoi
-                  0x0010aa                  _memcpy
-                  0x0010b8                  _memset
-                  0x001180                  _strlen
-                  0x0011b0                  _tolower
-                  0x0011bc                  ___tolower_l
-                  0x0011be                  _toupper
-                  0x0011ca                  ___toupper_l
-                  0x0011cc                  ___vfprintf
-                  0x0011e8                  ___pop_float
-                  0x001226                  ___extendsfdf2
-                  0x001264                  __funpack
-                  0x00128e                  ___mulsi3
-                  0x00128e                  ___mulp32eds3
-                  0x00128e                  ___mulp32peds3
-                  0x0012e6                  ___udivmoddi3
-                  0x0013cc                  ___udivdi3
-                  0x0013da                  ___umoddi3
-                  0x0013e2                  ___divdi3
-                  0x001442                  ___moddi3
-                  0x001712                  _oledC_createShape
-                  0x001842                  _oledC_ReadPoint
-                  0x001872                  _oledC_DrawPoint
-                  0x0018aa                  _oledC_DrawThickPoint
-                  0x0019b2                  _oledC_DrawCircle
-                  0x001ac4                  _oledC_DrawRing
-                  0x001bc0                  _oledC_DrawLine
-                  0x001c60                  _oledC_DrawRectangle
-                  0x001cae                  _oledC_DrawCharacter
-                  0x001d6c                  _oledC_DrawString
-                  0x001db2                  _oledC_DrawBitmap
-                  0x001e86                  build/default/production/oledDriver/oledC_shapes.o:_drawPoint
-                  0x001e9c                  build/default/production/oledDriver/oledC_shapes.o:_drawCircle
-                  0x001eb6                  build/default/production/oledDriver/oledC_shapes.o:_drawRing
-                  0x001ed4                  build/default/production/oledDriver/oledC_shapes.o:_drawRectangle
-                  0x001ef2                  build/default/production/oledDriver/oledC_shapes.o:_drawLine
-                  0x001f14                  build/default/production/oledDriver/oledC_shapes.o:_drawCharacter
-                  0x001f36                  build/default/production/oledDriver/oledC_shapes.o:_drawString
-                  0x001f58                  build/default/production/oledDriver/oledC_shapes.o:_drawBitmap
-                  0x0020c0                  _test_discrete_leds
-                  0x00213c                  _test_rgb_raw_pwm
-                  0x002196                  _test_rgb_color_constants
-                  0x002238                  _test_rgb_intensity_scaling
-                  0x0022f2                  _test_raw_vs_scaled
-                  0x002342                  _test_rgb_intensity_fade
-                  0x002406                  _test_rgb_color_wheel
-                  0x0024cc                  _test_rgb_edge_cases
-                  0x002526                  _test_custom_colors
-                  0x00259e                  _test_rainbow_sequence
-                  0x0025f6                  _test_intensity_persistence
-                  0x00266c                  _LED_RunTests
-                  0x0029c4                  _app_setup
-                  0x002c3c                  _app_loop
-                  0x002ca0                  _app_get_mode
-                  0x002ca8                  _app_get_pot_value
-                  0x002cb0                  _i2c_setDataCompleteCallback
-                  0x002cc2                  _i2c_setWriteCollisionCallback
-                  0x002cd4                  _i2c_setAddressNACKCallback
-                  0x002ce6                  _i2c_setDataNACKCallback
-                  0x002cf8                  _i2c_setTimeOutCallback
-                  0x002d0a                  _i2c_open
-                  0x002d84                  _i2c_setAddress
-                  0x002d90                  _i2c_close
-                  0x002db8                  _i2c_setTimeOut
-                  0x002dc8                  _i2c_setBuffer
-                  0x002de8                  _i2c_masterOperation
-                  0x002e24                  _i2c_masterRead
-                  0x002e2e                  _i2c_masterWrite
-                  0x002e38                  _i2c_poller
-                  0x002e4e                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_RESET
-                  0x002e62                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_IDLE
-                  0x002e74                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_SEND_RESTART_READ
-                  0x002e7e                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_SEND_RESTART_WRITE
-                  0x002e88                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_SEND_RESTART
-                  0x002e92                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_SEND_STOP
-                  0x002e9c                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_SEND_ADR_READ
-                  0x002eb8                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_SEND_ADR_WRITE
-                  0x002ece                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_RCEN
-                  0x002ede                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_DO_ACK
-                  0x002ee8                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_DO_NACK_STOP
-                  0x002ef2                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_DO_NACK_RESTART
-                  0x002efc                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_DO_ADDRESS_NACK
-                  0x002f1e                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_TX
-                  0x002f6a                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_RX
-                  0x002fa8                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_TX_EMPTY
-                  0x002fd4                  _i2c_ISR
-                  0x002ffc                  _i2c_busCollisionISR
-                  0x003004                  build/default/production/i2c1_driver/i2c_master.o:_returnStop
-                  0x00300e                  build/default/production/i2c1_driver/i2c_master.o:_returnReset
-                  0x003100                  _oledC_parseIntToRGB
-                  0x00314e                  _oledC_parseRGBToInt
-                  0x003198                  _oledC_sendCommand
-                  0x0031d6                  _oledC_setRowAddressBounds
-                  0x003200                  _oledC_setColumnAddressBounds
-                  0x003236                  _oledC_setSleepMode
-                  0x003250                  _oledC_readColor
-                  0x00326e                  _oledC_sendColor
-                  0x003284                  _oledC_sendColorInt
-                  0x0032aa                  _oledC_open
-                  0x0032b2                  _oledC_setup
-                  0x0032f4                  _oledC_clearScreen
-                  0x00332e                  _oledC_setBackground
-                  0x00333c                  _oledC_getBackground
-                  0x003380                  _ADC_Init
-                  0x003442                  _ADC_SetChannel
-                  0x003484                  _ADC_ReadRaw
-                  0x0034d2                  _ADC_ReadFloat
-                  0x00355a                  _ADC_IsInitialized
-                  0x003562                  _ADC_GetConfig
-                  0x00359c                  _ADC_Disable
-                  0x0035a6                  _i2c1_driver_close
-                  0x0035ae                  _i2c1_enableIRQ
-                  0x0035b8                  _i2c1_IRQisEnabled
-                  0x0035d6                  _i2c1_disableIRQ
-                  0x0035e0                  _i2c1_clearIRQ
-                  0x0035ea                  _i2c1_setIRQ
-                  0x0035f4                  _i2c1_waitForEvent
-                  0x003624                  _i2c1_driver_driver_open
-                  0x003644                  _i2c1_driver_initSlaveHardware
-                  0x003662                  _i2c1_driver_resetBus
-                  0x003668                  _i2c1_driver_start
-                  0x003670                  _i2c1_driver_restart
-                  0x003678                  _i2c1_driver_stop
-                  0x003680                  _i2c1_driver_isNACK
-                  0x003698                  _i2c1_driver_startRX
-                  0x0036a0                  _i2c1_driver_getRXData
-                  0x0036aa                  _i2c1_driver_TXData
-                  0x0036b6                  _i2c1_driver_sendACK
-                  0x0036c0                  _i2c1_driver_sendNACK
-                  0x0036ca                  _i2c1_driver_releaseClock
-                  0x0036d2                  _i2c1_driver_isBuferFull
-                  0x0036f0                  _i2c1_driver_isStart
-                  0x003708                  _i2c1_driver_isAddress
-                  0x00371e                  _i2c1_driver_isStop
-                  0x003736                  _i2c1_driver_isData
-                  0x00374e                  _i2c1_driver_isRead
-                  0x003766                  _i2c1_driver_clearBusCollision
-                  0x00376e                  _i2c1_driver_enableStartIRQ
-                  0x003776                  _i2c1_driver_disableStartIRQ
-                  0x00377e                  _i2c1_driver_enableStopIRQ
-                  0x003786                  _i2c1_driver_disableStopIRQ
-                  0x00378e                  _i2c1_driver_setBusCollisionISR
-                  0x00379a                  _i2c1_driver_setMasterI2cISR
-                  0x0037a6                  _i2c1_driver_setSlaveI2cISR
-                  0x0037b2                  build/default/production/i2c1_driver/i2c_simple_master.o:_wr1RegCompleteHandler
-                  0x0037c8                  _i2c_write1ByteRegister
-                  0x0037fc                  _i2c_writeNBytes
-                  0x003828                  build/default/production/i2c1_driver/i2c_simple_master.o:_rd1RegCompleteHandler
-                  0x00383e                  _i2c_read1ByteRegister
-                  0x003890                  build/default/production/i2c1_driver/i2c_simple_master.o:_rd2RegCompleteHandler
-                  0x0038a6                  _i2c_read2ByteRegister
-                  0x0038de                  build/default/production/i2c1_driver/i2c_simple_master.o:_wr2RegCompleteHandler
-                  0x0038f4                  _i2c_write2ByteRegister
-                  0x003928                  build/default/production/i2c1_driver/i2c_simple_master.o:_rdBlkRegCompleteHandler
-                  0x003942                  _i2c_readDataBlock
-                  0x00397e                  _i2c_readNBytes
-                  0x0039a4                  build/default/production/oledDriver/oledC_shapeHandler.o:_dummyshape
-                  0x0039ac                  _initShapesMem
-                  0x0039d8                  _oledC_removeShape
-                  0x003a0e                  _oledC_getShape
-                  0x003a2a                  _oledC_addShape
-                  0x003a84                  _oledC_redrawIndex
-                  0x003aa2                  _oledC_redrawTo
-                  0x003ab0                  _oledC_redrawFrom
-                  0x003abe                  _oledC_redrawSome
-                  0x003b0a                  _oledC_eraseShape
-                  0x003b34                  _oledC_eraseAll
-                  0x003b60                  _oledC_redrawAll
-                  0x003c0e                  _Switch_Init
-                  0x003c54                  _S1_WasPressed
-                  0x003c70                  _S1_WasReleased
-                  0x003c8c                  _S2_WasPressed
-                  0x003ca8                  _S2_WasReleased
-                  0x003cc4                  _Switch_ResetState
-                  0x003cfe                  _spi1_close
-                  0x003d06                  _spi1_open
-                  0x003d26                  _spi1_exchangeByte
-                  0x003d40                  _spi1_exchangeBlock
-                  0x003d72                  _spi1_writeBlock
-                  0x003da0                  _spi1_readBlock
-                  0x003dd0                  _spi1_writeByte
-                  0x003ddc                  _spi1_readByte
-                  0x003de6                  _spi1_isr
-                  0x003e02                  _spi1_setSpiISR
-                  0x003e4c                  _ACCEL3_Initialize
-                  0x003e58                  _ACCEL3_ReadX
-                  0x003e78                  _ACCEL3_ReadY
-                  0x003e98                  _ACCEL3_ReadZ
-                  0x003f62                  _PIN_MANAGER_Initialize
-                  0x003fda                  _DELAY_milliseconds
-                  0x003ffc                  _DELAY_microseconds
-                  0x004030                  _CLOCK_Initialize
-                  0x004076                  _millis
-                  0x004080                  _Timer_initialize
-                  0x0040b2                  _i2c_returnStop
-                  0x0040bc                  _i2c_returnReset
-                  0x0040c6                  _i2c_restartWrite
-                  0x0040d0                  _i2c_restartRead
-                  0x0040da                  _main
-                  0x00411a                  ___delay32
-                  0x004136                  _INTERRUPT_Initialize
-                  0x004150                  _where_was_i
-                  0x004160                  _SYSTEM_Initialize
+                  0x000390                  ___udivsi3
+                  0x0003b0                  ___divsf3x
+                  0x0003b0                  ___divsf3
+                  0x000542                  __sdivf
+                  0x00056e                  __typef
+                  0x0005a2                  __spackf
+                  0x000648                  __unpackf
+                  0x0006ae                  ___floatundisf
+                  0x00070c                  __fpack
+                  0x000764                  ___sio_snprintf_dosux
+                  0x000772                  ___fmt_d
+                  0x000824                  ___fmt_o
+                  0x00088e                  ___fmt_s
+                  0x0008e2                  ___cvt_u
+                  0x000988                  ___fmt_u
+                  0x0009da                  ___fmt_x
+                  0x000b24                  ___vsnprintf
+                  0x000b6e                  ___pop_int
+                  0x000c16                  ___pop_ptr
+                  0x000cac                  ___pad
+                  0x000d26                  ___fmt_state
+                  0x00102a                  ___printf_core
+                  0x00107e                  _atoi
+                  0x0010ca                  _memcpy
+                  0x0010d8                  _memset
+                  0x0011a0                  _strlen
+                  0x0011d0                  _tolower
+                  0x0011dc                  ___tolower_l
+                  0x0011de                  _toupper
+                  0x0011ea                  ___toupper_l
+                  0x0011ec                  ___vfprintf
+                  0x001208                  ___pop_float
+                  0x001246                  ___extendsfdf2
+                  0x001284                  __funpack
+                  0x0012ae                  ___mulsi3
+                  0x0012ae                  ___mulp32peds3
+                  0x0012ae                  ___mulp32eds3
+                  0x001306                  ___udivmoddi3
+                  0x0013ec                  ___udivdi3
+                  0x0013fa                  ___umoddi3
+                  0x001402                  ___divdi3
+                  0x001462                  ___moddi3
+                  0x001732                  _oledC_createShape
+                  0x001862                  _oledC_ReadPoint
+                  0x001892                  _oledC_DrawPoint
+                  0x0018ca                  _oledC_DrawThickPoint
+                  0x0019d2                  _oledC_DrawCircle
+                  0x001ae4                  _oledC_DrawRing
+                  0x001be0                  _oledC_DrawLine
+                  0x001c80                  _oledC_DrawRectangle
+                  0x001cce                  _oledC_DrawCharacter
+                  0x001d8c                  _oledC_DrawString
+                  0x001dd2                  _oledC_DrawBitmap
+                  0x001ea6                  build/default/debug/oledDriver/oledC_shapes.o:_drawPoint
+                  0x001ebc                  build/default/debug/oledDriver/oledC_shapes.o:_drawCircle
+                  0x001ed6                  build/default/debug/oledDriver/oledC_shapes.o:_drawRing
+                  0x001ef4                  build/default/debug/oledDriver/oledC_shapes.o:_drawRectangle
+                  0x001f12                  build/default/debug/oledDriver/oledC_shapes.o:_drawLine
+                  0x001f34                  build/default/debug/oledDriver/oledC_shapes.o:_drawCharacter
+                  0x001f56                  build/default/debug/oledDriver/oledC_shapes.o:_drawString
+                  0x001f78                  build/default/debug/oledDriver/oledC_shapes.o:_drawBitmap
+                  0x0020e0                  _test_discrete_leds
+                  0x00215c                  _test_rgb_raw_pwm
+                  0x0021b6                  _test_rgb_color_constants
+                  0x002258                  _test_rgb_intensity_scaling
+                  0x002312                  _test_raw_vs_scaled
+                  0x002362                  _test_rgb_intensity_fade
+                  0x002426                  _test_rgb_color_wheel
+                  0x0024ec                  _test_rgb_edge_cases
+                  0x002546                  _test_custom_colors
+                  0x0025be                  _test_rainbow_sequence
+                  0x002616                  _test_intensity_persistence
+                  0x00268c                  _LED_RunTests
+                  0x0029e2                  _app_setup
+                  0x002d52                  _app_loop
+                  0x002d80                  _app_get_mode
+                  0x002d88                  _app_get_pot_value
+                  0x002d90                  _i2c_setDataCompleteCallback
+                  0x002da2                  _i2c_setWriteCollisionCallback
+                  0x002db4                  _i2c_setAddressNACKCallback
+                  0x002dc6                  _i2c_setDataNACKCallback
+                  0x002dd8                  _i2c_setTimeOutCallback
+                  0x002dea                  _i2c_open
+                  0x002e64                  _i2c_setAddress
+                  0x002e70                  _i2c_close
+                  0x002e98                  _i2c_setTimeOut
+                  0x002ea8                  _i2c_setBuffer
+                  0x002ec8                  _i2c_masterOperation
+                  0x002f04                  _i2c_masterRead
+                  0x002f0e                  _i2c_masterWrite
+                  0x002f18                  _i2c_poller
+                  0x002f2e                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_RESET
+                  0x002f42                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_IDLE
+                  0x002f54                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_SEND_RESTART_READ
+                  0x002f5e                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_SEND_RESTART_WRITE
+                  0x002f68                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_SEND_RESTART
+                  0x002f72                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_SEND_STOP
+                  0x002f7c                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_SEND_ADR_READ
+                  0x002f98                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_SEND_ADR_WRITE
+                  0x002fae                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_RCEN
+                  0x002fbe                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_DO_ACK
+                  0x002fc8                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_DO_NACK_STOP
+                  0x002fd2                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_DO_NACK_RESTART
+                  0x002fdc                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_DO_ADDRESS_NACK
+                  0x002ffe                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_TX
+                  0x00304a                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_RX
+                  0x003088                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_TX_EMPTY
+                  0x0030b4                  _i2c_ISR
+                  0x0030dc                  _i2c_busCollisionISR
+                  0x0030e4                  build/default/debug/i2c1_driver/i2c_master.o:_returnStop
+                  0x0030ee                  build/default/debug/i2c1_driver/i2c_master.o:_returnReset
+                  0x0031e0                  _oledC_parseIntToRGB
+                  0x00322e                  _oledC_parseRGBToInt
+                  0x003278                  _oledC_sendCommand
+                  0x0032b6                  _oledC_setRowAddressBounds
+                  0x0032e0                  _oledC_setColumnAddressBounds
+                  0x003316                  _oledC_setSleepMode
+                  0x003330                  _oledC_readColor
+                  0x00334e                  _oledC_sendColor
+                  0x003364                  _oledC_sendColorInt
+                  0x00338a                  _oledC_open
+                  0x003392                  _oledC_setup
+                  0x0033d4                  _oledC_clearScreen
+                  0x00340e                  _oledC_setBackground
+                  0x00341c                  _oledC_getBackground
+                  0x003460                  _ADC_Init
+                  0x003522                  _ADC_SetChannel
+                  0x003564                  _ADC_ReadRaw
+                  0x0035b2                  _ADC_ReadFloat
+                  0x00363a                  _ADC_IsInitialized
+                  0x003642                  _ADC_GetConfig
+                  0x00367c                  _ADC_Disable
+                  0x003686                  _i2c1_driver_close
+                  0x00368e                  _i2c1_enableIRQ
+                  0x003698                  _i2c1_IRQisEnabled
+                  0x0036b6                  _i2c1_disableIRQ
+                  0x0036c0                  _i2c1_clearIRQ
+                  0x0036ca                  _i2c1_setIRQ
+                  0x0036d4                  _i2c1_waitForEvent
+                  0x003704                  _i2c1_driver_driver_open
+                  0x003724                  _i2c1_driver_initSlaveHardware
+                  0x003742                  _i2c1_driver_resetBus
+                  0x003748                  _i2c1_driver_start
+                  0x003750                  _i2c1_driver_restart
+                  0x003758                  _i2c1_driver_stop
+                  0x003760                  _i2c1_driver_isNACK
+                  0x003778                  _i2c1_driver_startRX
+                  0x003780                  _i2c1_driver_getRXData
+                  0x00378a                  _i2c1_driver_TXData
+                  0x003796                  _i2c1_driver_sendACK
+                  0x0037a0                  _i2c1_driver_sendNACK
+                  0x0037aa                  _i2c1_driver_releaseClock
+                  0x0037b2                  _i2c1_driver_isBuferFull
+                  0x0037d0                  _i2c1_driver_isStart
+                  0x0037e8                  _i2c1_driver_isAddress
+                  0x0037fe                  _i2c1_driver_isStop
+                  0x003816                  _i2c1_driver_isData
+                  0x00382e                  _i2c1_driver_isRead
+                  0x003846                  _i2c1_driver_clearBusCollision
+                  0x00384e                  _i2c1_driver_enableStartIRQ
+                  0x003856                  _i2c1_driver_disableStartIRQ
+                  0x00385e                  _i2c1_driver_enableStopIRQ
+                  0x003866                  _i2c1_driver_disableStopIRQ
+                  0x00386e                  _i2c1_driver_setBusCollisionISR
+                  0x00387a                  _i2c1_driver_setMasterI2cISR
+                  0x003886                  _i2c1_driver_setSlaveI2cISR
+                  0x003892                  build/default/debug/i2c1_driver/i2c_simple_master.o:_wr1RegCompleteHandler
+                  0x0038a8                  _i2c_write1ByteRegister
+                  0x0038dc                  _i2c_writeNBytes
+                  0x003908                  build/default/debug/i2c1_driver/i2c_simple_master.o:_rd1RegCompleteHandler
+                  0x00391e                  _i2c_read1ByteRegister
+                  0x003970                  build/default/debug/i2c1_driver/i2c_simple_master.o:_rd2RegCompleteHandler
+                  0x003986                  _i2c_read2ByteRegister
+                  0x0039be                  build/default/debug/i2c1_driver/i2c_simple_master.o:_wr2RegCompleteHandler
+                  0x0039d4                  _i2c_write2ByteRegister
+                  0x003a08                  build/default/debug/i2c1_driver/i2c_simple_master.o:_rdBlkRegCompleteHandler
+                  0x003a22                  _i2c_readDataBlock
+                  0x003a5e                  _i2c_readNBytes
+                  0x003a84                  build/default/debug/oledDriver/oledC_shapeHandler.o:_dummyshape
+                  0x003a8c                  _initShapesMem
+                  0x003ab8                  _oledC_removeShape
+                  0x003aee                  _oledC_getShape
+                  0x003b0a                  _oledC_addShape
+                  0x003b64                  _oledC_redrawIndex
+                  0x003b82                  _oledC_redrawTo
+                  0x003b90                  _oledC_redrawFrom
+                  0x003b9e                  _oledC_redrawSome
+                  0x003bea                  _oledC_eraseShape
+                  0x003c14                  _oledC_eraseAll
+                  0x003c40                  _oledC_redrawAll
+                  0x003cee                  _Switch_Init
+                  0x003d34                  _S1_WasPressed
+                  0x003d50                  _S1_WasReleased
+                  0x003d6c                  _S2_WasPressed
+                  0x003d88                  _S2_WasReleased
+                  0x003da4                  _Switch_ResetState
+                  0x003dde                  _spi1_close
+                  0x003de6                  _spi1_open
+                  0x003e06                  _spi1_exchangeByte
+                  0x003e20                  _spi1_exchangeBlock
+                  0x003e52                  _spi1_writeBlock
+                  0x003e80                  _spi1_readBlock
+                  0x003eb0                  _spi1_writeByte
+                  0x003ebc                  _spi1_readByte
+                  0x003ec6                  _spi1_isr
+                  0x003ee2                  _spi1_setSpiISR
+                  0x003f2c                  _ACCEL3_Initialize
+                  0x003f38                  _ACCEL3_ReadX
+                  0x003f58                  _ACCEL3_ReadY
+                  0x003f78                  _ACCEL3_ReadZ
+                  0x004042                  _DELAY_milliseconds
+                  0x004064                  _DELAY_microseconds
+                  0x004098                  _CLOCK_Initialize
+                  0x0040de                  _millis
+                  0x0040e8                  _Timer_initialize
+                  0x00411a                  _PIN_MANAGER_Initialize
+                  0x004150                  _i2c_returnStop
+                  0x00415a                  _i2c_returnReset
+                  0x004164                  _i2c_restartWrite
+                  0x00416e                  _i2c_restartRead
+                  0x004178                  ___delay32
+                  0x004194                  _INTERRUPT_Initialize
+                  0x0041c8                  _main
+                  0x0041dc                  _where_was_i
+                  0x0041ec                  _SYSTEM_Initialize
                   0x02af00                  __FSEC.sec
 
 External Symbols in Program Memory (by name):
 
-                  0x003e4c                  _ACCEL3_Initialize
-                  0x003e58                  _ACCEL3_ReadX
-                  0x003e78                  _ACCEL3_ReadY
-                  0x003e98                  _ACCEL3_ReadZ
-                  0x00359c                  _ADC_Disable
-                  0x003562                  _ADC_GetConfig
-                  0x003380                  _ADC_Init
-                  0x00355a                  _ADC_IsInitialized
-                  0x0034d2                  _ADC_ReadFloat
-                  0x003484                  _ADC_ReadRaw
-                  0x003442                  _ADC_SetChannel
-                  0x004030                  _CLOCK_Initialize
-                  0x003ffc                  _DELAY_microseconds
-                  0x003fda                  _DELAY_milliseconds
-                  0x004136                  _INTERRUPT_Initialize
-                  0x00266c                  _LED_RunTests
-                  0x003f62                  _PIN_MANAGER_Initialize
-                  0x003c54                  _S1_WasPressed
-                  0x003c70                  _S1_WasReleased
-                  0x003c8c                  _S2_WasPressed
-                  0x003ca8                  _S2_WasReleased
-                  0x004160                  _SYSTEM_Initialize
-                  0x003c0e                  _Switch_Init
-                  0x003cc4                  _Switch_ResetState
-                  0x004080                  _Timer_initialize
+                  0x003f2c                  _ACCEL3_Initialize
+                  0x003f38                  _ACCEL3_ReadX
+                  0x003f58                  _ACCEL3_ReadY
+                  0x003f78                  _ACCEL3_ReadZ
+                  0x00367c                  _ADC_Disable
+                  0x003642                  _ADC_GetConfig
+                  0x003460                  _ADC_Init
+                  0x00363a                  _ADC_IsInitialized
+                  0x0035b2                  _ADC_ReadFloat
+                  0x003564                  _ADC_ReadRaw
+                  0x003522                  _ADC_SetChannel
+                  0x004098                  _CLOCK_Initialize
+                  0x004064                  _DELAY_microseconds
+                  0x004042                  _DELAY_milliseconds
+                  0x004194                  _INTERRUPT_Initialize
+                  0x00268c                  _LED_RunTests
+                  0x00411a                  _PIN_MANAGER_Initialize
+                  0x003d34                  _S1_WasPressed
+                  0x003d50                  _S1_WasReleased
+                  0x003d6c                  _S2_WasPressed
+                  0x003d88                  _S2_WasReleased
+                  0x0041ec                  _SYSTEM_Initialize
+                  0x003cee                  _Switch_Init
+                  0x003da4                  _Switch_ResetState
+                  0x0040e8                  _Timer_initialize
                   0x000386                  __DefaultInterrupt
                   0x02af00                  __FSEC.sec
                   0x000290                  __MI2C1Interrupt
                   0x0002ae                  __SI2C1Interrupt
                   0x00036e                  __T1Interrupt
-                  0x0008c2                  ___cvt_u
-                  0x00411a                  ___delay32
-                  0x0013e2                  ___divdi3
-                  0x000390                  ___divsf3
-                  0x000390                  ___divsf3x
-                  0x001226                  ___extendsfdf2
-                  0x00068e                  ___floatundisf
+                  0x0008e2                  ___cvt_u
+                  0x004178                  ___delay32
+                  0x001402                  ___divdi3
+                  0x0003b0                  ___divsf3
+                  0x0003b0                  ___divsf3x
+                  0x001246                  ___extendsfdf2
+                  0x0006ae                  ___floatundisf
                   0x00038c                  ___floatunsisf
-                  0x000752                  ___fmt_d
-                  0x000804                  ___fmt_o
-                  0x00086e                  ___fmt_s
-                  0x000d06                  ___fmt_state
-                  0x000968                  ___fmt_u
-                  0x0009ba                  ___fmt_x
-                  0x001442                  ___moddi3
-                  0x00128e                  ___mulp32eds3
-                  0x00128e                  ___mulp32peds3
-                  0x00128e                  ___mulsi3
-                  0x000c8c                  ___pad
-                  0x0011e8                  ___pop_float
-                  0x000b4e                  ___pop_int
-                  0x000bf6                  ___pop_ptr
-                  0x00100a                  ___printf_core
-                  0x000744                  ___sio_snprintf_dosux
-                  0x0011bc                  ___tolower_l
-                  0x0011ca                  ___toupper_l
-                  0x0013cc                  ___udivdi3
-                  0x0012e6                  ___udivmoddi3
-                  0x0013da                  ___umoddi3
-                  0x0011cc                  ___vfprintf
-                  0x000b04                  ___vsnprintf
+                  0x000772                  ___fmt_d
+                  0x000824                  ___fmt_o
+                  0x00088e                  ___fmt_s
+                  0x000d26                  ___fmt_state
+                  0x000988                  ___fmt_u
+                  0x0009da                  ___fmt_x
+                  0x001462                  ___moddi3
+                  0x0012ae                  ___mulp32eds3
+                  0x0012ae                  ___mulp32peds3
+                  0x0012ae                  ___mulsi3
+                  0x000cac                  ___pad
+                  0x001208                  ___pop_float
+                  0x000b6e                  ___pop_int
+                  0x000c16                  ___pop_ptr
+                  0x00102a                  ___printf_core
+                  0x000764                  ___sio_snprintf_dosux
+                  0x0011dc                  ___tolower_l
+                  0x0011ea                  ___toupper_l
+                  0x0013ec                  ___udivdi3
+                  0x001306                  ___udivmoddi3
+                  0x000390                  ___udivsi3
+                  0x0013fa                  ___umoddi3
+                  0x0011ec                  ___vfprintf
+                  0x000b24                  ___vsnprintf
                   0x000152                  __data_init
                   0x000152                  __data_init_da
-                  0x0006ec                  __fpack
-                  0x001264                  __funpack
+                  0x00070c                  __fpack
+                  0x001284                  __funpack
                   0x00013c                  __psv_init
                   0x000100                  __resetPRI
-                  0x000522                  __sdivf
-                  0x000582                  __spackf
-                  0x00054e                  __typef
-                  0x000628                  __unpackf
-                  0x002ca0                  _app_get_mode
-                  0x002ca8                  _app_get_pot_value
-                  0x002c3c                  _app_loop
-                  0x0029c4                  _app_setup
-                  0x00105e                  _atoi
-                  0x0035b8                  _i2c1_IRQisEnabled
-                  0x0035e0                  _i2c1_clearIRQ
-                  0x0035d6                  _i2c1_disableIRQ
-                  0x0036aa                  _i2c1_driver_TXData
-                  0x003766                  _i2c1_driver_clearBusCollision
-                  0x0035a6                  _i2c1_driver_close
-                  0x003776                  _i2c1_driver_disableStartIRQ
-                  0x003786                  _i2c1_driver_disableStopIRQ
-                  0x003624                  _i2c1_driver_driver_open
-                  0x00376e                  _i2c1_driver_enableStartIRQ
-                  0x00377e                  _i2c1_driver_enableStopIRQ
-                  0x0036a0                  _i2c1_driver_getRXData
-                  0x003644                  _i2c1_driver_initSlaveHardware
-                  0x003708                  _i2c1_driver_isAddress
-                  0x0036d2                  _i2c1_driver_isBuferFull
-                  0x003736                  _i2c1_driver_isData
-                  0x003680                  _i2c1_driver_isNACK
-                  0x00374e                  _i2c1_driver_isRead
-                  0x0036f0                  _i2c1_driver_isStart
-                  0x00371e                  _i2c1_driver_isStop
-                  0x0036ca                  _i2c1_driver_releaseClock
-                  0x003662                  _i2c1_driver_resetBus
-                  0x003670                  _i2c1_driver_restart
-                  0x0036b6                  _i2c1_driver_sendACK
-                  0x0036c0                  _i2c1_driver_sendNACK
-                  0x00378e                  _i2c1_driver_setBusCollisionISR
-                  0x00379a                  _i2c1_driver_setMasterI2cISR
-                  0x0037a6                  _i2c1_driver_setSlaveI2cISR
-                  0x003668                  _i2c1_driver_start
-                  0x003698                  _i2c1_driver_startRX
-                  0x003678                  _i2c1_driver_stop
-                  0x0035ae                  _i2c1_enableIRQ
-                  0x0035ea                  _i2c1_setIRQ
-                  0x0035f4                  _i2c1_waitForEvent
-                  0x002fd4                  _i2c_ISR
-                  0x002ffc                  _i2c_busCollisionISR
-                  0x002d90                  _i2c_close
-                  0x002de8                  _i2c_masterOperation
-                  0x002e24                  _i2c_masterRead
-                  0x002e2e                  _i2c_masterWrite
-                  0x002d0a                  _i2c_open
-                  0x002e38                  _i2c_poller
-                  0x00383e                  _i2c_read1ByteRegister
-                  0x0038a6                  _i2c_read2ByteRegister
-                  0x003942                  _i2c_readDataBlock
-                  0x00397e                  _i2c_readNBytes
-                  0x0040d0                  _i2c_restartRead
-                  0x0040c6                  _i2c_restartWrite
-                  0x0040bc                  _i2c_returnReset
-                  0x0040b2                  _i2c_returnStop
-                  0x002d84                  _i2c_setAddress
-                  0x002cd4                  _i2c_setAddressNACKCallback
-                  0x002dc8                  _i2c_setBuffer
-                  0x002cb0                  _i2c_setDataCompleteCallback
-                  0x002ce6                  _i2c_setDataNACKCallback
-                  0x002db8                  _i2c_setTimeOut
-                  0x002cf8                  _i2c_setTimeOutCallback
-                  0x002cc2                  _i2c_setWriteCollisionCallback
-                  0x0037c8                  _i2c_write1ByteRegister
-                  0x0038f4                  _i2c_write2ByteRegister
-                  0x0037fc                  _i2c_writeNBytes
-                  0x0039ac                  _initShapesMem
-                  0x0040da                  _main
-                  0x0010aa                  _memcpy
-                  0x0010b8                  _memset
-                  0x004076                  _millis
-                  0x001db2                  _oledC_DrawBitmap
-                  0x001cae                  _oledC_DrawCharacter
-                  0x0019b2                  _oledC_DrawCircle
-                  0x001bc0                  _oledC_DrawLine
-                  0x001872                  _oledC_DrawPoint
-                  0x001c60                  _oledC_DrawRectangle
-                  0x001ac4                  _oledC_DrawRing
-                  0x001d6c                  _oledC_DrawString
-                  0x0018aa                  _oledC_DrawThickPoint
-                  0x001842                  _oledC_ReadPoint
-                  0x003a2a                  _oledC_addShape
-                  0x0032f4                  _oledC_clearScreen
-                  0x001712                  _oledC_createShape
-                  0x003b34                  _oledC_eraseAll
-                  0x003b0a                  _oledC_eraseShape
-                  0x00333c                  _oledC_getBackground
-                  0x003a0e                  _oledC_getShape
-                  0x0032aa                  _oledC_open
-                  0x003100                  _oledC_parseIntToRGB
-                  0x00314e                  _oledC_parseRGBToInt
-                  0x003250                  _oledC_readColor
-                  0x003b60                  _oledC_redrawAll
-                  0x003ab0                  _oledC_redrawFrom
-                  0x003a84                  _oledC_redrawIndex
-                  0x003abe                  _oledC_redrawSome
-                  0x003aa2                  _oledC_redrawTo
-                  0x0039d8                  _oledC_removeShape
-                  0x00326e                  _oledC_sendColor
-                  0x003284                  _oledC_sendColorInt
-                  0x003198                  _oledC_sendCommand
-                  0x00332e                  _oledC_setBackground
-                  0x003200                  _oledC_setColumnAddressBounds
-                  0x0031d6                  _oledC_setRowAddressBounds
-                  0x003236                  _oledC_setSleepMode
-                  0x0032b2                  _oledC_setup
-                  0x003cfe                  _spi1_close
-                  0x003d40                  _spi1_exchangeBlock
-                  0x003d26                  _spi1_exchangeByte
-                  0x003de6                  _spi1_isr
-                  0x003d06                  _spi1_open
-                  0x003da0                  _spi1_readBlock
-                  0x003ddc                  _spi1_readByte
-                  0x003e02                  _spi1_setSpiISR
-                  0x003d72                  _spi1_writeBlock
-                  0x003dd0                  _spi1_writeByte
-                  0x001180                  _strlen
-                  0x002526                  _test_custom_colors
-                  0x0020c0                  _test_discrete_leds
-                  0x0025f6                  _test_intensity_persistence
-                  0x00259e                  _test_rainbow_sequence
-                  0x0022f2                  _test_raw_vs_scaled
-                  0x002196                  _test_rgb_color_constants
-                  0x002406                  _test_rgb_color_wheel
-                  0x0024cc                  _test_rgb_edge_cases
-                  0x002342                  _test_rgb_intensity_fade
-                  0x002238                  _test_rgb_intensity_scaling
-                  0x00213c                  _test_rgb_raw_pwm
-                  0x0011b0                  _tolower
-                  0x0011be                  _toupper
-                  0x004150                  _where_was_i
-                  0x002ede                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_DO_ACK
-                  0x002efc                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_DO_ADDRESS_NACK
-                  0x002ef2                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_DO_NACK_RESTART
-                  0x002ee8                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_DO_NACK_STOP
-                  0x002e62                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_IDLE
-                  0x002ece                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_RCEN
-                  0x002e4e                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_RESET
-                  0x002f6a                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_RX
-                  0x002e9c                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_SEND_ADR_READ
-                  0x002eb8                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_SEND_ADR_WRITE
-                  0x002e88                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_SEND_RESTART
-                  0x002e74                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_SEND_RESTART_READ
-                  0x002e7e                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_SEND_RESTART_WRITE
-                  0x002e92                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_SEND_STOP
-                  0x002f1e                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_TX
-                  0x002fa8                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_TX_EMPTY
-                  0x00300e                  build/default/production/i2c1_driver/i2c_master.o:_returnReset
-                  0x003004                  build/default/production/i2c1_driver/i2c_master.o:_returnStop
-                  0x003828                  build/default/production/i2c1_driver/i2c_simple_master.o:_rd1RegCompleteHandler
-                  0x003890                  build/default/production/i2c1_driver/i2c_simple_master.o:_rd2RegCompleteHandler
-                  0x003928                  build/default/production/i2c1_driver/i2c_simple_master.o:_rdBlkRegCompleteHandler
-                  0x0037b2                  build/default/production/i2c1_driver/i2c_simple_master.o:_wr1RegCompleteHandler
-                  0x0038de                  build/default/production/i2c1_driver/i2c_simple_master.o:_wr2RegCompleteHandler
-                  0x0039a4                  build/default/production/oledDriver/oledC_shapeHandler.o:_dummyshape
-                  0x001f58                  build/default/production/oledDriver/oledC_shapes.o:_drawBitmap
-                  0x001f14                  build/default/production/oledDriver/oledC_shapes.o:_drawCharacter
-                  0x001e9c                  build/default/production/oledDriver/oledC_shapes.o:_drawCircle
-                  0x001ef2                  build/default/production/oledDriver/oledC_shapes.o:_drawLine
-                  0x001e86                  build/default/production/oledDriver/oledC_shapes.o:_drawPoint
-                  0x001ed4                  build/default/production/oledDriver/oledC_shapes.o:_drawRectangle
-                  0x001eb6                  build/default/production/oledDriver/oledC_shapes.o:_drawRing
-                  0x001f36                  build/default/production/oledDriver/oledC_shapes.o:_drawString
+                  0x000542                  __sdivf
+                  0x0005a2                  __spackf
+                  0x00056e                  __typef
+                  0x000648                  __unpackf
+                  0x002d80                  _app_get_mode
+                  0x002d88                  _app_get_pot_value
+                  0x002d52                  _app_loop
+                  0x0029e2                  _app_setup
+                  0x00107e                  _atoi
+                  0x003698                  _i2c1_IRQisEnabled
+                  0x0036c0                  _i2c1_clearIRQ
+                  0x0036b6                  _i2c1_disableIRQ
+                  0x00378a                  _i2c1_driver_TXData
+                  0x003846                  _i2c1_driver_clearBusCollision
+                  0x003686                  _i2c1_driver_close
+                  0x003856                  _i2c1_driver_disableStartIRQ
+                  0x003866                  _i2c1_driver_disableStopIRQ
+                  0x003704                  _i2c1_driver_driver_open
+                  0x00384e                  _i2c1_driver_enableStartIRQ
+                  0x00385e                  _i2c1_driver_enableStopIRQ
+                  0x003780                  _i2c1_driver_getRXData
+                  0x003724                  _i2c1_driver_initSlaveHardware
+                  0x0037e8                  _i2c1_driver_isAddress
+                  0x0037b2                  _i2c1_driver_isBuferFull
+                  0x003816                  _i2c1_driver_isData
+                  0x003760                  _i2c1_driver_isNACK
+                  0x00382e                  _i2c1_driver_isRead
+                  0x0037d0                  _i2c1_driver_isStart
+                  0x0037fe                  _i2c1_driver_isStop
+                  0x0037aa                  _i2c1_driver_releaseClock
+                  0x003742                  _i2c1_driver_resetBus
+                  0x003750                  _i2c1_driver_restart
+                  0x003796                  _i2c1_driver_sendACK
+                  0x0037a0                  _i2c1_driver_sendNACK
+                  0x00386e                  _i2c1_driver_setBusCollisionISR
+                  0x00387a                  _i2c1_driver_setMasterI2cISR
+                  0x003886                  _i2c1_driver_setSlaveI2cISR
+                  0x003748                  _i2c1_driver_start
+                  0x003778                  _i2c1_driver_startRX
+                  0x003758                  _i2c1_driver_stop
+                  0x00368e                  _i2c1_enableIRQ
+                  0x0036ca                  _i2c1_setIRQ
+                  0x0036d4                  _i2c1_waitForEvent
+                  0x0030b4                  _i2c_ISR
+                  0x0030dc                  _i2c_busCollisionISR
+                  0x002e70                  _i2c_close
+                  0x002ec8                  _i2c_masterOperation
+                  0x002f04                  _i2c_masterRead
+                  0x002f0e                  _i2c_masterWrite
+                  0x002dea                  _i2c_open
+                  0x002f18                  _i2c_poller
+                  0x00391e                  _i2c_read1ByteRegister
+                  0x003986                  _i2c_read2ByteRegister
+                  0x003a22                  _i2c_readDataBlock
+                  0x003a5e                  _i2c_readNBytes
+                  0x00416e                  _i2c_restartRead
+                  0x004164                  _i2c_restartWrite
+                  0x00415a                  _i2c_returnReset
+                  0x004150                  _i2c_returnStop
+                  0x002e64                  _i2c_setAddress
+                  0x002db4                  _i2c_setAddressNACKCallback
+                  0x002ea8                  _i2c_setBuffer
+                  0x002d90                  _i2c_setDataCompleteCallback
+                  0x002dc6                  _i2c_setDataNACKCallback
+                  0x002e98                  _i2c_setTimeOut
+                  0x002dd8                  _i2c_setTimeOutCallback
+                  0x002da2                  _i2c_setWriteCollisionCallback
+                  0x0038a8                  _i2c_write1ByteRegister
+                  0x0039d4                  _i2c_write2ByteRegister
+                  0x0038dc                  _i2c_writeNBytes
+                  0x003a8c                  _initShapesMem
+                  0x0041c8                  _main
+                  0x0010ca                  _memcpy
+                  0x0010d8                  _memset
+                  0x0040de                  _millis
+                  0x001dd2                  _oledC_DrawBitmap
+                  0x001cce                  _oledC_DrawCharacter
+                  0x0019d2                  _oledC_DrawCircle
+                  0x001be0                  _oledC_DrawLine
+                  0x001892                  _oledC_DrawPoint
+                  0x001c80                  _oledC_DrawRectangle
+                  0x001ae4                  _oledC_DrawRing
+                  0x001d8c                  _oledC_DrawString
+                  0x0018ca                  _oledC_DrawThickPoint
+                  0x001862                  _oledC_ReadPoint
+                  0x003b0a                  _oledC_addShape
+                  0x0033d4                  _oledC_clearScreen
+                  0x001732                  _oledC_createShape
+                  0x003c14                  _oledC_eraseAll
+                  0x003bea                  _oledC_eraseShape
+                  0x00341c                  _oledC_getBackground
+                  0x003aee                  _oledC_getShape
+                  0x00338a                  _oledC_open
+                  0x0031e0                  _oledC_parseIntToRGB
+                  0x00322e                  _oledC_parseRGBToInt
+                  0x003330                  _oledC_readColor
+                  0x003c40                  _oledC_redrawAll
+                  0x003b90                  _oledC_redrawFrom
+                  0x003b64                  _oledC_redrawIndex
+                  0x003b9e                  _oledC_redrawSome
+                  0x003b82                  _oledC_redrawTo
+                  0x003ab8                  _oledC_removeShape
+                  0x00334e                  _oledC_sendColor
+                  0x003364                  _oledC_sendColorInt
+                  0x003278                  _oledC_sendCommand
+                  0x00340e                  _oledC_setBackground
+                  0x0032e0                  _oledC_setColumnAddressBounds
+                  0x0032b6                  _oledC_setRowAddressBounds
+                  0x003316                  _oledC_setSleepMode
+                  0x003392                  _oledC_setup
+                  0x003dde                  _spi1_close
+                  0x003e20                  _spi1_exchangeBlock
+                  0x003e06                  _spi1_exchangeByte
+                  0x003ec6                  _spi1_isr
+                  0x003de6                  _spi1_open
+                  0x003e80                  _spi1_readBlock
+                  0x003ebc                  _spi1_readByte
+                  0x003ee2                  _spi1_setSpiISR
+                  0x003e52                  _spi1_writeBlock
+                  0x003eb0                  _spi1_writeByte
+                  0x0011a0                  _strlen
+                  0x002546                  _test_custom_colors
+                  0x0020e0                  _test_discrete_leds
+                  0x002616                  _test_intensity_persistence
+                  0x0025be                  _test_rainbow_sequence
+                  0x002312                  _test_raw_vs_scaled
+                  0x0021b6                  _test_rgb_color_constants
+                  0x002426                  _test_rgb_color_wheel
+                  0x0024ec                  _test_rgb_edge_cases
+                  0x002362                  _test_rgb_intensity_fade
+                  0x002258                  _test_rgb_intensity_scaling
+                  0x00215c                  _test_rgb_raw_pwm
+                  0x0011d0                  _tolower
+                  0x0011de                  _toupper
+                  0x0041dc                  _where_was_i
+                  0x002fbe                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_DO_ACK
+                  0x002fdc                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_DO_ADDRESS_NACK
+                  0x002fd2                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_DO_NACK_RESTART
+                  0x002fc8                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_DO_NACK_STOP
+                  0x002f42                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_IDLE
+                  0x002fae                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_RCEN
+                  0x002f2e                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_RESET
+                  0x00304a                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_RX
+                  0x002f7c                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_SEND_ADR_READ
+                  0x002f98                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_SEND_ADR_WRITE
+                  0x002f68                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_SEND_RESTART
+                  0x002f54                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_SEND_RESTART_READ
+                  0x002f5e                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_SEND_RESTART_WRITE
+                  0x002f72                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_SEND_STOP
+                  0x002ffe                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_TX
+                  0x003088                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_TX_EMPTY
+                  0x0030ee                  build/default/debug/i2c1_driver/i2c_master.o:_returnReset
+                  0x0030e4                  build/default/debug/i2c1_driver/i2c_master.o:_returnStop
+                  0x003908                  build/default/debug/i2c1_driver/i2c_simple_master.o:_rd1RegCompleteHandler
+                  0x003970                  build/default/debug/i2c1_driver/i2c_simple_master.o:_rd2RegCompleteHandler
+                  0x003a08                  build/default/debug/i2c1_driver/i2c_simple_master.o:_rdBlkRegCompleteHandler
+                  0x003892                  build/default/debug/i2c1_driver/i2c_simple_master.o:_wr1RegCompleteHandler
+                  0x0039be                  build/default/debug/i2c1_driver/i2c_simple_master.o:_wr2RegCompleteHandler
+                  0x003a84                  build/default/debug/oledDriver/oledC_shapeHandler.o:_dummyshape
+                  0x001f78                  build/default/debug/oledDriver/oledC_shapes.o:_drawBitmap
+                  0x001f34                  build/default/debug/oledDriver/oledC_shapes.o:_drawCharacter
+                  0x001ebc                  build/default/debug/oledDriver/oledC_shapes.o:_drawCircle
+                  0x001f12                  build/default/debug/oledDriver/oledC_shapes.o:_drawLine
+                  0x001ea6                  build/default/debug/oledDriver/oledC_shapes.o:_drawPoint
+                  0x001ef4                  build/default/debug/oledDriver/oledC_shapes.o:_drawRectangle
+                  0x001ed6                  build/default/debug/oledDriver/oledC_shapes.o:_drawRing
+                  0x001f56                  build/default/debug/oledDriver/oledC_shapes.o:_drawString
 
 Memory Configuration
 
@@ -730,29 +752,67 @@ FDEVOPT1         0x02af2c           0x000002
 
 Linker script and memory map
 
-LOAD build/default/production/adcDriver/ADC.o
-LOAD build/default/production/i2c1_driver/i2c1_driver.o
-LOAD build/default/production/i2c1_driver/i2c_master.o
-LOAD build/default/production/i2c1_driver/i2c_simple_master.o
-LOAD build/default/production/i2c1_driver/i2c_types.o
-LOAD build/default/production/ledDriver/LED_tests.o
-LOAD build/default/production/oledDriver/oledC.o
-LOAD build/default/production/oledDriver/oledC_shapeHandler.o
-LOAD build/default/production/oledDriver/oledC_shapes.o
-LOAD build/default/production/spiDriver/spi1_driver.o
-LOAD build/default/production/System/clock.o
-LOAD build/default/production/System/delay.o
-LOAD build/default/production/System/interrupt_manager.o
-LOAD build/default/production/System/pin_manager.o
-LOAD build/default/production/System/system.o
-LOAD build/default/production/System/traps.o
-LOAD build/default/production/System/where_was_i.o
-LOAD build/default/production/systemExtensions/systemExtensions.o
-LOAD build/default/production/main.o
-LOAD build/default/production/app.o
-LOAD build/default/production/ACCEL3.o
-LOAD build/default/production/switchDriver/Switch.o
+
+reserve_data_0x800
+                    0x0800         0x1c
+                    0x081c                  . = 0x1c
+ *fill*             0x0800         0x1c00
+
+reserve_data_0x81c
+                    0x081c          0x2
+                    0x081e                  . = 0x2
+ *fill*             0x081c          0x200
+
+reserve_data_0x81e
+                    0x081e          0x2
+                    0x0820                  . = 0x2
+ *fill*             0x081e          0x200
+
+reserve_data_0x820
+                    0x0820          0x2
+                    0x0822                  . = 0x2
+ *fill*             0x0820          0x200
+
+reserve_data_0x822
+                    0x0822          0x2
+                    0x0824                  . = 0x2
+ *fill*             0x0822          0x200
+
+reserve_data_0x824
+                    0x0824          0x4
+                    0x0828                  . = 0x4
+ *fill*             0x0824          0x400
+
+reserve_data_0x82a
+                    0x082a         0x26
+                    0x0850                  . = 0x26
+ *fill*             0x082a         0x2600
+LOAD build/default/debug/adcDriver/ADC.o
+LOAD build/default/debug/i2c1_driver/i2c1_driver.o
+LOAD build/default/debug/i2c1_driver/i2c_master.o
+LOAD build/default/debug/i2c1_driver/i2c_simple_master.o
+LOAD build/default/debug/i2c1_driver/i2c_types.o
+LOAD build/default/debug/ledDriver/LED_tests.o
+LOAD build/default/debug/oledDriver/oledC.o
+LOAD build/default/debug/oledDriver/oledC_shapeHandler.o
+LOAD build/default/debug/oledDriver/oledC_shapes.o
+LOAD build/default/debug/spiDriver/spi1_driver.o
+LOAD build/default/debug/System/clock.o
+LOAD build/default/debug/System/delay.o
+LOAD build/default/debug/System/interrupt_manager.o
+LOAD build/default/debug/System/pin_manager.o
+LOAD build/default/debug/System/system.o
+LOAD build/default/debug/System/traps.o
+LOAD build/default/debug/System/where_was_i.o
+LOAD build/default/debug/systemExtensions/systemExtensions.o
+LOAD build/default/debug/main.o
+LOAD build/default/debug/app.o
+LOAD build/default/debug/ACCEL3.o
+LOAD build/default/debug/switchDriver/Switch.o
                     0x0001                  __MPLAB_BUILD = 0x1
+                    0x0001                  __MPLAB_DEBUG = 0x1
+                    0x0001                  __DEBUG = 0x1
+                    0x0001                  __MPLAB_DEBUGGER_PK3 = 0x1
 LOAD pPIC24Fxxx
 LOAD c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libfx-elf.a
                     0x2af00                  __FSEC = 0x2af00
@@ -776,7 +836,7 @@ LOAD c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libfx-elf.a
                   0x000002          0x2 SHORT 0x0 ((ABSOLUTE (__reset) >> 0x10) & 0x7f)
                   0x000003          0x2 SHORT 0x0
 
-.text             0x000100       0x139e
+.text             0x000100       0x13be
  *(.init)
  .init            0x000100         0x4c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(crt0_extended24.o)
                   0x000100                  __resetPRI
@@ -789,16 +849,16 @@ LOAD c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libfx-elf.a
  *(.handle)
  .handle          0x000204         0x8c jump_table
  *(.isr*)
- .isr.text        0x000290         0x3c build/default/production/i2c1_driver/i2c1_driver.o
+ .isr.text        0x000290         0x3c build/default/debug/i2c1_driver/i2c1_driver.o
                   0x000290                  __MI2C1Interrupt
                   0x0002ae                  __SI2C1Interrupt
- .isr.text        0x0002cc         0xa2 build/default/production/System/traps.o
+ .isr.text        0x0002cc         0xa2 build/default/debug/System/traps.o
                   0x0002cc                  __OscillatorFail
                   0x0002ec                  __StackError
                   0x00030e                  __AddressError
                   0x00032e                  __MathError
                   0x00034e                  __NVMError
- .isr.text        0x00036e         0x18 build/default/production/systemExtensions/systemExtensions.o
+ .isr.text        0x00036e         0x18 build/default/debug/systemExtensions/systemExtensions.o
                   0x00036e                  __T1Interrupt
  .isr             0x000386          0x4 default_isr
                   0x000386                  __DefaultInterrupt
@@ -813,135 +873,137 @@ LOAD c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libfx-elf.a
  .libm.floatunsisf
                   0x00038c          0x4 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatunsisf.DA_o)
                   0x00038c                  ___floatunsisf
- .libmx           0x000390        0x1be c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divsf3x.DA_o)
-                  0x000390                  ___divsf3x
-                  0x000390                  ___divsf3
-                  0x000522                  __sdivf
- .libmx           0x00054e         0x34 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(typefx.DA_o)
-                  0x00054e                  __typef
- .libmx           0x000582         0xa6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(spackfx.DA_o)
-                  0x000582                  __spackf
- .libmx           0x000628         0x66 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(unpackfx.DA_o)
-                  0x000628                  __unpackf
+ .libm.udivsi3    0x000390         0x20 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(udivsi3.DA_o)
+                  0x000390                  ___udivsi3
+ .libmx           0x0003b0        0x1be c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divsf3x.DA_o)
+                  0x0003b0                  ___divsf3x
+                  0x0003b0                  ___divsf3
+                  0x000542                  __sdivf
+ .libmx           0x00056e         0x34 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(typefx.DA_o)
+                  0x00056e                  __typef
+ .libmx           0x0005a2         0xa6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(spackfx.DA_o)
+                  0x0005a2                  __spackf
+ .libmx           0x000648         0x66 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(unpackfx.DA_o)
+                  0x000648                  __unpackf
  .libm.floatundisf
-                  0x00068e         0x5e c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatundisf.DA_o)
-                  0x00068e                  ___floatundisf
- .libm.fpack      0x0006ec         0x4c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(fpack.DA_o)
-                  0x0006ec                  __fpack
+                  0x0006ae         0x5e c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatundisf.DA_o)
+                  0x0006ae                  ___floatundisf
+ .libm.fpack      0x00070c         0x4c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(fpack.DA_o)
+                  0x00070c                  __fpack
  .libc.__wrap_snprintf
-                  0x000738          0xc c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__sio_snprintf_dosux.DA_o)
-                  0x000738                  __dsnprintf_cdnopsuxX
-                  0x000738                  __snprintf_cdnopsuxX
+                  0x000758          0xc c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__sio_snprintf_dosux.DA_o)
+                  0x000758                  __dsnprintf_cdnopsuxX
+                  0x000758                  __snprintf_cdnopsuxX
  .libc.__sio_snprintf_dosux
-                  0x000744          0xe c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__sio_snprintf_dosux.DA_o)
-                  0x000744                  ___sio_snprintf_dosux
- .libc.__fmt_d    0x000752         0xb2 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__fmt_d.DA_o)
-                  0x000752                  ___fmt_d
-                  0x000752                  ___fmt_d_needed
- .libc.__fmt_o    0x000804         0x6a c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__fmt_o.DA_o)
-                  0x000804                  ___fmt_o
-                  0x000804                  ___fmt_o_needed
- .libc.__fmt_s    0x00086e         0x54 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__fmt_s.DA_o)
-                  0x00086e                  ___fmt_0_needed
-                  0x00086e                  ___fmt_s_needed
-                  0x00086e                  ___fmt_s
- .libc.__cvt_u    0x0008c2         0xa6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__fmt_u.DA_o)
-                  0x0008c2                  ___cvt_u
- .libc.__fmt_u    0x000968         0x52 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__fmt_u.DA_o)
-                  0x000968                  ___fmt_u
-                  0x000968                  ___fmt_u_needed
- .libc.__fmt_x    0x0009ba        0x14a c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__fmt_x.DA_o)
-                  0x0009ba                  ___fmt_x_needed
-                  0x0009ba                  ___fmt_x
+                  0x000764          0xe c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__sio_snprintf_dosux.DA_o)
+                  0x000764                  ___sio_snprintf_dosux
+ .libc.__fmt_d    0x000772         0xb2 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__fmt_d.DA_o)
+                  0x000772                  ___fmt_d
+                  0x000772                  ___fmt_d_needed
+ .libc.__fmt_o    0x000824         0x6a c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__fmt_o.DA_o)
+                  0x000824                  ___fmt_o
+                  0x000824                  ___fmt_o_needed
+ .libc.__fmt_s    0x00088e         0x54 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__fmt_s.DA_o)
+                  0x00088e                  ___fmt_0_needed
+                  0x00088e                  ___fmt_s_needed
+                  0x00088e                  ___fmt_s
+ .libc.__cvt_u    0x0008e2         0xa6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__fmt_u.DA_o)
+                  0x0008e2                  ___cvt_u
+ .libc.__fmt_u    0x000988         0x52 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__fmt_u.DA_o)
+                  0x000988                  ___fmt_u
+                  0x000988                  ___fmt_u_needed
+ .libc.__fmt_x    0x0009da        0x14a c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__fmt_x.DA_o)
+                  0x0009da                  ___fmt_x_needed
+                  0x0009da                  ___fmt_x
  .libc.__vsnprintf
-                  0x000b04         0x4a c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__int_vsnprintf.DA_o)
-                  0x000b04                  ___vsnprintf
+                  0x000b24         0x4a c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__int_vsnprintf.DA_o)
+                  0x000b24                  ___vsnprintf
  .libc.__pop_int
-                  0x000b4e         0xa8 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__pop_int.DA_o)
-                  0x000b4e                  ___pop_int
-                  0x000b4e                  ___pop_int_needed
+                  0x000b6e         0xa8 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__pop_int.DA_o)
+                  0x000b6e                  ___pop_int
+                  0x000b6e                  ___pop_int_needed
  .libc.__pop_ptr
-                  0x000bf6         0x70 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__pop_ptr.DA_o)
-                  0x000bf6                  ___pop_ptr_needed
-                  0x000bf6                  ___pop_ptr
+                  0x000c16         0x70 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__pop_ptr.DA_o)
+                  0x000c16                  ___pop_ptr_needed
+                  0x000c16                  ___pop_ptr
  .libc.__string_out
-                  0x000c66         0x26 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__printf_core.DA_o)
-                  0x000c66                  ___out
- .libc.__pad      0x000c8c         0x74 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__printf_core.DA_o)
-                  0x000c8c                  ___pad
+                  0x000c86         0x26 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__printf_core.DA_o)
+                  0x000c86                  ___out
+ .libc.__pad      0x000cac         0x74 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__printf_core.DA_o)
+                  0x000cac                  ___pad
  .libc.__dummy_fmt3
-                  0x000d00          0x2 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__printf_core.DA_o)
+                  0x000d20          0x2 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__printf_core.DA_o)
  .libc.__dummy_fmt4
-                  0x000d02          0x2 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__printf_core.DA_o)
-                  0x000d02                  ___fmt_fp
-                  0x000d02                  ___fmt_a
+                  0x000d22          0x2 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__printf_core.DA_o)
+                  0x000d22                  ___fmt_fp
+                  0x000d22                  ___fmt_a
  .libc.__dummy_fmts
-                  0x000d04          0x2 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__printf_core.DA_o)
+                  0x000d24          0x2 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__printf_core.DA_o)
  .libc.__fmt_state
-                  0x000d06         0x2c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__printf_core.DA_o)
-                  0x000d06                  ___fmt_state
+                  0x000d26         0x2c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__printf_core.DA_o)
+                  0x000d26                  ___fmt_state
  .libc.vfpfcnvrt.clone.0
-                  0x000d32        0x2d8 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__printf_core.DA_o)
+                  0x000d52        0x2d8 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__printf_core.DA_o)
  .libc.__printf_core
-                  0x00100a         0x40 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__printf_core.DA_o)
-                  0x00100a                  ___printf_core
+                  0x00102a         0x40 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__printf_core.DA_o)
+                  0x00102a                  ___printf_core
  .libc.__isspace
-                  0x00104a         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(atoi.DA_o)
- .libc.atoi       0x00105e         0x4c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(atoi.DA_o)
-                  0x00105e                  _atoi
- .libc.memcpy     0x0010aa          0xe c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(memcpy.DA_o)
-                  0x0010aa                  _memcpy
- .libc.memset     0x0010b8         0xc8 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(memset.DA_o)
-                  0x0010b8                  _memset
- .libc.strlen     0x001180         0x30 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(strlen.DA_o)
-                  0x001180                  _strlen
- .libc.tolower    0x0011b0          0xc c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(tolower.DA_o)
-                  0x0011b0                  _tolower
+                  0x00106a         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(atoi.DA_o)
+ .libc.atoi       0x00107e         0x4c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(atoi.DA_o)
+                  0x00107e                  _atoi
+ .libc.memcpy     0x0010ca          0xe c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(memcpy.DA_o)
+                  0x0010ca                  _memcpy
+ .libc.memset     0x0010d8         0xc8 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(memset.DA_o)
+                  0x0010d8                  _memset
+ .libc.strlen     0x0011a0         0x30 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(strlen.DA_o)
+                  0x0011a0                  _strlen
+ .libc.tolower    0x0011d0          0xc c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(tolower.DA_o)
+                  0x0011d0                  _tolower
  .libc.__tolower_l
-                  0x0011bc          0x2 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(tolower.DA_o)
-                  0x0011bc                  ___tolower_l
-                  0x0011bc                  _tolower_l
- .libc.toupper    0x0011be          0xc c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(toupper.DA_o)
-                  0x0011be                  _toupper
+                  0x0011dc          0x2 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(tolower.DA_o)
+                  0x0011dc                  ___tolower_l
+                  0x0011dc                  _tolower_l
+ .libc.toupper    0x0011de          0xc c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(toupper.DA_o)
+                  0x0011de                  _toupper
  .libc.__toupper_l
-                  0x0011ca          0x2 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(toupper.DA_o)
-                  0x0011ca                  ___toupper_l
-                  0x0011ca                  _toupper_l
+                  0x0011ea          0x2 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(toupper.DA_o)
+                  0x0011ea                  ___toupper_l
+                  0x0011ea                  _toupper_l
  .libc.__vfprintf
-                  0x0011cc         0x1c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__int_vfprintf.DA_o)
-                  0x0011cc                  ___vfprintf
+                  0x0011ec         0x1c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__int_vfprintf.DA_o)
+                  0x0011ec                  ___vfprintf
  .libc.__pop_float
-                  0x0011e8         0x3e c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__pop_float.DA_o)
-                  0x0011e8                  ___pop_float
-                  0x0011e8                  ___pop_float_needed
+                  0x001208         0x3e c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__pop_float.DA_o)
+                  0x001208                  ___pop_float
+                  0x001208                  ___pop_float_needed
  .libm.extendsfdf2
-                  0x001226         0x3e c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(extendsfdf.DA_o)
-                  0x001226                  ___extendsfdf2
- .libm.funpack    0x001264         0x2a c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(funpack.DA_o)
-                  0x001264                  __funpack
- .libm.mulsi3     0x00128e          0xc c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(mulsi3.DA_o)
-                  0x00128e                  ___mulp32peds3
-                  0x00128e                  ___mulsi3
-                  0x00128e                  ___mulp32eds3
+                  0x001246         0x3e c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(extendsfdf.DA_o)
+                  0x001246                  ___extendsfdf2
+ .libm.funpack    0x001284         0x2a c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(funpack.DA_o)
+                  0x001284                  __funpack
+ .libm.mulsi3     0x0012ae          0xc c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(mulsi3.DA_o)
+                  0x0012ae                  ___mulp32peds3
+                  0x0012ae                  ___mulsi3
+                  0x0012ae                  ___mulp32eds3
  .libm.__PplusBdi
-                  0x00129a         0x26 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divmoddi3.DA_o)
+                  0x0012ba         0x26 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divmoddi3.DA_o)
  .libm.__PminusBdi
-                  0x0012c0         0x26 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divmoddi3.DA_o)
+                  0x0012e0         0x26 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divmoddi3.DA_o)
  .libm.__udivmoddi3
-                  0x0012e6         0xe6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divmoddi3.DA_o)
-                  0x0012e6                  ___udivmoddi3
+                  0x001306         0xe6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divmoddi3.DA_o)
+                  0x001306                  ___udivmoddi3
  .libm.__udivdi3
-                  0x0013cc          0xe c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divmoddi3.DA_o)
-                  0x0013cc                  ___udivdi3
+                  0x0013ec          0xe c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divmoddi3.DA_o)
+                  0x0013ec                  ___udivdi3
  .libm.__umoddi3
-                  0x0013da          0x8 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divmoddi3.DA_o)
-                  0x0013da                  ___umoddi3
+                  0x0013fa          0x8 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divmoddi3.DA_o)
+                  0x0013fa                  ___umoddi3
  .libm.__divdi3
-                  0x0013e2         0x60 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divmoddi3.DA_o)
-                  0x0013e2                  ___divdi3
+                  0x001402         0x60 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divmoddi3.DA_o)
+                  0x001402                  ___divdi3
  .libm.__moddi3
-                  0x001442         0x5c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divmoddi3.DA_o)
-                  0x001442                  ___moddi3
+                  0x001462         0x5c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divmoddi3.DA_o)
+                  0x001462                  ___moddi3
 
 usercode
  *(usercode)
@@ -978,156 +1040,158 @@ __FDEVOPT1
 .comment
  *(.comment)
 
-.debug_info       0x000000       0xc073
+.debug_info       0x000000       0xbc95
  *(.debug_info)
- .debug_info      0x000000        0xb5d build/default/production/adcDriver/ADC.o
- .debug_info      0x000b5d        0xef4 build/default/production/i2c1_driver/i2c1_driver.o
- .debug_info      0x001a51        0xc5f build/default/production/i2c1_driver/i2c_master.o
- .debug_info      0x0026b0        0x60e build/default/production/i2c1_driver/i2c_simple_master.o
- .debug_info      0x002cbe        0x286 build/default/production/i2c1_driver/i2c_types.o
- .debug_info      0x002f44       0x15c5 build/default/production/ledDriver/LED_tests.o
- .debug_info      0x004509       0x1127 build/default/production/oledDriver/oledC.o
- .debug_info      0x005630        0x902 build/default/production/oledDriver/oledC_shapeHandler.o
- .debug_info      0x005f32        0xf1a build/default/production/oledDriver/oledC_shapes.o
- .debug_info      0x006e4c        0xa1d build/default/production/spiDriver/spi1_driver.o
- .debug_info      0x007869        0x364 build/default/production/System/clock.o
- .debug_info      0x007bcd        0x1c8 build/default/production/System/delay.o
- .debug_info      0x007d95        0x403 build/default/production/System/interrupt_manager.o
- .debug_info      0x008198        0x4c1 build/default/production/System/pin_manager.o
- .debug_info      0x008659        0x338 build/default/production/System/system.o
- .debug_info      0x008991        0x431 build/default/production/System/traps.o
- .debug_info      0x008dc2         0x91 build/default/production/System/where_was_i.o
- .debug_info      0x008e53        0x8e6 build/default/production/systemExtensions/systemExtensions.o
- .debug_info      0x009739        0x4ee build/default/production/main.o
- .debug_info      0x009c27       0x1872 build/default/production/app.o
- .debug_info      0x00b499        0x28a build/default/production/ACCEL3.o
- .debug_info      0x00b723        0x386 build/default/production/switchDriver/Switch.o
- .debug_info      0x00baa9         0x91 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatunsisf.DA_o)
- .debug_info      0x00bb3a         0x9d c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divsf3x.DA_o)
- .debug_info      0x00bbd7         0x9c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(typefx.DA_o)
- .debug_info      0x00bc73         0x9d c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(spackfx.DA_o)
- .debug_info      0x00bd10         0x9e c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(unpackfx.DA_o)
- .debug_info      0x00bdae         0x91 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatundisf.DA_o)
- .debug_info      0x00be3f         0x8b c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(fpack.DA_o)
- .debug_info      0x00beca         0x90 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(extendsfdf.DA_o)
- .debug_info      0x00bf5a         0x8d c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(funpack.DA_o)
- .debug_info      0x00bfe7         0x8c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(mulsi3.DA_o)
+ .debug_info      0x000000        0xb5d build/default/debug/adcDriver/ADC.o
+ .debug_info      0x000b5d        0xef4 build/default/debug/i2c1_driver/i2c1_driver.o
+ .debug_info      0x001a51        0xc5f build/default/debug/i2c1_driver/i2c_master.o
+ .debug_info      0x0026b0        0x60e build/default/debug/i2c1_driver/i2c_simple_master.o
+ .debug_info      0x002cbe        0x286 build/default/debug/i2c1_driver/i2c_types.o
+ .debug_info      0x002f44       0x15c5 build/default/debug/ledDriver/LED_tests.o
+ .debug_info      0x004509       0x1127 build/default/debug/oledDriver/oledC.o
+ .debug_info      0x005630        0x902 build/default/debug/oledDriver/oledC_shapeHandler.o
+ .debug_info      0x005f32        0xf1a build/default/debug/oledDriver/oledC_shapes.o
+ .debug_info      0x006e4c        0xa1d build/default/debug/spiDriver/spi1_driver.o
+ .debug_info      0x007869        0x364 build/default/debug/System/clock.o
+ .debug_info      0x007bcd        0x1c8 build/default/debug/System/delay.o
+ .debug_info      0x007d95        0x403 build/default/debug/System/interrupt_manager.o
+ .debug_info      0x008198        0x3b7 build/default/debug/System/pin_manager.o
+ .debug_info      0x00854f        0x338 build/default/debug/System/system.o
+ .debug_info      0x008887        0x431 build/default/debug/System/traps.o
+ .debug_info      0x008cb8         0x91 build/default/debug/System/where_was_i.o
+ .debug_info      0x008d49        0x8e6 build/default/debug/systemExtensions/systemExtensions.o
+ .debug_info      0x00962f        0x13a build/default/debug/main.o
+ .debug_info      0x009769       0x18c5 build/default/debug/app.o
+ .debug_info      0x00b02e        0x28a build/default/debug/ACCEL3.o
+ .debug_info      0x00b2b8        0x386 build/default/debug/switchDriver/Switch.o
+ .debug_info      0x00b63e         0x91 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatunsisf.DA_o)
+ .debug_info      0x00b6cf         0x8d c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(udivsi3.DA_o)
+ .debug_info      0x00b75c         0x9d c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divsf3x.DA_o)
+ .debug_info      0x00b7f9         0x9c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(typefx.DA_o)
+ .debug_info      0x00b895         0x9d c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(spackfx.DA_o)
+ .debug_info      0x00b932         0x9e c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(unpackfx.DA_o)
+ .debug_info      0x00b9d0         0x91 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatundisf.DA_o)
+ .debug_info      0x00ba61         0x8b c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(fpack.DA_o)
+ .debug_info      0x00baec         0x90 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(extendsfdf.DA_o)
+ .debug_info      0x00bb7c         0x8d c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(funpack.DA_o)
+ .debug_info      0x00bc09         0x8c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(mulsi3.DA_o)
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev     0x000000       0x18f0
+.debug_abbrev     0x000000       0x18aa
  *(.debug_abbrev)
- .debug_abbrev    0x000000        0x19f build/default/production/adcDriver/ADC.o
- .debug_abbrev    0x00019f        0x167 build/default/production/i2c1_driver/i2c1_driver.o
- .debug_abbrev    0x000306        0x21a build/default/production/i2c1_driver/i2c_master.o
- .debug_abbrev    0x000520        0x106 build/default/production/i2c1_driver/i2c_simple_master.o
- .debug_abbrev    0x000626         0x88 build/default/production/i2c1_driver/i2c_types.o
- .debug_abbrev    0x0006ae        0x1ce build/default/production/ledDriver/LED_tests.o
- .debug_abbrev    0x00087c        0x1aa build/default/production/oledDriver/oledC.o
- .debug_abbrev    0x000a26        0x166 build/default/production/oledDriver/oledC_shapeHandler.o
- .debug_abbrev    0x000b8c        0x1bc build/default/production/oledDriver/oledC_shapes.o
- .debug_abbrev    0x000d48        0x1cf build/default/production/spiDriver/spi1_driver.o
- .debug_abbrev    0x000f17         0x6a build/default/production/System/clock.o
- .debug_abbrev    0x000f81         0x67 build/default/production/System/delay.o
- .debug_abbrev    0x000fe8         0xb4 build/default/production/System/interrupt_manager.o
- .debug_abbrev    0x00109c         0x9b build/default/production/System/pin_manager.o
- .debug_abbrev    0x001137         0xb4 build/default/production/System/system.o
- .debug_abbrev    0x0011eb        0x100 build/default/production/System/traps.o
- .debug_abbrev    0x0012eb         0x14 build/default/production/System/where_was_i.o
- .debug_abbrev    0x0012ff        0x120 build/default/production/systemExtensions/systemExtensions.o
- .debug_abbrev    0x00141f         0x4e build/default/production/main.o
- .debug_abbrev    0x00146d        0x240 build/default/production/app.o
- .debug_abbrev    0x0016ad         0x93 build/default/production/ACCEL3.o
- .debug_abbrev    0x001740         0xe8 build/default/production/switchDriver/Switch.o
- .debug_abbrev    0x001828         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatunsisf.DA_o)
- .debug_abbrev    0x00183c         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divsf3x.DA_o)
- .debug_abbrev    0x001850         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(typefx.DA_o)
- .debug_abbrev    0x001864         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(spackfx.DA_o)
- .debug_abbrev    0x001878         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(unpackfx.DA_o)
- .debug_abbrev    0x00188c         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatundisf.DA_o)
- .debug_abbrev    0x0018a0         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(fpack.DA_o)
- .debug_abbrev    0x0018b4         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(extendsfdf.DA_o)
- .debug_abbrev    0x0018c8         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(funpack.DA_o)
- .debug_abbrev    0x0018dc         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(mulsi3.DA_o)
+ .debug_abbrev    0x000000        0x19f build/default/debug/adcDriver/ADC.o
+ .debug_abbrev    0x00019f        0x167 build/default/debug/i2c1_driver/i2c1_driver.o
+ .debug_abbrev    0x000306        0x21a build/default/debug/i2c1_driver/i2c_master.o
+ .debug_abbrev    0x000520        0x106 build/default/debug/i2c1_driver/i2c_simple_master.o
+ .debug_abbrev    0x000626         0x88 build/default/debug/i2c1_driver/i2c_types.o
+ .debug_abbrev    0x0006ae        0x1ce build/default/debug/ledDriver/LED_tests.o
+ .debug_abbrev    0x00087c        0x1aa build/default/debug/oledDriver/oledC.o
+ .debug_abbrev    0x000a26        0x166 build/default/debug/oledDriver/oledC_shapeHandler.o
+ .debug_abbrev    0x000b8c        0x1bc build/default/debug/oledDriver/oledC_shapes.o
+ .debug_abbrev    0x000d48        0x1cf build/default/debug/spiDriver/spi1_driver.o
+ .debug_abbrev    0x000f17         0x6a build/default/debug/System/clock.o
+ .debug_abbrev    0x000f81         0x67 build/default/debug/System/delay.o
+ .debug_abbrev    0x000fe8         0xb4 build/default/debug/System/interrupt_manager.o
+ .debug_abbrev    0x00109c         0x59 build/default/debug/System/pin_manager.o
+ .debug_abbrev    0x0010f5         0xb4 build/default/debug/System/system.o
+ .debug_abbrev    0x0011a9        0x100 build/default/debug/System/traps.o
+ .debug_abbrev    0x0012a9         0x14 build/default/debug/System/where_was_i.o
+ .debug_abbrev    0x0012bd        0x120 build/default/debug/systemExtensions/systemExtensions.o
+ .debug_abbrev    0x0013dd         0x36 build/default/debug/main.o
+ .debug_abbrev    0x001413        0x240 build/default/debug/app.o
+ .debug_abbrev    0x001653         0x93 build/default/debug/ACCEL3.o
+ .debug_abbrev    0x0016e6         0xe8 build/default/debug/switchDriver/Switch.o
+ .debug_abbrev    0x0017ce         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatunsisf.DA_o)
+ .debug_abbrev    0x0017e2         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(udivsi3.DA_o)
+ .debug_abbrev    0x0017f6         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divsf3x.DA_o)
+ .debug_abbrev    0x00180a         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(typefx.DA_o)
+ .debug_abbrev    0x00181e         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(spackfx.DA_o)
+ .debug_abbrev    0x001832         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(unpackfx.DA_o)
+ .debug_abbrev    0x001846         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatundisf.DA_o)
+ .debug_abbrev    0x00185a         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(fpack.DA_o)
+ .debug_abbrev    0x00186e         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(extendsfdf.DA_o)
+ .debug_abbrev    0x001882         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(funpack.DA_o)
+ .debug_abbrev    0x001896         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(mulsi3.DA_o)
 
-.debug_line       0x000000       0x1ede
+.debug_line       0x000000       0x1f1e
  *(.debug_line)
- .debug_line      0x000000        0x17b build/default/production/adcDriver/ADC.o
- .debug_line      0x00017b        0x1bd build/default/production/i2c1_driver/i2c1_driver.o
- .debug_line      0x000338        0x173 build/default/production/i2c1_driver/i2c_master.o
- .debug_line      0x0004ab        0x112 build/default/production/i2c1_driver/i2c_simple_master.o
- .debug_line      0x0005bd         0x5e build/default/production/i2c1_driver/i2c_types.o
- .debug_line      0x00061b        0x24e build/default/production/ledDriver/LED_tests.o
- .debug_line      0x000869        0x1a9 build/default/production/oledDriver/oledC.o
- .debug_line      0x000a12         0xea build/default/production/oledDriver/oledC_shapeHandler.o
- .debug_line      0x000afc        0x204 build/default/production/oledDriver/oledC_shapes.o
- .debug_line      0x000d00        0x14b build/default/production/spiDriver/spi1_driver.o
- .debug_line      0x000e4b        0x11e build/default/production/System/clock.o
- .debug_line      0x000f69         0x99 build/default/production/System/delay.o
- .debug_line      0x001002        0x11a build/default/production/System/interrupt_manager.o
- .debug_line      0x00111c        0x12b build/default/production/System/pin_manager.o
- .debug_line      0x001247        0x111 build/default/production/System/system.o
- .debug_line      0x001358        0x144 build/default/production/System/traps.o
- .debug_line      0x00149c         0x48 build/default/production/System/where_was_i.o
- .debug_line      0x0014e4        0x140 build/default/production/systemExtensions/systemExtensions.o
- .debug_line      0x001624         0x51 build/default/production/main.o
- .debug_line      0x001675        0x1f5 build/default/production/app.o
- .debug_line      0x00186a         0x9e build/default/production/ACCEL3.o
- .debug_line      0x001908        0x14b build/default/production/switchDriver/Switch.o
- .debug_line      0x001a53         0x3b c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatunsisf.DA_o)
- .debug_line      0x001a8e        0x124 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divsf3x.DA_o)
- .debug_line      0x001bb2         0x5e c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(typefx.DA_o)
- .debug_line      0x001c10         0x98 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(spackfx.DA_o)
- .debug_line      0x001ca8         0x79 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(unpackfx.DA_o)
- .debug_line      0x001d21         0x1a c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(errno.DA_o)
- .debug_line      0x001d3b         0x6c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatundisf.DA_o)
- .debug_line      0x001da7         0x5a c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(fpack.DA_o)
- .debug_line      0x001e01         0x59 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(extendsfdf.DA_o)
- .debug_line      0x001e5a         0x4a c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(funpack.DA_o)
- .debug_line      0x001ea4         0x3a c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(mulsi3.DA_o)
+ .debug_line      0x000000        0x17b build/default/debug/adcDriver/ADC.o
+ .debug_line      0x00017b        0x1bd build/default/debug/i2c1_driver/i2c1_driver.o
+ .debug_line      0x000338        0x173 build/default/debug/i2c1_driver/i2c_master.o
+ .debug_line      0x0004ab        0x112 build/default/debug/i2c1_driver/i2c_simple_master.o
+ .debug_line      0x0005bd         0x5e build/default/debug/i2c1_driver/i2c_types.o
+ .debug_line      0x00061b        0x24e build/default/debug/ledDriver/LED_tests.o
+ .debug_line      0x000869        0x1a9 build/default/debug/oledDriver/oledC.o
+ .debug_line      0x000a12         0xea build/default/debug/oledDriver/oledC_shapeHandler.o
+ .debug_line      0x000afc        0x204 build/default/debug/oledDriver/oledC_shapes.o
+ .debug_line      0x000d00        0x14b build/default/debug/spiDriver/spi1_driver.o
+ .debug_line      0x000e4b        0x11e build/default/debug/System/clock.o
+ .debug_line      0x000f69         0x99 build/default/debug/System/delay.o
+ .debug_line      0x001002        0x11a build/default/debug/System/interrupt_manager.o
+ .debug_line      0x00111c        0x124 build/default/debug/System/pin_manager.o
+ .debug_line      0x001240        0x112 build/default/debug/System/system.o
+ .debug_line      0x001352        0x143 build/default/debug/System/traps.o
+ .debug_line      0x001495         0x48 build/default/debug/System/where_was_i.o
+ .debug_line      0x0014dd        0x140 build/default/debug/systemExtensions/systemExtensions.o
+ .debug_line      0x00161d         0x3a build/default/debug/main.o
+ .debug_line      0x001657        0x20e build/default/debug/app.o
+ .debug_line      0x001865         0x9e build/default/debug/ACCEL3.o
+ .debug_line      0x001903        0x14b build/default/debug/switchDriver/Switch.o
+ .debug_line      0x001a4e         0x3b c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatunsisf.DA_o)
+ .debug_line      0x001a89         0x45 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(udivsi3.DA_o)
+ .debug_line      0x001ace        0x124 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divsf3x.DA_o)
+ .debug_line      0x001bf2         0x5e c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(typefx.DA_o)
+ .debug_line      0x001c50         0x98 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(spackfx.DA_o)
+ .debug_line      0x001ce8         0x79 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(unpackfx.DA_o)
+ .debug_line      0x001d61         0x1a c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(errno.DA_o)
+ .debug_line      0x001d7b         0x6c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatundisf.DA_o)
+ .debug_line      0x001de7         0x5a c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(fpack.DA_o)
+ .debug_line      0x001e41         0x59 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(extendsfdf.DA_o)
+ .debug_line      0x001e9a         0x4a c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(funpack.DA_o)
+ .debug_line      0x001ee4         0x3a c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(mulsi3.DA_o)
 
-.debug_frame      0x000000       0x190a
+.debug_frame      0x000000       0x1930
  *(.debug_frame)
- .debug_frame     0x000000         0xfe build/default/production/adcDriver/ADC.o
- .debug_frame     0x0000fe        0x404 build/default/production/i2c1_driver/i2c1_driver.o
- .debug_frame     0x000502        0x3aa build/default/production/i2c1_driver/i2c_master.o
- .debug_frame     0x0008ac        0x14c build/default/production/i2c1_driver/i2c_simple_master.o
- .debug_frame     0x0009f8         0x7c build/default/production/i2c1_driver/i2c_types.o
- .debug_frame     0x000a74        0x19a build/default/production/ledDriver/LED_tests.o
- .debug_frame     0x000c0e        0x202 build/default/production/oledDriver/oledC.o
- .debug_frame     0x000e10        0x14c build/default/production/oledDriver/oledC_shapeHandler.o
- .debug_frame     0x000f5c        0x224 build/default/production/oledDriver/oledC_shapes.o
- .debug_frame     0x001180        0x118 build/default/production/spiDriver/spi1_driver.o
- .debug_frame     0x001298         0x2e build/default/production/System/clock.o
- .debug_frame     0x0012c6         0x48 build/default/production/System/delay.o
- .debug_frame     0x00130e         0x2e build/default/production/System/interrupt_manager.o
- .debug_frame     0x00133c         0x2e build/default/production/System/pin_manager.o
- .debug_frame     0x00136a         0x2e build/default/production/System/system.o
- .debug_frame     0x001398        0x17e build/default/production/System/traps.o
- .debug_frame     0x001516         0x6c build/default/production/systemExtensions/systemExtensions.o
- .debug_frame     0x001582         0x2e build/default/production/main.o
- .debug_frame     0x0015b0        0x1a4 build/default/production/app.o
- .debug_frame     0x001754         0xd2 build/default/production/ACCEL3.o
- .debug_frame     0x001826         0xe4 build/default/production/switchDriver/Switch.o
+ .debug_frame     0x000000         0xfe build/default/debug/adcDriver/ADC.o
+ .debug_frame     0x0000fe        0x404 build/default/debug/i2c1_driver/i2c1_driver.o
+ .debug_frame     0x000502        0x3aa build/default/debug/i2c1_driver/i2c_master.o
+ .debug_frame     0x0008ac        0x14c build/default/debug/i2c1_driver/i2c_simple_master.o
+ .debug_frame     0x0009f8         0x7c build/default/debug/i2c1_driver/i2c_types.o
+ .debug_frame     0x000a74        0x19a build/default/debug/ledDriver/LED_tests.o
+ .debug_frame     0x000c0e        0x202 build/default/debug/oledDriver/oledC.o
+ .debug_frame     0x000e10        0x14c build/default/debug/oledDriver/oledC_shapeHandler.o
+ .debug_frame     0x000f5c        0x224 build/default/debug/oledDriver/oledC_shapes.o
+ .debug_frame     0x001180        0x118 build/default/debug/spiDriver/spi1_driver.o
+ .debug_frame     0x001298         0x2e build/default/debug/System/clock.o
+ .debug_frame     0x0012c6         0x48 build/default/debug/System/delay.o
+ .debug_frame     0x00130e         0x2e build/default/debug/System/interrupt_manager.o
+ .debug_frame     0x00133c         0x2e build/default/debug/System/pin_manager.o
+ .debug_frame     0x00136a         0x2e build/default/debug/System/system.o
+ .debug_frame     0x001398        0x17e build/default/debug/System/traps.o
+ .debug_frame     0x001516         0x6c build/default/debug/systemExtensions/systemExtensions.o
+ .debug_frame     0x001582         0x2e build/default/debug/main.o
+ .debug_frame     0x0015b0        0x1ca build/default/debug/app.o
+ .debug_frame     0x00177a         0xd2 build/default/debug/ACCEL3.o
+ .debug_frame     0x00184c         0xe4 build/default/debug/switchDriver/Switch.o
 
-.debug_str        0x000000        0x592
+.debug_str        0x000000        0x57c
  *(.debug_str)
- .debug_str       0x000000         0x34 build/default/production/adcDriver/ADC.o
- .debug_str       0x000034         0xa0 build/default/production/i2c1_driver/i2c1_driver.o
- .debug_str       0x0000d4         0x21 build/default/production/i2c1_driver/i2c_master.o
- .debug_str       0x0000f5          0xd build/default/production/i2c1_driver/i2c_simple_master.o
- .debug_str       0x000102        0x163 build/default/production/ledDriver/LED_tests.o
- .debug_str       0x000265         0x46 build/default/production/oledDriver/oledC.o
- .debug_str       0x0002ab         0x46 build/default/production/oledDriver/oledC_shapeHandler.o
- .debug_str       0x0002f1         0x39 build/default/production/oledDriver/oledC_shapes.o
- .debug_str       0x00032a         0x6b build/default/production/spiDriver/spi1_driver.o
- .debug_str       0x000395         0x12 build/default/production/System/clock.o
- .debug_str       0x0003a7          0x9 build/default/production/System/interrupt_manager.o
- .debug_str       0x0003b0         0x16 build/default/production/System/pin_manager.o
- .debug_str       0x0003c6          0xc build/default/production/System/system.o
- .debug_str       0x0003d2         0x18 build/default/production/System/traps.o
- .debug_str       0x0003ea         0x25 build/default/production/systemExtensions/systemExtensions.o
- .debug_str       0x00040f        0x16c build/default/production/app.o
- .debug_str       0x00057b         0x17 build/default/production/switchDriver/Switch.o
+ .debug_str       0x000000         0x34 build/default/debug/adcDriver/ADC.o
+ .debug_str       0x000034         0xa0 build/default/debug/i2c1_driver/i2c1_driver.o
+ .debug_str       0x0000d4         0x21 build/default/debug/i2c1_driver/i2c_master.o
+ .debug_str       0x0000f5          0xd build/default/debug/i2c1_driver/i2c_simple_master.o
+ .debug_str       0x000102        0x163 build/default/debug/ledDriver/LED_tests.o
+ .debug_str       0x000265         0x46 build/default/debug/oledDriver/oledC.o
+ .debug_str       0x0002ab         0x46 build/default/debug/oledDriver/oledC_shapeHandler.o
+ .debug_str       0x0002f1         0x39 build/default/debug/oledDriver/oledC_shapes.o
+ .debug_str       0x00032a         0x6b build/default/debug/spiDriver/spi1_driver.o
+ .debug_str       0x000395         0x12 build/default/debug/System/clock.o
+ .debug_str       0x0003a7          0x9 build/default/debug/System/interrupt_manager.o
+ .debug_str       0x0003b0          0xc build/default/debug/System/system.o
+ .debug_str       0x0003bc         0x18 build/default/debug/System/traps.o
+ .debug_str       0x0003d4         0x25 build/default/debug/systemExtensions/systemExtensions.o
+ .debug_str       0x0003f9        0x16c build/default/debug/app.o
+ .debug_str       0x000565         0x17 build/default/debug/switchDriver/Switch.o
 
 .debug_loc
  *(.debug_loc)
@@ -1139,117 +1203,119 @@ __FDEVOPT1
                   0x000000        0xf83
  *(.debug_pubnames)
  .debug_pubnames
-                  0x000000         0x8c build/default/production/adcDriver/ADC.o
+                  0x000000         0x8c build/default/debug/adcDriver/ADC.o
  .debug_pubnames
-                  0x00008c        0x3f9 build/default/production/i2c1_driver/i2c1_driver.o
+                  0x00008c        0x3f9 build/default/debug/i2c1_driver/i2c1_driver.o
  .debug_pubnames
-                  0x000485        0x190 build/default/production/i2c1_driver/i2c_master.o
+                  0x000485        0x190 build/default/debug/i2c1_driver/i2c_master.o
  .debug_pubnames
-                  0x000615         0xb9 build/default/production/i2c1_driver/i2c_simple_master.o
+                  0x000615         0xb9 build/default/debug/i2c1_driver/i2c_simple_master.o
  .debug_pubnames
-                  0x0006ce         0x62 build/default/production/i2c1_driver/i2c_types.o
+                  0x0006ce         0x62 build/default/debug/i2c1_driver/i2c_types.o
  .debug_pubnames
-                  0x000730        0x13f build/default/production/ledDriver/LED_tests.o
+                  0x000730        0x13f build/default/debug/ledDriver/LED_tests.o
  .debug_pubnames
-                  0x00086f        0x152 build/default/production/oledDriver/oledC.o
+                  0x00086f        0x152 build/default/debug/oledDriver/oledC.o
  .debug_pubnames
-                  0x0009c1         0xef build/default/production/oledDriver/oledC_shapeHandler.o
+                  0x0009c1         0xef build/default/debug/oledDriver/oledC_shapeHandler.o
  .debug_pubnames
-                  0x000ab0         0xfe build/default/production/oledDriver/oledC_shapes.o
+                  0x000ab0         0xfe build/default/debug/oledDriver/oledC_shapes.o
  .debug_pubnames
-                  0x000bae         0xe2 build/default/production/spiDriver/spi1_driver.o
+                  0x000bae         0xe2 build/default/debug/spiDriver/spi1_driver.o
  .debug_pubnames
-                  0x000c90         0x27 build/default/production/System/clock.o
+                  0x000c90         0x27 build/default/debug/System/clock.o
  .debug_pubnames
-                  0x000cb7         0x40 build/default/production/System/delay.o
+                  0x000cb7         0x40 build/default/debug/System/delay.o
  .debug_pubnames
-                  0x000cf7         0x2b build/default/production/System/interrupt_manager.o
+                  0x000cf7         0x2b build/default/debug/System/interrupt_manager.o
  .debug_pubnames
-                  0x000d22         0x2d build/default/production/System/pin_manager.o
+                  0x000d22         0x2d build/default/debug/System/pin_manager.o
  .debug_pubnames
-                  0x000d4f         0x28 build/default/production/System/system.o
+                  0x000d4f         0x28 build/default/debug/System/system.o
  .debug_pubnames
-                  0x000d77         0x7d build/default/production/System/traps.o
+                  0x000d77         0x7d build/default/debug/System/traps.o
  .debug_pubnames
-                  0x000df4         0x43 build/default/production/systemExtensions/systemExtensions.o
+                  0x000df4         0x43 build/default/debug/systemExtensions/systemExtensions.o
  .debug_pubnames
-                  0x000e37         0x1b build/default/production/main.o
+                  0x000e37         0x1b build/default/debug/main.o
  .debug_pubnames
-                  0x000e52         0x54 build/default/production/app.o
+                  0x000e52         0x54 build/default/debug/app.o
  .debug_pubnames
-                  0x000ea6         0x5b build/default/production/ACCEL3.o
+                  0x000ea6         0x5b build/default/debug/ACCEL3.o
  .debug_pubnames
-                  0x000f01         0x82 build/default/production/switchDriver/Switch.o
+                  0x000f01         0x82 build/default/debug/switchDriver/Switch.o
 
 .debug_ranges
  *(.debug_ranges)
 
-.debug_aranges    0x000000        0x358
+.debug_aranges    0x000000        0x378
  *(.debug_aranges)
  .debug_aranges
-                  0x000000         0x18 build/default/production/adcDriver/ADC.o
+                  0x000000         0x18 build/default/debug/adcDriver/ADC.o
  .debug_aranges
-                  0x000018         0x18 build/default/production/i2c1_driver/i2c1_driver.o
+                  0x000018         0x18 build/default/debug/i2c1_driver/i2c1_driver.o
  .debug_aranges
-                  0x000030         0x18 build/default/production/i2c1_driver/i2c_master.o
+                  0x000030         0x18 build/default/debug/i2c1_driver/i2c_master.o
  .debug_aranges
-                  0x000048         0x18 build/default/production/i2c1_driver/i2c_simple_master.o
+                  0x000048         0x18 build/default/debug/i2c1_driver/i2c_simple_master.o
  .debug_aranges
-                  0x000060         0x18 build/default/production/i2c1_driver/i2c_types.o
+                  0x000060         0x18 build/default/debug/i2c1_driver/i2c_types.o
  .debug_aranges
-                  0x000078         0x18 build/default/production/ledDriver/LED_tests.o
+                  0x000078         0x18 build/default/debug/ledDriver/LED_tests.o
  .debug_aranges
-                  0x000090         0x18 build/default/production/oledDriver/oledC.o
+                  0x000090         0x18 build/default/debug/oledDriver/oledC.o
  .debug_aranges
-                  0x0000a8         0x18 build/default/production/oledDriver/oledC_shapeHandler.o
+                  0x0000a8         0x18 build/default/debug/oledDriver/oledC_shapeHandler.o
  .debug_aranges
-                  0x0000c0         0x18 build/default/production/oledDriver/oledC_shapes.o
+                  0x0000c0         0x18 build/default/debug/oledDriver/oledC_shapes.o
  .debug_aranges
-                  0x0000d8         0x18 build/default/production/spiDriver/spi1_driver.o
+                  0x0000d8         0x18 build/default/debug/spiDriver/spi1_driver.o
  .debug_aranges
-                  0x0000f0         0x18 build/default/production/System/clock.o
+                  0x0000f0         0x18 build/default/debug/System/clock.o
  .debug_aranges
-                  0x000108         0x18 build/default/production/System/delay.o
+                  0x000108         0x18 build/default/debug/System/delay.o
  .debug_aranges
-                  0x000120         0x18 build/default/production/System/interrupt_manager.o
+                  0x000120         0x18 build/default/debug/System/interrupt_manager.o
  .debug_aranges
-                  0x000138         0x18 build/default/production/System/pin_manager.o
+                  0x000138         0x18 build/default/debug/System/pin_manager.o
  .debug_aranges
-                  0x000150         0x18 build/default/production/System/system.o
+                  0x000150         0x18 build/default/debug/System/system.o
  .debug_aranges
-                  0x000168         0x18 build/default/production/System/traps.o
+                  0x000168         0x18 build/default/debug/System/traps.o
  .debug_aranges
-                  0x000180         0x20 build/default/production/System/where_was_i.o
+                  0x000180         0x20 build/default/debug/System/where_was_i.o
  .debug_aranges
-                  0x0001a0         0x18 build/default/production/systemExtensions/systemExtensions.o
+                  0x0001a0         0x18 build/default/debug/systemExtensions/systemExtensions.o
  .debug_aranges
-                  0x0001b8         0x18 build/default/production/main.o
+                  0x0001b8         0x18 build/default/debug/main.o
  .debug_aranges
-                  0x0001d0         0x18 build/default/production/app.o
+                  0x0001d0         0x18 build/default/debug/app.o
  .debug_aranges
-                  0x0001e8         0x18 build/default/production/ACCEL3.o
+                  0x0001e8         0x18 build/default/debug/ACCEL3.o
  .debug_aranges
-                  0x000200         0x18 build/default/production/switchDriver/Switch.o
+                  0x000200         0x18 build/default/debug/switchDriver/Switch.o
  .debug_aranges
                   0x000218         0x20 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatunsisf.DA_o)
  .debug_aranges
-                  0x000238         0x20 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divsf3x.DA_o)
+                  0x000238         0x20 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(udivsi3.DA_o)
  .debug_aranges
-                  0x000258         0x20 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(typefx.DA_o)
+                  0x000258         0x20 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divsf3x.DA_o)
  .debug_aranges
-                  0x000278         0x20 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(spackfx.DA_o)
+                  0x000278         0x20 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(typefx.DA_o)
  .debug_aranges
-                  0x000298         0x20 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(unpackfx.DA_o)
+                  0x000298         0x20 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(spackfx.DA_o)
  .debug_aranges
-                  0x0002b8         0x20 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatundisf.DA_o)
+                  0x0002b8         0x20 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(unpackfx.DA_o)
  .debug_aranges
-                  0x0002d8         0x20 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(fpack.DA_o)
+                  0x0002d8         0x20 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatundisf.DA_o)
  .debug_aranges
-                  0x0002f8         0x20 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(extendsfdf.DA_o)
+                  0x0002f8         0x20 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(fpack.DA_o)
  .debug_aranges
-                  0x000318         0x20 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(funpack.DA_o)
+                  0x000318         0x20 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(extendsfdf.DA_o)
  .debug_aranges
-                  0x000338         0x20 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(mulsi3.DA_o)
+                  0x000338         0x20 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(funpack.DA_o)
+ .debug_aranges
+                  0x000358         0x20 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(mulsi3.DA_o)
                     0x0000                  WREG0 = 0x0
                     0x0000                  _WREG0 = 0x0
                     0x0002                  WREG1 = 0x2
@@ -2678,500 +2744,504 @@ LOAD c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a
 LOAD c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libm-elf.a
 LOAD c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a
 END GROUP
-OUTPUT(dist/default/production/CuriosityOledBase.X.production.elf elf32-pic30)
+OUTPUT(dist/default/debug/CuriosityOledBase.X.debug.elf elf32-pic30)
 LOAD /CW/_FSEC
 LOAD jump_table
 LOAD default_isr
 LOAD data_init
 
 .debug_pubtypes
-                  0x000358        0xca1
+                  0x000378        0xc50
  .debug_pubtypes
-                  0x000358         0xdd build/default/production/adcDriver/ADC.o
+                  0x000378         0xdd build/default/debug/adcDriver/ADC.o
  .debug_pubtypes
-                  0x000435         0xe9 build/default/production/i2c1_driver/i2c1_driver.o
+                  0x000455         0xe9 build/default/debug/i2c1_driver/i2c1_driver.o
  .debug_pubtypes
-                  0x00051e         0xd3 build/default/production/i2c1_driver/i2c_master.o
+                  0x00053e         0xd3 build/default/debug/i2c1_driver/i2c_master.o
  .debug_pubtypes
-                  0x0005f1         0x77 build/default/production/i2c1_driver/i2c_simple_master.o
+                  0x000611         0x77 build/default/debug/i2c1_driver/i2c_simple_master.o
  .debug_pubtypes
-                  0x000668         0x27 build/default/production/i2c1_driver/i2c_types.o
+                  0x000688         0x27 build/default/debug/i2c1_driver/i2c_types.o
  .debug_pubtypes
-                  0x00068f        0x196 build/default/production/ledDriver/LED_tests.o
+                  0x0006af        0x196 build/default/debug/ledDriver/LED_tests.o
  .debug_pubtypes
-                  0x000825        0x11b build/default/production/oledDriver/oledC.o
+                  0x000845        0x11b build/default/debug/oledDriver/oledC.o
  .debug_pubtypes
-                  0x000940         0x84 build/default/production/oledDriver/oledC_shapeHandler.o
+                  0x000960         0x84 build/default/debug/oledDriver/oledC_shapeHandler.o
  .debug_pubtypes
-                  0x0009c4         0x9b build/default/production/oledDriver/oledC_shapes.o
+                  0x0009e4         0x9b build/default/debug/oledDriver/oledC_shapes.o
  .debug_pubtypes
-                  0x000a5f         0xd9 build/default/production/spiDriver/spi1_driver.o
+                  0x000a7f         0xd9 build/default/debug/spiDriver/spi1_driver.o
  .debug_pubtypes
-                  0x000b38         0x2b build/default/production/System/clock.o
+                  0x000b58         0x2b build/default/debug/System/clock.o
  .debug_pubtypes
-                  0x000b63         0x1f build/default/production/System/delay.o
+                  0x000b83         0x1f build/default/debug/System/delay.o
  .debug_pubtypes
-                  0x000b82         0x3c build/default/production/System/interrupt_manager.o
+                  0x000ba2         0x3c build/default/debug/System/interrupt_manager.o
  .debug_pubtypes
-                  0x000bbe         0x61 build/default/production/System/pin_manager.o
+                  0x000bde         0x1f build/default/debug/System/pin_manager.o
  .debug_pubtypes
-                  0x000c1f         0x42 build/default/production/System/system.o
+                  0x000bfd         0x42 build/default/debug/System/system.o
  .debug_pubtypes
-                  0x000c61         0x71 build/default/production/System/traps.o
+                  0x000c3f         0x71 build/default/debug/System/traps.o
  .debug_pubtypes
-                  0x000cd2         0xa2 build/default/production/systemExtensions/systemExtensions.o
+                  0x000cb0         0xa2 build/default/debug/systemExtensions/systemExtensions.o
  .debug_pubtypes
-                  0x000d74         0x21 build/default/production/main.o
+                  0x000d52         0x12 build/default/debug/main.o
  .debug_pubtypes
-                  0x000d95        0x1fb build/default/production/app.o
+                  0x000d64        0x1fb build/default/debug/app.o
  .debug_pubtypes
-                  0x000f90         0x2a build/default/production/ACCEL3.o
+                  0x000f5f         0x2a build/default/debug/ACCEL3.o
  .debug_pubtypes
-                  0x000fba         0x3f build/default/production/switchDriver/Switch.o
+                  0x000f89         0x3f build/default/debug/switchDriver/Switch.o
 
 __c30_signature
-                  0x000ff9        0x132
+                  0x000fc8        0x138
  __c30_signature
-                  0x000ff9          0x6 build/default/production/adcDriver/ADC.o
+                  0x000fc8          0x6 build/default/debug/adcDriver/ADC.o
  __c30_signature
-                  0x000fff          0x6 build/default/production/i2c1_driver/i2c1_driver.o
+                  0x000fce          0x6 build/default/debug/i2c1_driver/i2c1_driver.o
  __c30_signature
-                  0x001005          0x6 build/default/production/i2c1_driver/i2c_master.o
+                  0x000fd4          0x6 build/default/debug/i2c1_driver/i2c_master.o
  __c30_signature
-                  0x00100b          0x6 build/default/production/i2c1_driver/i2c_simple_master.o
+                  0x000fda          0x6 build/default/debug/i2c1_driver/i2c_simple_master.o
  __c30_signature
-                  0x001011          0x6 build/default/production/i2c1_driver/i2c_types.o
+                  0x000fe0          0x6 build/default/debug/i2c1_driver/i2c_types.o
  __c30_signature
-                  0x001017          0x6 build/default/production/ledDriver/LED_tests.o
+                  0x000fe6          0x6 build/default/debug/ledDriver/LED_tests.o
  __c30_signature
-                  0x00101d          0x6 build/default/production/oledDriver/oledC.o
+                  0x000fec          0x6 build/default/debug/oledDriver/oledC.o
  __c30_signature
-                  0x001023          0x6 build/default/production/oledDriver/oledC_shapeHandler.o
+                  0x000ff2          0x6 build/default/debug/oledDriver/oledC_shapeHandler.o
  __c30_signature
-                  0x001029          0x6 build/default/production/oledDriver/oledC_shapes.o
+                  0x000ff8          0x6 build/default/debug/oledDriver/oledC_shapes.o
  __c30_signature
-                  0x00102f          0x6 build/default/production/spiDriver/spi1_driver.o
+                  0x000ffe          0x6 build/default/debug/spiDriver/spi1_driver.o
  __c30_signature
-                  0x001035          0x6 build/default/production/System/clock.o
+                  0x001004          0x6 build/default/debug/System/clock.o
  __c30_signature
-                  0x00103b          0x6 build/default/production/System/delay.o
+                  0x00100a          0x6 build/default/debug/System/delay.o
  __c30_signature
-                  0x001041          0x6 build/default/production/System/interrupt_manager.o
+                  0x001010          0x6 build/default/debug/System/interrupt_manager.o
  __c30_signature
-                  0x001047          0x6 build/default/production/System/pin_manager.o
+                  0x001016          0x6 build/default/debug/System/pin_manager.o
  __c30_signature
-                  0x00104d          0x6 build/default/production/System/system.o
+                  0x00101c          0x6 build/default/debug/System/system.o
  __c30_signature
-                  0x001053          0x6 build/default/production/System/traps.o
+                  0x001022          0x6 build/default/debug/System/traps.o
  __c30_signature
-                  0x001059          0x6 build/default/production/systemExtensions/systemExtensions.o
+                  0x001028          0x6 build/default/debug/systemExtensions/systemExtensions.o
  __c30_signature
-                  0x00105f          0x6 build/default/production/main.o
+                  0x00102e          0x6 build/default/debug/main.o
  __c30_signature
-                  0x001065          0x6 build/default/production/app.o
+                  0x001034          0x6 build/default/debug/app.o
  __c30_signature
-                  0x00106b          0x6 build/default/production/ACCEL3.o
+                  0x00103a          0x6 build/default/debug/ACCEL3.o
  __c30_signature
-                  0x001071          0x6 build/default/production/switchDriver/Switch.o
+                  0x001040          0x6 build/default/debug/switchDriver/Switch.o
  __c30_signature
-                  0x001077          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(crt0_extended24.o)
+                  0x001046          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(crt0_extended24.o)
  __c30_signature
-                  0x00107d          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(data_init_24.o)
+                  0x00104c          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(data_init_24.o)
  __c30_signature
-                  0x001083          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(delay32da.Meo)
+                  0x001052          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(delay32da.Meo)
  __c30_signature
-                  0x001089          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatunsisf.DA_o)
+                  0x001058          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatunsisf.DA_o)
  __c30_signature
-                  0x00108f          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(errno.DA_o)
+                  0x00105e          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(udivsi3.DA_o)
  __c30_signature
-                  0x001095          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatundisf.DA_o)
+                  0x001064          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(errno.DA_o)
  __c30_signature
-                  0x00109b          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(fpack.DA_o)
+                  0x00106a          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatundisf.DA_o)
  __c30_signature
-                  0x0010a1          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__sio_snprintf_dosux.DA_o)
+                  0x001070          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(fpack.DA_o)
  __c30_signature
-                  0x0010a7          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__fmt_d.DA_o)
+                  0x001076          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__sio_snprintf_dosux.DA_o)
  __c30_signature
-                  0x0010ad          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__fmt_o.DA_o)
+                  0x00107c          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__fmt_d.DA_o)
  __c30_signature
-                  0x0010b3          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__fmt_s.DA_o)
+                  0x001082          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__fmt_o.DA_o)
  __c30_signature
-                  0x0010b9          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__fmt_u.DA_o)
+                  0x001088          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__fmt_s.DA_o)
  __c30_signature
-                  0x0010bf          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__fmt_x.DA_o)
+                  0x00108e          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__fmt_u.DA_o)
  __c30_signature
-                  0x0010c5          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__int_vsnprintf.DA_o)
+                  0x001094          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__fmt_x.DA_o)
  __c30_signature
-                  0x0010cb          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__pop_int.DA_o)
+                  0x00109a          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__int_vsnprintf.DA_o)
  __c30_signature
-                  0x0010d1          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__pop_ptr.DA_o)
+                  0x0010a0          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__pop_int.DA_o)
  __c30_signature
-                  0x0010d7          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__printf_core.DA_o)
+                  0x0010a6          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__pop_ptr.DA_o)
  __c30_signature
-                  0x0010dd          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(atoi.DA_o)
+                  0x0010ac          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__printf_core.DA_o)
  __c30_signature
-                  0x0010e3          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(memcpy.DA_o)
+                  0x0010b2          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(atoi.DA_o)
  __c30_signature
-                  0x0010e9          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(memset.DA_o)
+                  0x0010b8          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(memcpy.DA_o)
  __c30_signature
-                  0x0010ef          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(strlen.DA_o)
+                  0x0010be          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(memset.DA_o)
  __c30_signature
-                  0x0010f5          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(tolower.DA_o)
+                  0x0010c4          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(strlen.DA_o)
  __c30_signature
-                  0x0010fb          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(toupper.DA_o)
+                  0x0010ca          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(tolower.DA_o)
  __c30_signature
-                  0x001101          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__errno_location.DA_o)
+                  0x0010d0          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(toupper.DA_o)
  __c30_signature
-                  0x001107          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__int_vfprintf.DA_o)
+                  0x0010d6          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__errno_location.DA_o)
  __c30_signature
-                  0x00110d          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__pop_float.DA_o)
+                  0x0010dc          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__int_vfprintf.DA_o)
  __c30_signature
-                  0x001113          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(extendsfdf.DA_o)
+                  0x0010e2          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__pop_float.DA_o)
  __c30_signature
-                  0x001119          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(funpack.DA_o)
+                  0x0010e8          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(extendsfdf.DA_o)
  __c30_signature
-                  0x00111f          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(mulsi3.DA_o)
+                  0x0010ee          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(funpack.DA_o)
  __c30_signature
-                  0x001125          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divmoddi3.DA_o)
+                  0x0010f4          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(mulsi3.DA_o)
+ __c30_signature
+                  0x0010fa          0x6 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divmoddi3.DA_o)
 
-.nbss               0x0800          0xa
- .nbss              0x0800          0x6 build/default/production/i2c1_driver/i2c1_driver.o
-                    0x0800                  _i2c1_driver_busCollisionISR
-                    0x0802                  _i2c1_driver_Masteri2cISR
-                    0x0804                  _i2c1_driver_Slavei2cISR
- .nbss              0x0806          0x4 build/default/production/oledDriver/oledC.o
+.nbss               0x0850          0xa
+ .nbss              0x0850          0x6 build/default/debug/i2c1_driver/i2c1_driver.o
+                    0x0850                  _i2c1_driver_busCollisionISR
+                    0x0852                  _i2c1_driver_Masteri2cISR
+                    0x0854                  _i2c1_driver_Slavei2cISR
+ .nbss              0x0856          0x4 build/default/debug/oledDriver/oledC.o
 
 System/where_was_i.s.scn1
-                    0x080a          0x4
+                    0x085a          0x4
  System/where_was_i.s.scn1
-                    0x080a          0x4 build/default/production/System/where_was_i.o
-                    0x080a                  _trapSrcAddr
+                    0x085a          0x4 build/default/debug/System/where_was_i.o
+                    0x085a                  _trapSrcAddr
 
-.nbss               0x080e          0x6
- .nbss              0x080e          0x4 build/default/production/systemExtensions/systemExtensions.o
- .nbss              0x0812          0x2 build/default/production/adcDriver/ADC.o
+.nbss               0x085e          0x4
+ .nbss              0x085e          0x4 build/default/debug/systemExtensions/systemExtensions.o
 
-.ndata              0x0814          0x2
- .ndata             0x0814          0x2 build/default/production/ledDriver/LED_tests.o
+.nbss               0x0828          0x2
+ .nbss              0x0828          0x2 build/default/debug/adcDriver/ADC.o
 
-.nbss               0x0816          0x2
- .nbss              0x0816          0x2 build/default/production/spiDriver/spi1_driver.o
-                    0x0816                  _spi1_interruptHandler
+.ndata              0x0862          0x2
+ .ndata             0x0862          0x2 build/default/debug/ledDriver/LED_tests.o
 
-.ndata              0x0818          0x2
- .ndata             0x0818          0x2 build/default/production/System/traps.o
+.nbss               0x0864          0x2
+ .nbss              0x0864          0x2 build/default/debug/spiDriver/spi1_driver.o
+                    0x0864                  _spi1_interruptHandler
 
-.nbss               0x081a          0x2
- .nbss              0x081a          0x2 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(errno.DA_o)
-                    0x081a                  _errno
+.ndata              0x0866          0x2
+ .ndata             0x0866          0x2 build/default/debug/System/traps.o
 
-.bss                0x081c        0x226
- .bss               0x081c        0x200 build/default/production/oledDriver/oledC_shapeHandler.o
- .bss               0x0a1c         0x26 build/default/production/i2c1_driver/i2c_master.o
-                    0x0a1c                  _i2c_status
+.nbss               0x0868          0x2
+ .nbss              0x0868          0x2 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(errno.DA_o)
+                    0x0868                  _errno
 
-.data               0x0a42         0x20
- .data              0x0a42         0x20 build/default/production/i2c1_driver/i2c_master.o
-                    0x0a42                  _fsmStateTable
+.bss                0x086a        0x226
+ .bss               0x086a        0x200 build/default/debug/oledDriver/oledC_shapeHandler.o
+ .bss               0x0a6a         0x26 build/default/debug/i2c1_driver/i2c_master.o
+                    0x0a6a                  _i2c_status
 
-.bss                0x0a62         0x20
- .bss               0x0a62         0x20 build/default/production/System/traps.o
+.data               0x0a90         0x20
+ .data              0x0a90         0x20 build/default/debug/i2c1_driver/i2c_master.o
+                    0x0a90                  _fsmStateTable
 
-.data               0x0a82         0x32
- .data              0x0a82         0x1e c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__printf_core.DA_o)
- .data              0x0aa0         0x14 build/default/production/app.o
+.bss                0x0ab0         0x20
+ .bss               0x0ab0         0x20 build/default/debug/System/traps.o
 
-.bss                0x0ab4         0x18
- .bss               0x0ab4          0xc build/default/production/switchDriver/Switch.o
- .bss               0x0ac0          0xa build/default/production/adcDriver/ADC.o
- .bss               0x0aca          0x2 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__errno_location.DA_o)
-                    0x0aca                  ___errno_val
+.data               0x0ad0         0x32
+ .data              0x0ad0         0x1e c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__printf_core.DA_o)
+ .data              0x0aee         0x14 build/default/debug/app.o
+
+.bss                0x0b02         0x18
+ .bss               0x0b02          0xc build/default/debug/switchDriver/Switch.o
+ .bss               0x0b0e          0xa build/default/debug/adcDriver/ADC.o
+ .bss               0x0b18          0x2 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__errno_location.DA_o)
+                    0x0b18                  ___errno_val
 
 .ivt._MI2C1Interrupt
                   0x000036          0x2
  .ivt._MI2C1Interrupt
-                  0x000036          0x2 build/default/production/i2c1_driver/i2c1_driver.o
+                  0x000036          0x2 build/default/debug/i2c1_driver/i2c1_driver.o
 
 .ivt._SI2C1Interrupt
                   0x000034          0x2
  .ivt._SI2C1Interrupt
-                  0x000034          0x2 build/default/production/i2c1_driver/i2c1_driver.o
+                  0x000034          0x2 build/default/debug/i2c1_driver/i2c1_driver.o
 
 .config_ALTI2C1
                   0x02af2c          0x2
  .config_ALTI2C1
-                  0x02af2c          0x2 build/default/production/System/system.o
+                  0x02af2c          0x2 build/default/debug/System/system.o
 
 .config_JTAGEN    0x02af28          0x2
  .config_JTAGEN
-                  0x02af28          0x2 build/default/production/System/system.o
+                  0x02af28          0x2 build/default/debug/System/system.o
 
 .config_DNVPEN    0x02af24          0x2
  .config_DNVPEN
-                  0x02af24          0x2 build/default/production/System/system.o
+                  0x02af24          0x2 build/default/debug/System/system.o
 
 .config_WDTCLK    0x02af20          0x2
  .config_WDTCLK
-                  0x02af20          0x2 build/default/production/System/system.o
+                  0x02af20          0x2 build/default/debug/System/system.o
 
 .config_FCKSM     0x02af1c          0x2
- .config_FCKSM    0x02af1c          0x2 build/default/production/System/system.o
+ .config_FCKSM    0x02af1c          0x2 build/default/debug/System/system.o
 
 .config_IESO      0x02af18          0x2
- .config_IESO     0x02af18          0x2 build/default/production/System/system.o
+ .config_IESO     0x02af18          0x2 build/default/debug/System/system.o
 
 .config_BSLIM     0x02af10          0x2
- .config_BSLIM    0x02af10          0x2 build/default/production/System/system.o
+ .config_BSLIM    0x02af10          0x2 build/default/debug/System/system.o
 
 .ivt._OscillatorFail
                   0x000004          0x2
  .ivt._OscillatorFail
-                  0x000004          0x2 build/default/production/System/traps.o
+                  0x000004          0x2 build/default/debug/System/traps.o
 
 .ivt._StackError
                   0x00000a          0x2
  .ivt._StackError
-                  0x00000a          0x2 build/default/production/System/traps.o
+                  0x00000a          0x2 build/default/debug/System/traps.o
 
 .ivt._AddressError
                   0x000006          0x2
  .ivt._AddressError
-                  0x000006          0x2 build/default/production/System/traps.o
+                  0x000006          0x2 build/default/debug/System/traps.o
 
 .ivt._MathError
                   0x00000c          0x2
  .ivt._MathError
-                  0x00000c          0x2 build/default/production/System/traps.o
+                  0x00000c          0x2 build/default/debug/System/traps.o
 
 .ivt._NVMError    0x000008          0x2
  .ivt._NVMError
-                  0x000008          0x2 build/default/production/System/traps.o
+                  0x000008          0x2 build/default/debug/System/traps.o
 
 .ivt._T1Interrupt
                   0x00001a          0x2
  .ivt._T1Interrupt
-                  0x00001a          0x2 build/default/production/systemExtensions/systemExtensions.o
+                  0x00001a          0x2 build/default/debug/systemExtensions/systemExtensions.o
 
-.const              0x949e        0x274 load address 0x00149e  
- .const             0x949e        0x1e0 build/default/production/oledDriver/oledC_shapes.o
- .const             0x967e         0x54 build/default/production/app.o
- .const             0x96d2         0x34 build/default/production/ledDriver/LED_tests.o
- .const             0x9706          0xc build/default/production/spiDriver/spi1_driver.o
+.const              0x94be        0x274 load address 0x0014be  
+ .const             0x94be        0x1e0 build/default/debug/oledDriver/oledC_shapes.o
+ .const             0x969e         0x54 build/default/debug/app.o
+ .const             0x96f2         0x34 build/default/debug/ledDriver/LED_tests.o
+ .const             0x9726          0xc build/default/debug/spiDriver/spi1_driver.o
 
-.text             0x001712       0x27a6
- .text            0x001712        0x86c build/default/production/oledDriver/oledC_shapes.o
-                  0x001712                  _oledC_createShape
-                  0x001842                  _oledC_ReadPoint
-                  0x001872                  _oledC_DrawPoint
-                  0x0018aa                  _oledC_DrawThickPoint
-                  0x0019b2                  _oledC_DrawCircle
-                  0x001ac4                  _oledC_DrawRing
-                  0x001bc0                  _oledC_DrawLine
-                  0x001c60                  _oledC_DrawRectangle
-                  0x001cae                  _oledC_DrawCharacter
-                  0x001d6c                  _oledC_DrawString
-                  0x001db2                  _oledC_DrawBitmap
-                  0x001e86                  build/default/production/oledDriver/oledC_shapes.o:_drawPoint
-                  0x001e9c                  build/default/production/oledDriver/oledC_shapes.o:_drawCircle
-                  0x001eb6                  build/default/production/oledDriver/oledC_shapes.o:_drawRing
-                  0x001ed4                  build/default/production/oledDriver/oledC_shapes.o:_drawRectangle
-                  0x001ef2                  build/default/production/oledDriver/oledC_shapes.o:_drawLine
-                  0x001f14                  build/default/production/oledDriver/oledC_shapes.o:_drawCharacter
-                  0x001f36                  build/default/production/oledDriver/oledC_shapes.o:_drawString
-                  0x001f58                  build/default/production/oledDriver/oledC_shapes.o:_drawBitmap
- .text            0x001f7e        0x7e2 build/default/production/ledDriver/LED_tests.o
-                  0x0020c0                  _test_discrete_leds
-                  0x00213c                  _test_rgb_raw_pwm
-                  0x002196                  _test_rgb_color_constants
-                  0x002238                  _test_rgb_intensity_scaling
-                  0x0022f2                  _test_raw_vs_scaled
-                  0x002342                  _test_rgb_intensity_fade
-                  0x002406                  _test_rgb_color_wheel
-                  0x0024cc                  _test_rgb_edge_cases
-                  0x002526                  _test_custom_colors
-                  0x00259e                  _test_rainbow_sequence
-                  0x0025f6                  _test_intensity_persistence
-                  0x00266c                  _LED_RunTests
- .text            0x002760        0x550 build/default/production/app.o
-                  0x0029c4                  _app_setup
-                  0x002c3c                  _app_loop
-                  0x002ca0                  _app_get_mode
-                  0x002ca8                  _app_get_pot_value
- .text            0x002cb0        0x3b4 build/default/production/i2c1_driver/i2c_master.o
-                  0x002cb0                  _i2c_setDataCompleteCallback
-                  0x002cc2                  _i2c_setWriteCollisionCallback
-                  0x002cd4                  _i2c_setAddressNACKCallback
-                  0x002ce6                  _i2c_setDataNACKCallback
-                  0x002cf8                  _i2c_setTimeOutCallback
-                  0x002d0a                  _i2c_open
-                  0x002d84                  _i2c_setAddress
-                  0x002d90                  _i2c_close
-                  0x002db8                  _i2c_setTimeOut
-                  0x002dc8                  _i2c_setBuffer
-                  0x002de8                  _i2c_masterOperation
-                  0x002e24                  _i2c_masterRead
-                  0x002e2e                  _i2c_masterWrite
-                  0x002e38                  _i2c_poller
-                  0x002e4e                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_RESET
-                  0x002e62                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_IDLE
-                  0x002e74                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_SEND_RESTART_READ
-                  0x002e7e                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_SEND_RESTART_WRITE
-                  0x002e88                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_SEND_RESTART
-                  0x002e92                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_SEND_STOP
-                  0x002e9c                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_SEND_ADR_READ
-                  0x002eb8                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_SEND_ADR_WRITE
-                  0x002ece                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_RCEN
-                  0x002ede                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_DO_ACK
-                  0x002ee8                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_DO_NACK_STOP
-                  0x002ef2                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_DO_NACK_RESTART
-                  0x002efc                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_DO_ADDRESS_NACK
-                  0x002f1e                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_TX
-                  0x002f6a                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_RX
-                  0x002fa8                  build/default/production/i2c1_driver/i2c_master.o:_do_I2C_TX_EMPTY
-                  0x002fd4                  _i2c_ISR
-                  0x002ffc                  _i2c_busCollisionISR
-                  0x003004                  build/default/production/i2c1_driver/i2c_master.o:_returnStop
-                  0x00300e                  build/default/production/i2c1_driver/i2c_master.o:_returnReset
- .text            0x003064        0x2e0 build/default/production/oledDriver/oledC.o
-                  0x003100                  _oledC_parseIntToRGB
-                  0x00314e                  _oledC_parseRGBToInt
-                  0x003198                  _oledC_sendCommand
-                  0x0031d6                  _oledC_setRowAddressBounds
-                  0x003200                  _oledC_setColumnAddressBounds
-                  0x003236                  _oledC_setSleepMode
-                  0x003250                  _oledC_readColor
-                  0x00326e                  _oledC_sendColor
-                  0x003284                  _oledC_sendColorInt
-                  0x0032aa                  _oledC_open
-                  0x0032b2                  _oledC_setup
-                  0x0032f4                  _oledC_clearScreen
-                  0x00332e                  _oledC_setBackground
-                  0x00333c                  _oledC_getBackground
- .text            0x003344        0x262 build/default/production/adcDriver/ADC.o
-                  0x003380                  _ADC_Init
-                  0x003442                  _ADC_SetChannel
-                  0x003484                  _ADC_ReadRaw
-                  0x0034d2                  _ADC_ReadFloat
-                  0x00355a                  _ADC_IsInitialized
-                  0x003562                  _ADC_GetConfig
-                  0x00359c                  _ADC_Disable
- .text            0x0035a6        0x20c build/default/production/i2c1_driver/i2c1_driver.o
-                  0x0035a6                  _i2c1_driver_close
-                  0x0035ae                  _i2c1_enableIRQ
-                  0x0035b8                  _i2c1_IRQisEnabled
-                  0x0035d6                  _i2c1_disableIRQ
-                  0x0035e0                  _i2c1_clearIRQ
-                  0x0035ea                  _i2c1_setIRQ
-                  0x0035f4                  _i2c1_waitForEvent
-                  0x003624                  _i2c1_driver_driver_open
-                  0x003644                  _i2c1_driver_initSlaveHardware
-                  0x003662                  _i2c1_driver_resetBus
-                  0x003668                  _i2c1_driver_start
-                  0x003670                  _i2c1_driver_restart
-                  0x003678                  _i2c1_driver_stop
-                  0x003680                  _i2c1_driver_isNACK
-                  0x003698                  _i2c1_driver_startRX
-                  0x0036a0                  _i2c1_driver_getRXData
-                  0x0036aa                  _i2c1_driver_TXData
-                  0x0036b6                  _i2c1_driver_sendACK
-                  0x0036c0                  _i2c1_driver_sendNACK
-                  0x0036ca                  _i2c1_driver_releaseClock
-                  0x0036d2                  _i2c1_driver_isBuferFull
-                  0x0036f0                  _i2c1_driver_isStart
-                  0x003708                  _i2c1_driver_isAddress
-                  0x00371e                  _i2c1_driver_isStop
-                  0x003736                  _i2c1_driver_isData
-                  0x00374e                  _i2c1_driver_isRead
-                  0x003766                  _i2c1_driver_clearBusCollision
-                  0x00376e                  _i2c1_driver_enableStartIRQ
-                  0x003776                  _i2c1_driver_disableStartIRQ
-                  0x00377e                  _i2c1_driver_enableStopIRQ
-                  0x003786                  _i2c1_driver_disableStopIRQ
-                  0x00378e                  _i2c1_driver_setBusCollisionISR
-                  0x00379a                  _i2c1_driver_setMasterI2cISR
-                  0x0037a6                  _i2c1_driver_setSlaveI2cISR
- .text            0x0037b2        0x1f2 build/default/production/i2c1_driver/i2c_simple_master.o
-                  0x0037b2                  build/default/production/i2c1_driver/i2c_simple_master.o:_wr1RegCompleteHandler
-                  0x0037c8                  _i2c_write1ByteRegister
-                  0x0037fc                  _i2c_writeNBytes
-                  0x003828                  build/default/production/i2c1_driver/i2c_simple_master.o:_rd1RegCompleteHandler
-                  0x00383e                  _i2c_read1ByteRegister
-                  0x003890                  build/default/production/i2c1_driver/i2c_simple_master.o:_rd2RegCompleteHandler
-                  0x0038a6                  _i2c_read2ByteRegister
-                  0x0038de                  build/default/production/i2c1_driver/i2c_simple_master.o:_wr2RegCompleteHandler
-                  0x0038f4                  _i2c_write2ByteRegister
-                  0x003928                  build/default/production/i2c1_driver/i2c_simple_master.o:_rdBlkRegCompleteHandler
-                  0x003942                  _i2c_readDataBlock
-                  0x00397e                  _i2c_readNBytes
- .text            0x0039a4        0x1c8 build/default/production/oledDriver/oledC_shapeHandler.o
-                  0x0039a4                  build/default/production/oledDriver/oledC_shapeHandler.o:_dummyshape
-                  0x0039ac                  _initShapesMem
-                  0x0039d8                  _oledC_removeShape
-                  0x003a0e                  _oledC_getShape
-                  0x003a2a                  _oledC_addShape
-                  0x003a84                  _oledC_redrawIndex
-                  0x003aa2                  _oledC_redrawTo
-                  0x003ab0                  _oledC_redrawFrom
-                  0x003abe                  _oledC_redrawSome
-                  0x003b0a                  _oledC_eraseShape
-                  0x003b34                  _oledC_eraseAll
-                  0x003b60                  _oledC_redrawAll
- .text            0x003b6c        0x192 build/default/production/switchDriver/Switch.o
-                  0x003c0e                  _Switch_Init
-                  0x003c54                  _S1_WasPressed
-                  0x003c70                  _S1_WasReleased
-                  0x003c8c                  _S2_WasPressed
-                  0x003ca8                  _S2_WasReleased
-                  0x003cc4                  _Switch_ResetState
- .text            0x003cfe        0x110 build/default/production/spiDriver/spi1_driver.o
-                  0x003cfe                  _spi1_close
-                  0x003d06                  _spi1_open
-                  0x003d26                  _spi1_exchangeByte
-                  0x003d40                  _spi1_exchangeBlock
-                  0x003d72                  _spi1_writeBlock
-                  0x003da0                  _spi1_readBlock
-                  0x003dd0                  _spi1_writeByte
-                  0x003ddc                  _spi1_readByte
-                  0x003de6                  _spi1_isr
-                  0x003e02                  _spi1_setSpiISR
- .text            0x003e0e         0xaa build/default/production/ACCEL3.o
-                  0x003e4c                  _ACCEL3_Initialize
-                  0x003e58                  _ACCEL3_ReadX
-                  0x003e78                  _ACCEL3_ReadY
-                  0x003e98                  _ACCEL3_ReadZ
+.text             0x001732       0x2866
+ .text            0x001732        0x86c build/default/debug/oledDriver/oledC_shapes.o
+                  0x001732                  _oledC_createShape
+                  0x001862                  _oledC_ReadPoint
+                  0x001892                  _oledC_DrawPoint
+                  0x0018ca                  _oledC_DrawThickPoint
+                  0x0019d2                  _oledC_DrawCircle
+                  0x001ae4                  _oledC_DrawRing
+                  0x001be0                  _oledC_DrawLine
+                  0x001c80                  _oledC_DrawRectangle
+                  0x001cce                  _oledC_DrawCharacter
+                  0x001d8c                  _oledC_DrawString
+                  0x001dd2                  _oledC_DrawBitmap
+                  0x001ea6                  build/default/debug/oledDriver/oledC_shapes.o:_drawPoint
+                  0x001ebc                  build/default/debug/oledDriver/oledC_shapes.o:_drawCircle
+                  0x001ed6                  build/default/debug/oledDriver/oledC_shapes.o:_drawRing
+                  0x001ef4                  build/default/debug/oledDriver/oledC_shapes.o:_drawRectangle
+                  0x001f12                  build/default/debug/oledDriver/oledC_shapes.o:_drawLine
+                  0x001f34                  build/default/debug/oledDriver/oledC_shapes.o:_drawCharacter
+                  0x001f56                  build/default/debug/oledDriver/oledC_shapes.o:_drawString
+                  0x001f78                  build/default/debug/oledDriver/oledC_shapes.o:_drawBitmap
+ .text            0x001f9e        0x7e2 build/default/debug/ledDriver/LED_tests.o
+                  0x0020e0                  _test_discrete_leds
+                  0x00215c                  _test_rgb_raw_pwm
+                  0x0021b6                  _test_rgb_color_constants
+                  0x002258                  _test_rgb_intensity_scaling
+                  0x002312                  _test_raw_vs_scaled
+                  0x002362                  _test_rgb_intensity_fade
+                  0x002426                  _test_rgb_color_wheel
+                  0x0024ec                  _test_rgb_edge_cases
+                  0x002546                  _test_custom_colors
+                  0x0025be                  _test_rainbow_sequence
+                  0x002616                  _test_intensity_persistence
+                  0x00268c                  _LED_RunTests
+ .text            0x002780        0x610 build/default/debug/app.o
+                  0x0029e2                  _app_setup
+                  0x002d52                  _app_loop
+                  0x002d80                  _app_get_mode
+                  0x002d88                  _app_get_pot_value
+ .text            0x002d90        0x3b4 build/default/debug/i2c1_driver/i2c_master.o
+                  0x002d90                  _i2c_setDataCompleteCallback
+                  0x002da2                  _i2c_setWriteCollisionCallback
+                  0x002db4                  _i2c_setAddressNACKCallback
+                  0x002dc6                  _i2c_setDataNACKCallback
+                  0x002dd8                  _i2c_setTimeOutCallback
+                  0x002dea                  _i2c_open
+                  0x002e64                  _i2c_setAddress
+                  0x002e70                  _i2c_close
+                  0x002e98                  _i2c_setTimeOut
+                  0x002ea8                  _i2c_setBuffer
+                  0x002ec8                  _i2c_masterOperation
+                  0x002f04                  _i2c_masterRead
+                  0x002f0e                  _i2c_masterWrite
+                  0x002f18                  _i2c_poller
+                  0x002f2e                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_RESET
+                  0x002f42                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_IDLE
+                  0x002f54                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_SEND_RESTART_READ
+                  0x002f5e                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_SEND_RESTART_WRITE
+                  0x002f68                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_SEND_RESTART
+                  0x002f72                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_SEND_STOP
+                  0x002f7c                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_SEND_ADR_READ
+                  0x002f98                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_SEND_ADR_WRITE
+                  0x002fae                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_RCEN
+                  0x002fbe                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_DO_ACK
+                  0x002fc8                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_DO_NACK_STOP
+                  0x002fd2                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_DO_NACK_RESTART
+                  0x002fdc                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_DO_ADDRESS_NACK
+                  0x002ffe                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_TX
+                  0x00304a                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_RX
+                  0x003088                  build/default/debug/i2c1_driver/i2c_master.o:_do_I2C_TX_EMPTY
+                  0x0030b4                  _i2c_ISR
+                  0x0030dc                  _i2c_busCollisionISR
+                  0x0030e4                  build/default/debug/i2c1_driver/i2c_master.o:_returnStop
+                  0x0030ee                  build/default/debug/i2c1_driver/i2c_master.o:_returnReset
+ .text            0x003144        0x2e0 build/default/debug/oledDriver/oledC.o
+                  0x0031e0                  _oledC_parseIntToRGB
+                  0x00322e                  _oledC_parseRGBToInt
+                  0x003278                  _oledC_sendCommand
+                  0x0032b6                  _oledC_setRowAddressBounds
+                  0x0032e0                  _oledC_setColumnAddressBounds
+                  0x003316                  _oledC_setSleepMode
+                  0x003330                  _oledC_readColor
+                  0x00334e                  _oledC_sendColor
+                  0x003364                  _oledC_sendColorInt
+                  0x00338a                  _oledC_open
+                  0x003392                  _oledC_setup
+                  0x0033d4                  _oledC_clearScreen
+                  0x00340e                  _oledC_setBackground
+                  0x00341c                  _oledC_getBackground
+ .text            0x003424        0x262 build/default/debug/adcDriver/ADC.o
+                  0x003460                  _ADC_Init
+                  0x003522                  _ADC_SetChannel
+                  0x003564                  _ADC_ReadRaw
+                  0x0035b2                  _ADC_ReadFloat
+                  0x00363a                  _ADC_IsInitialized
+                  0x003642                  _ADC_GetConfig
+                  0x00367c                  _ADC_Disable
+ .text            0x003686        0x20c build/default/debug/i2c1_driver/i2c1_driver.o
+                  0x003686                  _i2c1_driver_close
+                  0x00368e                  _i2c1_enableIRQ
+                  0x003698                  _i2c1_IRQisEnabled
+                  0x0036b6                  _i2c1_disableIRQ
+                  0x0036c0                  _i2c1_clearIRQ
+                  0x0036ca                  _i2c1_setIRQ
+                  0x0036d4                  _i2c1_waitForEvent
+                  0x003704                  _i2c1_driver_driver_open
+                  0x003724                  _i2c1_driver_initSlaveHardware
+                  0x003742                  _i2c1_driver_resetBus
+                  0x003748                  _i2c1_driver_start
+                  0x003750                  _i2c1_driver_restart
+                  0x003758                  _i2c1_driver_stop
+                  0x003760                  _i2c1_driver_isNACK
+                  0x003778                  _i2c1_driver_startRX
+                  0x003780                  _i2c1_driver_getRXData
+                  0x00378a                  _i2c1_driver_TXData
+                  0x003796                  _i2c1_driver_sendACK
+                  0x0037a0                  _i2c1_driver_sendNACK
+                  0x0037aa                  _i2c1_driver_releaseClock
+                  0x0037b2                  _i2c1_driver_isBuferFull
+                  0x0037d0                  _i2c1_driver_isStart
+                  0x0037e8                  _i2c1_driver_isAddress
+                  0x0037fe                  _i2c1_driver_isStop
+                  0x003816                  _i2c1_driver_isData
+                  0x00382e                  _i2c1_driver_isRead
+                  0x003846                  _i2c1_driver_clearBusCollision
+                  0x00384e                  _i2c1_driver_enableStartIRQ
+                  0x003856                  _i2c1_driver_disableStartIRQ
+                  0x00385e                  _i2c1_driver_enableStopIRQ
+                  0x003866                  _i2c1_driver_disableStopIRQ
+                  0x00386e                  _i2c1_driver_setBusCollisionISR
+                  0x00387a                  _i2c1_driver_setMasterI2cISR
+                  0x003886                  _i2c1_driver_setSlaveI2cISR
+ .text            0x003892        0x1f2 build/default/debug/i2c1_driver/i2c_simple_master.o
+                  0x003892                  build/default/debug/i2c1_driver/i2c_simple_master.o:_wr1RegCompleteHandler
+                  0x0038a8                  _i2c_write1ByteRegister
+                  0x0038dc                  _i2c_writeNBytes
+                  0x003908                  build/default/debug/i2c1_driver/i2c_simple_master.o:_rd1RegCompleteHandler
+                  0x00391e                  _i2c_read1ByteRegister
+                  0x003970                  build/default/debug/i2c1_driver/i2c_simple_master.o:_rd2RegCompleteHandler
+                  0x003986                  _i2c_read2ByteRegister
+                  0x0039be                  build/default/debug/i2c1_driver/i2c_simple_master.o:_wr2RegCompleteHandler
+                  0x0039d4                  _i2c_write2ByteRegister
+                  0x003a08                  build/default/debug/i2c1_driver/i2c_simple_master.o:_rdBlkRegCompleteHandler
+                  0x003a22                  _i2c_readDataBlock
+                  0x003a5e                  _i2c_readNBytes
+ .text            0x003a84        0x1c8 build/default/debug/oledDriver/oledC_shapeHandler.o
+                  0x003a84                  build/default/debug/oledDriver/oledC_shapeHandler.o:_dummyshape
+                  0x003a8c                  _initShapesMem
+                  0x003ab8                  _oledC_removeShape
+                  0x003aee                  _oledC_getShape
+                  0x003b0a                  _oledC_addShape
+                  0x003b64                  _oledC_redrawIndex
+                  0x003b82                  _oledC_redrawTo
+                  0x003b90                  _oledC_redrawFrom
+                  0x003b9e                  _oledC_redrawSome
+                  0x003bea                  _oledC_eraseShape
+                  0x003c14                  _oledC_eraseAll
+                  0x003c40                  _oledC_redrawAll
+ .text            0x003c4c        0x192 build/default/debug/switchDriver/Switch.o
+                  0x003cee                  _Switch_Init
+                  0x003d34                  _S1_WasPressed
+                  0x003d50                  _S1_WasReleased
+                  0x003d6c                  _S2_WasPressed
+                  0x003d88                  _S2_WasReleased
+                  0x003da4                  _Switch_ResetState
+ .text            0x003dde        0x110 build/default/debug/spiDriver/spi1_driver.o
+                  0x003dde                  _spi1_close
+                  0x003de6                  _spi1_open
+                  0x003e06                  _spi1_exchangeByte
+                  0x003e20                  _spi1_exchangeBlock
+                  0x003e52                  _spi1_writeBlock
+                  0x003e80                  _spi1_readBlock
+                  0x003eb0                  _spi1_writeByte
+                  0x003ebc                  _spi1_readByte
+                  0x003ec6                  _spi1_isr
+                  0x003ee2                  _spi1_setSpiISR
+ .text            0x003eee         0xaa build/default/debug/ACCEL3.o
+                  0x003f2c                  _ACCEL3_Initialize
+                  0x003f38                  _ACCEL3_ReadX
+                  0x003f58                  _ACCEL3_ReadY
+                  0x003f78                  _ACCEL3_ReadZ
 
-.dinit            0x003eb8         0xaa
- .dinit           0x003eb8         0xaa data_init
+.dinit            0x003f98         0xaa
+ .dinit           0x003f98         0xaa data_init
 
-.text             0x003f62        0x1b8
- .text            0x003f62         0x78 build/default/production/System/pin_manager.o
-                  0x003f62                  _PIN_MANAGER_Initialize
- .text            0x003fda         0x56 build/default/production/System/delay.o
-                  0x003fda                  _DELAY_milliseconds
-                  0x003ffc                  _DELAY_microseconds
- .text            0x004030         0x46 build/default/production/System/clock.o
-                  0x004030                  _CLOCK_Initialize
- .text            0x004076         0x3c build/default/production/systemExtensions/systemExtensions.o
-                  0x004076                  _millis
-                  0x004080                  _Timer_initialize
- .text            0x0040b2         0x28 build/default/production/i2c1_driver/i2c_types.o
-                  0x0040b2                  _i2c_returnStop
-                  0x0040bc                  _i2c_returnReset
-                  0x0040c6                  _i2c_restartWrite
-                  0x0040d0                  _i2c_restartRead
- .text            0x0040da         0x24 build/default/production/main.o
-                  0x0040da                  _main
- .text            0x0040fe         0x1c build/default/production/System/traps.o
-                  0x0040fe                  _TRAPS_halt_on_error
+.text             0x004042        0x136
+ .text            0x004042         0x56 build/default/debug/System/delay.o
+                  0x004042                  _DELAY_milliseconds
+                  0x004064                  _DELAY_microseconds
+ .text            0x004098         0x46 build/default/debug/System/clock.o
+                  0x004098                  _CLOCK_Initialize
+ .text            0x0040de         0x3c build/default/debug/systemExtensions/systemExtensions.o
+                  0x0040de                  _millis
+                  0x0040e8                  _Timer_initialize
+ .text            0x00411a         0x36 build/default/debug/System/pin_manager.o
+                  0x00411a                  _PIN_MANAGER_Initialize
+ .text            0x004150         0x28 build/default/debug/i2c1_driver/i2c_types.o
+                  0x004150                  _i2c_returnStop
+                  0x00415a                  _i2c_returnReset
+                  0x004164                  _i2c_restartWrite
+                  0x00416e                  _i2c_restartRead
 
-.init.delay32     0x00411a         0x1c
- .init.delay32    0x00411a         0x1c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(delay32da.Meo)
-                  0x00411a                  ___delay32
+.init.delay32     0x004178         0x1c
+ .init.delay32    0x004178         0x1c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(delay32da.Meo)
+                  0x004178                  ___delay32
 
-.text             0x004136         0x36
- .text            0x004136         0x1a build/default/production/System/interrupt_manager.o
-                  0x004136                  _INTERRUPT_Initialize
- .text            0x004150         0x10 build/default/production/System/where_was_i.o
-                  0x004150                  _where_was_i
- .text            0x004160          0xc build/default/production/System/system.o
-                  0x004160                  _SYSTEM_Initialize
+.text             0x004194         0x66
+ .text            0x004194         0x1a build/default/debug/System/interrupt_manager.o
+                  0x004194                  _INTERRUPT_Initialize
+ .text            0x0041ae         0x1a build/default/debug/System/traps.o
+                  0x0041ae                  _TRAPS_halt_on_error
+ .text            0x0041c8         0x14 build/default/debug/main.o
+                  0x0041c8                  _main
+ .text            0x0041dc         0x10 build/default/debug/System/where_was_i.o
+                  0x0041dc                  _where_was_i
+ .text            0x0041ec          0xe build/default/debug/System/system.o
+                  0x0041ec                  _SYSTEM_Initialize

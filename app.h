@@ -1,29 +1,57 @@
- /*
-     (c) 2016 Microchip Technology Inc. and its subsidiaries. You may use this
-    software and any derivatives exclusively with Microchip products.
+#ifndef APP_H
+#define APP_H
 
-    THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER
-    EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED
-    WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A
-    PARTICULAR PURPOSE, OR ITS INTERACTION WITH MICROCHIP PRODUCTS, COMBINATION
-    WITH ANY OTHER PRODUCTS, OR USE IN ANY APPLICATION.
+#include <stdbool.h>
+#include <stdint.h>
 
-    IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
-    INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND
-    WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS
-    BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO THE
-    FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
-    ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
-    THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
-
-    MICROCHIP PROVIDES THIS SOFTWARE CONDITIONALLY UPON YOUR ACCEPTANCE OF THESE
-    TERMS.
+/**
+ * @file app.h
+ * @brief Main application interface
  */
 
-#ifndef APP_H
-#define	APP_H
+// ============================================================================
+// Types
+// ============================================================================
 
-void app(void);
-void app_setup();
+/**
+ * @brief Display modes
+ */
+typedef enum {
+    MODE_COMPOSITE = 0,  ///< Composite color mixing mode
+    MODE_INDIVIDUAL = 1  ///< Individual color control mode
+} DisplayMode_t;
 
-#endif
+// ============================================================================
+// Function Prototypes
+// ============================================================================
+
+/**
+ * @brief Initialize application and all drivers
+ * @return true on success, false on error
+ * 
+ * @note Call once during startup before entering main loop
+ * @note If this returns false, LED1 will be lit to indicate error
+ */
+bool app_setup(void);
+
+/**
+ * @brief Main application update function
+ * 
+ * @note Call repeatedly in main loop
+ * @note Non-blocking - returns immediately
+ */
+void app_loop(void);
+
+/**
+ * @brief Get current application mode
+ * @return Current display mode
+ */
+DisplayMode_t app_get_mode(void);
+
+/**
+ * @brief Get current potentiometer value
+ * @return Pot value (0-1023)
+ */
+uint16_t app_get_pot_value(void);
+
+#endif // APP_H

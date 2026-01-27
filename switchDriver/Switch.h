@@ -4,90 +4,92 @@
 #include <xc.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include "../systemExtensions/systemExtensions.h"
 
-#define DEBOUNCE_TIME_MS 25
+/**
+ * @file Switch.h
+ * @brief Debounced switch input driver for PIC24FJ256GA705
+ * 
+ * Features:
+ * - Hardware debouncing with configurable delay
+ * - Edge detection (press/release)
+ * - Non-blocking operation
+ * - Minimal memory footprint
+ */
 
-// Masks
-#define S1_MASK (1 << 11)
-#define S2_MASK (1 << 12)
+// ============================================================================
+// Configuration
+// ============================================================================
 
-// Compile-time down/up macros
-#define SWITCH_ISDOWN(portReg, mask)  (!((portReg) & (mask))) // active low
-#define SWITCH_ISUP(portReg, mask)    (!SWITCH_ISDOWN(portReg, mask))
+#define DEBOUNCE_TIME_MS 25  // Adjust debounce time as needed
 
-#define S1_ISDOWN() (SWITCH_ISDOWN(PORTA, S1_MASK))
-#define S2_ISDOWN() (SWITCH_ISDOWN(PORTA, S2_MASK))
+// Hardware pin definitions
+#define S1_MASK (1 << 11)    // RA11
+#define S2_MASK (1 << 12)    // RA12
 
-// Initialize switches
+// ============================================================================
+// Macros - Inline for zero overhead
+// ============================================================================
+
+/** @brief Check if S1 is currently pressed (active low) */
+#define S1_IsDown() (!(PORTA & S1_MASK))
+
+/** @brief Check if S1 is currently released */
+#define S1_IsUp() (!S1_IsDown())
+
+/** @brief Check if S2 is currently pressed (active low) */
+#define S2_IsDown() (!(PORTA & S2_MASK))
+
+/** @brief Check if S2 is currently released */
+#define S2_IsUp() (!S2_IsDown())
+
+/** @brief Initialize S1 as input */
 #define S1_Init() (TRISA |= S1_MASK)
+
+/** @brief Initialize S2 as input */
 #define S2_Init() (TRISA |= S2_MASK)
 
-// Edge detection functions (debounced)
+// ============================================================================
+// Function Prototypes
+// ============================================================================
 
-bool S1_WasPressed(void) {
-    static bool stableState = false;
-    static uint32_t lastChange = 0;
-    bool raw = S1_ISDOWN();
+/**
+ * @brief Initialize both switches
+ * @note Call once during system initialization
+ */
+void Switch_Init(void);
 
-    if (raw != stableState) {
-        if ((millis() - lastChange) >= DEBOUNCE_TIME_MS) {
-            stableState = raw;
-            if (stableState) return true;
-        }
-    } else {
-        lastChange = millis();
-    }
-    return false;
-}
+/**
+ * @brief Check if S1 was just pressed (rising edge detection)
+ * @return true if S1 was pressed since last call, false otherwise
+ * @note Debounced - call regularly in main loop or timer
+ */
+bool S1_WasPressed(void);
 
-bool S2_WasPressed(void) {
-    static bool stableState = false;
-    static uint32_t lastChange = 0;
-    bool raw = S2_ISDOWN();
+/**
+ * @brief Check if S1 was just released (falling edge detection)
+ * @return true if S1 was released since last call, false otherwise
+ * @note Debounced - call regularly in main loop or timer
+ */
+bool S1_WasReleased(void);
 
-    if (raw != stableState) {
-        if ((millis() - lastChange) >= DEBOUNCE_TIME_MS) {
-            stableState = raw;
-            if (stableState) return true;
-        }
-    } else {
-        lastChange = millis();
-    }
-    return false;
-}
+/**
+ * @brief Check if S2 was just pressed (rising edge detection)
+ * @return true if S2 was pressed since last call, false otherwise
+ * @note Debounced - call regularly in main loop or timer
+ */
+bool S2_WasPressed(void);
 
-bool S1_WasReleased(void) {
-    static bool stableState = false;
-    static uint32_t lastChange = 0;
-    bool raw = S1_ISDOWN();
+/**
+ * @brief Check if S2 was just released (falling edge detection)
+ * @return true if S2 was released since last call, false otherwise
+ * @note Debounced - call regularly in main loop or timer
+ */
+bool S2_WasReleased(void);
 
-    if (raw != stableState) {
-        if ((millis() - lastChange) >= DEBOUNCE_TIME_MS) {
-            stableState = raw;
-            if (!stableState) return true;
-        }
-    } else {
-        lastChange = millis();
-    }
-    return false;
-}
+/**
+ * @brief Reset switch state (clear any pending edges)
+ * @note Useful after mode changes or to ignore switch events
+ */
+void Switch_ResetState(void);
 
-bool S2_WasReleased(void) {
-    static bool stableState = false;
-    static uint32_t lastChange = 0;
-    bool raw = S2_ISDOWN();
-
-    if (raw != stableState) {
-        if ((millis() - lastChange) >= DEBOUNCE_TIME_MS) {
-            stableState = raw;
-            if (!stableState) return true;
-        }
-    } else {
-        lastChange = millis();
-    }
-    return false;
-}
-
-
-#endif
+#endif // SWITCH_H
