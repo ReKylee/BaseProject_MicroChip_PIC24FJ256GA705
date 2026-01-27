@@ -15,11 +15,11 @@
   @Description:
     This source file provides implementations for PIN MANAGER.
     Generation Information :
-        Product Revision  :  PIC24 / dsPIC33 / PIC32MM MCUs - 1.170.0
+        Product Revision  :  PIC24 / dsPIC33 / PIC32MM MCUs - 1.171.5
         Device            :  PIC24FJ256GA705
     The generated drivers are tested against the following:
-        Compiler          :  XC16 v1.61
-        MPLAB 	          :  MPLAB X v5.45
+        Compiler          :  XC16 v2.10
+        MPLAB 	          :  MPLAB X v6.05
 */
 
 /*
@@ -68,9 +68,9 @@ void PIN_MANAGER_Initialize (void)
     /****************************************************************************
      * Setting the GPIO Direction SFR(s)
      ***************************************************************************/
-    TRISA = 0x5F97;
-    TRISB = 0x3FFF;
-    TRISC = 0x00F5;
+    TRISA = 0x7F97;
+    TRISB = 0xFFFF;
+    TRISC = 0x03FF;
 
     /****************************************************************************
      * Setting the Weak Pull Up and Weak Pull Down SFR(s)
@@ -93,18 +93,7 @@ void PIN_MANAGER_Initialize (void)
      * Setting the Analog/Digital Configuration SFR(s)
      ***************************************************************************/
     ANSA = 0x0007;
-    ANSB = 0x120C;
-    ANSC = 0x0005;
-    
-    /****************************************************************************
-     * Set the PPS
-     ***************************************************************************/
-    __builtin_write_OSCCONL(OSCCON & 0xbf); // unlock PPS
-
-    RPOR7bits.RP14R = 0x0007;    //RB14->SPI1:SDO1
-    RPOR7bits.RP15R = 0x0008;    //RB15->SPI1:SCK1OUT
-    RPINR20bits.SDI1R = 0x000D;    //RB13->SPI1:SDI1
-
-    __builtin_write_OSCCONL(OSCCON | 0x40); // lock PPS
+    ANSB = 0xF00C;
+    ANSC = 0x000F;
 }
 

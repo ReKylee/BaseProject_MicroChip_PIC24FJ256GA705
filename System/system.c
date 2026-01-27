@@ -13,12 +13,12 @@
   @Description:
     This header file provides implementations for driver APIs for all modules selected in the GUI.
     Generation Information :
-        Product Revision  :  PIC24 / dsPIC33 / PIC32MM MCUs - 1.170.0
+        Product Revision  :  PIC24 / dsPIC33 / PIC32MM MCUs - 1.171.5
         Device            :  PIC24FJ256GA705
     The generated drivers are tested against the following:
-        Compiler          :  XC16 v1.61
-        MPLAB             :  MPLAB X v5.45
-*/
+        Compiler          :  XC16 v2.10
+        MPLAB             :  MPLAB X v6.05
+ */
 
 /*
     (c) 2020 Microchip Technology Inc. and its subsidiaries. You may use this
@@ -40,7 +40,7 @@
 
     MICROCHIP PROVIDES THIS SOFTWARE CONDITIONALLY UPON YOUR ACCEPTANCE OF THESE
     TERMS.
-*/
+ */
 
 // Configuration bits: selected in the GUI
 
@@ -64,11 +64,11 @@
 
 // FOSC
 #pragma config POSCMD = NONE    //Primary Oscillator Mode Select bits->Primary Oscillator disabled
-#pragma config OSCIOFCN = ON    //OSC2 Pin Function bit->OSC2 is clock output
-#pragma config SOSCSEL = ON    //SOSC Power Selection Configuration bits->Digital (SCLKI) mode
-#pragma config PLLSS = PLL_FRC    //PLL Secondary Selection Configuration bit->PLL is fed by the Primary oscillator
-#pragma config IOL1WAY = OFF    //Peripheral pin select configuration bit->Allow only one reconfiguration
-#pragma config FCKSM = CSECMD    //Clock Switching Mode bits->Both Clock switching and Fail-safe Clock Monitor are disabled
+#pragma config OSCIOFCN = OFF    //OSC2 Pin Function bit->OSC2 is clock output
+#pragma config SOSCSEL = OFF    //SOSC Power Selection Configuration bits->Digital (SCLKI) mode
+#pragma config PLLSS = PLL_PRI    //PLL Secondary Selection Configuration bit->PLL is fed by the Primary oscillator
+#pragma config IOL1WAY = ON    //Peripheral pin select configuration bit->Allow only one reconfiguration
+#pragma config FCKSM = CSDCMD    //Clock Switching Mode bits->Both Clock switching and Fail-safe Clock Monitor are disabled
 
 // FWDT
 #pragma config WDTPS = PS32768    //Watchdog Timer Postscaler bits->1:32768
@@ -85,7 +85,7 @@
 #pragma config DNVPEN = ENABLE    //Downside Voltage Protection Enable bit->Downside protection enabled using ZPBOR when BOR is inactive
 
 // FICD
-#pragma config ICS = PGD2    //ICD Communication Channel Select bits->Communicate on PGEC1 and PGED1
+#pragma config ICS = PGD1    //ICD Communication Channel Select bits->Communicate on PGEC1 and PGED1
 #pragma config JTAGEN = OFF    //JTAG Enable bit->JTAG is disabled
 
 // FDEVOPT1
@@ -94,22 +94,26 @@
 #pragma config SOSCHP = ON    //SOSC High Power Enable bit (valid only when SOSCSEL = 1->Enable SOSC high power mode (default)
 #pragma config ALTI2C1 = ALTI2CEN    //Alternate I2C pin Location->SDA1 and SCL1 on RB9 and RB8
 
-#include "../oledDriver/pin_manager.h"
+#include "pin_manager.h"
 #include "clock.h"
 #include "system.h"
 #include "delay.h"
-// #include "interrupt_manager.h"
+#include "interrupt_manager.h"
 #include "traps.h"
-#include "../spiDriver/spi1_driver.h"
+#include "../i2c1_driver/i2c_simple_master.h"
+#include "../i2c1_driver/i2c1_driver.h"
+#include "../ACCEL3.h"
+#include "../i2c1_driver/i2c_master.h"
 #include "../oledDriver/oledC.h"
 
-void SYSTEM_Initialize(void)
-{
+void SYSTEM_Initialize(void) {
     PIN_MANAGER_Initialize();
+    INTERRUPT_Initialize();
     CLOCK_Initialize();
     oledC_setup();
+    ACCEL3_Initialize();
 }
 
 /**
  End of File
-*/
+ */

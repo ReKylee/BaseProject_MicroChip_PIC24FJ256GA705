@@ -26,7 +26,7 @@
 #include "../spiDriver/spi1_driver.h"
 #include "oledC.h"
 // #include "pin_manager.h"
-#include "../system/delay.h"
+#include "../System/delay.h"
 
 enum STREAMING_MODES 
 {

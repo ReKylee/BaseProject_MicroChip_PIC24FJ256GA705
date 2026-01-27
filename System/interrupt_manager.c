@@ -1,25 +1,25 @@
 /**
-  @Generated PIC24 / dsPIC33 / PIC32MM MCUs Source File
+  System Interrupts Generated Driver File 
 
   @Company:
     Microchip Technology Inc.
 
   @File Name:
-    system.h
+    interrupt_manager.h
 
   @Summary:
-    This is the system.h file generated using PIC24 / dsPIC33 / PIC32MM MCUs
+    This is the generated driver implementation file for setting up the
+    interrupts using PIC24 / dsPIC33 / PIC32MM MCUs
 
   @Description:
-    This header file provides implementations for driver APIs for all modules selected in the GUI.
-    Generation Information :
+    This source file provides implementations for PIC24 / dsPIC33 / PIC32MM MCUs interrupts.
+    Generation Information : 
         Product Revision  :  PIC24 / dsPIC33 / PIC32MM MCUs - 1.171.5
         Device            :  PIC24FJ256GA705
     The generated drivers are tested against the following:
         Compiler          :  XC16 v2.10
         MPLAB             :  MPLAB X v6.05
 */
-
 /*
     (c) 2020 Microchip Technology Inc. and its subsidiaries. You may use this
     software and any derivatives exclusively with Microchip products.
@@ -42,29 +42,21 @@
     TERMS.
 */
 
-#ifndef _XTAL_FREQ
-#define _XTAL_FREQ  8000000UL
-#endif
-
-#include "xc.h"
-#include "stdint.h"
-
-#ifndef SYSTEM_H
-#define	SYSTEM_H
-
 /**
- * @Param
-    none
- * @Returns
-    none
- * @Description
-    Initializes the device to the default states configured in the
- *                  MCC GUI
- * @Example
-    SYSTEM_Initialize(void);
- */
-void SYSTEM_Initialize(void);
-#endif	/* SYSTEM_H */
-/**
- End of File
+    Section: Includes
 */
+#include <xc.h>
+
+/**
+    void INTERRUPT_Initialize (void)
+*/
+void INTERRUPT_Initialize (void)
+{
+    //    MICI: MI2C1 - I2C1 Master Events
+    //    Priority: 1
+        IPC4bits.MI2C1IP = 1;
+    //    SICI: SI2C1 - I2C1 Slave Events
+    //    Priority: 1
+        IPC4bits.SI2C1IP = 1;
+
+}

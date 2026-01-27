@@ -14,11 +14,11 @@
   @Description:
     This source file provides implementations for PIC24 / dsPIC33 / PIC32MM MCUs traps.
     Generation Information : 
-        Product Revision  :  PIC24 / dsPIC33 / PIC32MM MCUs - 1.170.0
+        Product Revision  :  PIC24 / dsPIC33 / PIC32MM MCUs - 1.171.5
         Device            :  PIC24FJ256GA705
     The generated drivers are tested against the following:
-        Compiler          :  XC16 v1.61
-        MPLAB             :  MPLAB X v5.45
+        Compiler          :  XC16 v2.10
+        MPLAB             :  MPLAB X v6.05
 */
 /*
     (c) 2020 Microchip Technology Inc. and its subsidiaries. You may use this
@@ -46,10 +46,27 @@
     Section: Includes
 */
 #include <xc.h>
+#include <stdio.h>
 #include "traps.h"
 
-#define ERROR_HANDLER __attribute__((interrupt,no_auto_psv))
+/* To identify the source of the trap, or the address of the source code causing the trap, please uncomment the
+  following line. When the code is executed by uncommenting the below line, the trapSrcAddr variable will contain
+  the address of the source code that, in the event that a trap occurs, is causing.*/
+
+/* #define FIND_TRAP_SOURCE */
+
+#ifdef FIND_TRAP_SOURCE
+extern unsigned long trapSrcAddr;
+
+void __attribute__((interrupt(preprologue( "rcall _where_was_i ")), no_auto_psv)) _DefaultInterrupt(void)
+{
+   fprintf(stderr, "Trap! @ 0x%8.8lx\n ", trapSrcAddr);
+   while(1);
+}
+#else
+#define ERROR_HANDLER __attribute__((weak, interrupt,no_auto_psv))
 #define FAILSAFE_STACK_GUARDSIZE 8
+#define FAILSAFE_STACK_SIZE 32
 
 /**
  * a private place to store the error code if we run into a severe error
@@ -64,12 +81,18 @@ static uint16_t TRAPS_error_code = -1;
 void __attribute__((weak)) TRAPS_halt_on_error(uint16_t code)
 {
     TRAPS_error_code = code;
-#ifdef __DEBUG    
-    __builtin_software_breakpoint();
+#ifdef __DEBUG
     /* If we are in debug mode, cause a software breakpoint in the debugger */
+    __builtin_software_breakpoint();
+    while(1)
+    {
+
+    }
+#else
+    // Trigger software reset
+    __asm__ volatile ("reset");
 #endif
-    while(1);
-    
+
 }
 
 /**
@@ -78,7 +101,7 @@ void __attribute__((weak)) TRAPS_halt_on_error(uint16_t code)
  */
 inline static void use_failsafe_stack(void)
 {
-    static uint8_t failsafe_stack[32];
+    static uint8_t failsafe_stack[FAILSAFE_STACK_SIZE];
     asm volatile (
         "   mov    %[pstack], W15\n"
         :
@@ -126,3 +149,4 @@ void ERROR_HANDLER _NVMError(void)
     INTCON4bits.SGHT = 0;  //Clear the trap flag
     TRAPS_halt_on_error(TRAPS_NVM_ERR);
 }
+#endif

@@ -9,6 +9,12 @@
       <logicalFolder name="adcDriver" displayName="adcDriver" projectFiles="true">
         <itemPath>adcDriver/ADC.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="i2c1_driver" displayName="i2c1_driver" projectFiles="true">
+        <itemPath>i2c1_driver/i2c1_driver.h</itemPath>
+        <itemPath>i2c1_driver/i2c_master.h</itemPath>
+        <itemPath>i2c1_driver/i2c_simple_master.h</itemPath>
+        <itemPath>i2c1_driver/i2c_types.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="ledDriver" displayName="ledDriver" projectFiles="true">
         <itemPath>ledDriver/LED.h</itemPath>
         <itemPath>ledDriver/LED_tests.h</itemPath>
@@ -19,7 +25,6 @@
         <itemPath>oledDriver/oledC_colors.h</itemPath>
         <itemPath>oledDriver/oledC_shapeHandler.h</itemPath>
         <itemPath>oledDriver/oledC_shapes.h</itemPath>
-        <itemPath>oledDriver/pin_manager.h</itemPath>
       </logicalFolder>
       <logicalFolder name="spiDriver" displayName="spiDriver" projectFiles="true">
         <itemPath>spiDriver/spi1_driver.h</itemPath>
@@ -32,6 +37,8 @@
       <logicalFolder name="System" displayName="System" projectFiles="true">
         <itemPath>System/clock.h</itemPath>
         <itemPath>System/delay.h</itemPath>
+        <itemPath>System/interrupt_manager.h</itemPath>
+        <itemPath>System/pin_manager.h</itemPath>
         <itemPath>System/system.h</itemPath>
         <itemPath>System/traps.h</itemPath>
       </logicalFolder>
@@ -41,6 +48,7 @@
         <itemPath>systemExtensions/systemExtensions.h</itemPath>
       </logicalFolder>
       <itemPath>app.h</itemPath>
+      <itemPath>ACCEL3.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -52,6 +60,12 @@
       <logicalFolder name="adcDriver" displayName="adcDriver" projectFiles="true">
         <itemPath>adcDriver/ADC.c</itemPath>
       </logicalFolder>
+      <logicalFolder name="i2c1_driver" displayName="i2c1_driver" projectFiles="true">
+        <itemPath>i2c1_driver/i2c1_driver.c</itemPath>
+        <itemPath>i2c1_driver/i2c_master.c</itemPath>
+        <itemPath>i2c1_driver/i2c_simple_master.c</itemPath>
+        <itemPath>i2c1_driver/i2c_types.c</itemPath>
+      </logicalFolder>
       <logicalFolder name="ledDriver" displayName="ledDriver" projectFiles="true">
         <itemPath>ledDriver/LED_tests.c</itemPath>
       </logicalFolder>
@@ -59,7 +73,6 @@
         <itemPath>oledDriver/oledC.c</itemPath>
         <itemPath>oledDriver/oledC_shapeHandler.c</itemPath>
         <itemPath>oledDriver/oledC_shapes.c</itemPath>
-        <itemPath>oledDriver/pin_manager.c</itemPath>
       </logicalFolder>
       <logicalFolder name="spiDriver" displayName="spiDriver" projectFiles="true">
         <itemPath>spiDriver/spi1_driver.c</itemPath>
@@ -71,8 +84,11 @@
       <logicalFolder name="System" displayName="System" projectFiles="true">
         <itemPath>System/clock.c</itemPath>
         <itemPath>System/delay.c</itemPath>
+        <itemPath>System/interrupt_manager.c</itemPath>
+        <itemPath>System/pin_manager.c</itemPath>
         <itemPath>System/system.c</itemPath>
         <itemPath>System/traps.c</itemPath>
+        <itemPath>System/where_was_i.s</itemPath>
       </logicalFolder>
       <logicalFolder name="systemExtensions"
                      displayName="systemExtensions"
@@ -81,11 +97,13 @@
       </logicalFolder>
       <itemPath>main.c</itemPath>
       <itemPath>app.c</itemPath>
+      <itemPath>ACCEL3.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
                    projectFiles="false">
       <itemPath>Makefile</itemPath>
+      <itemPath>CuriosityOledBase.mc3</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
@@ -400,6 +418,34 @@
         <property key="programoptions.usehighvoltageonmclr" value="false"/>
         <property key="programoptions.uselvpprogramming" value="true"/>
       </Tool>
+      <item path="app.c" ex="false" overriding="false">
+        <C30>
+        </C30>
+        <C30-AR>
+        </C30-AR>
+        <C30-AS>
+        </C30-AS>
+        <C30-CO>
+        </C30-CO>
+        <C30-LD>
+        </C30-LD>
+        <C30Global>
+        </C30Global>
+      </item>
+      <item path="app.h" ex="false" overriding="false">
+        <C30>
+        </C30>
+        <C30-AR>
+        </C30-AR>
+        <C30-AS>
+        </C30-AS>
+        <C30-CO>
+        </C30-CO>
+        <C30-LD>
+        </C30-LD>
+        <C30Global>
+        </C30Global>
+      </item>
     </conf>
   </confs>
 </configurationDescriptor>

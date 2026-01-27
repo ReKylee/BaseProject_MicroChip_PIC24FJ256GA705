@@ -1,23 +1,25 @@
 /**
-  @Generated PIC24 / dsPIC33 / PIC32MM MCUs Source File
+  PIN MANAGER Generated Driver File
 
   @Company:
     Microchip Technology Inc.
 
   @File Name:
-    system.h
+    pin_manager.h
 
   @Summary:
-    This is the system.h file generated using PIC24 / dsPIC33 / PIC32MM MCUs
+    This is the generated manager file for the PIC24 / dsPIC33 / PIC32MM MCUs device.  This manager
+    configures the pins direction, initial state, analog setting.
+    The peripheral pin select, PPS, configuration is also handled by this manager.
 
   @Description:
-    This header file provides implementations for driver APIs for all modules selected in the GUI.
+    This source file provides implementations for PIN MANAGER.
     Generation Information :
         Product Revision  :  PIC24 / dsPIC33 / PIC32MM MCUs - 1.171.5
         Device            :  PIC24FJ256GA705
     The generated drivers are tested against the following:
         Compiler          :  XC16 v2.10
-        MPLAB             :  MPLAB X v6.05
+        MPLAB 	          :  MPLAB X v6.05
 */
 
 /*
@@ -42,29 +44,51 @@
     TERMS.
 */
 
-#ifndef _XTAL_FREQ
-#define _XTAL_FREQ  8000000UL
-#endif
-
-#include "xc.h"
-#include "stdint.h"
-
-#ifndef SYSTEM_H
-#define	SYSTEM_H
-
+#ifndef _PIN_MANAGER_H
+#define _PIN_MANAGER_H
 /**
- * @Param
-    none
- * @Returns
-    none
- * @Description
-    Initializes the device to the default states configured in the
- *                  MCC GUI
- * @Example
-    SYSTEM_Initialize(void);
- */
-void SYSTEM_Initialize(void);
-#endif	/* SYSTEM_H */
-/**
- End of File
+    Section: Includes
 */
+#include <xc.h>
+
+/**
+    Section: Device Pin Macros
+*/
+
+/**
+    Section: Function Prototypes
+*/
+/**
+  @Summary
+    Configures the pin settings of the PIC24FJ256GA705
+    The peripheral pin select, PPS, configuration is also handled by this manager.
+
+  @Description
+    This is the generated manager file for the PIC24 / dsPIC33 / PIC32MM MCUs device.  This manager
+    configures the pins direction, initial state, analog setting.
+    The peripheral pin select, PPS, configuration is also handled by this manager.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    void SYSTEM_Initialize(void)
+    {
+        // Other initializers are called from this function
+        PIN_MANAGER_Initialize();
+    }
+    </code>
+
+*/
+void PIN_MANAGER_Initialize (void);
+
+
+
+#endif

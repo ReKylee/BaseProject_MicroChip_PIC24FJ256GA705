@@ -1,26 +1,11 @@
 /**
-  @Generated PIC24 / dsPIC33 / PIC32MM MCUs Source File
+\file
+\defgroup doc_driver_i2c_code I2C Simple Driver Source Code Reference
+\ingroup doc_driver_i2c
+\brief This file contains the API that implements the I2C simple master driver functionalities.
 
-  @Company:
-    Microchip Technology Inc.
-
-  @File Name:
-    system.h
-
-  @Summary:
-    This is the system.h file generated using PIC24 / dsPIC33 / PIC32MM MCUs
-
-  @Description:
-    This header file provides implementations for driver APIs for all modules selected in the GUI.
-    Generation Information :
-        Product Revision  :  PIC24 / dsPIC33 / PIC32MM MCUs - 1.171.5
-        Device            :  PIC24FJ256GA705
-    The generated drivers are tested against the following:
-        Compiler          :  XC16 v2.10
-        MPLAB             :  MPLAB X v6.05
-*/
-
-/*
+\copyright (c) 2020 Microchip Technology Inc. and its subsidiaries.
+\page License
     (c) 2020 Microchip Technology Inc. and its subsidiaries. You may use this
     software and any derivatives exclusively with Microchip products.
 
@@ -42,29 +27,21 @@
     TERMS.
 */
 
-#ifndef _XTAL_FREQ
-#define _XTAL_FREQ  8000000UL
-#endif
+#ifndef I2C_SIMPLE_MASTER_H
+#define	I2C_SIMPLE_MASTER_H
 
-#include "xc.h"
-#include "stdint.h"
+#include <stdint.h>
+#include <stdio.h>
+#include "i2c_types.h"
 
-#ifndef SYSTEM_H
-#define	SYSTEM_H
+uint8_t i2c_read1ByteRegister(i2c_address_t address, uint8_t reg);
+uint16_t i2c_read2ByteRegister(i2c_address_t address, uint8_t reg);
+void i2c_write1ByteRegister(i2c_address_t address, uint8_t reg, uint8_t data);
+void i2c_write2ByteRegister(i2c_address_t address, uint8_t reg, uint16_t data);
 
-/**
- * @Param
-    none
- * @Returns
-    none
- * @Description
-    Initializes the device to the default states configured in the
- *                  MCC GUI
- * @Example
-    SYSTEM_Initialize(void);
- */
-void SYSTEM_Initialize(void);
-#endif	/* SYSTEM_H */
-/**
- End of File
-*/
+void i2c_writeNBytes(i2c_address_t address, void* data, size_t len);
+void i2c_readDataBlock(i2c_address_t address, uint8_t reg, void *data, size_t len);
+void i2c_readNBytes(i2c_address_t address, void *data, size_t len);
+
+#endif	/* I2C_SIMPLE_MASTER_H */
+

@@ -3,16 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/ledDriver/LED.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/System/pin_manager.h</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/main.c</file>
-            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/ledDriver/LED_tests.c</file>
-            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/systemExtensions/systemExtensions.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/System/system.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/ACCEL3.h</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/app.h</file>
-            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/ledDriver/LED_tests.h</file>
-            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/systemExtensions/systemExtensions.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/oledDriver/oledC.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/System/system.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/System/pin_manager.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/oledDriver/oledC.c</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/app.c</file>
-            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/ledDriver/LED.h</file>
-            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/ledDriver/RGBLED_colors.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/switchDriver/Switch.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/i2c1_driver/i2c_simple_master.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/oledDriver/oledC_colors.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/systemExtensions/systemExtensions.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/ACCEL3.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/nbproject/Makefile-default.mk</file>
         </group>
     </open-files>
 </project-private>

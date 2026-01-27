@@ -1,25 +1,3 @@
-/**
-  @Generated PIC24 / dsPIC33 / PIC32MM MCUs Source File
-
-  @Company:
-    Microchip Technology Inc.
-
-  @File Name:
-    system.h
-
-  @Summary:
-    This is the system.h file generated using PIC24 / dsPIC33 / PIC32MM MCUs
-
-  @Description:
-    This header file provides implementations for driver APIs for all modules selected in the GUI.
-    Generation Information :
-        Product Revision  :  PIC24 / dsPIC33 / PIC32MM MCUs - 1.171.5
-        Device            :  PIC24FJ256GA705
-    The generated drivers are tested against the following:
-        Compiler          :  XC16 v2.10
-        MPLAB             :  MPLAB X v6.05
-*/
-
 /*
     (c) 2020 Microchip Technology Inc. and its subsidiaries. You may use this
     software and any derivatives exclusively with Microchip products.
@@ -42,29 +20,25 @@
     TERMS.
 */
 
-#ifndef _XTAL_FREQ
-#define _XTAL_FREQ  8000000UL
-#endif
+#include "i2c_types.h"
 
-#include "xc.h"
-#include "stdint.h"
+i2c_operations_t i2c_returnStop(void *p)
+{
+    return i2c_stop;
+}
 
-#ifndef SYSTEM_H
-#define	SYSTEM_H
+i2c_operations_t i2c_returnReset(void *p)
+{
+    return i2c_reset_link;
+}
 
-/**
- * @Param
-    none
- * @Returns
-    none
- * @Description
-    Initializes the device to the default states configured in the
- *                  MCC GUI
- * @Example
-    SYSTEM_Initialize(void);
- */
-void SYSTEM_Initialize(void);
-#endif	/* SYSTEM_H */
-/**
- End of File
-*/
+i2c_operations_t i2c_restartWrite(void *p)
+{
+    return i2c_restart_write;
+}
+
+i2c_operations_t i2c_restartRead(void *p)
+{
+    return i2c_restart_read;
+}
+

@@ -1,25 +1,3 @@
-/**
-  @Generated PIC24 / dsPIC33 / PIC32MM MCUs Source File
-
-  @Company:
-    Microchip Technology Inc.
-
-  @File Name:
-    system.h
-
-  @Summary:
-    This is the system.h file generated using PIC24 / dsPIC33 / PIC32MM MCUs
-
-  @Description:
-    This header file provides implementations for driver APIs for all modules selected in the GUI.
-    Generation Information :
-        Product Revision  :  PIC24 / dsPIC33 / PIC32MM MCUs - 1.171.5
-        Device            :  PIC24FJ256GA705
-    The generated drivers are tested against the following:
-        Compiler          :  XC16 v2.10
-        MPLAB             :  MPLAB X v6.05
-*/
-
 /*
     (c) 2020 Microchip Technology Inc. and its subsidiaries. You may use this
     software and any derivatives exclusively with Microchip products.
@@ -42,29 +20,38 @@
     TERMS.
 */
 
-#ifndef _XTAL_FREQ
-#define _XTAL_FREQ  8000000UL
-#endif
+#ifndef I2C_TYPES_H
+#define	I2C_TYPES_H
 
-#include "xc.h"
-#include "stdint.h"
+#include <stdint.h>
+#include <stdio.h>
 
-#ifndef SYSTEM_H
-#define	SYSTEM_H
+typedef enum {
+    I2C_NOERR, // The message was sent.
+    I2C_BUSY,  // Message was NOT sent, bus was busy.
+    I2C_FAIL   // Message was NOT sent, bus failure
+               // If you are interested in the failure reason,
+               // Sit on the event call-backs.
+} i2c_error_t;
 
-/**
- * @Param
-    none
- * @Returns
-    none
- * @Description
-    Initializes the device to the default states configured in the
- *                  MCC GUI
- * @Example
-    SYSTEM_Initialize(void);
- */
-void SYSTEM_Initialize(void);
-#endif	/* SYSTEM_H */
-/**
- End of File
-*/
+typedef enum
+{
+    i2c_stop=1,
+    i2c_restart_read,
+    i2c_restart_write,
+    i2c_continue,
+    i2c_reset_link
+} i2c_operations_t;
+
+typedef i2c_operations_t (*i2c_callback)(void *p);
+
+typedef uint8_t i2c_address_t;
+
+// common callback responses
+i2c_operations_t i2c_returnStop(void *p);
+i2c_operations_t i2c_returnReset(void *p);
+i2c_operations_t i2c_restartWrite(void *p);
+i2c_operations_t i2c_restartRead(void *p);
+
+#endif	/* I2C_TYPES_H */
+
