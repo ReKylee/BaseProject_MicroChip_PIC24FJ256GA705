@@ -6,30 +6,28 @@
  * using the improved modular drivers.
  */
 
-#include <stdlib.h>
-
-#include "oledDriver/oledC_colors.h"
-#include "oledDriver/oledC.h"
-#include "System/delay.h"
-#include "System/system.h"
+#include "app.h"
 
 /**
  * @brief Main entry point
  * @return Never returns (embedded system)
  */
 int main(void) {
-    SYSTEM_Initialize();
-    oledC_setup();
-    oledC_setBackground(OLEDC_COLOR_RED);
-    //Main loop
-    while (1) {
-        oledC_sendCommand(OLEDC_CMD_SET_DISPLAY_MODE_INVERSE, NULL, 0);
-        DELAY_milliseconds(1000);
-        oledC_sendCommand(OLEDC_CMD_SET_DISPLAY_MODE_ON, NULL, 0);
-        DELAY_milliseconds(1000);
+    // Initialize application (includes all driver setup)
+    if (!app_setup()) {
+        // Setup failed 
+        // Halt here 
+        while (1) {
+            // Error state 
+        }
     }
-
-    return 0; // Never reached
+    
+    // Main application loop
+    while (1) {
+        app_loop();
+    }
+    
+    return 0;  // Never reached
 }
 
 /**
