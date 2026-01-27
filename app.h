@@ -42,16 +42,4 @@ bool app_setup(void);
  */
 void app_loop(void);
 
-/**
- * @brief Get current application mode
- * @return Current display mode
- */
-DisplayMode_t app_get_mode(void);
-
-/**
- * @brief Get current potentiometer value
- * @return Pot value (0-1023)
- */
-uint16_t app_get_pot_value(void);
-
 #endif // APP_H
