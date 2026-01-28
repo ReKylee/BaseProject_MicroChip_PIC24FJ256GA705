@@ -1,5 +1,5 @@
-#ifndef APP_H
-#define APP_H
+#ifndef RGBEDITOR_APP_H
+#define RGBEDITOR_APP_H
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -8,18 +8,6 @@
  * @file app.h
  * @brief Main application interface
  */
-
-// ============================================================================
-// Types
-// ============================================================================
-
-/**
- * @brief Display modes
- */
-typedef enum {
-    MODE_COMPOSITE = 0,  ///< Composite color mixing mode
-    MODE_INDIVIDUAL = 1  ///< Individual color control mode
-} DisplayMode_t;
 
 // ============================================================================
 // Function Prototypes
@@ -42,4 +30,4 @@ bool app_setup(void);
  */
 void app_loop(void);
 
-#endif // APP_H
+#endif // RGBEDITOR_APP_H

@@ -6,14 +6,16 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <logicalFolder name="accel3Driver"
+                     displayName="accel3Driver"
+                     projectFiles="true">
+        <itemPath>accel3Driver/ACCEL3.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="adcDriver" displayName="adcDriver" projectFiles="true">
         <itemPath>adcDriver/ADC.h</itemPath>
       </logicalFolder>
-      <logicalFolder name="i2c1_driver" displayName="i2c1_driver" projectFiles="true">
-        <itemPath>i2c1_driver/i2c1_driver.h</itemPath>
-        <itemPath>i2c1_driver/i2c_master.h</itemPath>
-        <itemPath>i2c1_driver/i2c_simple_master.h</itemPath>
-        <itemPath>i2c1_driver/i2c_types.h</itemPath>
+      <logicalFolder name="i2cDriver" displayName="i2cDriver" projectFiles="true">
+        <itemPath>i2cDriver/I2C.h</itemPath>
       </logicalFolder>
       <logicalFolder name="ledDriver" displayName="ledDriver" projectFiles="true">
         <itemPath>ledDriver/LED.h</itemPath>
@@ -47,8 +49,6 @@
                      projectFiles="true">
         <itemPath>systemExtensions/systemExtensions.h</itemPath>
       </logicalFolder>
-      <itemPath>app.h</itemPath>
-      <itemPath>ACCEL3.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -57,14 +57,16 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <logicalFolder name="accel3Driver"
+                     displayName="accel3Driver"
+                     projectFiles="true">
+        <itemPath>accel3Driver/ACCEL3.c</itemPath>
+      </logicalFolder>
       <logicalFolder name="adcDriver" displayName="adcDriver" projectFiles="true">
         <itemPath>adcDriver/ADC.c</itemPath>
       </logicalFolder>
-      <logicalFolder name="i2c1_driver" displayName="i2c1_driver" projectFiles="true">
-        <itemPath>i2c1_driver/i2c1_driver.c</itemPath>
-        <itemPath>i2c1_driver/i2c_master.c</itemPath>
-        <itemPath>i2c1_driver/i2c_simple_master.c</itemPath>
-        <itemPath>i2c1_driver/i2c_types.c</itemPath>
+      <logicalFolder name="i2cDriver" displayName="i2cDriver" projectFiles="true">
+        <itemPath>i2cDriver/I2C.c</itemPath>
       </logicalFolder>
       <logicalFolder name="ledDriver" displayName="ledDriver" projectFiles="true">
         <itemPath>ledDriver/LED_tests.c</itemPath>
@@ -97,9 +99,6 @@
         <itemPath>systemExtensions/systemExtensions.c</itemPath>
       </logicalFolder>
       <itemPath>main.c</itemPath>
-      <itemPath>app.c</itemPath>
-      <itemPath>ACCEL3.c</itemPath>
-      <itemPath>bitbanging_example.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -370,6 +369,7 @@
         <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
         <property key="debugoptions.debug-startup" value="Use system settings"/>
         <property key="debugoptions.reset-behaviour" value="Use system settings"/>
+        <property key="firmware.download.all" value="false"/>
         <property key="lastid" value=""/>
         <property key="memories.configurationmemory" value="true"/>
         <property key="memories.dataflash" value="true"/>
@@ -419,34 +419,6 @@
         <property key="programoptions.usehighvoltageonmclr" value="false"/>
         <property key="programoptions.uselvpprogramming" value="true"/>
       </Tool>
-      <item path="app.c" ex="false" overriding="false">
-        <C30>
-        </C30>
-        <C30-AR>
-        </C30-AR>
-        <C30-AS>
-        </C30-AS>
-        <C30-CO>
-        </C30-CO>
-        <C30-LD>
-        </C30-LD>
-        <C30Global>
-        </C30Global>
-      </item>
-      <item path="app.h" ex="false" overriding="false">
-        <C30>
-        </C30>
-        <C30-AR>
-        </C30-AR>
-        <C30-AS>
-        </C30-AS>
-        <C30-CO>
-        </C30-CO>
-        <C30-LD>
-        </C30-LD>
-        <C30Global>
-        </C30Global>
-      </item>
     </conf>
   </confs>
 </configurationDescriptor>

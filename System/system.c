@@ -85,14 +85,14 @@
 #pragma config DNVPEN = ENABLE    //Downside Voltage Protection Enable bit->Downside protection enabled using ZPBOR when BOR is inactive
 
 // FICD
-#pragma config ICS = PGD1    //ICD Communication Channel Select bits->Communicate on PGEC1 and PGED1
+#pragma config ICS = PGD2    //ICD Communication Channel Select bits->Communicate on PGEC1 and PGED1
 #pragma config JTAGEN = OFF    //JTAG Enable bit->JTAG is disabled
 
 // FDEVOPT1
 #pragma config ALTCMPI = DISABLE    //Alternate Comparator Input Enable bit->C1INC, C2INC, and C3INC are on their standard pin locations
 #pragma config TMPRPIN = OFF    //Tamper Pin Enable bit->TMPRN pin function is disabled
 #pragma config SOSCHP = ON    //SOSC High Power Enable bit (valid only when SOSCSEL = 1->Enable SOSC high power mode (default)
-#pragma config ALTI2C1 = ALTI2CEN    //Alternate I2C pin Location->SDA1 and SCL1 on RB9 and RB8
+#pragma config ALTI2C1 = ALTI2CDIS    //Alternate I2C pin Location->SDA1 and SCL1 on RB9 and RB8
 
 #include "pin_manager.h"
 #include "clock.h"
@@ -103,7 +103,7 @@
 
 void SYSTEM_Initialize(void) {
     PIN_MANAGER_Initialize();
-    INTERRUPT_Initialize();
+//    INTERRUPT_Initialize();
     CLOCK_Initialize();
     
 }

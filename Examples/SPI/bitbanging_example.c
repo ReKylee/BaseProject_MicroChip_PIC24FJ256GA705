@@ -9,10 +9,10 @@
 
 #include <stdlib.h>
 
-#include "oledDriver/oledC_colors.h"
-#include "oledDriver/oledC.h"
-#include "System/delay.h"
-#include "System/system.h"
+#include "../../oledDriver/oledC_colors.h"
+#include "../../oledDriver/oledC.h"
+#include "../../System/delay.h"
+#include "../../System/system.h"
 
 /**
  * @brief Main entry point

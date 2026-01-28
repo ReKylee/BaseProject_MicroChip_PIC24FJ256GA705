@@ -19,7 +19,7 @@
     The generated drivers are tested against the following:
         Compiler          :  XC16 v2.10
         MPLAB             :  MPLAB X v6.05
-*/
+ */
 /*
     (c) 2020 Microchip Technology Inc. and its subsidiaries. You may use this
     software and any derivatives exclusively with Microchip products.
@@ -40,23 +40,25 @@
 
     MICROCHIP PROVIDES THIS SOFTWARE CONDITIONALLY UPON YOUR ACCEPTANCE OF THESE
     TERMS.
-*/
+ */
 
 /**
     Section: Includes
-*/
+ */
 #include <xc.h>
+
+#include "interrupt_manager.h"
 
 /**
     void INTERRUPT_Initialize (void)
-*/
-void INTERRUPT_Initialize (void)
-{
+ */
+void INTERRUPT_Initialize(void) {
+    INTERRUPT_GlobalEnable();
     //    MICI: MI2C1 - I2C1 Master Events
     //    Priority: 1
-        IPC4bits.MI2C1IP = 1;
+    IPC4bits.MI2C1IP = 1;
     //    SICI: SI2C1 - I2C1 Slave Events
     //    Priority: 1
-        IPC4bits.SI2C1IP = 1;
+    IPC4bits.SI2C1IP = 1;
 
 }

@@ -1,15 +1,16 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include "System/system.h"
-#include "systemExtensions/systemExtensions.h"
-#include "switchDriver/Switch.h"
-#include "adcDriver/ADC.h"
-#include "ledDriver/LED.h"
-#include "ledDriver/RGBLED_colors.h"
-#include "oledDriver/oledC.h"
-#include "oledDriver/oledC_shapes.h"
-#include "oledDriver/oledC_colors.h"
+#include "../../System/system.h"
+#include "../../systemExtensions/systemExtensions.h"
+#include "../../switchDriver/Switch.h"
+#include "../../adcDriver/ADC.h"
+#include "../../ledDriver/LED.h"
+#include "../../ledDriver/RGBLED_colors.h"
+#include "../../oledDriver/oledC.h"
+#include "../../oledDriver/oledC_shapes.h"
+#include "../../oledDriver/oledC_colors.h"
+#include "RGBEditor_App.h"
 
 /**
  * @file app.c

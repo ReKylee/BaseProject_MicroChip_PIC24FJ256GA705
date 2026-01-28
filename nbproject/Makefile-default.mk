@@ -51,17 +51,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=adcDriver/ADC.c i2c1_driver/i2c1_driver.c i2c1_driver/i2c_master.c i2c1_driver/i2c_simple_master.c i2c1_driver/i2c_types.c ledDriver/LED_tests.c oledDriver/oledC.c oledDriver/oledC_shapeHandler.c oledDriver/oledC_shapes.c spiDriver/spi1_driver.c System/clock.c System/delay.c System/interrupt_manager.c System/pin_manager.c System/system.c System/traps.c System/where_was_i.s systemExtensions/systemExtensions.c main.c app.c ACCEL3.c switchDriver/Switch.c
+SOURCEFILES_QUOTED_IF_SPACED=accel3Driver/ACCEL3.c adcDriver/ADC.c i2cDriver/I2C.c ledDriver/LED_tests.c oledDriver/oledC.c oledDriver/oledC_shapeHandler.c oledDriver/oledC_shapes.c spiDriver/spi1_driver.c switchDriver/Switch.c System/clock.c System/delay.c System/interrupt_manager.c System/pin_manager.c System/system.c System/traps.c System/where_was_i.s systemExtensions/systemExtensions.c main.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/adcDriver/ADC.o ${OBJECTDIR}/i2c1_driver/i2c1_driver.o ${OBJECTDIR}/i2c1_driver/i2c_master.o ${OBJECTDIR}/i2c1_driver/i2c_simple_master.o ${OBJECTDIR}/i2c1_driver/i2c_types.o ${OBJECTDIR}/ledDriver/LED_tests.o ${OBJECTDIR}/oledDriver/oledC.o ${OBJECTDIR}/oledDriver/oledC_shapeHandler.o ${OBJECTDIR}/oledDriver/oledC_shapes.o ${OBJECTDIR}/spiDriver/spi1_driver.o ${OBJECTDIR}/System/clock.o ${OBJECTDIR}/System/delay.o ${OBJECTDIR}/System/interrupt_manager.o ${OBJECTDIR}/System/pin_manager.o ${OBJECTDIR}/System/system.o ${OBJECTDIR}/System/traps.o ${OBJECTDIR}/System/where_was_i.o ${OBJECTDIR}/systemExtensions/systemExtensions.o ${OBJECTDIR}/main.o ${OBJECTDIR}/app.o ${OBJECTDIR}/ACCEL3.o ${OBJECTDIR}/switchDriver/Switch.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/adcDriver/ADC.o.d ${OBJECTDIR}/i2c1_driver/i2c1_driver.o.d ${OBJECTDIR}/i2c1_driver/i2c_master.o.d ${OBJECTDIR}/i2c1_driver/i2c_simple_master.o.d ${OBJECTDIR}/i2c1_driver/i2c_types.o.d ${OBJECTDIR}/ledDriver/LED_tests.o.d ${OBJECTDIR}/oledDriver/oledC.o.d ${OBJECTDIR}/oledDriver/oledC_shapeHandler.o.d ${OBJECTDIR}/oledDriver/oledC_shapes.o.d ${OBJECTDIR}/spiDriver/spi1_driver.o.d ${OBJECTDIR}/System/clock.o.d ${OBJECTDIR}/System/delay.o.d ${OBJECTDIR}/System/interrupt_manager.o.d ${OBJECTDIR}/System/pin_manager.o.d ${OBJECTDIR}/System/system.o.d ${OBJECTDIR}/System/traps.o.d ${OBJECTDIR}/System/where_was_i.o.d ${OBJECTDIR}/systemExtensions/systemExtensions.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/app.o.d ${OBJECTDIR}/ACCEL3.o.d ${OBJECTDIR}/switchDriver/Switch.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/accel3Driver/ACCEL3.o ${OBJECTDIR}/adcDriver/ADC.o ${OBJECTDIR}/i2cDriver/I2C.o ${OBJECTDIR}/ledDriver/LED_tests.o ${OBJECTDIR}/oledDriver/oledC.o ${OBJECTDIR}/oledDriver/oledC_shapeHandler.o ${OBJECTDIR}/oledDriver/oledC_shapes.o ${OBJECTDIR}/spiDriver/spi1_driver.o ${OBJECTDIR}/switchDriver/Switch.o ${OBJECTDIR}/System/clock.o ${OBJECTDIR}/System/delay.o ${OBJECTDIR}/System/interrupt_manager.o ${OBJECTDIR}/System/pin_manager.o ${OBJECTDIR}/System/system.o ${OBJECTDIR}/System/traps.o ${OBJECTDIR}/System/where_was_i.o ${OBJECTDIR}/systemExtensions/systemExtensions.o ${OBJECTDIR}/main.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/accel3Driver/ACCEL3.o.d ${OBJECTDIR}/adcDriver/ADC.o.d ${OBJECTDIR}/i2cDriver/I2C.o.d ${OBJECTDIR}/ledDriver/LED_tests.o.d ${OBJECTDIR}/oledDriver/oledC.o.d ${OBJECTDIR}/oledDriver/oledC_shapeHandler.o.d ${OBJECTDIR}/oledDriver/oledC_shapes.o.d ${OBJECTDIR}/spiDriver/spi1_driver.o.d ${OBJECTDIR}/switchDriver/Switch.o.d ${OBJECTDIR}/System/clock.o.d ${OBJECTDIR}/System/delay.o.d ${OBJECTDIR}/System/interrupt_manager.o.d ${OBJECTDIR}/System/pin_manager.o.d ${OBJECTDIR}/System/system.o.d ${OBJECTDIR}/System/traps.o.d ${OBJECTDIR}/System/where_was_i.o.d ${OBJECTDIR}/systemExtensions/systemExtensions.o.d ${OBJECTDIR}/main.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/adcDriver/ADC.o ${OBJECTDIR}/i2c1_driver/i2c1_driver.o ${OBJECTDIR}/i2c1_driver/i2c_master.o ${OBJECTDIR}/i2c1_driver/i2c_simple_master.o ${OBJECTDIR}/i2c1_driver/i2c_types.o ${OBJECTDIR}/ledDriver/LED_tests.o ${OBJECTDIR}/oledDriver/oledC.o ${OBJECTDIR}/oledDriver/oledC_shapeHandler.o ${OBJECTDIR}/oledDriver/oledC_shapes.o ${OBJECTDIR}/spiDriver/spi1_driver.o ${OBJECTDIR}/System/clock.o ${OBJECTDIR}/System/delay.o ${OBJECTDIR}/System/interrupt_manager.o ${OBJECTDIR}/System/pin_manager.o ${OBJECTDIR}/System/system.o ${OBJECTDIR}/System/traps.o ${OBJECTDIR}/System/where_was_i.o ${OBJECTDIR}/systemExtensions/systemExtensions.o ${OBJECTDIR}/main.o ${OBJECTDIR}/app.o ${OBJECTDIR}/ACCEL3.o ${OBJECTDIR}/switchDriver/Switch.o
+OBJECTFILES=${OBJECTDIR}/accel3Driver/ACCEL3.o ${OBJECTDIR}/adcDriver/ADC.o ${OBJECTDIR}/i2cDriver/I2C.o ${OBJECTDIR}/ledDriver/LED_tests.o ${OBJECTDIR}/oledDriver/oledC.o ${OBJECTDIR}/oledDriver/oledC_shapeHandler.o ${OBJECTDIR}/oledDriver/oledC_shapes.o ${OBJECTDIR}/spiDriver/spi1_driver.o ${OBJECTDIR}/switchDriver/Switch.o ${OBJECTDIR}/System/clock.o ${OBJECTDIR}/System/delay.o ${OBJECTDIR}/System/interrupt_manager.o ${OBJECTDIR}/System/pin_manager.o ${OBJECTDIR}/System/system.o ${OBJECTDIR}/System/traps.o ${OBJECTDIR}/System/where_was_i.o ${OBJECTDIR}/systemExtensions/systemExtensions.o ${OBJECTDIR}/main.o
 
 # Source Files
-SOURCEFILES=adcDriver/ADC.c i2c1_driver/i2c1_driver.c i2c1_driver/i2c_master.c i2c1_driver/i2c_simple_master.c i2c1_driver/i2c_types.c ledDriver/LED_tests.c oledDriver/oledC.c oledDriver/oledC_shapeHandler.c oledDriver/oledC_shapes.c spiDriver/spi1_driver.c System/clock.c System/delay.c System/interrupt_manager.c System/pin_manager.c System/system.c System/traps.c System/where_was_i.s systemExtensions/systemExtensions.c main.c app.c ACCEL3.c switchDriver/Switch.c
+SOURCEFILES=accel3Driver/ACCEL3.c adcDriver/ADC.c i2cDriver/I2C.c ledDriver/LED_tests.c oledDriver/oledC.c oledDriver/oledC_shapeHandler.c oledDriver/oledC_shapes.c spiDriver/spi1_driver.c switchDriver/Switch.c System/clock.c System/delay.c System/interrupt_manager.c System/pin_manager.c System/system.c System/traps.c System/where_was_i.s systemExtensions/systemExtensions.c main.c
 
 
 
@@ -89,35 +89,23 @@ MP_LINKER_FILE_OPTION=,--script=p24FJ256GA705.gld
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
+${OBJECTDIR}/accel3Driver/ACCEL3.o: accel3Driver/ACCEL3.c  .generated_files/flags/default/234851ef00960967dac5f883b0543c23bedba35c .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/accel3Driver" 
+	@${RM} ${OBJECTDIR}/accel3Driver/ACCEL3.o.d 
+	@${RM} ${OBJECTDIR}/accel3Driver/ACCEL3.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  accel3Driver/ACCEL3.c  -o ${OBJECTDIR}/accel3Driver/ACCEL3.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/accel3Driver/ACCEL3.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
 ${OBJECTDIR}/adcDriver/ADC.o: adcDriver/ADC.c  .generated_files/flags/default/26da2ef0610a4e8c6f3148e258fd1b9ce5dde94c .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/adcDriver" 
 	@${RM} ${OBJECTDIR}/adcDriver/ADC.o.d 
 	@${RM} ${OBJECTDIR}/adcDriver/ADC.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  adcDriver/ADC.c  -o ${OBJECTDIR}/adcDriver/ADC.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/adcDriver/ADC.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
-${OBJECTDIR}/i2c1_driver/i2c1_driver.o: i2c1_driver/i2c1_driver.c  .generated_files/flags/default/b7e3aeda6828768b8d512c2e759e785a5f443871 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
-	@${MKDIR} "${OBJECTDIR}/i2c1_driver" 
-	@${RM} ${OBJECTDIR}/i2c1_driver/i2c1_driver.o.d 
-	@${RM} ${OBJECTDIR}/i2c1_driver/i2c1_driver.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  i2c1_driver/i2c1_driver.c  -o ${OBJECTDIR}/i2c1_driver/i2c1_driver.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/i2c1_driver/i2c1_driver.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
-	
-${OBJECTDIR}/i2c1_driver/i2c_master.o: i2c1_driver/i2c_master.c  .generated_files/flags/default/e075abdee6baf197289a00683ad82e75638894e0 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
-	@${MKDIR} "${OBJECTDIR}/i2c1_driver" 
-	@${RM} ${OBJECTDIR}/i2c1_driver/i2c_master.o.d 
-	@${RM} ${OBJECTDIR}/i2c1_driver/i2c_master.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  i2c1_driver/i2c_master.c  -o ${OBJECTDIR}/i2c1_driver/i2c_master.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/i2c1_driver/i2c_master.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
-	
-${OBJECTDIR}/i2c1_driver/i2c_simple_master.o: i2c1_driver/i2c_simple_master.c  .generated_files/flags/default/aa835b6e8ed2f85670fc04f765c6ebbd69b37be3 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
-	@${MKDIR} "${OBJECTDIR}/i2c1_driver" 
-	@${RM} ${OBJECTDIR}/i2c1_driver/i2c_simple_master.o.d 
-	@${RM} ${OBJECTDIR}/i2c1_driver/i2c_simple_master.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  i2c1_driver/i2c_simple_master.c  -o ${OBJECTDIR}/i2c1_driver/i2c_simple_master.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/i2c1_driver/i2c_simple_master.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
-	
-${OBJECTDIR}/i2c1_driver/i2c_types.o: i2c1_driver/i2c_types.c  .generated_files/flags/default/44c3082b351b3d866c4fd638a5544f5deeb4a82a .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
-	@${MKDIR} "${OBJECTDIR}/i2c1_driver" 
-	@${RM} ${OBJECTDIR}/i2c1_driver/i2c_types.o.d 
-	@${RM} ${OBJECTDIR}/i2c1_driver/i2c_types.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  i2c1_driver/i2c_types.c  -o ${OBJECTDIR}/i2c1_driver/i2c_types.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/i2c1_driver/i2c_types.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+${OBJECTDIR}/i2cDriver/I2C.o: i2cDriver/I2C.c  .generated_files/flags/default/7f9c6ffc4230650d19e44f5e7233d467ee100223 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/i2cDriver" 
+	@${RM} ${OBJECTDIR}/i2cDriver/I2C.o.d 
+	@${RM} ${OBJECTDIR}/i2cDriver/I2C.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  i2cDriver/I2C.c  -o ${OBJECTDIR}/i2cDriver/I2C.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/i2cDriver/I2C.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
 ${OBJECTDIR}/ledDriver/LED_tests.o: ledDriver/LED_tests.c  .generated_files/flags/default/38f4a47099bb85aec6e671adbb32b561ba28cbe9 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/ledDriver" 
@@ -148,6 +136,12 @@ ${OBJECTDIR}/spiDriver/spi1_driver.o: spiDriver/spi1_driver.c  .generated_files/
 	@${RM} ${OBJECTDIR}/spiDriver/spi1_driver.o.d 
 	@${RM} ${OBJECTDIR}/spiDriver/spi1_driver.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  spiDriver/spi1_driver.c  -o ${OBJECTDIR}/spiDriver/spi1_driver.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/spiDriver/spi1_driver.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/switchDriver/Switch.o: switchDriver/Switch.c  .generated_files/flags/default/7a16ba9e36fe14e5001cfb5d4883ad900e4461d9 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/switchDriver" 
+	@${RM} ${OBJECTDIR}/switchDriver/Switch.o.d 
+	@${RM} ${OBJECTDIR}/switchDriver/Switch.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  switchDriver/Switch.c  -o ${OBJECTDIR}/switchDriver/Switch.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/switchDriver/Switch.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
 ${OBJECTDIR}/System/clock.o: System/clock.c  .generated_files/flags/default/73900e32b45088564e6a8edb9f6fc8d524fd2129 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/System" 
@@ -197,54 +191,24 @@ ${OBJECTDIR}/main.o: main.c  .generated_files/flags/default/4b1addb59371ffc563ae
 	@${RM} ${OBJECTDIR}/main.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  main.c  -o ${OBJECTDIR}/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/main.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
-${OBJECTDIR}/app.o: app.c  .generated_files/flags/default/c00b8b8791305d96a214d655d7d11fb14ad6be4 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/app.o.d 
-	@${RM} ${OBJECTDIR}/app.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  app.c  -o ${OBJECTDIR}/app.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/app.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
-	
-${OBJECTDIR}/ACCEL3.o: ACCEL3.c  .generated_files/flags/default/3807efa9cd1dbbed2c5ec7e50835f525a074ba81 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/ACCEL3.o.d 
-	@${RM} ${OBJECTDIR}/ACCEL3.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ACCEL3.c  -o ${OBJECTDIR}/ACCEL3.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/ACCEL3.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
-	
-${OBJECTDIR}/switchDriver/Switch.o: switchDriver/Switch.c  .generated_files/flags/default/7a16ba9e36fe14e5001cfb5d4883ad900e4461d9 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
-	@${MKDIR} "${OBJECTDIR}/switchDriver" 
-	@${RM} ${OBJECTDIR}/switchDriver/Switch.o.d 
-	@${RM} ${OBJECTDIR}/switchDriver/Switch.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  switchDriver/Switch.c  -o ${OBJECTDIR}/switchDriver/Switch.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/switchDriver/Switch.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
-	
 else
+${OBJECTDIR}/accel3Driver/ACCEL3.o: accel3Driver/ACCEL3.c  .generated_files/flags/default/36478faf6c3301c6b2c2194516e965c2be03a8e4 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/accel3Driver" 
+	@${RM} ${OBJECTDIR}/accel3Driver/ACCEL3.o.d 
+	@${RM} ${OBJECTDIR}/accel3Driver/ACCEL3.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  accel3Driver/ACCEL3.c  -o ${OBJECTDIR}/accel3Driver/ACCEL3.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/accel3Driver/ACCEL3.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
 ${OBJECTDIR}/adcDriver/ADC.o: adcDriver/ADC.c  .generated_files/flags/default/b4efa2508eda2fa35c3f586458e8fbc277578713 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/adcDriver" 
 	@${RM} ${OBJECTDIR}/adcDriver/ADC.o.d 
 	@${RM} ${OBJECTDIR}/adcDriver/ADC.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  adcDriver/ADC.c  -o ${OBJECTDIR}/adcDriver/ADC.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/adcDriver/ADC.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
-${OBJECTDIR}/i2c1_driver/i2c1_driver.o: i2c1_driver/i2c1_driver.c  .generated_files/flags/default/dc65907447accd941c82a59cada1578d1e54cffb .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
-	@${MKDIR} "${OBJECTDIR}/i2c1_driver" 
-	@${RM} ${OBJECTDIR}/i2c1_driver/i2c1_driver.o.d 
-	@${RM} ${OBJECTDIR}/i2c1_driver/i2c1_driver.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  i2c1_driver/i2c1_driver.c  -o ${OBJECTDIR}/i2c1_driver/i2c1_driver.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/i2c1_driver/i2c1_driver.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
-	
-${OBJECTDIR}/i2c1_driver/i2c_master.o: i2c1_driver/i2c_master.c  .generated_files/flags/default/e87eaeade5ecda4d43066848ae5536aac279522a .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
-	@${MKDIR} "${OBJECTDIR}/i2c1_driver" 
-	@${RM} ${OBJECTDIR}/i2c1_driver/i2c_master.o.d 
-	@${RM} ${OBJECTDIR}/i2c1_driver/i2c_master.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  i2c1_driver/i2c_master.c  -o ${OBJECTDIR}/i2c1_driver/i2c_master.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/i2c1_driver/i2c_master.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
-	
-${OBJECTDIR}/i2c1_driver/i2c_simple_master.o: i2c1_driver/i2c_simple_master.c  .generated_files/flags/default/641fafa8b6fcefbbda8af41bd6dea41bd60b7006 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
-	@${MKDIR} "${OBJECTDIR}/i2c1_driver" 
-	@${RM} ${OBJECTDIR}/i2c1_driver/i2c_simple_master.o.d 
-	@${RM} ${OBJECTDIR}/i2c1_driver/i2c_simple_master.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  i2c1_driver/i2c_simple_master.c  -o ${OBJECTDIR}/i2c1_driver/i2c_simple_master.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/i2c1_driver/i2c_simple_master.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
-	
-${OBJECTDIR}/i2c1_driver/i2c_types.o: i2c1_driver/i2c_types.c  .generated_files/flags/default/b8721479df4ea2c85d4c87e556bb5689fb41f198 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
-	@${MKDIR} "${OBJECTDIR}/i2c1_driver" 
-	@${RM} ${OBJECTDIR}/i2c1_driver/i2c_types.o.d 
-	@${RM} ${OBJECTDIR}/i2c1_driver/i2c_types.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  i2c1_driver/i2c_types.c  -o ${OBJECTDIR}/i2c1_driver/i2c_types.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/i2c1_driver/i2c_types.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+${OBJECTDIR}/i2cDriver/I2C.o: i2cDriver/I2C.c  .generated_files/flags/default/c3b9ae819fe8496dd85341792dd866b92f7afeef .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/i2cDriver" 
+	@${RM} ${OBJECTDIR}/i2cDriver/I2C.o.d 
+	@${RM} ${OBJECTDIR}/i2cDriver/I2C.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  i2cDriver/I2C.c  -o ${OBJECTDIR}/i2cDriver/I2C.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/i2cDriver/I2C.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
 ${OBJECTDIR}/ledDriver/LED_tests.o: ledDriver/LED_tests.c  .generated_files/flags/default/ee0ac07de3e7a899a05c41ce24c87c5711ef0421 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/ledDriver" 
@@ -275,6 +239,12 @@ ${OBJECTDIR}/spiDriver/spi1_driver.o: spiDriver/spi1_driver.c  .generated_files/
 	@${RM} ${OBJECTDIR}/spiDriver/spi1_driver.o.d 
 	@${RM} ${OBJECTDIR}/spiDriver/spi1_driver.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  spiDriver/spi1_driver.c  -o ${OBJECTDIR}/spiDriver/spi1_driver.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/spiDriver/spi1_driver.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/switchDriver/Switch.o: switchDriver/Switch.c  .generated_files/flags/default/47b29a2adc1adbe8ad838556490134e57b716f95 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/switchDriver" 
+	@${RM} ${OBJECTDIR}/switchDriver/Switch.o.d 
+	@${RM} ${OBJECTDIR}/switchDriver/Switch.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  switchDriver/Switch.c  -o ${OBJECTDIR}/switchDriver/Switch.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/switchDriver/Switch.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
 ${OBJECTDIR}/System/clock.o: System/clock.c  .generated_files/flags/default/5e6c5e68b86cb461881ffd08c7892145f02d287c .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/System" 
@@ -323,24 +293,6 @@ ${OBJECTDIR}/main.o: main.c  .generated_files/flags/default/d29791c61f6db6483700
 	@${RM} ${OBJECTDIR}/main.o.d 
 	@${RM} ${OBJECTDIR}/main.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  main.c  -o ${OBJECTDIR}/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/main.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
-	
-${OBJECTDIR}/app.o: app.c  .generated_files/flags/default/473344684ea4f56230f909be4461f3b87d30c85e .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/app.o.d 
-	@${RM} ${OBJECTDIR}/app.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  app.c  -o ${OBJECTDIR}/app.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/app.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
-	
-${OBJECTDIR}/ACCEL3.o: ACCEL3.c  .generated_files/flags/default/2d8c1de25198456328ca544ac70b2cd9b4fee50a .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/ACCEL3.o.d 
-	@${RM} ${OBJECTDIR}/ACCEL3.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ACCEL3.c  -o ${OBJECTDIR}/ACCEL3.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/ACCEL3.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
-	
-${OBJECTDIR}/switchDriver/Switch.o: switchDriver/Switch.c  .generated_files/flags/default/47b29a2adc1adbe8ad838556490134e57b716f95 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
-	@${MKDIR} "${OBJECTDIR}/switchDriver" 
-	@${RM} ${OBJECTDIR}/switchDriver/Switch.o.d 
-	@${RM} ${OBJECTDIR}/switchDriver/Switch.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  switchDriver/Switch.c  -o ${OBJECTDIR}/switchDriver/Switch.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/switchDriver/Switch.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
 endif
 

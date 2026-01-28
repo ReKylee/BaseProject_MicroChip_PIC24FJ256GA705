@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
-  <executable name="dist/default/production/CuriosityOledBase.X.production.elf">
+  <executable name="dist/default/debug/CuriosityOledBase.X.debug.elf">
     <memory name="data">
       <units>bytes</units>
       <length>16384</length>
-      <used>628</used>
-      <free>15756</free>
+      <used>706</used>
+      <free>15678</free>
     </memory>
     <memory name="program">
       <units>bytes</units>
       <length>263424</length>
-      <used>20661</used>
-      <free>242763</free>
+      <used>20727</used>
+      <free>242697</free>
     </memory>
   </executable>
 </project>
