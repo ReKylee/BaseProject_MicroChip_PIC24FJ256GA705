@@ -23,8 +23,8 @@ void AnalogFace_Draw(void);
 
 /**
  * @brief Update analog watch face (called every second)
- * Efficiently updates only what changed
+ * Efficiently updates only what changed by erasing and redrawing hands.
  */
-void AnalogFace_Update(void);
+void AnalogFace_DrawUpdate(void);
 
 #endif // ANALOG_FACE_H

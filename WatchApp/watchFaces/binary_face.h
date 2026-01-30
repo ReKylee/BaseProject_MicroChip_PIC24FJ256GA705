@@ -22,7 +22,8 @@ void BinaryFace_Draw(void);
 
 /**
  * @brief Update binary watch face (called every second)
+ * Only redraws the dots that have changed.
  */
-void BinaryFace_Update(void);
+void BinaryFace_DrawUpdate(void);
 
 #endif // BINARY_FACE_H

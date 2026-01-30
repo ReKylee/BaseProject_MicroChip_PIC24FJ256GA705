@@ -75,50 +75,30 @@ static void HandleWatchMode(ButtonEvent_t btn, AccelEvent_t accel) {
 
     if (btn == BTN_S1_LONG) {
         Menu_Enter();
-        LED1_On();
-        DELAY_milliseconds(100);
-        LED1_Off();
+        state->needs_full_redraw = true;
         return;
     }
 
     if (Alarm_IsRinging() && (btn == BTN_S1_SHORT || btn == BTN_S2_SHORT)) {
         Alarm_Dismiss();
+        state->needs_full_redraw = true; // Force redraw to clear alarm state
         return;
     }
 
     if (btn == BTN_S2_SHORT) {
         state->watch_face = (state->watch_face + 1) % FACE_COUNT;
-        state->needs_redraw = true;
+        // Re-initialize the face to build its specific shape list
+        switch(state->watch_face) {
+            case FACE_DIGITAL: DigitalFace_Init(); break;
+            case FACE_ANALOG: AnalogFace_Init(); break;
+            case FACE_BINARY: BinaryFace_Init(); break;
+            default: break;
+        }
+        state->needs_full_redraw = true;
         LED2_On();
         DELAY_milliseconds(100);
         LED2_Off();
         return;
-    }
-
-    if (state->needs_redraw) {
-        state->needs_redraw = false;
-
-        static bool flash_state = false;
-        if (Alarm_IsRinging()) {
-            flash_state = !flash_state;
-            oledC_setBackground(flash_state ? COLOR_WARNING : COLOR_BG);
-        } else {
-            oledC_setBackground(COLOR_BG);
-        }
-
-        switch (state->watch_face) {
-            case FACE_DIGITAL:
-                DigitalFace_Draw();
-                break;
-            case FACE_ANALOG:
-                AnalogFace_Draw();
-                break;
-            case FACE_BINARY:
-                BinaryFace_Draw();
-                break;
-            default:
-                break;
-        }
     }
 }
 
@@ -127,11 +107,7 @@ static void HandleMenuMode(ButtonEvent_t btn, AccelEvent_t accel) {
 
     if (accel == ACCEL_FLIP || accel == ACCEL_SHAKE) {
         Menu_Exit();
-        LED1_On();
-        LED2_On();
-        DELAY_milliseconds(100);
-        LED1_Off();
-        LED2_Off();
+        state->needs_full_redraw = true;
         return;
     }
 
@@ -148,11 +124,6 @@ static void HandleMenuMode(ButtonEvent_t btn, AccelEvent_t accel) {
 
     uint16_t pot_val = Pot_GetRaw();
     Menu_HandleInput(btn, pot_val);
-
-    if (state->needs_redraw) {
-        state->needs_redraw = false;
-        Menu_Draw();
-    }
 }
 
 static void HandlePomodoroMode(ButtonEvent_t btn, AccelEvent_t accel) {
@@ -160,14 +131,13 @@ static void HandlePomodoroMode(ButtonEvent_t btn, AccelEvent_t accel) {
 
     if (btn == BTN_S1_LONG) {
         Menu_Enter();
-        LED1_On();
-        DELAY_milliseconds(100);
-        LED1_Off();
+        state->needs_full_redraw = true;
         return;
     }
 
     if (accel == ACCEL_FLIP || accel == ACCEL_SHAKE) {
         Menu_Exit();
+        state->needs_full_redraw = true;
         return;
     }
 
@@ -184,11 +154,6 @@ static void HandlePomodoroMode(ButtonEvent_t btn, AccelEvent_t accel) {
     }
 
     Pomodoro_HandleInput(btn == BTN_S2_SHORT, btn == BTN_S1_SHORT);
-
-    if (state->needs_redraw) {
-        state->needs_redraw = false;
-        Pomodoro_Draw();
-    }
 }
 
 // ============================================================================
@@ -199,8 +164,6 @@ int main(void) {
     InitializeHardware();
 
     WatchState_t* state = Watch_GetState();
-    state->needs_redraw = true;
-
     uint32_t last_uptime_s = 0;
 
     while (1) {
@@ -209,18 +172,12 @@ int main(void) {
         if (current_uptime_s != last_uptime_s) {
             last_uptime_s = current_uptime_s;
             
-            // Update global time state
             Timekeeper_GetTime(&state->current_time);
             
-            // Run once-per-second tasks
             Alarm_Check();
             Alarm_Update();
             
-            if (state->display_mode == MODE_POMODORO) {
-                Pomodoro_Update();
-            } else if (state->display_mode == MODE_MENU) {
-                Menu_Update();
-            }
+            if (state->display_mode == MODE_POMODORO) Pomodoro_Update();
             
             state->needs_redraw = true;
         }
@@ -240,6 +197,66 @@ int main(void) {
             case MODE_POMODORO:
                 HandlePomodoroMode(btn, accel);
                 break;
+        }
+        
+        // --- DRAWING LOGIC ---
+        if (state->needs_full_redraw) {
+            state->needs_full_redraw = false;
+            state->needs_redraw = false;
+            
+            oledC_setBackground(COLOR_BG);
+            
+            switch (state->display_mode) {
+                case MODE_WATCH:
+                    switch(state->watch_face) {
+                        case FACE_DIGITAL: DigitalFace_Draw(); break;
+                        case FACE_ANALOG: AnalogFace_Draw(); break;
+                        case FACE_BINARY: BinaryFace_Draw(); break;
+                        default: break;
+                    }
+                    break;
+                case MODE_MENU: Menu_Draw(); break;
+                case MODE_POMODORO: Pomodoro_Draw(); break;
+            }
+        } else if (state->needs_redraw) {
+            state->needs_redraw = false;
+            
+            switch (state->display_mode) {
+                case MODE_WATCH: {
+                    static bool alarm_flashing = false;
+                    if (Alarm_IsRinging()) {
+                        alarm_flashing = !alarm_flashing;
+                        oledC_setBackground(alarm_flashing ? COLOR_WARNING : COLOR_BG);
+                        switch(state->watch_face) {
+                            case FACE_DIGITAL: DigitalFace_Draw(); break;
+                            case FACE_ANALOG: AnalogFace_Draw(); break;
+                            case FACE_BINARY: BinaryFace_Draw(); break;
+                            default: break;
+                        }
+                    } else {
+                        if (alarm_flashing) { // Ensure screen is cleared after alarm stops
+                            alarm_flashing = false;
+                            state->needs_full_redraw = true;
+                            break;
+                        }
+                        switch(state->watch_face) {
+                            case FACE_DIGITAL: DigitalFace_DrawUpdate(); break;
+                            case FACE_ANALOG: AnalogFace_DrawUpdate(); break;
+                            case FACE_BINARY: BinaryFace_DrawUpdate(); break;
+                            default: break;
+                        }
+                    }
+                    break;
+                }
+                case MODE_MENU:
+                    Menu_Draw();
+                    break;
+                case MODE_POMODORO:
+                    // TODO: Implement Pomodoro_DrawUpdate for partial redraws
+                    Pomodoro_Draw(); // For now, pomodoro still uses full redraw
+                    break;
+                default: break;
+            }
         }
 
         DELAY_milliseconds(10);

@@ -52,6 +52,7 @@ void Watch_InitState(void) {
     g_watch_state.pomodoro.work_sessions = 0;
     g_watch_state.pomodoro.paused = false;
     
-    // Force initial redraw
-    g_watch_state.needs_redraw = true;
+    // Force initial full redraw
+    g_watch_state.needs_redraw = false;
+    g_watch_state.needs_full_redraw = true;
 }

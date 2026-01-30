@@ -35,7 +35,8 @@ typedef struct {
     Pomodoro_t pomodoro;
     
     // Flags
-    bool needs_redraw;          // Set when display needs update
+    bool needs_redraw;          // Set when display needs partial update
+    bool needs_full_redraw;     // Set when a full screen refresh is needed
     bool second_tick;           // Set by 1Hz ISR
     
 } WatchState_t;

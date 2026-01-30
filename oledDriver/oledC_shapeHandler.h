@@ -36,6 +36,7 @@ void oledC_removeShape(uint8_t drawIndex);
 void oledC_eraseShape(uint8_t indShape, uint16_t eraseColor);
 void oledC_eraseAll(uint16_t eraseColor);
 shape_t* oledC_getShape(uint8_t index);
+void initShapesMem(void);
 
 #endif	/* OLEDC_SHAPE_HANDLER_H */
 

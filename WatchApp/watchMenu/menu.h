@@ -25,14 +25,9 @@ void Menu_Init(void);
 void Menu_HandleInput(ButtonEvent_t btn_event, uint16_t pot_value);
 
 /**
- * @brief Draw current menu screen
+ * @brief Draw current menu screen (full redraw)
  */
 void Menu_Draw(void);
-
-/**
- * @brief Update menu (called every second to update time display)
- */
-void Menu_Update(void);
 
 /**
  * @brief Enter menu mode

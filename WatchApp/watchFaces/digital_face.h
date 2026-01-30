@@ -22,7 +22,8 @@ void DigitalFace_Draw(void);
 
 /**
  * @brief Update digital watch face (called every second)
+ * Only redraws pixels that have changed.
  */
-void DigitalFace_Update(void);
+void DigitalFace_DrawUpdate(void);
 
 #endif // DIGITAL_FACE_H
