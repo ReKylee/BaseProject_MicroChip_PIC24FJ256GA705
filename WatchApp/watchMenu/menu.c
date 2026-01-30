@@ -174,7 +174,7 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
             break;
             
         case MENU_DISPLAY_MODE:
-            if (btn == BTN_S1_SHORT) state->watch_face = (state->watch_face + 1) % FACE_COUNT;
+            if (btn == BTN_S1_SHORT) state->watch_face = (state->watch_face + 1) % FACE_COUNT_SELECTABLE;
             else if (btn == BTN_S2_SHORT) state->menu_state = MENU_MAIN;
             break;
             

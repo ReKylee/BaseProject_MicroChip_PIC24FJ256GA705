@@ -38,7 +38,11 @@ typedef struct {
     bool needs_redraw;          // Set when display needs partial update
     bool needs_full_redraw;     // Set when a full screen refresh is needed
     bool second_tick;           // Set by 1Hz ISR
+    bool last_alarm_ringing; // Tracks if alarm was ringing in the previous second
+    uint8_t last_alarm_second_flash_check; // To control flashing rate
     
+    // Previous state for alarm exit
+    WatchFace_t prev_watch_face;
 } WatchState_t;
 
 // ============================================================================

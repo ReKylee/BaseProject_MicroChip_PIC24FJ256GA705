@@ -5,6 +5,7 @@
 
 #include "alarm.h"
 #include "../shared/watch_state.h"
+#include "../../oledDriver/oledC.h"
 
 #define ALARM_AUTO_OFF_SECONDS  20
 
@@ -32,6 +33,8 @@ void Alarm_Check(void) {
         // Trigger alarm
         state->alarm.triggered = true;
         state->alarm.trigger_count = 0;
+        state->prev_watch_face = state->watch_face; // Store current watch face
+        state->watch_face = FACE_ALARM; // Switch to alarm face
         state->needs_redraw = true;
     }
 }
@@ -73,7 +76,9 @@ void Alarm_Dismiss(void) {
     WatchState_t* state = Watch_GetState();
     state->alarm.triggered = false;
     state->alarm.trigger_count = 0;
-    state->needs_redraw = true;
+    state->watch_face = state->prev_watch_face; // Restore previous watch face
+    oledC_setBackground(COLOR_BG); // Reset background
+    state->needs_full_redraw = true; // Force full redraw to show restored face
 }
 
 bool Alarm_IsRinging(void) {

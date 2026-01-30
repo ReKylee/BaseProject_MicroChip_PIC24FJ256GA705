@@ -17,7 +17,7 @@ static void HandleWatchMode(ButtonEvent_t btn, AccelEvent_t accel) {
     }
 
     if (btn == BTN_S2_SHORT) {
-        state->watch_face = (state->watch_face + 1) % FACE_COUNT;
+        state->watch_face = (state->watch_face + 1) % FACE_COUNT_SELECTABLE;
         // Re-initialize the face to build its specific shape list
         switch(state->watch_face) {
             case FACE_DIGITAL: DigitalFace_Init(); break;

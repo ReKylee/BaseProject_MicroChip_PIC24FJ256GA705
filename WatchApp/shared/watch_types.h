@@ -14,14 +14,14 @@
 // ============================================================================
 
 typedef struct {
-    uint8_t hour;       // 0-23
-    uint8_t minute;     // 0-59
-    uint8_t second;     // 0-59
+    uint8_t hour; // 0-23
+    uint8_t minute; // 0-59
+    uint8_t second; // 0-59
 } Time_t;
 
 typedef struct {
-    uint8_t day;        // 1-31
-    uint8_t month;      // 1-12
+    uint8_t day; // 1-31
+    uint8_t month; // 1-12
 } Date_t;
 
 typedef enum {
@@ -37,7 +37,8 @@ typedef enum {
     FACE_DIGITAL = 0,
     FACE_ANALOG,
     FACE_BINARY,
-    FACE_COUNT          // Number of watch faces
+    FACE_COUNT_SELECTABLE, // Number of user-selectable watch faces
+    FACE_ALARM // This face is not user-selectable
 } WatchFace_t;
 
 // ============================================================================
@@ -45,8 +46,8 @@ typedef enum {
 // ============================================================================
 
 typedef struct {
-    uint8_t hour;       // 0-23
-    uint8_t minute;     // 0-59
+    uint8_t hour; // 0-23
+    uint8_t minute; // 0-59
     bool enabled;
     bool triggered;
     uint8_t trigger_count; // For auto-off after 20s
@@ -57,9 +58,9 @@ typedef struct {
 // ============================================================================
 
 typedef enum {
-    MODE_WATCH = 0,     // Normal watch display
-    MODE_MENU,          // Menu navigation
-    MODE_POMODORO       // Pomodoro timer
+    MODE_WATCH = 0, // Normal watch display
+    MODE_MENU, // Menu navigation
+    MODE_POMODORO // Pomodoro timer
 } DisplayMode_t;
 
 typedef enum {
@@ -105,7 +106,7 @@ typedef enum {
 typedef struct {
     PomodoroState_t state;
     uint16_t remaining_seconds;
-    uint8_t work_sessions;      // Count completed work sessions
+    uint8_t work_sessions; // Count completed work sessions
     bool paused;
 } Pomodoro_t;
 

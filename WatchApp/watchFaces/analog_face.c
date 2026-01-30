@@ -29,7 +29,7 @@
 
 // Marker widths for main (3,6,9,12) vs minor markers
 #define MARKER_MAJOR_WIDTH  3
-#define MARKER_MINOR_WIDTH  2
+#define MARKER_MINOR_WIDTH  1
 
 // Date position
 #define DATE_X  2
