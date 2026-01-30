@@ -4,14 +4,14 @@
 static uint8_t slave_addr;
 
 ACCEL3_Status_t ACCEL3_Init(const ACCEL3_Config_t *cfg) {
-    // 1. Determine address (Default to 0x1D if config is NULL, matching LabC7)
+    // Determine address (Default to 0x1D if config is NULL)
     slave_addr = (cfg) ? cfg->i2c_address : ADXL345_ADDR_SDO_HIGH;
 
-    // 2. Init I2C Bus
-    i2c_config_t i2c_cfg = {.bus_hz = 100000, .timeout_ms = 50};
+    // Init I2C Bus
+    i2c_config_t i2c_cfg = {.bus_hz = 100000, .timeout_ms = 100};
     i2c_init(&i2c_cfg);
 
-    // 3. Verify Device ID (Should be 0xE5)
+    // Verify Device ID (Should be 0xE5)
     uint8_t devid = 0;
     if (i2c_readReg(slave_addr, ADXL345_REG_DEVID, &devid) != I2C_OK) {
         return ACCEL3_ERR_I2C;
@@ -20,7 +20,7 @@ ACCEL3_Status_t ACCEL3_Init(const ACCEL3_Config_t *cfg) {
         return ACCEL3_ERR_ID;
     }
 
-    // 4. Configure Device (Sequence from LabC7)
+    // Configure Device
     // Measure Mode (Power_CTL = 0x08)
     if (i2c_writeReg(slave_addr, ADXL345_REG_POWER_CTL, 0x08) != I2C_OK) return ACCEL3_ERR_I2C;
 

@@ -37,6 +37,10 @@ void PIN_MANAGER_Initialize(void) {
     ODCB = 0x0000;
     ODCC = 0x0000;
 
+    // I2C1 (SDA1/SCL1) on RB9/RB8
+    ODCBbits.ODCB8 = 1;   // Enable open-drain for SCL1 (RB8)
+    ODCBbits.ODCB9 = 1;   // Enable open-drain for SDA1 (RB9)
+
     /****************************************************************************
      * Set the PPS
      ***************************************************************************/

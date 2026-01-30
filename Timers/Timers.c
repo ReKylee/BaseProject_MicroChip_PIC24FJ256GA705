@@ -1,7 +1,7 @@
 #include "Timers.h"
 
 #ifndef FCY
-#define FCY 4000000UL // FCY is FOSC/2, and FOSC is 8MHz for this board.
+#define FCY _XTAL_FREQ/2
 #endif
 
 /** * This Macro writes the actual function and ISR code. 
