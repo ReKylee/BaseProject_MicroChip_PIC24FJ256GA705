@@ -1,6 +1,6 @@
 /*
  * binary_face.c
- * Implementation of binary watch face using the oledC shape handler.
+ * Binary watch face using immediate-mode drawing (optimized)
  */
 
 #include "binary_face.h"
@@ -9,27 +9,40 @@
 #include "../watchCore/timekeeper.h"
 #include "../../oledDriver/oledC.h"
 #include "../../oledDriver/oledC_shapes.h"
-#include "../../oledDriver/oledC_shapeHandler.h"
-#include <stdio.h>
+#include <stdint.h>
+#include <stdbool.h>
 #include <string.h>
 
 // ============================================================================
-// CONFIGURATION & SHAPE INDICES
+// CONFIG
 // ============================================================================
 
 #define DOT_SIZE        5
 #define DOT_SPACING     10
 #define START_X         16
 #define START_Y         20
+#define COL_SPACING_FIX 5  // extra spacing between hours/minutes/seconds
 
-#define BINARY_SHAPE_START_IDX  0
-#define LABEL_START_IDX         (BINARY_SHAPE_START_IDX + 0) // 7 labels
-#define SEPARATOR_START_IDX     (BINARY_SHAPE_START_IDX + 7) // 2 separators
-#define DOT_START_IDX           (BINARY_SHAPE_START_IDX + 9) // 24 dots (6 cols * 4 rows)
-#define BINARY_SHAPE_COUNT      (9 + 24)
+static const uint8_t LABEL_X[3] = {START_X + 5, START_X + 30, START_X + 55};
+static const uint8_t LABEL_Y = 78;
+
+static const uint8_t BIT_LABELS_Y[4] = {START_Y - 3, START_Y + 7, START_Y + 17, START_Y + 27};
+static const char* BIT_LABELS = "8421";
+
+// Colors per column (hour, min, sec)
+static const uint16_t COLORS[6] = {COLOR_PRIMARY, COLOR_PRIMARY,
+    COLOR_SECONDARY, COLOR_SECONDARY,
+    COLOR_ACCENT, COLOR_ACCENT};
+
+// Precompute dot positions
+
+typedef struct {
+    uint8_t x, y;
+} DotPos_t;
+static DotPos_t dot_pos[6][4]; // col x row
 
 // ============================================================================
-// MODULE STATE
+// STATE
 // ============================================================================
 
 static Time_t last_time_drawn;
@@ -39,8 +52,19 @@ static TimeFormat_t last_format_drawn;
 // PRIVATE FUNCTIONS
 // ============================================================================
 
-static uint8_t get_bit(uint8_t value, uint8_t bit_pos) {
+static inline uint8_t get_bit(uint8_t value, uint8_t bit_pos) {
     return (value >> bit_pos) & 1;
+}
+
+static void InitDotPositions(void) {
+    for (uint8_t col = 0; col < 6; col++) {
+        for (uint8_t row = 0; row < 4; row++) {
+            uint8_t x = START_X + col * DOT_SPACING + (col / 2) * COL_SPACING_FIX;
+            uint8_t y = START_Y + row * DOT_SPACING;
+            dot_pos[col][row].x = x;
+            dot_pos[col][row].y = y;
+        }
+    }
 }
 
 // ============================================================================
@@ -48,118 +72,57 @@ static uint8_t get_bit(uint8_t value, uint8_t bit_pos) {
 // ============================================================================
 
 void BinaryFace_Init(void) {
-    initShapesMem();
-    shape_params_t p;
+    oledC_setBackground(COLOR_BG);
 
-    // Add static labels
-    p.string.color = COLOR_DIM;
-    p.string.x = START_X + 5;
-    p.string.y = 78;
-    p.string.scale_x = 1;
-    p.string.scale_y = 1;
-    p.string.string = (uint8_t*)"H";
-    oledC_addShape(LABEL_START_IDX + 0, OLED_SHAPE_STRING, &p);
-    p.string.color = COLOR_DIM;
-    p.string.x = START_X + 30;
-    p.string.y = 78;
-    p.string.scale_x = 1;
-    p.string.scale_y = 1;
-    p.string.string = (uint8_t*)"M";
-    oledC_addShape(LABEL_START_IDX + 1, OLED_SHAPE_STRING, &p);
-    p.string.color = COLOR_DIM;
-    p.string.x = START_X + 55;
-    p.string.y = 78;
-    p.string.scale_x = 1;
-    p.string.scale_y = 1;
-    p.string.string = (uint8_t*)"S";
-    oledC_addShape(LABEL_START_IDX + 2, OLED_SHAPE_STRING, &p);
-    p.string.color = COLOR_DIM;
-    p.string.x = 2;
-    p.string.y = START_Y - 3;
-    p.string.scale_x = 1;
-    p.string.scale_y = 1;
-    p.string.string = (uint8_t*)"8";
-    oledC_addShape(LABEL_START_IDX + 3, OLED_SHAPE_STRING, &p);
-    p.string.color = COLOR_DIM;
-    p.string.x = 2;
-    p.string.y = START_Y + 10 - 3;
-    p.string.scale_x = 1;
-    p.string.scale_y = 1;
-    p.string.string = (uint8_t*)"4";
-    oledC_addShape(LABEL_START_IDX + 4, OLED_SHAPE_STRING, &p);
-    p.string.color = COLOR_DIM;
-    p.string.x = 2;
-    p.string.y = START_Y + 20 - 3;
-    p.string.scale_x = 1;
-    p.string.scale_y = 1;
-    p.string.string = (uint8_t*)"2";
-    oledC_addShape(LABEL_START_IDX + 5, OLED_SHAPE_STRING, &p);
-    p.string.color = COLOR_DIM;
-    p.string.x = 2;
-    p.string.y = START_Y + 30 - 3;
-    p.string.scale_x = 1;
-    p.string.scale_y = 1;
-    p.string.string = (uint8_t*)"1";
-    oledC_addShape(LABEL_START_IDX + 6, OLED_SHAPE_STRING, &p);
+    InitDotPositions();
 
-    // Add separators
-    p.circle.color = COLOR_DIM;
-    p.circle.xc = START_X + 20;
-    p.circle.yc = START_Y + 12;
-    p.circle.radius = 1;
-    oledC_addShape(SEPARATOR_START_IDX + 0, OLED_SHAPE_CIRCLE, &p);
-    p.circle.color = COLOR_DIM;
-    p.circle.xc = START_X + 20;
-    p.circle.yc = START_Y + 22;
-    p.circle.radius = 1;
-    oledC_addShape(SEPARATOR_START_IDX + 1, OLED_SHAPE_CIRCLE, &p);
-    p.circle.color = COLOR_DIM;
-    p.circle.xc = START_X + 45;
-    p.circle.yc = START_Y + 12;
-    p.circle.radius = 1;
-    oledC_addShape(SEPARATOR_START_IDX + 2, OLED_SHAPE_CIRCLE, &p);
-    p.circle.color = COLOR_DIM;
-    p.circle.xc = START_X + 45;
-    p.circle.yc = START_Y + 22;
-    p.circle.radius = 1;
-    oledC_addShape(SEPARATOR_START_IDX + 3, OLED_SHAPE_CIRCLE, &p);
-    
-    // Add dot shapes (initially all rings for 00:00:00)
-    for(uint8_t col = 0; col < 6; col++) {
-        for(uint8_t row = 0; row < 4; row++) {
-            uint8_t x = START_X + (col * DOT_SPACING) + (col/2 * 5);
-            uint8_t y = START_Y + (row * DOT_SPACING);
-            p.ring.color = COLOR_DIM;
-            p.ring.x0 = x;
-            p.ring.y0 = y;
-            p.ring.radius = DOT_SIZE/2;
-            p.ring.width = 1;
-            oledC_addShape(DOT_START_IDX + col*4 + row, OLED_SHAPE_RING, &p);
+    // Draw static labels (H M S)
+    for (uint8_t i = 0; i < 3; i++) {
+        oledC_DrawString(LABEL_X[i], LABEL_Y, 1, 1, (uint8_t*) (i == 0 ? "H" : i == 1 ? "M" : "S"), COLOR_DIM);
+    }
+
+    // Draw bit labels (8,4,2,1)
+    for (uint8_t row = 0; row < 4; row++) {
+
+        oledC_DrawString(2, BIT_LABELS_Y[row], 1, 1, (uint8_t[]) {
+            BIT_LABELS[row], 0}, COLOR_DIM);
+    }
+
+    // Draw separators (simple small rings)
+    oledC_DrawCircle(START_X + 20, START_Y + 12, 1, COLOR_DIM);
+    oledC_DrawCircle(START_X + 20, START_Y + 22, 1, COLOR_DIM);
+    oledC_DrawCircle(START_X + 45, START_Y + 12, 1, COLOR_DIM);
+    oledC_DrawCircle(START_X + 45, START_Y + 22, 1, COLOR_DIM);
+
+    // Draw all dots as rings initially
+    for (uint8_t col = 0; col < 6; col++) {
+        for (uint8_t row = 0; row < 4; row++) {
+            oledC_DrawRing(dot_pos[col][row].x, dot_pos[col][row].y, DOT_SIZE / 2, 1, COLOR_DIM);
         }
     }
-    memset(&last_time_drawn, 0, sizeof(Time_t));
-    last_time_drawn.second = 99; // force redraw
+
+    memset(&last_time_drawn, 0, sizeof (Time_t));
+    last_time_drawn.second = 99; // force full redraw
+    last_format_drawn = FORMAT_24H;
 }
 
 void BinaryFace_Draw(void) {
-    oledC_redrawAll();
+    // Full redraw simply re-inits everything
+    BinaryFace_Init();
 }
 
 void BinaryFace_DrawUpdate(void) {
     WatchState_t* state = Watch_GetState();
     Time_t now = state->current_time;
 
+    // Redraw everything if format changed
     if (state->time_format != last_format_drawn) {
-        // Redrawing everything is too complex, just re-init and redraw
         BinaryFace_Init();
-        oledC_redrawAll();
         last_format_drawn = state->time_format;
         return;
     }
 
-    uint8_t time_digits[6];
-    uint8_t last_time_digits[6];
-
+    // Extract digits (hour, min, sec)
     uint8_t hour = now.hour;
     uint8_t last_hour = last_time_drawn.hour;
     if (state->time_format == FORMAT_12H) {
@@ -167,50 +130,30 @@ void BinaryFace_DrawUpdate(void) {
         hour = Timekeeper_Convert24to12(now.hour, &is_pm);
         last_hour = Timekeeper_Convert24to12(last_time_drawn.hour, &was_pm);
     }
-    
-    time_digits[0] = hour / 10; time_digits[1] = hour % 10;
-    time_digits[2] = now.minute / 10; time_digits[3] = now.minute % 10;
-    time_digits[4] = now.second / 10; time_digits[5] = now.second % 10;
 
-    last_time_digits[0] = last_hour / 10; last_time_digits[1] = last_hour % 10;
-    last_time_digits[2] = last_time_drawn.minute / 10; last_time_digits[3] = last_time_drawn.minute % 10;
-    last_time_digits[4] = last_time_drawn.second / 10; last_time_digits[5] = last_time_drawn.second % 10;
+    uint8_t digits[6] = {hour / 10, hour % 10, now.minute / 10, now.minute % 10, now.second / 10, now.second % 10};
+    uint8_t last_digits[6] = {last_hour / 10, last_hour % 10, last_time_drawn.minute / 10, last_time_drawn.minute % 10,
+        last_time_drawn.second / 10, last_time_drawn.second % 10};
 
-    uint16_t colors[] = {COLOR_PRIMARY, COLOR_PRIMARY, COLOR_SECONDARY, COLOR_SECONDARY, COLOR_ACCENT, COLOR_ACCENT};
-
-    // Iterate through all 24 bits
+    // Iterate columns and rows
     for (uint8_t col = 0; col < 6; col++) {
-        if (time_digits[col] == last_time_digits[col]) continue;
+        if (digits[col] == last_digits[col]) continue; // skip unchanged digits
 
         for (uint8_t row = 0; row < 4; row++) {
-            uint8_t bit_pos = 3 - row;
-            bool bit_now = get_bit(time_digits[col], bit_pos);
-            bool bit_last = get_bit(last_time_digits[col], bit_pos);
+            bool bit_now = get_bit(digits[col], 3 - row);
+            bool bit_last = get_bit(last_digits[col], 3 - row);
+            if (bit_now == bit_last) continue;
 
-            if (bit_now != bit_last) {
-                uint8_t shape_idx = DOT_START_IDX + col * 4 + row;
-                uint8_t x = START_X + (col * DOT_SPACING) + (col/2 * 5);
-                uint8_t y = START_Y + (row * DOT_SPACING);
-                shape_params_t p;
-                shape_t* current_shape = oledC_getShape(shape_idx);
+            uint8_t x = dot_pos[col][row].x;
+            uint8_t y = dot_pos[col][row].y;
 
-                if (bit_now) { // Flipped from 0 to 1
-                    p.circle.xc = x;
-                    p.circle.yc = y;
-                    p.circle.radius = DOT_SIZE/2;
-                    p.circle.color = colors[col];
-                    oledC_createShape(OLED_SHAPE_CIRCLE, &p, current_shape);
-                } else { // Flipped from 1 to 0
-                    p.ring.x0 = x;
-                    p.ring.y0 = y;
-                    p.ring.radius = DOT_SIZE/2;
-                    p.ring.width = 1;
-                    p.ring.color = COLOR_DIM;
-                    oledC_createShape(OLED_SHAPE_RING, &p, current_shape);
-                }
-                oledC_redrawIndex(shape_idx);
+            if (bit_now) {
+                oledC_DrawCircle(x, y, DOT_SIZE / 2, COLORS[col]);
+            } else {
+                oledC_DrawRing(x, y, DOT_SIZE / 2, 1, COLOR_DIM);
             }
         }
     }
+
     last_time_drawn = now;
 }

@@ -71,9 +71,18 @@
           <itemPath>WatchApp/watchInput/buttons.h</itemPath>
           <itemPath>WatchApp/watchInput/potentiometer.h</itemPath>
         </logicalFolder>
+        <logicalFolder name="watchManagers"
+                       displayName="watchManagers"
+                       projectFiles="true">
+          <itemPath>WatchApp/watchManagers/app_display_manager.h</itemPath>
+          <itemPath>WatchApp/watchManagers/app_input_handler.h</itemPath>
+          <itemPath>WatchApp/watchManagers/app_time_manager.h</itemPath>
+        </logicalFolder>
         <logicalFolder name="watchMenu" displayName="watchMenu" projectFiles="true">
           <itemPath>WatchApp/watchMenu/menu.h</itemPath>
         </logicalFolder>
+        <itemPath>WatchApp/app_init.h</itemPath>
+        <itemPath>WatchApp/watch_main.h</itemPath>
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
@@ -145,9 +154,17 @@
           <itemPath>WatchApp/watchInput/buttons.c</itemPath>
           <itemPath>WatchApp/watchInput/potentiometer.c</itemPath>
         </logicalFolder>
+        <logicalFolder name="watchManagers"
+                       displayName="watchManagers"
+                       projectFiles="true">
+          <itemPath>WatchApp/watchManagers/app_display_manager.c</itemPath>
+          <itemPath>WatchApp/watchManagers/app_input_handler.c</itemPath>
+          <itemPath>WatchApp/watchManagers/app_time_manager.c</itemPath>
+        </logicalFolder>
         <logicalFolder name="watchMenu" displayName="watchMenu" projectFiles="true">
           <itemPath>WatchApp/watchMenu/menu.c</itemPath>
         </logicalFolder>
+        <itemPath>WatchApp/app_init.c</itemPath>
         <itemPath>WatchApp/watch_main.c</itemPath>
       </logicalFolder>
       <itemPath>main.c</itemPath>
@@ -471,8 +488,6 @@
         <property key="programoptions.usehighvoltageonmclr" value="false"/>
         <property key="programoptions.uselvpprogramming" value="true"/>
       </Tool>
-      <item path="WatchApp/watch_main.c" ex="true" overriding="false">
-      </item>
     </conf>
   </confs>
 </configurationDescriptor>

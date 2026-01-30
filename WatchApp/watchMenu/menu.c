@@ -41,8 +41,6 @@ static const char* time_formats[] = {"12 Hour", "24 Hour"};
 // State for edit screens
 static Time_t temp_time;
 static Date_t temp_date;
-static uint8_t temp_alarm_hour = 0;
-static uint8_t temp_alarm_min = 0;
 static Time_t last_small_time;
 
 // ============================================================================
