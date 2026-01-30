@@ -4,25 +4,21 @@
  */
 
 #include <xc.h>
-#include <stdlib.h>
-#include "WatchApp/shared/watch_state.h"
-#include "WatchApp/watchCore/timekeeper.h"
-#include "WatchApp/watchCore/alarm.h"
-#include "WatchApp/watchFaces/digital_face.h"
-#include "WatchApp/watchFaces/analog_face.h"
-#include "WatchApp/watchFaces/binary_face.h"
-#include "WatchApp/watchMenu/menu.h"
-#include "WatchApp/watchInput/buttons.h"
-#include "WatchApp/watchInput/potentiometer.h"
-#include "WatchApp/watchInput/accel_input.h"
-#include "WatchApp/pomodoroTimer/pomodoro.h"
-#include "ledDriver/LED.h"
-#include "System/system.h"
-#include "System/delay.h"
-#include "accel3Driver/ACCEL3.h"
-#include "adcDriver/ADC.h"
-#include "oledDriver/oledC.h"
-#include "Timers/Timers.h"
+#include "shared/watch_state.h"
+#include "watchCore/watch_timer.h"
+#include "watchCore/timekeeper.h"
+#include "watchCore/alarm.h"
+#include "watchFaces/digital_face.h"
+#include "watchFaces/analog_face.h"
+#include "watchFaces/binary_face.h"
+#include "watchMenu/menu.h"
+#include "watchInput/buttons.h"
+#include "watchInput/potentiometer.h"
+#include "watchInput/accel_input.h"
+#include "pomodoroTimer/pomodoro.h"
+#include "../ledDriver/LED.h"
+#include "../System/system.h"
+#include "../System/delay.h"
 
 // ============================================================================
 // PRIVATE FUNCTIONS
@@ -31,38 +27,39 @@
 static void InitializeHardware(void) {
     // Initialize system
     SYSTEM_Initialize();
-    oledC_setup();
-    
-    // Initialize input systems
-    Buttons_Init();
-    Pot_Init();
-    AccelInput_Init();
     
     // Initialize LEDs for button feedback
     LED1_Init();
     LED2_Init();
     LED1_Off();
     LED2_Off();
-
-   
-    // Initialize timekeeper and hardware timers
-    Timekeeper_Init();
-
+    
+    // Initialize RGB LED (optional, for visual feedback)
+    RGB_Init();
+    RGB_SetRaw(0, 0, 0);
+    
     // Initialize watch state
     Watch_InitState();
-
-
+    
+    // Initialize timer system (1Hz ISR)
+    WatchTimer_Init();
+    
+    // Initialize input systems
+    Buttons_Init();
+    Pot_Init();
+    Accel_Init();
+    
     // Initialize all watch faces
     DigitalFace_Init();
     AnalogFace_Init();
     BinaryFace_Init();
-
+    
     // Initialize menu system
     Menu_Init();
-
+    
     // Initialize Pomodoro timer
     Pomodoro_Init();
-
+    
     // Set default time and date
     Time_t default_time = {12, 0, 0};
     Date_t default_date = {1, 1};
@@ -70,9 +67,11 @@ static void InitializeHardware(void) {
     Timekeeper_SetDate(&default_date);
 }
 
-static void HandleWatchMode(ButtonEvent_t btn, AccelEvent_t accel) {
+static void HandleWatchMode(void) {
     WatchState_t* state = Watch_GetState();
-
+    
+    // Check for menu entry (S1 long press)
+    ButtonEvent_t btn = Buttons_GetEvent();
     if (btn == BTN_S1_LONG) {
         Menu_Enter();
         LED1_On();
@@ -80,12 +79,15 @@ static void HandleWatchMode(ButtonEvent_t btn, AccelEvent_t accel) {
         LED1_Off();
         return;
     }
-
+    
+    // Check for alarm dismissal (any button press)
     if (Alarm_IsRinging() && (btn == BTN_S1_SHORT || btn == BTN_S2_SHORT)) {
         Alarm_Dismiss();
+        state->needs_redraw = true;
         return;
     }
-
+    
+    // Check for face switching (S2 short press in watch mode)
     if (btn == BTN_S2_SHORT) {
         state->watch_face = (state->watch_face + 1) % FACE_COUNT;
         state->needs_redraw = true;
@@ -94,18 +96,37 @@ static void HandleWatchMode(ButtonEvent_t btn, AccelEvent_t accel) {
         LED2_Off();
         return;
     }
-
+    
+    // Check for accelerometer events
+    AccelEvent_t accel = Accel_GetEvent();
+    if (accel == ACCEL_FLIPPED || accel == ACCEL_SHAKEN) {
+        // Could implement screen blanking or other features
+    }
+    
+    // Update watch display
+    if (state->second_tick) {
+        state->second_tick = false;
+        Timekeeper_Tick();
+        Alarm_Check();
+        Alarm_Update();
+        state->needs_redraw = true;
+    }
+    
+    // Redraw if needed
     if (state->needs_redraw) {
         state->needs_redraw = false;
-
+        
+        // Handle alarm flashing
         static bool flash_state = false;
         if (Alarm_IsRinging()) {
             flash_state = !flash_state;
+            // Implement screen inversion or color change
             oledC_setBackground(flash_state ? COLOR_WARNING : COLOR_BG);
         } else {
             oledC_setBackground(COLOR_BG);
         }
-
+        
+        // Draw appropriate watch face
         switch (state->watch_face) {
             case FACE_DIGITAL:
                 DigitalFace_Draw();
@@ -116,16 +137,16 @@ static void HandleWatchMode(ButtonEvent_t btn, AccelEvent_t accel) {
             case FACE_BINARY:
                 BinaryFace_Draw();
                 break;
-            default:
-                break;
         }
     }
 }
 
-static void HandleMenuMode(ButtonEvent_t btn, AccelEvent_t accel) {
+static void HandleMenuMode(void) {
     WatchState_t* state = Watch_GetState();
-
-    if (accel == ACCEL_FLIP || accel == ACCEL_SHAKE) {
+    
+    // Check for accelerometer exit
+    AccelEvent_t accel = Accel_GetEvent();
+    if (accel == ACCEL_FLIPPED || accel == ACCEL_SHAKEN) {
         Menu_Exit();
         LED1_On();
         LED2_On();
@@ -134,7 +155,11 @@ static void HandleMenuMode(ButtonEvent_t btn, AccelEvent_t accel) {
         LED2_Off();
         return;
     }
-
+    
+    // Get button events
+    ButtonEvent_t btn = Buttons_GetEvent();
+    
+    // Provide LED feedback
     if (btn == BTN_S1_SHORT || btn == BTN_S1_LONG) {
         LED1_On();
         DELAY_milliseconds(50);
@@ -145,19 +170,32 @@ static void HandleMenuMode(ButtonEvent_t btn, AccelEvent_t accel) {
         DELAY_milliseconds(50);
         LED2_Off();
     }
-
-    uint16_t pot_val = Pot_GetRaw();
+    
+    // Get potentiometer value
+    uint16_t pot_val = Pot_Read();
+    
+    // Handle menu input
     Menu_HandleInput(btn, pot_val);
-
+    
+    // Update time display in corner (every second)
+    if (state->second_tick) {
+        state->second_tick = false;
+        Timekeeper_Tick();
+        Menu_Update();  // Update small time display
+    }
+    
+    // Redraw menu if needed
     if (state->needs_redraw) {
         state->needs_redraw = false;
         Menu_Draw();
     }
 }
 
-static void HandlePomodoroMode(ButtonEvent_t btn, AccelEvent_t accel) {
+static void HandlePomodoroMode(void) {
     WatchState_t* state = Watch_GetState();
-
+    
+    // Check for exit to menu (S1 long press)
+    ButtonEvent_t btn = Buttons_GetEvent();
     if (btn == BTN_S1_LONG) {
         Menu_Enter();
         LED1_On();
@@ -165,12 +203,15 @@ static void HandlePomodoroMode(ButtonEvent_t btn, AccelEvent_t accel) {
         LED1_Off();
         return;
     }
-
-    if (accel == ACCEL_FLIP || accel == ACCEL_SHAKE) {
-        Menu_Exit();
+    
+    // Check for accelerometer exit
+    AccelEvent_t accel = Accel_GetEvent();
+    if (accel == ACCEL_FLIPPED || accel == ACCEL_SHAKEN) {
+        Menu_Exit();  // Return to watch mode
         return;
     }
-
+    
+    // Provide button feedback
     if (btn != BTN_NONE) {
         if (btn == BTN_S1_SHORT) {
             LED1_On();
@@ -182,9 +223,18 @@ static void HandlePomodoroMode(ButtonEvent_t btn, AccelEvent_t accel) {
             LED2_Off();
         }
     }
-
-    Pomodoro_HandleInput(btn == BTN_S2_SHORT, btn == BTN_S1_SHORT);
-
+    
+    // Handle Pomodoro input
+    Pomodoro_HandleInput(btn);
+    
+    // Update Pomodoro timer (every second)
+    if (state->second_tick) {
+        state->second_tick = false;
+        Pomodoro_Update();
+        state->needs_redraw = true;
+    }
+    
+    // Redraw if needed
     if (state->needs_redraw) {
         state->needs_redraw = false;
         Pomodoro_Draw();
@@ -196,54 +246,31 @@ static void HandlePomodoroMode(ButtonEvent_t btn, AccelEvent_t accel) {
 // ============================================================================
 
 int main(void) {
+    // Initialize all hardware and modules
     InitializeHardware();
-
+    
     WatchState_t* state = Watch_GetState();
     state->needs_redraw = true;
-
-    uint32_t last_uptime_s = 0;
-
+    
+    // Main application loop
     while (1) {
-        // --- Handle Time Updates ---
-        uint32_t current_uptime_s = Timer_GetTicks(1);
-        if (current_uptime_s != last_uptime_s) {
-            last_uptime_s = current_uptime_s;
-            
-            // Update global time state
-            Timekeeper_GetTime(&state->current_time);
-            
-            // Run once-per-second tasks
-            Alarm_Check();
-            Alarm_Update();
-            
-            if (state->display_mode == MODE_POMODORO) {
-                Pomodoro_Update();
-            } else if (state->display_mode == MODE_MENU) {
-                Menu_Update();
-            }
-            
-            state->needs_redraw = true;
-        }
-
-        // --- Handle Inputs ---
-        ButtonEvent_t btn = Buttons_Update();
-        AccelEvent_t accel = AccelInput_Check();
-
-        // --- Handle Display Modes ---
         switch (state->display_mode) {
             case MODE_WATCH:
-                HandleWatchMode(btn, accel);
+                HandleWatchMode();
                 break;
+                
             case MODE_MENU:
-                HandleMenuMode(btn, accel);
+                HandleMenuMode();
                 break;
+                
             case MODE_POMODORO:
-                HandlePomodoroMode(btn, accel);
+                HandlePomodoroMode();
                 break;
         }
-
+        
+        // Small delay to prevent CPU spinning
         DELAY_milliseconds(10);
     }
-
+    
     return 0;
 }

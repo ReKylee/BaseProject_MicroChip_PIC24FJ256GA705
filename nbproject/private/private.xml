@@ -4,12 +4,13 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/accel3Driver/ACCEL3.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/watch_app.c</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/main.c</file>
-            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/i2cDriver/I2C.h</file>
-            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/System/system.c</file>
-            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/System/pin_manager.c</file>
-            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/accel3Driver/ACCEL3.c</file>
-            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/i2cDriver/I2C.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/System/clock.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/systemExtensions/systemExtensions.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/System/clock.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/watch_app.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/systemExtensions/systemExtensions.h</file>
         </group>
     </open-files>
 </project-private>

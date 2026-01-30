@@ -44,12 +44,37 @@
         <itemPath>System/system.h</itemPath>
         <itemPath>System/traps.h</itemPath>
       </logicalFolder>
-      <logicalFolder name="systemExtensions"
-                     displayName="systemExtensions"
-                     projectFiles="true">
-        <itemPath>systemExtensions/systemExtensions.h</itemPath>
+      <logicalFolder name="Timers" displayName="Timers" projectFiles="true">
+        <itemPath>Timers/Timers.h</itemPath>
       </logicalFolder>
-      <itemPath>clock_app.h</itemPath>
+      <logicalFolder name="WatchApp" displayName="WatchApp" projectFiles="true">
+        <logicalFolder name="pomodoroTimer"
+                       displayName="pomodoroTimer"
+                       projectFiles="true">
+          <itemPath>WatchApp/pomodoroTimer/pomodoro.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="shared" displayName="shared" projectFiles="true">
+          <itemPath>WatchApp/shared/watch_state.h</itemPath>
+          <itemPath>WatchApp/shared/watch_types.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="watchCore" displayName="watchCore" projectFiles="true">
+          <itemPath>WatchApp/watchCore/alarm.h</itemPath>
+          <itemPath>WatchApp/watchCore/timekeeper.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="watchFaces" displayName="watchFaces" projectFiles="true">
+          <itemPath>WatchApp/watchFaces/analog_face.h</itemPath>
+          <itemPath>WatchApp/watchFaces/binary_face.h</itemPath>
+          <itemPath>WatchApp/watchFaces/digital_face.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="watchInput" displayName="watchInput" projectFiles="true">
+          <itemPath>WatchApp/watchInput/accel_input.h</itemPath>
+          <itemPath>WatchApp/watchInput/buttons.h</itemPath>
+          <itemPath>WatchApp/watchInput/potentiometer.h</itemPath>
+        </logicalFolder>
+        <logicalFolder name="watchMenu" displayName="watchMenu" projectFiles="true">
+          <itemPath>WatchApp/watchMenu/menu.h</itemPath>
+        </logicalFolder>
+      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -94,13 +119,38 @@
         <itemPath>System/traps.c</itemPath>
         <itemPath>System/where_was_i.s</itemPath>
       </logicalFolder>
-      <logicalFolder name="systemExtensions"
-                     displayName="systemExtensions"
-                     projectFiles="true">
-        <itemPath>systemExtensions/systemExtensions.c</itemPath>
+      <logicalFolder name="Timers" displayName="Timers" projectFiles="true">
+        <itemPath>Timers/Timers.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="WatchApp" displayName="WatchApp" projectFiles="true">
+        <logicalFolder name="pomodoroTimer"
+                       displayName="pomodoroTimer"
+                       projectFiles="true">
+          <itemPath>WatchApp/pomodoroTimer/pomodoro.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="shared" displayName="shared" projectFiles="true">
+          <itemPath>WatchApp/shared/watch_state.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="watchCore" displayName="watchCore" projectFiles="true">
+          <itemPath>WatchApp/watchCore/alarm.c</itemPath>
+          <itemPath>WatchApp/watchCore/timekeeper.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="watchFaces" displayName="watchFaces" projectFiles="true">
+          <itemPath>WatchApp/watchFaces/analog_face.c</itemPath>
+          <itemPath>WatchApp/watchFaces/binary_face.c</itemPath>
+          <itemPath>WatchApp/watchFaces/digital_face.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="watchInput" displayName="watchInput" projectFiles="true">
+          <itemPath>WatchApp/watchInput/accel_input.c</itemPath>
+          <itemPath>WatchApp/watchInput/buttons.c</itemPath>
+          <itemPath>WatchApp/watchInput/potentiometer.c</itemPath>
+        </logicalFolder>
+        <logicalFolder name="watchMenu" displayName="watchMenu" projectFiles="true">
+          <itemPath>WatchApp/watchMenu/menu.c</itemPath>
+        </logicalFolder>
+        <itemPath>WatchApp/watch_main.c</itemPath>
       </logicalFolder>
       <itemPath>main.c</itemPath>
-      <itemPath>clock_app.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -421,6 +471,8 @@
         <property key="programoptions.usehighvoltageonmclr" value="false"/>
         <property key="programoptions.uselvpprogramming" value="true"/>
       </Tool>
+      <item path="WatchApp/watch_main.c" ex="true" overriding="false">
+      </item>
     </conf>
   </confs>
 </configurationDescriptor>

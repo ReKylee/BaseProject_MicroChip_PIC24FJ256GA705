@@ -51,17 +51,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=accel3Driver/ACCEL3.c adcDriver/ADC.c i2cDriver/I2C.c ledDriver/LED_tests.c oledDriver/oledC.c oledDriver/oledC_shapeHandler.c oledDriver/oledC_shapes.c spiDriver/spi1_driver.c switchDriver/Switch.c System/clock.c System/delay.c System/interrupt_manager.c System/pin_manager.c System/system.c System/traps.c System/where_was_i.s systemExtensions/systemExtensions.c main.c clock_app.c
+SOURCEFILES_QUOTED_IF_SPACED=accel3Driver/ACCEL3.c adcDriver/ADC.c i2cDriver/I2C.c ledDriver/LED_tests.c oledDriver/oledC.c oledDriver/oledC_shapeHandler.c oledDriver/oledC_shapes.c spiDriver/spi1_driver.c switchDriver/Switch.c System/clock.c System/delay.c System/interrupt_manager.c System/pin_manager.c System/system.c System/traps.c System/where_was_i.s main.c WatchApp/pomodoroTimer/pomodoro.c WatchApp/shared/watch_state.c WatchApp/watchCore/alarm.c WatchApp/watchCore/timekeeper.c WatchApp/watchFaces/analog_face.c WatchApp/watchFaces/binary_face.c WatchApp/watchFaces/digital_face.c WatchApp/watchInput/accel_input.c WatchApp/watchInput/buttons.c WatchApp/watchInput/potentiometer.c WatchApp/watchMenu/menu.c Timers/Timers.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/accel3Driver/ACCEL3.o ${OBJECTDIR}/adcDriver/ADC.o ${OBJECTDIR}/i2cDriver/I2C.o ${OBJECTDIR}/ledDriver/LED_tests.o ${OBJECTDIR}/oledDriver/oledC.o ${OBJECTDIR}/oledDriver/oledC_shapeHandler.o ${OBJECTDIR}/oledDriver/oledC_shapes.o ${OBJECTDIR}/spiDriver/spi1_driver.o ${OBJECTDIR}/switchDriver/Switch.o ${OBJECTDIR}/System/clock.o ${OBJECTDIR}/System/delay.o ${OBJECTDIR}/System/interrupt_manager.o ${OBJECTDIR}/System/pin_manager.o ${OBJECTDIR}/System/system.o ${OBJECTDIR}/System/traps.o ${OBJECTDIR}/System/where_was_i.o ${OBJECTDIR}/systemExtensions/systemExtensions.o ${OBJECTDIR}/main.o ${OBJECTDIR}/clock_app.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/accel3Driver/ACCEL3.o.d ${OBJECTDIR}/adcDriver/ADC.o.d ${OBJECTDIR}/i2cDriver/I2C.o.d ${OBJECTDIR}/ledDriver/LED_tests.o.d ${OBJECTDIR}/oledDriver/oledC.o.d ${OBJECTDIR}/oledDriver/oledC_shapeHandler.o.d ${OBJECTDIR}/oledDriver/oledC_shapes.o.d ${OBJECTDIR}/spiDriver/spi1_driver.o.d ${OBJECTDIR}/switchDriver/Switch.o.d ${OBJECTDIR}/System/clock.o.d ${OBJECTDIR}/System/delay.o.d ${OBJECTDIR}/System/interrupt_manager.o.d ${OBJECTDIR}/System/pin_manager.o.d ${OBJECTDIR}/System/system.o.d ${OBJECTDIR}/System/traps.o.d ${OBJECTDIR}/System/where_was_i.o.d ${OBJECTDIR}/systemExtensions/systemExtensions.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/clock_app.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/accel3Driver/ACCEL3.o ${OBJECTDIR}/adcDriver/ADC.o ${OBJECTDIR}/i2cDriver/I2C.o ${OBJECTDIR}/ledDriver/LED_tests.o ${OBJECTDIR}/oledDriver/oledC.o ${OBJECTDIR}/oledDriver/oledC_shapeHandler.o ${OBJECTDIR}/oledDriver/oledC_shapes.o ${OBJECTDIR}/spiDriver/spi1_driver.o ${OBJECTDIR}/switchDriver/Switch.o ${OBJECTDIR}/System/clock.o ${OBJECTDIR}/System/delay.o ${OBJECTDIR}/System/interrupt_manager.o ${OBJECTDIR}/System/pin_manager.o ${OBJECTDIR}/System/system.o ${OBJECTDIR}/System/traps.o ${OBJECTDIR}/System/where_was_i.o ${OBJECTDIR}/main.o ${OBJECTDIR}/WatchApp/pomodoroTimer/pomodoro.o ${OBJECTDIR}/WatchApp/shared/watch_state.o ${OBJECTDIR}/WatchApp/watchCore/alarm.o ${OBJECTDIR}/WatchApp/watchCore/timekeeper.o ${OBJECTDIR}/WatchApp/watchFaces/analog_face.o ${OBJECTDIR}/WatchApp/watchFaces/binary_face.o ${OBJECTDIR}/WatchApp/watchFaces/digital_face.o ${OBJECTDIR}/WatchApp/watchInput/accel_input.o ${OBJECTDIR}/WatchApp/watchInput/buttons.o ${OBJECTDIR}/WatchApp/watchInput/potentiometer.o ${OBJECTDIR}/WatchApp/watchMenu/menu.o ${OBJECTDIR}/Timers/Timers.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/accel3Driver/ACCEL3.o.d ${OBJECTDIR}/adcDriver/ADC.o.d ${OBJECTDIR}/i2cDriver/I2C.o.d ${OBJECTDIR}/ledDriver/LED_tests.o.d ${OBJECTDIR}/oledDriver/oledC.o.d ${OBJECTDIR}/oledDriver/oledC_shapeHandler.o.d ${OBJECTDIR}/oledDriver/oledC_shapes.o.d ${OBJECTDIR}/spiDriver/spi1_driver.o.d ${OBJECTDIR}/switchDriver/Switch.o.d ${OBJECTDIR}/System/clock.o.d ${OBJECTDIR}/System/delay.o.d ${OBJECTDIR}/System/interrupt_manager.o.d ${OBJECTDIR}/System/pin_manager.o.d ${OBJECTDIR}/System/system.o.d ${OBJECTDIR}/System/traps.o.d ${OBJECTDIR}/System/where_was_i.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/WatchApp/pomodoroTimer/pomodoro.o.d ${OBJECTDIR}/WatchApp/shared/watch_state.o.d ${OBJECTDIR}/WatchApp/watchCore/alarm.o.d ${OBJECTDIR}/WatchApp/watchCore/timekeeper.o.d ${OBJECTDIR}/WatchApp/watchFaces/analog_face.o.d ${OBJECTDIR}/WatchApp/watchFaces/binary_face.o.d ${OBJECTDIR}/WatchApp/watchFaces/digital_face.o.d ${OBJECTDIR}/WatchApp/watchInput/accel_input.o.d ${OBJECTDIR}/WatchApp/watchInput/buttons.o.d ${OBJECTDIR}/WatchApp/watchInput/potentiometer.o.d ${OBJECTDIR}/WatchApp/watchMenu/menu.o.d ${OBJECTDIR}/Timers/Timers.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/accel3Driver/ACCEL3.o ${OBJECTDIR}/adcDriver/ADC.o ${OBJECTDIR}/i2cDriver/I2C.o ${OBJECTDIR}/ledDriver/LED_tests.o ${OBJECTDIR}/oledDriver/oledC.o ${OBJECTDIR}/oledDriver/oledC_shapeHandler.o ${OBJECTDIR}/oledDriver/oledC_shapes.o ${OBJECTDIR}/spiDriver/spi1_driver.o ${OBJECTDIR}/switchDriver/Switch.o ${OBJECTDIR}/System/clock.o ${OBJECTDIR}/System/delay.o ${OBJECTDIR}/System/interrupt_manager.o ${OBJECTDIR}/System/pin_manager.o ${OBJECTDIR}/System/system.o ${OBJECTDIR}/System/traps.o ${OBJECTDIR}/System/where_was_i.o ${OBJECTDIR}/systemExtensions/systemExtensions.o ${OBJECTDIR}/main.o ${OBJECTDIR}/clock_app.o
+OBJECTFILES=${OBJECTDIR}/accel3Driver/ACCEL3.o ${OBJECTDIR}/adcDriver/ADC.o ${OBJECTDIR}/i2cDriver/I2C.o ${OBJECTDIR}/ledDriver/LED_tests.o ${OBJECTDIR}/oledDriver/oledC.o ${OBJECTDIR}/oledDriver/oledC_shapeHandler.o ${OBJECTDIR}/oledDriver/oledC_shapes.o ${OBJECTDIR}/spiDriver/spi1_driver.o ${OBJECTDIR}/switchDriver/Switch.o ${OBJECTDIR}/System/clock.o ${OBJECTDIR}/System/delay.o ${OBJECTDIR}/System/interrupt_manager.o ${OBJECTDIR}/System/pin_manager.o ${OBJECTDIR}/System/system.o ${OBJECTDIR}/System/traps.o ${OBJECTDIR}/System/where_was_i.o ${OBJECTDIR}/main.o ${OBJECTDIR}/WatchApp/pomodoroTimer/pomodoro.o ${OBJECTDIR}/WatchApp/shared/watch_state.o ${OBJECTDIR}/WatchApp/watchCore/alarm.o ${OBJECTDIR}/WatchApp/watchCore/timekeeper.o ${OBJECTDIR}/WatchApp/watchFaces/analog_face.o ${OBJECTDIR}/WatchApp/watchFaces/binary_face.o ${OBJECTDIR}/WatchApp/watchFaces/digital_face.o ${OBJECTDIR}/WatchApp/watchInput/accel_input.o ${OBJECTDIR}/WatchApp/watchInput/buttons.o ${OBJECTDIR}/WatchApp/watchInput/potentiometer.o ${OBJECTDIR}/WatchApp/watchMenu/menu.o ${OBJECTDIR}/Timers/Timers.o
 
 # Source Files
-SOURCEFILES=accel3Driver/ACCEL3.c adcDriver/ADC.c i2cDriver/I2C.c ledDriver/LED_tests.c oledDriver/oledC.c oledDriver/oledC_shapeHandler.c oledDriver/oledC_shapes.c spiDriver/spi1_driver.c switchDriver/Switch.c System/clock.c System/delay.c System/interrupt_manager.c System/pin_manager.c System/system.c System/traps.c System/where_was_i.s systemExtensions/systemExtensions.c main.c clock_app.c
+SOURCEFILES=accel3Driver/ACCEL3.c adcDriver/ADC.c i2cDriver/I2C.c ledDriver/LED_tests.c oledDriver/oledC.c oledDriver/oledC_shapeHandler.c oledDriver/oledC_shapes.c spiDriver/spi1_driver.c switchDriver/Switch.c System/clock.c System/delay.c System/interrupt_manager.c System/pin_manager.c System/system.c System/traps.c System/where_was_i.s main.c WatchApp/pomodoroTimer/pomodoro.c WatchApp/shared/watch_state.c WatchApp/watchCore/alarm.c WatchApp/watchCore/timekeeper.c WatchApp/watchFaces/analog_face.c WatchApp/watchFaces/binary_face.c WatchApp/watchFaces/digital_face.c WatchApp/watchInput/accel_input.c WatchApp/watchInput/buttons.c WatchApp/watchInput/potentiometer.c WatchApp/watchMenu/menu.c Timers/Timers.c
 
 
 
@@ -179,23 +179,83 @@ ${OBJECTDIR}/System/traps.o: System/traps.c  .generated_files/flags/default/f33a
 	@${RM} ${OBJECTDIR}/System/traps.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  System/traps.c  -o ${OBJECTDIR}/System/traps.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/System/traps.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
-${OBJECTDIR}/systemExtensions/systemExtensions.o: systemExtensions/systemExtensions.c  .generated_files/flags/default/2e4624e771737f8ccbf5ac824386080ce6642480 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
-	@${MKDIR} "${OBJECTDIR}/systemExtensions" 
-	@${RM} ${OBJECTDIR}/systemExtensions/systemExtensions.o.d 
-	@${RM} ${OBJECTDIR}/systemExtensions/systemExtensions.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  systemExtensions/systemExtensions.c  -o ${OBJECTDIR}/systemExtensions/systemExtensions.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/systemExtensions/systemExtensions.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
-	
 ${OBJECTDIR}/main.o: main.c  .generated_files/flags/default/4b1addb59371ffc563aebc1ccb39accaeff02fc2 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/main.o.d 
 	@${RM} ${OBJECTDIR}/main.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  main.c  -o ${OBJECTDIR}/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/main.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
-${OBJECTDIR}/clock_app.o: clock_app.c  .generated_files/flags/default/3c42f567e3e99525944dde71b3b8041c7afc95f5 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/clock_app.o.d 
-	@${RM} ${OBJECTDIR}/clock_app.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  clock_app.c  -o ${OBJECTDIR}/clock_app.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/clock_app.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+${OBJECTDIR}/WatchApp/pomodoroTimer/pomodoro.o: WatchApp/pomodoroTimer/pomodoro.c  .generated_files/flags/default/25f43f259695c068d22a890474982f9b7d2842dc .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/WatchApp/pomodoroTimer" 
+	@${RM} ${OBJECTDIR}/WatchApp/pomodoroTimer/pomodoro.o.d 
+	@${RM} ${OBJECTDIR}/WatchApp/pomodoroTimer/pomodoro.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  WatchApp/pomodoroTimer/pomodoro.c  -o ${OBJECTDIR}/WatchApp/pomodoroTimer/pomodoro.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/WatchApp/pomodoroTimer/pomodoro.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/WatchApp/shared/watch_state.o: WatchApp/shared/watch_state.c  .generated_files/flags/default/49e2665bc4a9a8920549e4516563a2b3f179afde .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/WatchApp/shared" 
+	@${RM} ${OBJECTDIR}/WatchApp/shared/watch_state.o.d 
+	@${RM} ${OBJECTDIR}/WatchApp/shared/watch_state.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  WatchApp/shared/watch_state.c  -o ${OBJECTDIR}/WatchApp/shared/watch_state.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/WatchApp/shared/watch_state.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/WatchApp/watchCore/alarm.o: WatchApp/watchCore/alarm.c  .generated_files/flags/default/39b9dcaee5fc303ba1d17cd30891cde6cd8aa6bb .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/WatchApp/watchCore" 
+	@${RM} ${OBJECTDIR}/WatchApp/watchCore/alarm.o.d 
+	@${RM} ${OBJECTDIR}/WatchApp/watchCore/alarm.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  WatchApp/watchCore/alarm.c  -o ${OBJECTDIR}/WatchApp/watchCore/alarm.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/WatchApp/watchCore/alarm.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/WatchApp/watchCore/timekeeper.o: WatchApp/watchCore/timekeeper.c  .generated_files/flags/default/4d62d615692929f50304f0cccc36b23279ac8026 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/WatchApp/watchCore" 
+	@${RM} ${OBJECTDIR}/WatchApp/watchCore/timekeeper.o.d 
+	@${RM} ${OBJECTDIR}/WatchApp/watchCore/timekeeper.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  WatchApp/watchCore/timekeeper.c  -o ${OBJECTDIR}/WatchApp/watchCore/timekeeper.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/WatchApp/watchCore/timekeeper.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/WatchApp/watchFaces/analog_face.o: WatchApp/watchFaces/analog_face.c  .generated_files/flags/default/58c80db4078e6feeb67cdbe7d5595e3da0bb5132 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/WatchApp/watchFaces" 
+	@${RM} ${OBJECTDIR}/WatchApp/watchFaces/analog_face.o.d 
+	@${RM} ${OBJECTDIR}/WatchApp/watchFaces/analog_face.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  WatchApp/watchFaces/analog_face.c  -o ${OBJECTDIR}/WatchApp/watchFaces/analog_face.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/WatchApp/watchFaces/analog_face.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/WatchApp/watchFaces/binary_face.o: WatchApp/watchFaces/binary_face.c  .generated_files/flags/default/ac75d0a8158e87d16a1988172a5cc80c9d1cbfcc .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/WatchApp/watchFaces" 
+	@${RM} ${OBJECTDIR}/WatchApp/watchFaces/binary_face.o.d 
+	@${RM} ${OBJECTDIR}/WatchApp/watchFaces/binary_face.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  WatchApp/watchFaces/binary_face.c  -o ${OBJECTDIR}/WatchApp/watchFaces/binary_face.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/WatchApp/watchFaces/binary_face.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/WatchApp/watchFaces/digital_face.o: WatchApp/watchFaces/digital_face.c  .generated_files/flags/default/e3df2f79939bcf9702e5427be7c501b21009c77e .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/WatchApp/watchFaces" 
+	@${RM} ${OBJECTDIR}/WatchApp/watchFaces/digital_face.o.d 
+	@${RM} ${OBJECTDIR}/WatchApp/watchFaces/digital_face.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  WatchApp/watchFaces/digital_face.c  -o ${OBJECTDIR}/WatchApp/watchFaces/digital_face.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/WatchApp/watchFaces/digital_face.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/WatchApp/watchInput/accel_input.o: WatchApp/watchInput/accel_input.c  .generated_files/flags/default/8d0d70e052564737b105762a3e1c8b0f66d57b39 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/WatchApp/watchInput" 
+	@${RM} ${OBJECTDIR}/WatchApp/watchInput/accel_input.o.d 
+	@${RM} ${OBJECTDIR}/WatchApp/watchInput/accel_input.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  WatchApp/watchInput/accel_input.c  -o ${OBJECTDIR}/WatchApp/watchInput/accel_input.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/WatchApp/watchInput/accel_input.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/WatchApp/watchInput/buttons.o: WatchApp/watchInput/buttons.c  .generated_files/flags/default/d01f3b61946877e04b384d20c1dbafd3b941561b .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/WatchApp/watchInput" 
+	@${RM} ${OBJECTDIR}/WatchApp/watchInput/buttons.o.d 
+	@${RM} ${OBJECTDIR}/WatchApp/watchInput/buttons.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  WatchApp/watchInput/buttons.c  -o ${OBJECTDIR}/WatchApp/watchInput/buttons.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/WatchApp/watchInput/buttons.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/WatchApp/watchInput/potentiometer.o: WatchApp/watchInput/potentiometer.c  .generated_files/flags/default/3cff8f89a4671c1e276eb6d56b74137b299a8e63 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/WatchApp/watchInput" 
+	@${RM} ${OBJECTDIR}/WatchApp/watchInput/potentiometer.o.d 
+	@${RM} ${OBJECTDIR}/WatchApp/watchInput/potentiometer.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  WatchApp/watchInput/potentiometer.c  -o ${OBJECTDIR}/WatchApp/watchInput/potentiometer.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/WatchApp/watchInput/potentiometer.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/WatchApp/watchMenu/menu.o: WatchApp/watchMenu/menu.c  .generated_files/flags/default/d20c04ed8bc4868385f91b6758d8b53fd5404e5d .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/WatchApp/watchMenu" 
+	@${RM} ${OBJECTDIR}/WatchApp/watchMenu/menu.o.d 
+	@${RM} ${OBJECTDIR}/WatchApp/watchMenu/menu.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  WatchApp/watchMenu/menu.c  -o ${OBJECTDIR}/WatchApp/watchMenu/menu.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/WatchApp/watchMenu/menu.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/Timers/Timers.o: Timers/Timers.c  .generated_files/flags/default/e0bf5926ed1f48b210179becfe19ae1315f7d385 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/Timers" 
+	@${RM} ${OBJECTDIR}/Timers/Timers.o.d 
+	@${RM} ${OBJECTDIR}/Timers/Timers.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  Timers/Timers.c  -o ${OBJECTDIR}/Timers/Timers.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/Timers/Timers.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
 else
 ${OBJECTDIR}/accel3Driver/ACCEL3.o: accel3Driver/ACCEL3.c  .generated_files/flags/default/36478faf6c3301c6b2c2194516e965c2be03a8e4 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
@@ -288,23 +348,83 @@ ${OBJECTDIR}/System/traps.o: System/traps.c  .generated_files/flags/default/d8e0
 	@${RM} ${OBJECTDIR}/System/traps.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  System/traps.c  -o ${OBJECTDIR}/System/traps.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/System/traps.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
-${OBJECTDIR}/systemExtensions/systemExtensions.o: systemExtensions/systemExtensions.c  .generated_files/flags/default/852b91d7426090c8943311074ba8e8e84099667e .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
-	@${MKDIR} "${OBJECTDIR}/systemExtensions" 
-	@${RM} ${OBJECTDIR}/systemExtensions/systemExtensions.o.d 
-	@${RM} ${OBJECTDIR}/systemExtensions/systemExtensions.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  systemExtensions/systemExtensions.c  -o ${OBJECTDIR}/systemExtensions/systemExtensions.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/systemExtensions/systemExtensions.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
-	
 ${OBJECTDIR}/main.o: main.c  .generated_files/flags/default/d29791c61f6db6483700fa87ec7415f027fed6fd .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/main.o.d 
 	@${RM} ${OBJECTDIR}/main.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  main.c  -o ${OBJECTDIR}/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/main.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
-${OBJECTDIR}/clock_app.o: clock_app.c  .generated_files/flags/default/6daf3efa0731aae0de4769e833abd666cdc3b39d .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/clock_app.o.d 
-	@${RM} ${OBJECTDIR}/clock_app.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  clock_app.c  -o ${OBJECTDIR}/clock_app.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/clock_app.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+${OBJECTDIR}/WatchApp/pomodoroTimer/pomodoro.o: WatchApp/pomodoroTimer/pomodoro.c  .generated_files/flags/default/fffa3a6aa3038cb0dd9ef3c5b6c2708c745a6984 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/WatchApp/pomodoroTimer" 
+	@${RM} ${OBJECTDIR}/WatchApp/pomodoroTimer/pomodoro.o.d 
+	@${RM} ${OBJECTDIR}/WatchApp/pomodoroTimer/pomodoro.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  WatchApp/pomodoroTimer/pomodoro.c  -o ${OBJECTDIR}/WatchApp/pomodoroTimer/pomodoro.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/WatchApp/pomodoroTimer/pomodoro.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/WatchApp/shared/watch_state.o: WatchApp/shared/watch_state.c  .generated_files/flags/default/4810e8711e84b3d3ff1b82af435ddb64082b2970 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/WatchApp/shared" 
+	@${RM} ${OBJECTDIR}/WatchApp/shared/watch_state.o.d 
+	@${RM} ${OBJECTDIR}/WatchApp/shared/watch_state.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  WatchApp/shared/watch_state.c  -o ${OBJECTDIR}/WatchApp/shared/watch_state.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/WatchApp/shared/watch_state.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/WatchApp/watchCore/alarm.o: WatchApp/watchCore/alarm.c  .generated_files/flags/default/3287371568cc4d08cad40066c1ede07f95dd8779 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/WatchApp/watchCore" 
+	@${RM} ${OBJECTDIR}/WatchApp/watchCore/alarm.o.d 
+	@${RM} ${OBJECTDIR}/WatchApp/watchCore/alarm.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  WatchApp/watchCore/alarm.c  -o ${OBJECTDIR}/WatchApp/watchCore/alarm.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/WatchApp/watchCore/alarm.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/WatchApp/watchCore/timekeeper.o: WatchApp/watchCore/timekeeper.c  .generated_files/flags/default/48358b3c874c31f38bb5335cf83c2f46960c188b .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/WatchApp/watchCore" 
+	@${RM} ${OBJECTDIR}/WatchApp/watchCore/timekeeper.o.d 
+	@${RM} ${OBJECTDIR}/WatchApp/watchCore/timekeeper.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  WatchApp/watchCore/timekeeper.c  -o ${OBJECTDIR}/WatchApp/watchCore/timekeeper.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/WatchApp/watchCore/timekeeper.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/WatchApp/watchFaces/analog_face.o: WatchApp/watchFaces/analog_face.c  .generated_files/flags/default/2dfe3d45d06d98a6cc1d6e245531b2c17f9f6883 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/WatchApp/watchFaces" 
+	@${RM} ${OBJECTDIR}/WatchApp/watchFaces/analog_face.o.d 
+	@${RM} ${OBJECTDIR}/WatchApp/watchFaces/analog_face.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  WatchApp/watchFaces/analog_face.c  -o ${OBJECTDIR}/WatchApp/watchFaces/analog_face.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/WatchApp/watchFaces/analog_face.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/WatchApp/watchFaces/binary_face.o: WatchApp/watchFaces/binary_face.c  .generated_files/flags/default/95cbd3827ae3d08ffe36462e1e066cf36745cb6e .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/WatchApp/watchFaces" 
+	@${RM} ${OBJECTDIR}/WatchApp/watchFaces/binary_face.o.d 
+	@${RM} ${OBJECTDIR}/WatchApp/watchFaces/binary_face.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  WatchApp/watchFaces/binary_face.c  -o ${OBJECTDIR}/WatchApp/watchFaces/binary_face.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/WatchApp/watchFaces/binary_face.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/WatchApp/watchFaces/digital_face.o: WatchApp/watchFaces/digital_face.c  .generated_files/flags/default/db749a19e6cdeb51faba02574ee71b008ffe4d80 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/WatchApp/watchFaces" 
+	@${RM} ${OBJECTDIR}/WatchApp/watchFaces/digital_face.o.d 
+	@${RM} ${OBJECTDIR}/WatchApp/watchFaces/digital_face.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  WatchApp/watchFaces/digital_face.c  -o ${OBJECTDIR}/WatchApp/watchFaces/digital_face.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/WatchApp/watchFaces/digital_face.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/WatchApp/watchInput/accel_input.o: WatchApp/watchInput/accel_input.c  .generated_files/flags/default/b38a0c3d5e725eae8dc45dee0ee9d348c0ab9aca .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/WatchApp/watchInput" 
+	@${RM} ${OBJECTDIR}/WatchApp/watchInput/accel_input.o.d 
+	@${RM} ${OBJECTDIR}/WatchApp/watchInput/accel_input.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  WatchApp/watchInput/accel_input.c  -o ${OBJECTDIR}/WatchApp/watchInput/accel_input.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/WatchApp/watchInput/accel_input.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/WatchApp/watchInput/buttons.o: WatchApp/watchInput/buttons.c  .generated_files/flags/default/9af880bcbfc34dda353a9a907a00bf41c5638d19 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/WatchApp/watchInput" 
+	@${RM} ${OBJECTDIR}/WatchApp/watchInput/buttons.o.d 
+	@${RM} ${OBJECTDIR}/WatchApp/watchInput/buttons.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  WatchApp/watchInput/buttons.c  -o ${OBJECTDIR}/WatchApp/watchInput/buttons.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/WatchApp/watchInput/buttons.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/WatchApp/watchInput/potentiometer.o: WatchApp/watchInput/potentiometer.c  .generated_files/flags/default/453ea8030aedddbe7678009bbe77f56d7c7f72d .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/WatchApp/watchInput" 
+	@${RM} ${OBJECTDIR}/WatchApp/watchInput/potentiometer.o.d 
+	@${RM} ${OBJECTDIR}/WatchApp/watchInput/potentiometer.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  WatchApp/watchInput/potentiometer.c  -o ${OBJECTDIR}/WatchApp/watchInput/potentiometer.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/WatchApp/watchInput/potentiometer.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/WatchApp/watchMenu/menu.o: WatchApp/watchMenu/menu.c  .generated_files/flags/default/3f8f13441cf073239060a3fbd621ab06efab7624 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/WatchApp/watchMenu" 
+	@${RM} ${OBJECTDIR}/WatchApp/watchMenu/menu.o.d 
+	@${RM} ${OBJECTDIR}/WatchApp/watchMenu/menu.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  WatchApp/watchMenu/menu.c  -o ${OBJECTDIR}/WatchApp/watchMenu/menu.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/WatchApp/watchMenu/menu.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/Timers/Timers.o: Timers/Timers.c  .generated_files/flags/default/b8478c977633c843a9538775759ff1365ef24690 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/Timers" 
+	@${RM} ${OBJECTDIR}/Timers/Timers.o.d 
+	@${RM} ${OBJECTDIR}/Timers/Timers.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  Timers/Timers.c  -o ${OBJECTDIR}/Timers/Timers.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/Timers/Timers.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -I"bsp" -DFCY=4000000 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
 endif
 

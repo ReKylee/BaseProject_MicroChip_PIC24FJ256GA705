@@ -1,5 +1,7 @@
 #include "Switch.h"
-#include "../systemExtensions/systemExtensions.h"
+#include "../Timers/Timers.h"
+
+#define USE_TIMER2
 
 /**
  * @file Switch.c
@@ -29,7 +31,7 @@ static switch_state_t s2_state = {false, 0};
  * @return true if press edge detected
  */
 static bool detect_press(switch_state_t* state, bool raw_input) {
-    uint32_t current_time = millis();
+    uint32_t current_time = Timer_GetTicks(2);
     
     if (raw_input != state->stable_state) {
         // State change detected
@@ -58,7 +60,7 @@ static bool detect_press(switch_state_t* state, bool raw_input) {
  * @return true if release edge detected
  */
 static bool detect_release(switch_state_t* state, bool raw_input) {
-    uint32_t current_time = millis();
+    uint32_t current_time = Timer_GetTicks(2);
     
     if (raw_input != state->stable_state) {
         // State change detected
@@ -85,15 +87,16 @@ static bool detect_release(switch_state_t* state, bool raw_input) {
 // ============================================================================
 
 void Switch_Init(void) {
+    Timer2_Init(1000, 2);
     S1_Init();
     S2_Init();
-    
+    uint32_t ms = Timer_GetTicks(2);
     // Initialize state with current switch positions
     s1_state.stable_state = S1_IsDown();
-    s1_state.last_change_time = millis();
+    s1_state.last_change_time = ms;
     
     s2_state.stable_state = S2_IsDown();
-    s2_state.last_change_time = millis();
+    s2_state.last_change_time = ms;
 }
 
 bool S1_WasPressed(void) {
@@ -114,8 +117,8 @@ bool S2_WasReleased(void) {
 
 void Switch_ResetState(void) {
     s1_state.stable_state = S1_IsDown();
-    s1_state.last_change_time = millis();
+    s1_state.last_change_time = Timer_GetTicks(2);
     
     s2_state.stable_state = S2_IsDown();
-    s2_state.last_change_time = millis();
+    s2_state.last_change_time = Timer_GetTicks(2);
 }
