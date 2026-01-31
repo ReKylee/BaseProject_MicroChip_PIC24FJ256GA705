@@ -309,22 +309,39 @@ void oledC_DrawString(uint8_t x, uint8_t y, uint8_t sx, uint8_t sy, uint8_t *str
     }
 }
 
-void oledC_DrawBitmap(uint8_t x, uint8_t y, uint16_t color, uint8_t sx, uint8_t sy, uint32_t *bitmap, uint8_t bitmap_length) {
-    const uint8_t bitmap_width = 32;
-    uint8_t rowNum;
-    uint8_t bitNum;
-    sx = sx == 0 ? 1 : sx;
-    sy = sy == 0 ? 1 : sy;
-    for (rowNum = 0; rowNum < bitmap_length; rowNum++) {
-        uint32_t rowBits = *bitmap++;
-        uint8_t curr_y = y + rowNum*sy;
-        for (bitNum = 0; bitNum < bitmap_width; bitNum++) {
-            if (!(rowBits & 0x01)) {
-                uint8_t curr_x = x + (bitmap_width - bitNum) * sx;
-                oledC_DrawRectangle(curr_x, curr_y, curr_x + sx - 1, curr_y + sy - 1, color);
+void oledC_DrawBitmap(uint8_t x_offset, uint8_t y_offset, uint16_t color, uint8_t pixel_draw_width, uint8_t pixel_draw_height, uint32_t *bitmap_data, uint8_t num_uint32_words) {
+    uint8_t current_bitmap_row = 0; // Tracks the current 16-bit row being drawn (0 to 15 for a 16x16 icon)
+    const uint8_t actual_pixel_width = 16; // Icons are 16 pixels wide
+
+    pixel_draw_width = pixel_draw_width == 0 ? 1 : pixel_draw_width; // Ensure non-zero
+    pixel_draw_height = pixel_draw_height == 0 ? 1 : pixel_draw_height; // Ensure non-zero
+
+    for (uint8_t i = 0; i < num_uint32_words; i++) { // Loop through each uint32_t word (e.g., 8 times for a 16x16 icon)
+        uint32_t packed_rows = *bitmap_data++; // Read a uint32_t which contains two 16-bit rows
+
+        // --- Process the first 16-bit row (high 16 bits of packed_rows) ---
+        uint16_t row1_bits = (uint16_t)(packed_rows >> 16); // Extract high 16 bits
+        uint8_t curr_y = y_offset + current_bitmap_row * pixel_draw_height; // Calculate y for this row
+        for (uint8_t bitNum = 0; bitNum < actual_pixel_width; bitNum++) { // Loop 16 times for a 16-pixel wide row
+            // Check bit from MSB (left-most pixel) to LSB (right-most pixel)
+            if ((row1_bits >> (actual_pixel_width - 1 - bitNum)) & 0x01) { // If bit is ON (1)
+                uint8_t curr_x = x_offset + bitNum * pixel_draw_width;
+                oledC_DrawRectangle(curr_x, curr_y, curr_x + pixel_draw_width - 1, curr_y + pixel_draw_height - 1, color);
             }
-            rowBits >>= 0x000001;
         }
+        current_bitmap_row++; // Move to the next 16-bit row
+
+        // --- Process the second 16-bit row (low 16 bits of packed_rows) ---
+        uint16_t row2_bits = (uint16_t)(packed_rows & 0xFFFF); // Extract low 16 bits
+        curr_y = y_offset + current_bitmap_row * pixel_draw_height; // Calculate y for this row
+        for (uint8_t bitNum = 0; bitNum < actual_pixel_width; bitNum++) { // Loop 16 times for a 16-pixel wide row
+            // Check bit from MSB to LSB
+            if ((row2_bits >> (actual_pixel_width - 1 - bitNum)) & 0x01) { // If bit is ON (1)
+                uint8_t curr_x = x_offset + bitNum * pixel_draw_width;
+                oledC_DrawRectangle(curr_x, curr_y, curr_x + pixel_draw_width - 1, curr_y + pixel_draw_height - 1, color);
+            }
+        }
+        current_bitmap_row++; // Move to the next 16-bit row
     }
 }
 

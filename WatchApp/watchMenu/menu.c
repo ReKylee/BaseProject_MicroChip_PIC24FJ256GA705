@@ -69,7 +69,7 @@ static void _draw_radial_main_menu_full(void) {
     for (uint8_t i = 0; i < MAIN_MENU_ITEMS; i++) {
         uint8_t pt_idx = menu_idx_to_sec(i);
         int x = SEC_POINTS[pt_idx][0], y = SEC_POINTS[pt_idx][1];
-        oledC_DrawBitmap(x - MENU_ICON_SIZE/2, y - MENU_ICON_SIZE/2, COLOR_DIM, MENU_ICON_SIZE, MENU_ICON_SIZE, (uint32_t*)menu_icons[i], MENU_ICON_SIZE);
+        oledC_DrawBitmap(x - MENU_ICON_SIZE/2, y - MENU_ICON_SIZE/2, COLOR_DIM, 1, 1, (uint32_t*)menu_icons[i], 8);
         if (i == radial_selection) oledC_DrawCircle(x, y, RING_RADIUS, COLOR_PRIMARY);
     }
 
@@ -85,7 +85,7 @@ static void _draw_radial_main_menu_partial(void) {
         if (last_radial_selection != 0xFF) {
             uint8_t pt_idx = menu_idx_to_sec(last_radial_selection);
             int x = SEC_POINTS[pt_idx][0], y = SEC_POINTS[pt_idx][1];
-            oledC_DrawBitmap(x - MENU_ICON_SIZE/2, y - MENU_ICON_SIZE/2, COLOR_DIM, MENU_ICON_SIZE, MENU_ICON_SIZE, (uint32_t*)menu_icons[last_radial_selection], MENU_ICON_SIZE);
+            oledC_DrawBitmap(x - MENU_ICON_SIZE/2, y - MENU_ICON_SIZE/2, COLOR_DIM, 1, 1, (uint32_t*)menu_icons[last_radial_selection], 8);
         }
         uint8_t pt_idx = menu_idx_to_sec(radial_selection);
         int x = SEC_POINTS[pt_idx][0], y = SEC_POINTS[pt_idx][1];
