@@ -10,6 +10,7 @@ static i2c_config_t config;
     uint32_t timeout = config.timeout_ms * 1000; \
     while (bit) { \
         if (--timeout == 0) return I2C_TIMEOUT; \
+        if (I2C1STATbits.BCL) return I2C_COLLISION; \
         DELAY_milliseconds(1); \
     } \
 } while(0)
@@ -33,8 +34,7 @@ void i2c_init(const i2c_config_t *cfg) {
 
         I2C1CONLbits.DISSLW = 1; // disable slew rate
         I2C1BRG = ((FCY / target_bus_hz) - 1);
-    }
-    else {
+    } else {
         I2C1CONLbits.DISSLW = 0; // normal
         I2C1BRG = ((FCY / target_bus_hz - FCY / 10000000) - 1);
     }
@@ -47,7 +47,7 @@ void i2c_init(const i2c_config_t *cfg) {
 static i2c_status_t start(void) {
     I2C1STATbits.BCL = 0; // Clear collision flag proactively
     I2C1CONLbits.SEN = 1; // Initiate Start
-    WAIT_FOR_BIT(I2C1CONLbits.SEN);
+    while (I2C1CONLbits.SEN);
     if (I2C1STATbits.BCL) return I2C_COLLISION; // Check BCL after operation
     return I2C_OK;
 }
@@ -55,14 +55,18 @@ static i2c_status_t start(void) {
 static i2c_status_t restart(void) {
     I2C1CONLbits.RSEN = 1; // Initiate Restart
     WAIT_FOR_BIT(I2C1CONLbits.RSEN);
-    if (I2C1STATbits.BCL) return I2C_COLLISION; // Check BCL after operation
+    if (I2C1STATbits.IWCOL) return I2C_COLLISION;
+    if (I2C1STATbits.BCL) return I2C_COLLISION;
+
     return I2C_OK;
 }
 
 static i2c_status_t stop(void) {
     I2C1CONLbits.PEN = 1; // Initiate Stop
     WAIT_FOR_BIT(I2C1CONLbits.PEN);
-    if (I2C1STATbits.BCL) return I2C_COLLISION; // Check BCL after operation
+    if (I2C1STATbits.IWCOL) return I2C_COLLISION;
+    if (I2C1STATbits.BCL) return I2C_COLLISION;
+
     return I2C_OK;
 }
 
@@ -71,12 +75,12 @@ static i2c_status_t tx(uint8_t data) {
     I2C1STATbits.IWCOL = 0;
     I2C1STATbits.BCL = 0;
 
+    while (I2C1STATbits.TRSTAT);
     I2C1TRN = data; // Load data
     WAIT_FOR_BIT(I2C1STATbits.TRSTAT); // Wait for transmission to complete
 
     if (I2C1STATbits.IWCOL) return I2C_COLLISION; // Check for write collision
     if (I2C1STATbits.BCL) return I2C_COLLISION; // Check for bus collision
-
     return I2C1STATbits.ACKSTAT ? I2C_NACK : I2C_OK; // Check ACK after transmission
 }
 

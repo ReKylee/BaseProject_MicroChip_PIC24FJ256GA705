@@ -1,5 +1,6 @@
 #include "app_init.h"
-#include "../System/delay.h" 
+#include "../System/delay.h"
+#include "watchFaces/alarm_face.h" 
 
 void APP_InitializeHardware(void) {
     // Initialize system
@@ -27,6 +28,7 @@ void APP_InitializeHardware(void) {
     DigitalFace_Init();
     AnalogFace_Init();
     BinaryFace_Init();
+    AlarmFace_Init();
 
     // Initialize menu system
     Menu_Init();

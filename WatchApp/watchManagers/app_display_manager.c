@@ -1,5 +1,6 @@
 #include "app_display_manager.h"
 #include "../watchFaces/alarm_face.h" // Added this include
+#include "../watchMenu/menu.h" // Include menu header for new drawing functions
 
 // -----------------------------------------------------------------------------
 // PRIVATE HELPERS
@@ -18,7 +19,7 @@ static void _APP_DrawFull(WatchState_t* state) {
             }
             break;
 
-        case MODE_MENU:      Menu_Draw(); break;
+        case MODE_MENU:      Menu_DrawFull(); break; // Call Menu_DrawFull
         case MODE_POMODORO:  Pomodoro_Draw(); break;
 
         default: break;
@@ -38,9 +39,12 @@ static void _APP_DrawPartial(WatchState_t* state) {
             }
             break;
 
-        // Currently MENU and POMODORO have no partial redraws
         case MODE_MENU:
+            Menu_DrawPartial(); // Call Menu_DrawPartial
+            break;
         case MODE_POMODORO:
+            Pomodoro_Draw(); // Pomodoro has no partial update, so call full draw.
+            break;
         default:
             break;
     }

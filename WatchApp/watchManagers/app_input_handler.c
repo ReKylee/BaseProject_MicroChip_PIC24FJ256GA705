@@ -1,6 +1,7 @@
 #include "app_input_handler.h"
 
 // Private functions for handling inputs in different modes
+
 static void HandleWatchMode(ButtonEvent_t btn, AccelEvent_t accel) {
     WatchState_t* state = Watch_GetState();
 
@@ -19,10 +20,13 @@ static void HandleWatchMode(ButtonEvent_t btn, AccelEvent_t accel) {
     if (btn == BTN_S2_SHORT) {
         state->watch_face = (state->watch_face + 1) % FACE_COUNT_SELECTABLE;
         // Re-initialize the face to build its specific shape list
-        switch(state->watch_face) {
-            case FACE_DIGITAL: DigitalFace_Init(); break;
-            case FACE_ANALOG: AnalogFace_Init(); break;
-            case FACE_BINARY: BinaryFace_Init(); break;
+        switch (state->watch_face) {
+            case FACE_DIGITAL: DigitalFace_Init();
+                break;
+            case FACE_ANALOG: AnalogFace_Init();
+                break;
+            case FACE_BINARY: BinaryFace_Init();
+                break;
             default: break;
         }
         state->needs_full_redraw = true;
@@ -41,7 +45,7 @@ static void HandleMenuMode(ButtonEvent_t btn, AccelEvent_t accel) {
         state->needs_full_redraw = true;
         return;
     }
-
+    
     if (btn == BTN_S1_SHORT || btn == BTN_S1_LONG) {
         LED1_On();
         DELAY_milliseconds(50);
@@ -86,7 +90,6 @@ static void HandlePomodoroMode(ButtonEvent_t btn, AccelEvent_t accel) {
 
     Pomodoro_HandleInput(btn == BTN_S2_SHORT, btn == BTN_S1_SHORT);
 }
-
 
 void APP_HandleInputEvents(ButtonEvent_t btn, AccelEvent_t accel) {
     WatchState_t* state = Watch_GetState();

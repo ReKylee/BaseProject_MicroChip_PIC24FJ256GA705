@@ -27,7 +27,12 @@ void Menu_HandleInput(ButtonEvent_t btn_event, uint16_t pot_value);
 /**
  * @brief Draw current menu screen (full redraw)
  */
-void Menu_Draw(void);
+void Menu_DrawFull(void);
+
+/**
+ * @brief Draw current menu screen (partial update)
+ */
+void Menu_DrawPartial(void);
 
 /**
  * @brief Enter menu mode

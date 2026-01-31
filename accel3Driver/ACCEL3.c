@@ -1,5 +1,6 @@
 #include "ACCEL3.h"
 #include "../i2cDriver/I2C.h" 
+#include "../System/delay.h"
 
 static uint8_t slave_addr;
 
@@ -19,7 +20,7 @@ ACCEL3_Status_t ACCEL3_Init(const ACCEL3_Config_t *cfg) {
     if (devid != 0xE5) {
         return ACCEL3_ERR_ID;
     }
-
+    DELAY_milliseconds(5);
     // Configure Device
     // Measure Mode (Power_CTL = 0x08)
     if (i2c_writeReg(slave_addr, ADXL345_REG_POWER_CTL, 0x08) != I2C_OK) return ACCEL3_ERR_I2C;
