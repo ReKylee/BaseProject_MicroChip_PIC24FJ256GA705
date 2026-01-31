@@ -8,6 +8,19 @@
 #include "../../oledDriver/oledC.h"
 #include "../../oledDriver/oledC_shapes.h"
 
+// Common display coordinates
+#define CENTER_X  47
+#define CENTER_Y  47
+#define RADIUS    40
+
+// Common UI element positions
+#define DATE_X    2
+#define DATE_Y    5
+#define ALARM_X   88
+#define ALARM_Y   5
+#define ALARM_W   5
+#define ALARM_H   5
+
 // ============================================================================
 // COMMON WATCH FACE DRAWING FUNCTIONS
 // ============================================================================

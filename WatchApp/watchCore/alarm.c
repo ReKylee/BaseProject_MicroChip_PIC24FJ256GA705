@@ -7,7 +7,7 @@
 #include "../shared/watch_state.h"
 #include "../../oledDriver/oledC.h"
 
-#define ALARM_AUTO_OFF_SECONDS  20
+
 
 // ============================================================================
 // PUBLIC FUNCTIONS

@@ -17,9 +17,7 @@
 // CONFIGURATION
 // ============================================================================
 
-#define CENTER_X  47
-#define CENTER_Y  47
-#define RADIUS    40
+
 
 #define HOUR_LEN  20
 #define MIN_LEN   32
@@ -30,14 +28,14 @@
 #define MARKER_MINOR_WIDTH  1
 
 // Date position
-#define DATE_X  2
-#define DATE_Y  5
+// #define DATE_X  2
+// #define DATE_Y  5
 
 // Alarm icon position
-#define ALARM_X  88
-#define ALARM_Y  5
-#define ALARM_W  5
-#define ALARM_H  5
+// #define ALARM_X  88
+// #define ALARM_Y  5
+// #define ALARM_W  5
+// #define ALARM_H  5
 
 // Center dot
 #define CENTER_DOT_RADIUS  2

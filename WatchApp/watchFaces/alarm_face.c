@@ -2,14 +2,13 @@
 #include "../shared/watch_state.h"
 #include "../../oledDriver/oledC.h"
 #include "../../oledDriver/oledC_shapes.h"
+#include "watch_face_common.h"
 
 // ============================================================================
 // CONFIGURATION
 // ============================================================================
 
-#define CENTER_X  47
-#define CENTER_Y  47
-#define RADIUS    40
+
 
 // Colors for flashing
 // #define COLOR_ALARM_BG  COLOR_WARNING // No longer needed

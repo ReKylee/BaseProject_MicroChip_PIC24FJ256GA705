@@ -25,16 +25,8 @@
 #define SECONDS_X       75
 #define SECONDS_Y       (TIME_Y + 30)
 
-#define DATE_X          2
-#define DATE_Y          5
-
 #define AMPM_X          70
 #define AMPM_Y          70
-
-#define ALARM_X         88
-#define ALARM_Y         5
-#define ALARM_W         5 // Width of alarm icon
-#define ALARM_H         5 // Height of alarm icon
 
 #define HOUR_DIGIT_WIDTH    18
 #define MIN_DIGIT_WIDTH     18
