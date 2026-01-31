@@ -3,12 +3,6 @@
 
 #include <stdint.h> 
 
-#include "../shared/watch_state.h"
-#include "../watchCore/timekeeper.h"
-#include "../watchCore/alarm.h"
-#include "../pomodoroTimer/pomodoro.h"
-#include "../../Timers/Timers.h"
-
 /**
  * @brief Handles time updates, alarm checks, and pomodoro timer updates.
  *

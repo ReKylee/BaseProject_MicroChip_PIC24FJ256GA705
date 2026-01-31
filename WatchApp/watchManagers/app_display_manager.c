@@ -1,6 +1,14 @@
 #include "app_display_manager.h"
-#include "../watchFaces/alarm_face.h" // Added this include
-#include "../watchMenu/menu.h" // Include menu header for new drawing functions
+#include "../watchFaces/alarm_face.h" 
+#include "../watchMenu/menu.h" 
+#include "../shared/watch_state.h"
+#include "../../oledDriver/oledC.h" // For oledC_setBackground
+#include "../watchFaces/digital_face.h"
+#include "../watchFaces/analog_face.h"
+#include "../watchFaces/binary_face.h"
+#include "../pomodoroTimer/pomodoro.h"
+#include "../watchCore/alarm.h" // Not directly used but good to have related to alarm_face.h
+#include "../watchCore/timekeeper.h" // Not directly used but good to have related to watch_state.h
 
 // -----------------------------------------------------------------------------
 // PRIVATE HELPERS

@@ -26,7 +26,8 @@ typedef struct {
 
 typedef enum {
     FORMAT_12H = 0,
-    FORMAT_24H = 1
+    FORMAT_24H = 1,
+    TIME_FORMAT_COUNT
 } TimeFormat_t;
 
 // ============================================================================
@@ -60,7 +61,8 @@ typedef struct {
 typedef enum {
     MODE_WATCH = 0, // Normal watch display
     MODE_MENU, // Menu navigation
-    MODE_POMODORO // Pomodoro timer
+    MODE_POMODORO, // Pomodoro timer
+    DISPLAY_MODE_COUNT
 } DisplayMode_t;
 
 typedef enum {
@@ -108,6 +110,11 @@ typedef struct {
     uint16_t remaining_seconds;
     uint8_t work_sessions; // Count completed work sessions
     bool paused;
+    // Configuration values (default in Watch_InitState)
+    uint8_t work_minutes;
+    uint8_t short_break_minutes;
+    uint8_t long_break_minutes;
+    uint8_t long_break_after_sessions;
 } Pomodoro_t;
 
 // ============================================================================

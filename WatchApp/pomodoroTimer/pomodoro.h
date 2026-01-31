@@ -10,15 +10,6 @@
 #include <stdbool.h>
 
 // ============================================================================
-// POMODORO CONFIGURATION
-// ============================================================================
-
-#define POMODORO_WORK_MINUTES       25
-#define POMODORO_SHORT_BREAK_MIN    5
-#define POMODORO_LONG_BREAK_MIN     15
-#define POMODORO_LONG_BREAK_AFTER   4   // Long break after 4 work sessions
-
-// ============================================================================
 // POMODORO FUNCTIONS
 // ============================================================================
 

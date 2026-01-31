@@ -1,47 +1,26 @@
-/*
- * menu.h
- * Menu system for watch configuration
- */
-
 #ifndef MENU_H
 #define MENU_H
 
 #include "../shared/watch_types.h"
 
+// Menu item structure
+typedef struct {
+    const char* text;
+    MenuState_t next_state;
+} MenuItem_t;
+
+extern const MenuItem_t main_menu[];
+#define MAIN_MENU_ITEMS (sizeof(main_menu) / sizeof(MenuItem_t))
+
 // ============================================================================
 // MENU FUNCTIONS
 // ============================================================================
 
-/**
- * @brief Initialize menu system
- */
 void Menu_Init(void);
-
-/**
- * @brief Handle menu input and navigation
- * @param btn_event Button event
- * @param pot_value Potentiometer value (0-1023)
- */
-void Menu_HandleInput(ButtonEvent_t btn_event, uint16_t pot_value);
-
-/**
- * @brief Draw current menu screen (full redraw)
- */
-void Menu_DrawFull(void);
-
-/**
- * @brief Draw current menu screen (partial update)
- */
-void Menu_DrawPartial(void);
-
-/**
- * @brief Enter menu mode
- */
 void Menu_Enter(void);
-
-/**
- * @brief Exit menu mode (return to watch display)
- */
 void Menu_Exit(void);
+void Menu_HandleInput(ButtonEvent_t btn_event, uint16_t pot_value);
+void Menu_DrawFull(void);
+void Menu_DrawPartial(void);
 
 #endif // MENU_H

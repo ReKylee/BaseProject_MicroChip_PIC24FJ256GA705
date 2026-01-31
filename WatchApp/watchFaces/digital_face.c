@@ -13,6 +13,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdio.h>
+#include "watch_face_common.h" // Include common drawing functions
 
 // ============================================================================
 // CONFIG
@@ -22,7 +23,7 @@
 #define TIME_X_MIN      56
 #define TIME_Y          30
 #define SECONDS_X       75
-#define SECONDS_Y       (TIME_Y + 20)
+#define SECONDS_Y       (TIME_Y + 30)
 
 #define DATE_X          2
 #define DATE_Y          5
@@ -32,6 +33,8 @@
 
 #define ALARM_X         88
 #define ALARM_Y         5
+#define ALARM_W         5 // Width of alarm icon
+#define ALARM_H         5 // Height of alarm icon
 
 #define HOUR_DIGIT_WIDTH    18
 #define MIN_DIGIT_WIDTH     18
@@ -66,18 +69,8 @@ static void draw_colon(uint16_t color) {
     oledC_DrawString(44, TIME_Y, 3, 4, (uint8_t*)":", color);
 }
 
-static void draw_date(const Date_t* date, uint16_t color) {
-    char buf[6];
-    sprintf(buf, "%02d/%02d", date->day, date->month);
-    oledC_DrawString(DATE_X, DATE_Y, 1, 1, (uint8_t*)buf, color);
-}
-
 static void draw_ampm(bool is_pm, uint16_t color) {
     oledC_DrawString(AMPM_X, AMPM_Y, 1, 1, (uint8_t*)(is_pm ? "PM" : "AM"), color);
-}
-
-static void draw_alarm_icon(uint16_t color) {
-    oledC_DrawRectangle(ALARM_X, ALARM_Y, ALARM_X + 5, ALARM_Y + 5, color);
 }
 
 // ============================================================================
@@ -110,7 +103,7 @@ void DigitalFace_Draw(void) {
     draw_seconds(state->current_time.second, COLOR_DIM);
 
     // Date
-    draw_date(&state->current_date, COLOR_DIM);
+    WatchFace_DrawDate(DATE_X, DATE_Y, &state->current_date, &last_date_drawn, COLOR_DIM, COLOR_BG);
 
     // AM/PM
     if (state->time_format == FORMAT_12H) {
@@ -118,7 +111,7 @@ void DigitalFace_Draw(void) {
     }
 
     // Alarm
-    if (state->alarm.enabled) draw_alarm_icon(COLOR_ACCENT);
+    WatchFace_DrawAlarmIcon(ALARM_X, ALARM_Y, ALARM_W, ALARM_H, state->alarm.enabled);
 
     // Save state
     last_time_drawn = state->current_time;
@@ -182,17 +175,10 @@ void DigitalFace_DrawUpdate(void) {
     }
 
     // Date
-    if (today.day != last_date_drawn.day || today.month != last_date_drawn.month) {
-        draw_date(&last_date_drawn, COLOR_BG);
-        draw_date(&today, COLOR_DIM);
-        last_date_drawn = today;
-    }
+    WatchFace_DrawDate(DATE_X, DATE_Y, &today, &last_date_drawn, COLOR_DIM, COLOR_BG);
 
     // Alarm
-    if (state->alarm.enabled != last_alarm_drawn) {
-        draw_alarm_icon(last_alarm_drawn ? COLOR_BG : COLOR_ACCENT);
-        last_alarm_drawn = state->alarm.enabled;
-    }
+    WatchFace_DrawAlarmIcon(ALARM_X, ALARM_Y, ALARM_W, ALARM_H, state->alarm.enabled);
 
     last_time_drawn = now;
     last_format_drawn = state->time_format;

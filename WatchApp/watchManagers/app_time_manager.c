@@ -1,6 +1,12 @@
 #include <stdbool.h>
+#include <stdint.h> // For uint32_t
 
 #include "app_time_manager.h"
+#include "../shared/watch_state.h"
+#include "../watchCore/timekeeper.h"
+#include "../watchCore/alarm.h"
+#include "../pomodoroTimer/pomodoro.h"
+#include "../../Timers/Timers.h"
 
 void APP_UpdateTimeAndAlarms(uint32_t* last_uptime_s) {
     WatchState_t* state = Watch_GetState();

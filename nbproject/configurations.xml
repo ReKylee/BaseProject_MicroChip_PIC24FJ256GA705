@@ -66,6 +66,8 @@
           <itemPath>WatchApp/watchFaces/binary_face.h</itemPath>
           <itemPath>WatchApp/watchFaces/digital_face.h</itemPath>
           <itemPath>WatchApp/watchFaces/alarm_face.h</itemPath>
+          <itemPath>WatchApp/watchFaces/watch_face_common.h</itemPath>
+          <itemPath>WatchApp/watchFaces/watch_face_geometry.h</itemPath>
         </logicalFolder>
         <logicalFolder name="watchInput" displayName="watchInput" projectFiles="true">
           <itemPath>WatchApp/watchInput/accel_input.h</itemPath>
@@ -150,6 +152,8 @@
           <itemPath>WatchApp/watchFaces/binary_face.c</itemPath>
           <itemPath>WatchApp/watchFaces/digital_face.c</itemPath>
           <itemPath>WatchApp/watchFaces/alarm_face.c</itemPath>
+          <itemPath>WatchApp/watchFaces/watch_face_common.c</itemPath>
+          <itemPath>WatchApp/watchFaces/watch_face_geometry.c</itemPath>
         </logicalFolder>
         <logicalFolder name="watchInput" displayName="watchInput" projectFiles="true">
           <itemPath>WatchApp/watchInput/accel_input.c</itemPath>

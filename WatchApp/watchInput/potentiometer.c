@@ -7,12 +7,7 @@
 #include "../../adcDriver/ADC.h"
 #include <stdbool.h>
 
-// ============================================================================
-// CONFIGURATION
-// ============================================================================
 
-#define POT_HYSTERESIS          30      // Default hysteresis for jitter prevention
-#define POT_MENU_HYSTERESIS     40      // Larger hysteresis for menu scrolling
 
 // ============================================================================
 // PRIVATE DATA

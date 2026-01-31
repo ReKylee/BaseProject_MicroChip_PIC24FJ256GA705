@@ -8,6 +8,9 @@
 
 #include <stdint.h>
 
+#define POT_HYSTERESIS          30      // Default hysteresis for jitter prevention
+#define POT_MENU_HYSTERESIS     40      // Larger hysteresis for menu scrolling
+
 // ============================================================================
 // POTENTIOMETER FUNCTIONS
 // ============================================================================

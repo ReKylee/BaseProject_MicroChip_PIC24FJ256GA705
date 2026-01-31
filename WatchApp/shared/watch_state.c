@@ -48,7 +48,11 @@ void Watch_InitState(void) {
     
     // Pomodoro defaults (25/5 minute intervals)
     g_watch_state.pomodoro.state = POMODORO_IDLE;
-    g_watch_state.pomodoro.remaining_seconds = 25 * 60;
+    g_watch_state.pomodoro.work_minutes = 25;
+    g_watch_state.pomodoro.short_break_minutes = 5;
+    g_watch_state.pomodoro.long_break_minutes = 15;
+    g_watch_state.pomodoro.long_break_after_sessions = 4;
+    g_watch_state.pomodoro.remaining_seconds = g_watch_state.pomodoro.work_minutes * 60;
     g_watch_state.pomodoro.work_sessions = 0;
     g_watch_state.pomodoro.paused = false;
     
