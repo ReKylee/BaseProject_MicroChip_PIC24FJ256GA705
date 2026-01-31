@@ -9,13 +9,10 @@
 #include "../watchCore/timekeeper.h"
 #include "../../oledDriver/oledC.h"
 #include "../../oledDriver/oledC_shapes.h"
-#include "../watchInput/accel_input.h" // Added
-#include "../../accel3Driver/ACCEL3.h" // Added
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
 #include <stdio.h>
-#include <limits.h> // For INT16_MAX
 
 // ============================================================================
 // CONFIG
@@ -40,10 +37,6 @@
 #define MIN_DIGIT_WIDTH     18
 #define SECONDS_WIDTH       14
 
-// Accel display coordinates
-#define ACCEL_X_POS     2
-#define ACCEL_Y_START   60 // Start below date, leaving space for other info
-
 // ============================================================================
 // STATE
 // ============================================================================
@@ -52,7 +45,6 @@ static Time_t last_time_drawn;
 static Date_t last_date_drawn;
 static bool last_alarm_drawn;
 static TimeFormat_t last_format_drawn;
-static int16_t last_accel_x, last_accel_y, last_accel_z; // Added for accel debug
 
 // ============================================================================
 // PRIVATE HELPERS
@@ -88,17 +80,6 @@ static void draw_alarm_icon(uint16_t color) {
     oledC_DrawRectangle(ALARM_X, ALARM_Y, ALARM_X + 5, ALARM_Y + 5, color);
 }
 
-// Helper to draw accelerometer values
-static void draw_accel_values(int16_t x, int16_t y, int16_t z, uint16_t color) {
-    char buf[10];
-    sprintf(buf, "X:%d", x);
-    oledC_DrawString(ACCEL_X_POS, ACCEL_Y_START, 1, 1, (uint8_t*)buf, color);
-    sprintf(buf, "Y:%d", y);
-    oledC_DrawString(ACCEL_X_POS, ACCEL_Y_START + 10, 1, 1, (uint8_t*)buf, color);
-    sprintf(buf, "Z:%d", z);
-    oledC_DrawString(ACCEL_X_POS, ACCEL_Y_START + 20, 1, 1, (uint8_t*)buf, color);
-}
-
 // ============================================================================
 // PUBLIC API
 // ============================================================================
@@ -110,10 +91,6 @@ void DigitalFace_Init(void) {
     last_time_drawn.second = 255; // force initial draw
     last_format_drawn = FORMAT_24H;
     last_alarm_drawn = false;
-    // Initialize accel values to a sentinel to force initial draw
-    last_accel_x = INT16_MAX;
-    last_accel_y = INT16_MAX;
-    last_accel_z = INT16_MAX;
 }
 
 void DigitalFace_Draw(void) {
@@ -143,19 +120,12 @@ void DigitalFace_Draw(void) {
     // Alarm
     if (state->alarm.enabled) draw_alarm_icon(COLOR_ACCENT);
 
-    // Accel values
-    int16_t current_accel_x, current_accel_y, current_accel_z;
-    ACCEL3_ReadXYZ(&current_accel_x, &current_accel_y, &current_accel_z);
-    draw_accel_values(current_accel_x, current_accel_y, current_accel_z, COLOR_DIM);
-
     // Save state
     last_time_drawn = state->current_time;
     last_date_drawn = state->current_date;
     last_alarm_drawn = state->alarm.enabled;
     last_format_drawn = state->time_format;
-    last_accel_x = current_accel_x;
-    last_accel_y = current_accel_y;
-    last_accel_z = current_accel_z;
+   
 }
 
 void DigitalFace_DrawUpdate(void) {
@@ -222,18 +192,6 @@ void DigitalFace_DrawUpdate(void) {
     if (state->alarm.enabled != last_alarm_drawn) {
         draw_alarm_icon(last_alarm_drawn ? COLOR_BG : COLOR_ACCENT);
         last_alarm_drawn = state->alarm.enabled;
-    }
-
-    // Accel values - partial update
-    int16_t current_accel_x, current_accel_y, current_accel_z;
-    ACCEL3_ReadXYZ(&current_accel_x, &current_accel_y, &current_accel_z);
-
-    if (current_accel_x != last_accel_x || current_accel_y != last_accel_y || current_accel_z != last_accel_z) {
-        draw_accel_values(last_accel_x, last_accel_y, last_accel_z, COLOR_BG); // Erase old
-        draw_accel_values(current_accel_x, current_accel_y, current_accel_z, COLOR_DIM); // Draw new
-        last_accel_x = current_accel_x;
-        last_accel_y = current_accel_y;
-        last_accel_z = current_accel_z;
     }
 
     last_time_drawn = now;
