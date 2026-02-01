@@ -4,6 +4,7 @@
 #include "../watchFaces/watch_face_geometry.h"
 #include "../../oledDriver/oledC.h"
 #include "../../oledDriver/oledC_shapes.h"
+#include "../watchCore/timekeeper.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -12,6 +13,8 @@
 // ============================================================================
 
 static const RadialMenuConfig_t* s_active_radial = NULL;
+static TimeFormat_t s_last_small_time_format = FORMAT_24H;
+static const char* s_last_header_title = NULL;
 
 static inline uint8_t idx_to_sec(uint8_t idx, uint8_t count) {
     return (uint8_t)((idx * NUM_CLOCK_POINTS) / count);
@@ -74,30 +77,61 @@ static void draw_center_label(const char *text) {
 static void draw_menu_header(const char* title) {
     oledC_DrawRectangle(0, MENU_HEADER_Y, 95, MENU_HEADER_Y + MENU_HEADER_H, COLOR_BG);
     oledC_DrawString(MENU_TITLE_X, MENU_TITLE_Y, 1, 1, (uint8_t*)title, COLOR_ACCENT);
+    s_last_header_title = title;
+}
+
+static uint8_t format_small_time(char* buf, size_t buf_len, const WatchState_t* state) {
+    uint8_t hour = state->current_time.hour;
+    bool is_pm = false;
+    uint8_t text_w = 0;
+    if (state->time_format == FORMAT_12H) {
+        hour = Timekeeper_Convert24to12(hour, &is_pm);
+        snprintf(buf, buf_len, "%02d:%02d:%02d %s",
+                 hour, state->current_time.minute, state->current_time.second,
+                 is_pm ? "PM" : "AM");
+        text_w = (uint8_t)(11 * 6);
+    } else {
+        snprintf(buf, buf_len, "%02d:%02d:%02d",
+                 hour, state->current_time.minute, state->current_time.second);
+        text_w = (uint8_t)(8 * 6);
+    }
+
+    int x = 96 - text_w;
+    if (x < 0) x = 0;
+    return (uint8_t)x;
 }
 
 static void draw_small_time_update(void) {
     WatchState_t* state = Watch_GetState();
-    if (state->current_time.second != s_last_small_time.second) {
-        char new_str[9];
-        oledC_DrawRectangle(MENU_TIME_X - 1, MENU_HEADER_Y,
+    if (state->current_time.second != s_last_small_time.second ||
+        state->time_format != s_last_small_time_format) {
+        char new_str[12];
+        uint8_t x = format_small_time(new_str, sizeof(new_str), state);
+        oledC_DrawRectangle(0, MENU_HEADER_Y,
                             95, MENU_HEADER_Y + MENU_HEADER_H,
                             COLOR_BG);
-        sprintf(new_str, "%02d:%02d:%02d", state->current_time.hour, state->current_time.minute, state->current_time.second);
-        oledC_DrawString(MENU_TIME_X, MENU_TIME_Y, 1, 1, (uint8_t*)new_str, COLOR_DIM);
+        if (s_last_header_title) {
+            oledC_DrawString(MENU_TITLE_X, MENU_TITLE_Y, 1, 1, (uint8_t*)s_last_header_title, COLOR_ACCENT);
+        }
+        oledC_DrawString(x, MENU_TIME_Y, 1, 1, (uint8_t*)new_str, COLOR_DIM);
         s_last_small_time = state->current_time;
+        s_last_small_time_format = state->time_format;
     }
 }
 
 static void draw_small_time_full(void) {
     WatchState_t* state = Watch_GetState();
-    char new_str[9];
-    oledC_DrawRectangle(MENU_TIME_X - 1, MENU_HEADER_Y,
+    char new_str[12];
+    uint8_t x = format_small_time(new_str, sizeof(new_str), state);
+    oledC_DrawRectangle(0, MENU_HEADER_Y,
                         95, MENU_HEADER_Y + MENU_HEADER_H,
                         COLOR_BG);
-    sprintf(new_str, "%02d:%02d:%02d", state->current_time.hour, state->current_time.minute, state->current_time.second);
-    oledC_DrawString(MENU_TIME_X, MENU_TIME_Y, 1, 1, (uint8_t*)new_str, COLOR_DIM);
+    if (s_last_header_title) {
+        oledC_DrawString(MENU_TITLE_X, MENU_TITLE_Y, 1, 1, (uint8_t*)s_last_header_title, COLOR_ACCENT);
+    }
+    oledC_DrawString(x, MENU_TIME_Y, 1, 1, (uint8_t*)new_str, COLOR_DIM);
     s_last_small_time = state->current_time;
+    s_last_small_time_format = state->time_format;
 }
 
 static void draw_radial_item(uint8_t idx, bool selected) {

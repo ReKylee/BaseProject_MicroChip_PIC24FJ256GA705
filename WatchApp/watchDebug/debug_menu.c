@@ -13,6 +13,7 @@
 #include "../../oledDriver/oledC.h"
 #include "../../oledDriver/oledC_shapes.h"
 #include "../watchCore/alarm.h"
+#include "../watchCore/timekeeper.h"
 #include <stdio.h>
 
 // Layout
@@ -34,6 +35,7 @@ static uint8_t s_dbg_last_alarm_hour = 0xFF;
 static uint8_t s_dbg_last_alarm_min = 0xFF;
 static uint8_t s_dbg_last_alarm_en = 0xFF;
 static Time_t s_last_time = {0xFF, 0xFF, 0xFF};
+static TimeFormat_t s_last_time_format = FORMAT_24H;
 
 static void draw_header(const char* title) {
     oledC_DrawRectangle(0, DEBUG_HEADER_Y, 95, DEBUG_HEADER_Y + DEBUG_HEADER_H, COLOR_BG);
@@ -42,18 +44,29 @@ static void draw_header(const char* title) {
 
 static void draw_time_full(void) {
     WatchState_t* state = Watch_GetState();
-    char buf[9];
-    oledC_DrawRectangle(DEBUG_TIME_X - 1, DEBUG_HEADER_Y,
-                        95, DEBUG_HEADER_Y + DEBUG_HEADER_H,
-                        COLOR_BG);
-    sprintf(buf, "%02d:%02d:%02d", state->current_time.hour, state->current_time.minute, state->current_time.second);
-    oledC_DrawString(DEBUG_TIME_X, DEBUG_TIME_Y, 1, 1, (uint8_t*)buf, COLOR_DIM);
+    char buf[12];
+    uint8_t hour = state->current_time.hour;
+    bool is_pm = false;
+    draw_header("DEBUG");
+    if (state->time_format == FORMAT_12H) {
+        hour = Timekeeper_Convert24to12(hour, &is_pm);
+        snprintf(buf, sizeof(buf), "%02d:%02d:%02d %s",
+                 hour, state->current_time.minute, state->current_time.second,
+                 is_pm ? "PM" : "AM");
+        oledC_DrawString((uint8_t)(96 - (11 * 6)), DEBUG_TIME_Y, 1, 1, (uint8_t*)buf, COLOR_DIM);
+    } else {
+        snprintf(buf, sizeof(buf), "%02d:%02d:%02d",
+                 hour, state->current_time.minute, state->current_time.second);
+        oledC_DrawString((uint8_t)(96 - (8 * 6)), DEBUG_TIME_Y, 1, 1, (uint8_t*)buf, COLOR_DIM);
+    }
     s_last_time = state->current_time;
+    s_last_time_format = state->time_format;
 }
 
 static void draw_time_update(void) {
     WatchState_t* state = Watch_GetState();
-    if (state->current_time.second != s_last_time.second) {
+    if (state->current_time.second != s_last_time.second ||
+        state->time_format != s_last_time_format) {
         draw_time_full();
     }
 }
