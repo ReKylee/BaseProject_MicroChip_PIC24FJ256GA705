@@ -172,7 +172,7 @@ static void fill_edit_spec(MenuState_t state, EditRingSpec_t* spec, char* center
     WatchState_t* w = Watch_GetState();
     uint8_t field = w->menu_edit_field;
     if (state == MENU_SET_TIME) {
-        spec->title = "SET TIME";
+        spec->title = "TIME";
         if (field == 0) {
             spec->count = 24;
             spec->label_step = 2;
@@ -186,7 +186,7 @@ static void fill_edit_spec(MenuState_t state, EditRingSpec_t* spec, char* center
         }
         sprintf(center_text, "%02d:%02d", s_temp_time.hour, s_temp_time.minute);
     } else if (state == MENU_SET_DATE) {
-        spec->title = "SET DATE";
+        spec->title = "DATE";
         if (field == 0) {
             spec->count = 31;
             spec->label_step = 5;
@@ -200,7 +200,7 @@ static void fill_edit_spec(MenuState_t state, EditRingSpec_t* spec, char* center
         }
         sprintf(center_text, "%02d/%02d", s_temp_date.day, s_temp_date.month);
     } else if (state == MENU_POMODORO) {
-        spec->title = "POMODORO";
+        spec->title = "POMO";
         if (field == 0) {
             spec->count = 60;
             spec->label_step = 5;
@@ -214,7 +214,7 @@ static void fill_edit_spec(MenuState_t state, EditRingSpec_t* spec, char* center
         }
         sprintf(center_text, "W%02d B%02d", s_temp_pomo_work, s_temp_pomo_break);
     } else {
-        spec->title = "SET ALARM";
+        spec->title = "ALARM";
         if (field == 0) {
             spec->count = 24;
             spec->label_step = 2;

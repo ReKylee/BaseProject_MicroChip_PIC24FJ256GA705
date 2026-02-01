@@ -42,6 +42,7 @@ void Pomodoro_Update(void);
  * @brief Draw Pomodoro display
  */
 void Pomodoro_Draw(void);
+void Pomodoro_DrawUpdate(void);
 
 /**
  * @brief Handle button input for Pomodoro

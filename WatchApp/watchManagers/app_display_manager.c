@@ -51,7 +51,7 @@ static void app_draw_partial(WatchState_t* state) {
             Menu_DrawPartial(); // Call Menu_DrawPartial
             break;
         case MODE_POMODORO:
-            Pomodoro_Draw(); // Pomodoro has no partial update, so call full draw.
+            Pomodoro_DrawUpdate();
             break;
         default:
             break;
