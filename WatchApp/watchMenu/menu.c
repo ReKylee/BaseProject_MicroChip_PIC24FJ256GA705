@@ -37,13 +37,26 @@ static Time_t last_small_time;
 // RADIAL MENU CONFIGURATION
 // ============================================================================
 
-#define RING_RADIUS 10
+#define MENU_RADIUS 28
+#define MENU_RING_RADIUS (MENU_ICON_SIZE/2 + 3)
+#define MENU_CENTER_LABEL_W 70
+#define MENU_CENTER_LABEL_H 12
 
 static uint8_t radial_selection = 0;
 static uint8_t last_radial_selection = 0xFF;
 
 static inline uint8_t menu_idx_to_sec(uint8_t idx) {
-    return idx * (60 / MAIN_MENU_ITEMS);
+    return (uint8_t)((idx * NUM_CLOCK_POINTS) / MAIN_MENU_ITEMS);
+}
+
+static inline void menu_idx_to_xy(uint8_t idx, int *x, int *y) {
+    uint8_t sec = menu_idx_to_sec(idx);
+    int16_t dx = SEC_POINTS[sec][0];
+    int16_t dy = SEC_POINTS[sec][1];
+    int16_t sx = (dx * MENU_RADIUS) / RADIUS;
+    int16_t sy = (dy * MENU_RADIUS) / RADIUS;
+    *x = CENTER_X + sx;
+    *y = CENTER_Y + sy;
 }
 
 // ============================================================================
@@ -67,14 +80,16 @@ static void _draw_radial_main_menu_full(void) {
     oledC_DrawString(30, 15, 1, 1, (uint8_t*)"MENU", COLOR_ACCENT);
 
     for (uint8_t i = 0; i < MAIN_MENU_ITEMS; i++) {
-        uint8_t pt_idx = menu_idx_to_sec(i);
-        int x = SEC_POINTS[pt_idx][0], y = SEC_POINTS[pt_idx][1];
-        oledC_DrawBitmap(x - MENU_ICON_SIZE/2, y - MENU_ICON_SIZE/2, COLOR_DIM, 1, 1, (uint32_t*)menu_icons[i], 8);
-        if (i == radial_selection) oledC_DrawCircle(x, y, RING_RADIUS, COLOR_PRIMARY);
+        int x, y;
+        menu_idx_to_xy(i, &x, &y);
+        uint16_t icon_color = (i == radial_selection) ? COLOR_PRIMARY : COLOR_DIM;
+        oledC_DrawBitmap(x - MENU_ICON_SIZE/2, y - MENU_ICON_SIZE/2, icon_color, 1, 1, (uint32_t*)menu_icons[i], 8);
+        if (i == radial_selection) oledC_DrawCircle(x, y, MENU_RING_RADIUS, COLOR_PRIMARY);
     }
 
     const char* name = main_menu[radial_selection].text;
-    oledC_DrawRectangle(CENTER_X - 24, CENTER_Y - 6, CENTER_X + 24, CENTER_Y + 6, COLOR_BG);
+    oledC_DrawRectangle(CENTER_X - (MENU_CENTER_LABEL_W/2), CENTER_Y - (MENU_CENTER_LABEL_H/2),
+                        CENTER_X + (MENU_CENTER_LABEL_W/2), CENTER_Y + (MENU_CENTER_LABEL_H/2), COLOR_BG);
     oledC_DrawString(CENTER_X - strlen(name)*3, CENTER_Y - 3, 1, 1, (uint8_t*)name, COLOR_PRIMARY);
 
     last_radial_selection = radial_selection;
@@ -83,15 +98,18 @@ static void _draw_radial_main_menu_full(void) {
 static void _draw_radial_main_menu_partial(void) {
     if (radial_selection != last_radial_selection) {
         if (last_radial_selection != 0xFF) {
-            uint8_t pt_idx = menu_idx_to_sec(last_radial_selection);
-            int x = SEC_POINTS[pt_idx][0], y = SEC_POINTS[pt_idx][1];
+            int x, y;
+            menu_idx_to_xy(last_radial_selection, &x, &y);
+            oledC_DrawCircle(x, y, MENU_RING_RADIUS, COLOR_BG);
             oledC_DrawBitmap(x - MENU_ICON_SIZE/2, y - MENU_ICON_SIZE/2, COLOR_DIM, 1, 1, (uint32_t*)menu_icons[last_radial_selection], 8);
         }
-        uint8_t pt_idx = menu_idx_to_sec(radial_selection);
-        int x = SEC_POINTS[pt_idx][0], y = SEC_POINTS[pt_idx][1];
-        oledC_DrawCircle(x, y, RING_RADIUS, COLOR_PRIMARY);
+        int x, y;
+        menu_idx_to_xy(radial_selection, &x, &y);
+        oledC_DrawBitmap(x - MENU_ICON_SIZE/2, y - MENU_ICON_SIZE/2, COLOR_PRIMARY, 1, 1, (uint32_t*)menu_icons[radial_selection], 8);
+        oledC_DrawCircle(x, y, MENU_RING_RADIUS, COLOR_PRIMARY);
         const char* name = main_menu[radial_selection].text;
-        oledC_DrawRectangle(CENTER_X - 24, CENTER_Y - 6, CENTER_X + 24, CENTER_Y + 6, COLOR_BG);
+        oledC_DrawRectangle(CENTER_X - (MENU_CENTER_LABEL_W/2), CENTER_Y - (MENU_CENTER_LABEL_H/2),
+                            CENTER_X + (MENU_CENTER_LABEL_W/2), CENTER_Y + (MENU_CENTER_LABEL_H/2), COLOR_BG);
         oledC_DrawString(CENTER_X - strlen(name)*3, CENTER_Y - 3, 1, 1, (uint8_t*)name, COLOR_PRIMARY);
         last_radial_selection = radial_selection;
     }

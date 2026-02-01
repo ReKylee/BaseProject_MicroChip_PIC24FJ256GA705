@@ -3,14 +3,35 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/accel3Driver/ACCEL3.h</file>
-            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/watch_app.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchMenu/menu.h</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/main.c</file>
-            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/System/clock.c</file>
-            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/systemExtensions/systemExtensions.c</file>
-            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/System/clock.h</file>
-            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/watch_app.h</file>
-            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/systemExtensions/systemExtensions.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchManagers/app_display_manager.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchFaces/watch_face_geometry.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/System/system.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchMenu/menu.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchFaces/analog_face.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/accel3Driver/ACCEL3.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchManagers/app_input_handler.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchFaces/watch_face_common.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchFaces/watch_face_geometry.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchCore/alarm.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchManagers/app_display_manager.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchFaces/watch_face_common.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watch_main.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchManagers/app_input_handler.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watch_main.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/app_init.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/System/pin_manager.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/app_init.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/oledDriver/oledC_shapes.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchMenu/menu_icons.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/i2cDriver/I2C.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchFaces/digital_face.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchInput/accel_input.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchInput/accel_input.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/i2cDriver/I2C.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/shared/watch_types.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchFaces/alarm_face.h</file>
         </group>
     </open-files>
 </project-private>

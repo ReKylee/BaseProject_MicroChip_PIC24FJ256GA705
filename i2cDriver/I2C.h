@@ -23,6 +23,22 @@ typedef enum {
     I2C_COLLISION,
 } i2c_status_t;
 
+#ifndef I2C1_CONFIG_TR_QUEUE_LENGTH
+#define I2C1_CONFIG_TR_QUEUE_LENGTH 1
+#endif
+
+#ifndef I2C1_ENABLE_10BIT
+#define I2C1_ENABLE_10BIT 0
+#endif
+
+#ifndef I2C1_ENABLE_QUEUE
+#define I2C1_ENABLE_QUEUE 1
+#endif
+
+#ifndef I2C1_ENABLE_ERROR_COUNT
+#define I2C1_ENABLE_ERROR_COUNT 1
+#endif
+
 /* --- API --- */
 void i2c_init(const i2c_config_t *cfg);
 i2c_status_t i2c_writeReg(uint8_t addr, uint8_t reg, uint8_t val);
