@@ -6,6 +6,7 @@
 #include "../shared/watch_state.h"
 #include "../watchCore/timekeeper.h"
 #include "../watchCore/alarm.h"
+#include "../pomodoroTimer/pomodoro.h"
 #include "../watchInput/potentiometer.h"
 #include "../../oledDriver/oledC.h"
 #include "../../oledDriver/oledC_shapes.h"
@@ -36,6 +37,8 @@ static const uint32_t* const s_alarm_toggle_icons[] = {s_icon_alarm_toggle, s_ic
 static Time_t s_temp_time;
 static Date_t s_temp_date;
 static Time_t s_temp_alarm;
+static uint8_t s_temp_pomo_work;
+static uint8_t s_temp_pomo_break;
 static Time_t s_last_small_time;
 
 // ============================================================================
@@ -269,7 +272,7 @@ static void menu_on_state_change(MenuState_t new_state, bool seed_pot, uint16_t 
     s_skip_next_partial = true;
     s_edit_full_drawn = false;
 
-    if (new_state == MENU_SET_TIME || new_state == MENU_SET_DATE || new_state == MENU_SET_ALARM) {
+    if (new_state == MENU_SET_TIME || new_state == MENU_SET_DATE || new_state == MENU_SET_ALARM || new_state == MENU_POMODORO) {
         s_edit_last_field = state->menu_edit_field;
     }
 }
@@ -434,6 +437,20 @@ static void fill_edit_spec(MenuState_t state, EditRingSpec_t* spec, char* center
             spec->selected = (uint8_t)(s_temp_date.month - 1);
         }
         sprintf(center_text, "%02d/%02d", s_temp_date.day, s_temp_date.month);
+    } else if (state == MENU_POMODORO) {
+        spec->title = "POMODORO";
+        if (field == 0) {
+            spec->count = 60;
+            spec->label_step = 5;
+            spec->label_offset = 1;
+            spec->selected = (uint8_t)(s_temp_pomo_work - 1);
+        } else {
+            spec->count = 30;
+            spec->label_step = 5;
+            spec->label_offset = 1;
+            spec->selected = (uint8_t)(s_temp_pomo_break - 1);
+        }
+        sprintf(center_text, "W%02d B%02d", s_temp_pomo_work, s_temp_pomo_break);
     } else {
         spec->title = "SET ALARM";
         if (field == 0) {
@@ -453,7 +470,7 @@ static void fill_edit_spec(MenuState_t state, EditRingSpec_t* spec, char* center
 
 static void draw_edit_full(MenuState_t state) {
     EditRingSpec_t spec;
-    char center_text[6];
+    char center_text[9];
     fill_edit_spec(state, &spec, center_text);
 
     oledC_DrawRectangle(0, 12, 95, 95, COLOR_BG);
@@ -479,13 +496,12 @@ static void draw_edit_full(MenuState_t state) {
 
 static void draw_edit_partial(MenuState_t state) {
     EditRingSpec_t spec;
-    char center_text[6];
+    char center_text[9];
     fill_edit_spec(state, &spec, center_text);
 
-    if (!s_edit_full_drawn || s_edit_last_draw_val == 0xFF) {
-        return;
-    }
-    if (s_edit_last_draw_field != Watch_GetState()->menu_edit_field) {
+    if (!s_edit_full_drawn || s_edit_last_draw_val == 0xFF ||
+        s_edit_last_draw_field != Watch_GetState()->menu_edit_field) {
+        draw_edit_full(state);
         return;
     }
 
@@ -561,7 +577,7 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
 
         if (btn == BTN_S2_SHORT) {
             MenuState_t next_state = main_menu[s_radial_selection].next_state;
-            if (next_state == MENU_SET_TIME || next_state == MENU_SET_DATE || next_state == MENU_SET_ALARM) {
+            if (next_state == MENU_SET_TIME || next_state == MENU_SET_DATE || next_state == MENU_SET_ALARM || next_state == MENU_POMODORO) {
                 state->menu_edit_field = 0;
             }
             menu_on_state_change(next_state, true, pot_value);
@@ -571,6 +587,10 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
                 s_temp_alarm.hour = state->alarm.hour;
                 s_temp_alarm.minute = state->alarm.minute;
                 s_temp_alarm.second = 0;
+            }
+            if (state->menu_state == MENU_POMODORO) {
+                s_temp_pomo_work = state->pomodoro.work_minutes;
+                s_temp_pomo_break = state->pomodoro.short_break_minutes;
             }
             state->needs_full_redraw = true;
             changed = true;
@@ -615,7 +635,7 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
             s_edit_last_val = (state->menu_edit_field == 0) ? s_temp_time.hour : s_temp_time.minute;
             s_edit_last_draw_val = 0xFF;
             s_edit_last_draw_field = 0xFF;
-            state->needs_full_redraw = true;
+            changed = true;
         }
 
         if (pot_changed) {
@@ -637,7 +657,8 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
         } else if (btn == BTN_S2_SHORT) {
             if (state->menu_edit_field < 1) {
                 state->menu_edit_field++;
-                state->needs_full_redraw = true;
+                s_edit_last_draw_val = 0xFF;
+                changed = true;
             } else {
                 s_temp_time.second = 0;
                 Timekeeper_SetTime(&s_temp_time);
@@ -654,7 +675,7 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
             s_edit_last_val = (state->menu_edit_field == 0) ? s_temp_date.day : s_temp_date.month;
             s_edit_last_draw_val = 0xFF;
             s_edit_last_draw_field = 0xFF;
-            state->needs_full_redraw = true;
+            changed = true;
         }
 
         if (pot_changed) {
@@ -676,7 +697,8 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
         } else if (btn == BTN_S2_SHORT) {
             if (state->menu_edit_field < 1) {
                 state->menu_edit_field++;
-                state->needs_full_redraw = true;
+                s_edit_last_draw_val = 0xFF;
+                changed = true;
             } else {
                 Timekeeper_SetDate(&s_temp_date);
                 state->current_date = s_temp_date;
@@ -692,7 +714,7 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
             s_edit_last_val = (state->menu_edit_field == 0) ? s_temp_alarm.hour : s_temp_alarm.minute;
             s_edit_last_draw_val = 0xFF;
             s_edit_last_draw_field = 0xFF;
-            state->needs_full_redraw = true;
+            changed = true;
         }
 
         if (pot_changed) {
@@ -714,10 +736,51 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
         } else if (btn == BTN_S2_SHORT) {
             if (state->menu_edit_field < 1) {
                 state->menu_edit_field++;
-                state->needs_full_redraw = true;
+                s_edit_last_draw_val = 0xFF;
+                changed = true;
             } else {
                 state->alarm.hour = s_temp_alarm.hour;
                 state->alarm.minute = s_temp_alarm.minute;
+                menu_on_state_change(MENU_MAIN, true, pot_value);
+                state->needs_full_redraw = true;
+            }
+            changed = true;
+        }
+    } else if (state->menu_state == MENU_POMODORO) {
+        if (s_edit_last_field != state->menu_edit_field) {
+            s_edit_last_raw = s_pot_filtered;
+            s_edit_last_field = state->menu_edit_field;
+            s_edit_last_val = (state->menu_edit_field == 0) ? s_temp_pomo_work : s_temp_pomo_break;
+            s_edit_last_draw_val = 0xFF;
+            s_edit_last_draw_field = 0xFF;
+            changed = true;
+        }
+
+        if (pot_changed) {
+            uint16_t hys = (pot_delta > POT_FAST_THRESHOLD) ? 6 : 10;
+            if (state->menu_edit_field == 0) {
+                if (MenuCore_HandleRange(s_pot_filtered, 1, 60, hys, &s_edit_last_raw, &s_edit_last_val, &s_temp_pomo_work)) {
+                    changed = true;
+                }
+            } else {
+                if (MenuCore_HandleRange(s_pot_filtered, 1, 30, hys, &s_edit_last_raw, &s_edit_last_val, &s_temp_pomo_break)) {
+                    changed = true;
+                }
+            }
+        }
+
+        if (btn == BTN_S1_SHORT) {
+            menu_on_state_change(MENU_MAIN, true, pot_value);
+            state->needs_full_redraw = true;
+        } else if (btn == BTN_S2_SHORT) {
+            if (state->menu_edit_field < 1) {
+                state->menu_edit_field++;
+                s_edit_last_draw_val = 0xFF;
+                changed = true;
+            } else {
+                state->pomodoro.work_minutes = s_temp_pomo_work;
+                state->pomodoro.short_break_minutes = s_temp_pomo_break;
+                Pomodoro_Init();
                 menu_on_state_change(MENU_MAIN, true, pot_value);
                 state->needs_full_redraw = true;
             }
@@ -740,6 +803,7 @@ void Menu_DrawFull(void) {
         case MENU_SET_TIME: draw_edit_full(MENU_SET_TIME); break;
         case MENU_SET_DATE: draw_edit_full(MENU_SET_DATE); break;
         case MENU_SET_ALARM: draw_edit_full(MENU_SET_ALARM); break;
+        case MENU_POMODORO: draw_edit_full(MENU_POMODORO); break;
         case MENU_ALARM_TOGGLE: draw_radial_menu_full(&s_alarm_toggle_cfg); break;
         default: oledC_DrawRectangle(0, 12, 95, 95, COLOR_BG); oledC_DrawString(10, 40, 1, 1, (uint8_t*)"Coming Soon", COLOR_PRIMARY); break;
     }
@@ -776,6 +840,10 @@ void Menu_DrawPartial(void) {
         }
         case MENU_SET_ALARM: {
             draw_edit_partial(MENU_SET_ALARM);
+            break;
+        }
+        case MENU_POMODORO: {
+            draw_edit_partial(MENU_POMODORO);
             break;
         }
         default:

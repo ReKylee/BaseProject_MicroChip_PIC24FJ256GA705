@@ -85,7 +85,8 @@ typedef enum {
     BTN_NONE = 0,
     BTN_S1_SHORT,
     BTN_S1_LONG,
-    BTN_S2_SHORT
+    BTN_S2_SHORT,
+    BTN_S2_LONG
 } ButtonEvent_t;
 
 typedef enum {

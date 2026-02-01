@@ -17,19 +17,13 @@
 // CONFIGURATION
 // ============================================================================
 
-
-
-#define HOUR_LEN  20
-#define MIN_LEN   32
-#define SEC_LEN   38
-
 // Marker widths for main (3,6,9,12) vs minor markers
 #define MARKER_MAJOR_WIDTH  3
 #define MARKER_MINOR_WIDTH  1
 
 // Date position
-// #define DATE_X  2
-// #define DATE_Y  5
+#define ANALOG_DATE_X  33
+#define ANALOG_DATE_Y  88
 
 // Alarm icon position
 // #define ALARM_X  88
@@ -49,8 +43,6 @@ static uint8_t s_last_min = 255;
 static uint8_t s_last_sec = 255;
 static Date_t s_last_date_drawn;
 
-// Draw clock hands (erase previous, draw new)
-
 static void draw_markers(void) {
     for (uint8_t i = 0; i < 12; i++) {
         uint8_t idx = i * 5;
@@ -63,27 +55,75 @@ static void draw_markers(void) {
     oledC_DrawRing(CENTER_X, CENTER_Y, RADIUS, 1, COLOR_DIM);
 }
 
+static void draw_hand(const int8_t points[][2], uint8_t idx, uint8_t width, uint16_t color) {
+    oledC_DrawLine(CENTER_X, CENTER_Y, points[idx][0], points[idx][1], width, color);
+}
+
+static void erase_hand(const int8_t points[][2], uint8_t idx, uint8_t width) {
+    draw_hand(points, idx, width, COLOR_BG);
+}
+
+static void draw_marker_at(uint8_t sec_idx) {
+    if ((sec_idx % 5) != 0) return;
+    uint8_t marker_idx = sec_idx;
+    uint8_t width = (marker_idx == 0 || marker_idx == 15 || marker_idx == 30 || marker_idx == 45)
+        ? MARKER_MAJOR_WIDTH
+        : MARKER_MINOR_WIDTH;
+    oledC_DrawLine(HOUR_POINTS[marker_idx][0], HOUR_POINTS[marker_idx][1],
+                   MIN_POINTS[marker_idx][0], MIN_POINTS[marker_idx][1],
+                   width,
+                   COLOR_DIM);
+}
+
+static void restore_after_second(uint8_t old_sec, uint8_t hour_idx, uint8_t min_idx) {
+    if (old_sec == 255) return;
+    erase_hand(SEC_POINTS, old_sec, 1);
+    draw_marker_at(old_sec);
+    oledC_DrawRing(CENTER_X, CENTER_Y, RADIUS, 1, COLOR_DIM);
+    if (old_sec == s_last_hour) {
+        draw_hand(HOUR_POINTS, hour_idx, 3, COLOR_SECONDARY);
+    }
+    if (old_sec == s_last_min) {
+        draw_hand(MIN_POINTS, min_idx, 2, COLOR_PRIMARY);
+    }
+}
+
+static uint8_t compute_hour_idx(uint8_t hour, uint8_t min) {
+    return (uint8_t)((hour % 12) * 5 + min / 12);
+}
+
 static void draw_hands(uint8_t hour, uint8_t min, uint8_t sec) {
-    // Erase previous hands
-    if (s_last_hour != 255)
-        oledC_DrawLine(CENTER_X, CENTER_Y, HOUR_POINTS[s_last_hour][0], HOUR_POINTS[s_last_hour][1], 3, COLOR_BG);
-    if (s_last_min != 255)
-        oledC_DrawLine(CENTER_X, CENTER_Y, MIN_POINTS[s_last_min][0], MIN_POINTS[s_last_min][1], 2, COLOR_BG);
-    if (s_last_sec != 255)
-        oledC_DrawLine(CENTER_X, CENTER_Y, SEC_POINTS[s_last_sec][0], SEC_POINTS[s_last_sec][1], 1, COLOR_BG);
+    bool hour_changed = (s_last_hour != hour);
+    bool min_changed = (s_last_min != min);
+    bool sec_changed = (s_last_sec != sec);
 
-    // Restore markers and ring after erasing
-    draw_markers();
+    if (s_last_hour == 255 || s_last_min == 255 || s_last_sec == 255) {
+        hour_changed = min_changed = sec_changed = true;
+    }
 
-    // Draw current hands (always)
-    oledC_DrawLine(CENTER_X, CENTER_Y, HOUR_POINTS[hour][0], HOUR_POINTS[hour][1], 3, COLOR_SECONDARY);
-    oledC_DrawLine(CENTER_X, CENTER_Y, MIN_POINTS[min][0], MIN_POINTS[min][1], 2, COLOR_PRIMARY);
-    oledC_DrawLine(CENTER_X, CENTER_Y, SEC_POINTS[sec][0], SEC_POINTS[sec][1], 1, COLOR_ACCENT);
+    if (sec_changed && !hour_changed && !min_changed) {
+        restore_after_second(s_last_sec, hour, min);
+        draw_hand(SEC_POINTS, sec, 1, COLOR_ACCENT);
+    } else {
+        // Erase only the hands that changed so we don't wipe other hands.
+        if (hour_changed && s_last_hour != 255) erase_hand(HOUR_POINTS, s_last_hour, 3);
+        if (min_changed && s_last_min != 255) erase_hand(MIN_POINTS, s_last_min, 2);
+        if (sec_changed && s_last_sec != 255) erase_hand(SEC_POINTS, s_last_sec, 1);
 
-    // Redraw center dot to hide joins
+        // Restore markers and ring after erasing.
+        if (hour_changed || min_changed || sec_changed) {
+            draw_markers();
+        }
+
+        // Redraw all current hands to restore any erased overlap.
+        draw_hand(HOUR_POINTS, hour, 3, COLOR_SECONDARY);
+        draw_hand(MIN_POINTS, min, 2, COLOR_PRIMARY);
+        draw_hand(SEC_POINTS, sec, 1, COLOR_ACCENT);
+    }
+
+    // Redraw center dot to hide joins.
     oledC_DrawCircle(CENTER_X, CENTER_Y, CENTER_DOT_RADIUS, COLOR_ACCENT);
 
-    // Update last state
     s_last_hour = hour;
     s_last_min = min;
     s_last_sec = sec;
@@ -101,7 +141,7 @@ void AnalogFace_Init(void) {
 
     // Date - Initial draw
     WatchState_t* state = Watch_GetState();
-    WatchFace_DrawDate(DATE_X, DATE_Y, &state->current_date, &s_last_date_drawn, COLOR_DIM, COLOR_BG);
+    WatchFace_DrawDate(ANALOG_DATE_X, ANALOG_DATE_Y, &state->current_date, &s_last_date_drawn, COLOR_DIM, COLOR_BG);
 
     // Reset hand state
     s_last_hour = s_last_min = s_last_sec = 255;
@@ -112,11 +152,11 @@ void AnalogFace_DrawUpdate(void) {
 
     uint8_t sec = s->current_time.second;
     uint8_t min = s->current_time.minute;
-    uint8_t hour = (s->current_time.hour % 12) * 5 + min / 12;
+    uint8_t hour = compute_hour_idx(s->current_time.hour, min);
 
     draw_hands(hour, min, sec);
     WatchFace_DrawAlarmIcon(ALARM_X, ALARM_Y, ALARM_W, ALARM_H, s->alarm.enabled);
-    WatchFace_DrawDate(DATE_X, DATE_Y, &s->current_date, &s_last_date_drawn, COLOR_DIM, COLOR_BG);
+    WatchFace_DrawDate(ANALOG_DATE_X, ANALOG_DATE_Y, &s->current_date, &s_last_date_drawn, COLOR_DIM, COLOR_BG);
 }
 
 void AnalogFace_Draw(void) {

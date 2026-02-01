@@ -41,6 +41,12 @@ static void handle_watch_mode(ButtonEvent_t btn, AccelEvent_t accel) {
         return;
     }
 
+    if (btn == BTN_S2_LONG) {
+        state->display_mode = MODE_POMODORO;
+        state->needs_full_redraw = true;
+        return;
+    }
+
     if (Alarm_IsRinging() && (btn == BTN_S1_SHORT || btn == BTN_S2_SHORT)) {
         Alarm_Dismiss();
         state->needs_full_redraw = true; // Force redraw to clear alarm state

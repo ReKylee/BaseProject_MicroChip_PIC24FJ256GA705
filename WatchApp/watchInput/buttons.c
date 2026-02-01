@@ -58,16 +58,26 @@ ButtonEvent_t Buttons_Update(void) {
         s_s1_state.pressed = false;
     }
     
-    // Check S2 (only short press)
+    // Check S2 (short + long press)
     if (event == BTN_NONE) {  // Only one event at a time
         bool s2_down = S2_IsDown();
         
         if (s2_down && !s_s2_state.pressed) {
+            // Button just pressed
             s_s2_state.pressed = true;
-            
+            s_s2_state.press_start_time = current_time;
+            s_s2_state.long_press_fired = false;
+        } else if (s2_down && s_s2_state.pressed && !s_s2_state.long_press_fired) {
+            if ((current_time - s_s2_state.press_start_time) >= LONG_PRESS_MS) {
+                s_s2_state.long_press_fired = true;
+                event = BTN_S2_LONG;
+            }
         } else if (!s2_down && s_s2_state.pressed) {
+            // Button released
+            if (!s_s2_state.long_press_fired) {
+                event = BTN_S2_SHORT;
+            }
             s_s2_state.pressed = false;
-            event = BTN_S2_SHORT;
         }
     }
     

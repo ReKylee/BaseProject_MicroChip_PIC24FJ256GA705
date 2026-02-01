@@ -141,8 +141,8 @@ void BinaryFace_Init(void) {
 }
 
 void BinaryFace_Draw(void) {
-    // Full redraw simply re-inits everything
-    BinaryFace_Init();
+    // Full redraw relies on BinaryFace_Init being called on face entry.
+    BinaryFace_DrawUpdate();
 }
 
 void BinaryFace_DrawUpdate(void) {
