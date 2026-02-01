@@ -85,6 +85,8 @@
           <itemPath>WatchApp/watchMenu/menu.h</itemPath>
           <itemPath>WatchApp/watchMenu/menu_icons.h</itemPath>
           <itemPath>WatchApp/watchMenu/menu_core.h</itemPath>
+          <itemPath>WatchApp/watchMenu/menu_state.h</itemPath>
+          <itemPath>WatchApp/watchMenu/menu_layout.h</itemPath>
         </logicalFolder>
         <itemPath>WatchApp/app_init.h</itemPath>
         <itemPath>WatchApp/watch_main.h</itemPath>
@@ -172,6 +174,9 @@
         <logicalFolder name="watchMenu" displayName="watchMenu" projectFiles="true">
           <itemPath>WatchApp/watchMenu/menu.c</itemPath>
           <itemPath>WatchApp/watchMenu/menu_core.c</itemPath>
+          <itemPath>WatchApp/watchMenu/menu_state.c</itemPath>
+          <itemPath>WatchApp/watchMenu/menu_render.c</itemPath>
+          <itemPath>WatchApp/watchMenu/menu_input.c</itemPath>
         </logicalFolder>
         <itemPath>WatchApp/app_init.c</itemPath>
         <itemPath>WatchApp/watch_main.c</itemPath>

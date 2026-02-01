@@ -4,7 +4,9 @@
 #include <stdint.h>
 
 // Icon size
+#ifndef MENU_ICON_SIZE
 #define MENU_ICON_SIZE 16
+#endif
 
 // Each icon is 16x16 pixels, 1-bit monochrome.
 // Stored as 16 uint32_t rows, centered in a 32-bit scanline.
