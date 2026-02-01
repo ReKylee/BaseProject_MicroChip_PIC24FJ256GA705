@@ -37,7 +37,7 @@ void Alarm_Check(void) {
         state->alarm.trigger_count = 0;
         state->prev_watch_face = state->watch_face; // Store current watch face
         state->watch_face = FACE_ALARM; // Switch to alarm face
-        state->needs_redraw = true;
+        state->needs_full_redraw = true;
     }
 }
 

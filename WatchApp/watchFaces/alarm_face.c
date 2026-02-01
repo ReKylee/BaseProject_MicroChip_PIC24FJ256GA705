@@ -20,6 +20,7 @@
 // ============================================================================
 
 static bool s_last_flash_state = false;
+static bool s_drawn = false;
 
 static void draw_alarm_icon(void) {
     // Clock ring
@@ -49,6 +50,7 @@ void AlarmFace_Init(void) {
     oledC_sendCommand(OLEDC_CMD_SET_DISPLAY_MODE_ON, NULL, 0);
     draw_alarm_icon();
     s_last_flash_state = false;
+    s_drawn = true;
 }
 
 void AlarmFace_Draw(void) {
@@ -56,10 +58,17 @@ void AlarmFace_Draw(void) {
     oledC_setBackground(COLOR_WARNING);
     oledC_sendCommand(OLEDC_CMD_SET_DISPLAY_MODE_ON, NULL, 0);
     draw_alarm_icon();
+    s_last_flash_state = false;
+    s_drawn = true;
 }
 
 void AlarmFace_DrawUpdate(void) {
     WatchState_t* state = Watch_GetState();
+
+    if (!s_drawn) {
+        AlarmFace_Draw();
+        return;
+    }
 
     // Flashing logic: toggle every second
     bool flash = (state->current_time.second % 2) == 0;

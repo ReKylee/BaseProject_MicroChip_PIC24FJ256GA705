@@ -18,8 +18,8 @@
 #define DATE_Y    5
 #define ALARM_X   88
 #define ALARM_Y   5
-#define ALARM_W   5
-#define ALARM_H   5
+#define ALARM_W   9
+#define ALARM_H   9
 
 // ============================================================================
 // COMMON WATCH FACE DRAWING FUNCTIONS
