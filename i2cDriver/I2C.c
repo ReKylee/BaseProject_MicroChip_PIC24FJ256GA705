@@ -36,8 +36,8 @@ typedef struct {
 } I2C_TR_QUEUE_ENTRY;
 
 typedef struct {
-    I2C_TR_QUEUE_ENTRY *pTrTail;
-    I2C_TR_QUEUE_ENTRY *pTrHead;
+    volatile I2C_TR_QUEUE_ENTRY *pTrTail;
+    volatile I2C_TR_QUEUE_ENTRY *pTrHead;
     I2C_TR_QUEUE_STATUS trStatus;
 #if I2C1_ENABLE_ERROR_COUNT
     uint8_t i2cErrors;
@@ -78,7 +78,7 @@ static volatile I2C_MASTER_STATES i2c1_state = S_MASTER_IDLE;
 static uint8_t i2c1_trb_count;
 
 static I2C1_TRANSACTION_REQUEST_BLOCK *p_i2c1_trb_current;
-static I2C_TR_QUEUE_ENTRY *p_i2c1_current = NULL;
+static volatile I2C_TR_QUEUE_ENTRY *p_i2c1_current = NULL;
 
 static void i2c1_function_complete(void);
 static void i2c1_stop(I2C1_MESSAGE_STATUS completion_code);
@@ -102,8 +102,8 @@ void i2c_init(const i2c_config_t *cfg) {
         config.timeout_ms = 50;
     }
 
-    i2c1_object.pTrHead = (I2C_TR_QUEUE_ENTRY *)i2c1_tr_queue;
-    i2c1_object.pTrTail = (I2C_TR_QUEUE_ENTRY *)i2c1_tr_queue;
+    i2c1_object.pTrHead = i2c1_tr_queue;
+    i2c1_object.pTrTail = i2c1_tr_queue;
     i2c1_object.trStatus.s.empty = true;
     i2c1_object.trStatus.s.full = false;
 #if I2C1_ENABLE_ERROR_COUNT

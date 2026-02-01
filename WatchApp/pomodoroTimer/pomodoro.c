@@ -14,13 +14,13 @@
 // PRIVATE FUNCTIONS
 // ============================================================================
 
-static void StartWorkSession(WatchState_t* state) {
+static void start_work_session(WatchState_t* state) {
     state->pomodoro.state = POMODORO_WORK;
     state->pomodoro.remaining_seconds = state->pomodoro.work_minutes * 60;
     state->pomodoro.paused = false;
 }
 
-static void StartBreak(WatchState_t* state) {
+static void start_break(WatchState_t* state) {
     // Determine break type
     if (state->pomodoro.work_sessions >= state->pomodoro.long_break_after_sessions) {
         state->pomodoro.state = POMODORO_LONG_BREAK;
@@ -33,7 +33,7 @@ static void StartBreak(WatchState_t* state) {
     state->pomodoro.paused = false;
 }
 
-static void DrawProgressBar(WatchState_t* state, uint16_t remaining, uint16_t total) {
+static void draw_progress_bar(WatchState_t* state, uint16_t remaining, uint16_t total) {
     // Draw progress bar at bottom of screen
     uint8_t bar_width = 80;
     uint8_t bar_height = 8;
@@ -54,7 +54,7 @@ static void DrawProgressBar(WatchState_t* state, uint16_t remaining, uint16_t to
     }
 }
 
-static void DrawSessionCounter(WatchState_t* state, uint8_t sessions) {
+static void draw_session_counter(WatchState_t* state, uint8_t sessions) {
     // Draw completed work session indicators (tomatoes!)
     for (uint8_t i = 0; i < state->pomodoro.long_break_after_sessions; i++) {
         uint8_t x = 10 + (i * 20);
@@ -86,7 +86,7 @@ void Pomodoro_Start(void) {
     WatchState_t* state = Watch_GetState();
     
     if (state->pomodoro.state == POMODORO_IDLE) {
-        StartWorkSession(state);
+        start_work_session(state);
     } else {
         state->pomodoro.paused = false;
     }
@@ -119,10 +119,10 @@ void Pomodoro_Update(void) {
         if (state->pomodoro.state == POMODORO_WORK) {
             // Work session completed
             state->pomodoro.work_sessions++;
-            StartBreak(state);
+            start_break(state);
         } else {
             // Break completed
-            StartWorkSession(state);
+            start_work_session(state);
         }
     }
     
@@ -136,7 +136,7 @@ void Pomodoro_Draw(void) {
     oledC_setBackground(COLOR_BG);
     
     // Draw session counter
-    DrawSessionCounter(state, state->pomodoro.work_sessions);
+    draw_session_counter(state, state->pomodoro.work_sessions);
     
     // Draw state label
     const char* state_label;
@@ -177,7 +177,7 @@ void Pomodoro_Draw(void) {
     oledC_DrawString(20, 45, 3, 3, (uint8_t*)time_str, COLOR_PRIMARY);
     
     // Draw progress bar
-    DrawProgressBar(state, state->pomodoro.remaining_seconds, total_seconds);
+    draw_progress_bar(state, state->pomodoro.remaining_seconds, total_seconds);
     
     // Draw pause indicator if paused
     if (state->pomodoro.paused) {

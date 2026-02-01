@@ -19,27 +19,25 @@
 // CONFIG
 // ============================================================================
 
-#define TIME_X_HOUR     8
-#define TIME_X_MIN      56
-#define TIME_Y          30
-#define SECONDS_X       75
-#define SECONDS_Y       (TIME_Y + 30)
+#define TIME_SCALE_X    3
+#define TIME_SCALE_Y    4
+#define TIME_Y          18
+#define SCREEN_W        96
+#define FONT_W          5
+#define FONT_SPACING    1
 
-#define AMPM_X          70
-#define AMPM_Y          70
-
-#define HOUR_DIGIT_WIDTH    18
-#define MIN_DIGIT_WIDTH     18
-#define SECONDS_WIDTH       14
+#define SECONDS_Y       56
+#define AMPM_Y          6
+#define DATE_Y_BOTTOM   76
 
 // ============================================================================
 // STATE
 // ============================================================================
 
-static Time_t last_time_drawn;
-static Date_t last_date_drawn;
-static bool last_alarm_drawn;
-static TimeFormat_t last_format_drawn;
+static Time_t s_last_time_drawn;
+static Date_t s_last_date_drawn;
+static bool s_last_alarm_drawn;
+static TimeFormat_t s_last_format_drawn;
 
 // ============================================================================
 // PRIVATE HELPERS
@@ -54,15 +52,20 @@ static void draw_time_digits(uint8_t value, uint8_t x, uint8_t y, uint16_t color
 static void draw_seconds(uint8_t value, uint16_t color) {
     char buf[3];
     sprintf(buf, "%02d", value);
-    oledC_DrawString(SECONDS_X, SECONDS_Y, 1, 1, (uint8_t*)buf, color);
-}
-
-static void draw_colon(uint16_t color) {
-    oledC_DrawString(44, TIME_Y, 3, 4, (uint8_t*)":", color);
+    uint8_t text_w = (uint8_t)(2 * (FONT_W + FONT_SPACING));
+    uint8_t x = (uint8_t)((SCREEN_W - text_w) / 2);
+    oledC_DrawString(x, SECONDS_Y, 1, 1, (uint8_t*)buf, color);
 }
 
 static void draw_ampm(bool is_pm, uint16_t color) {
-    oledC_DrawString(AMPM_X, AMPM_Y, 1, 1, (uint8_t*)(is_pm ? "PM" : "AM"), color);
+    uint8_t text_w = (uint8_t)(2 * (FONT_W + FONT_SPACING));
+    uint8_t x = (uint8_t)((SCREEN_W - text_w) / 2);
+    oledC_DrawString(x, AMPM_Y, 1, 1, (uint8_t*)(is_pm ? "PM" : "AM"), color);
+}
+
+static uint8_t time_text_width(void) {
+    // "HH:MM" -> 5 chars
+    return (uint8_t)(5 * (FONT_W * TIME_SCALE_X + FONT_SPACING));
 }
 
 // ============================================================================
@@ -71,11 +74,11 @@ static void draw_ampm(bool is_pm, uint16_t color) {
 
 void DigitalFace_Init(void) {
     oledC_setBackground(COLOR_BG);
-    memset(&last_time_drawn, 0, sizeof(Time_t));
-    memset(&last_date_drawn, 0, sizeof(Date_t));
-    last_time_drawn.second = 255; // force initial draw
-    last_format_drawn = FORMAT_24H;
-    last_alarm_drawn = false;
+    memset(&s_last_time_drawn, 0, sizeof(Time_t));
+    memset(&s_last_date_drawn, 0, sizeof(Date_t));
+    s_last_time_drawn.second = 255; // force initial draw
+    s_last_format_drawn = FORMAT_24H;
+    s_last_alarm_drawn = false;
 }
 
 void DigitalFace_Draw(void) {
@@ -89,13 +92,22 @@ void DigitalFace_Draw(void) {
     }
 
     // Time
-    draw_time_digits(hour, TIME_X_HOUR, TIME_Y, COLOR_PRIMARY, 3, 4);
-    draw_colon(COLOR_PRIMARY);
-    draw_time_digits(state->current_time.minute, TIME_X_MIN, TIME_Y, COLOR_PRIMARY, 3, 4);
+    uint8_t time_w = time_text_width();
+    uint8_t time_x = (uint8_t)((SCREEN_W - time_w) / 2);
+    uint8_t hour_x = time_x;
+    uint8_t colon_x = (uint8_t)(hour_x + 2 * (FONT_W * TIME_SCALE_X + FONT_SPACING));
+    uint8_t min_x = (uint8_t)(colon_x + (FONT_W * TIME_SCALE_X + FONT_SPACING));
+
+    draw_time_digits(hour, hour_x, TIME_Y, COLOR_PRIMARY, TIME_SCALE_X, TIME_SCALE_Y);
+    oledC_DrawString(colon_x, TIME_Y, TIME_SCALE_X, TIME_SCALE_Y, (uint8_t*)":", COLOR_PRIMARY);
+    draw_time_digits(state->current_time.minute, min_x, TIME_Y, COLOR_PRIMARY, TIME_SCALE_X, TIME_SCALE_Y);
     draw_seconds(state->current_time.second, COLOR_DIM);
 
     // Date
-    WatchFace_DrawDate(DATE_X, DATE_Y, &state->current_date, &last_date_drawn, COLOR_DIM, COLOR_BG);
+    s_last_date_drawn.day = 0;
+    uint8_t date_text_w = (uint8_t)(5 * (FONT_W + FONT_SPACING));
+    uint8_t date_x = (uint8_t)((SCREEN_W - date_text_w) / 2);
+    WatchFace_DrawDate(date_x, DATE_Y_BOTTOM, &state->current_date, &s_last_date_drawn, COLOR_DIM, COLOR_BG);
 
     // AM/PM
     if (state->time_format == FORMAT_12H) {
@@ -106,10 +118,10 @@ void DigitalFace_Draw(void) {
     WatchFace_DrawAlarmIcon(ALARM_X, ALARM_Y, ALARM_W, ALARM_H, state->alarm.enabled);
 
     // Save state
-    last_time_drawn = state->current_time;
-    last_date_drawn = state->current_date;
-    last_alarm_drawn = state->alarm.enabled;
-    last_format_drawn = state->time_format;
+    s_last_time_drawn = state->current_time;
+    s_last_date_drawn = state->current_date;
+    s_last_alarm_drawn = state->alarm.enabled;
+    s_last_format_drawn = state->time_format;
    
 }
 
@@ -127,51 +139,59 @@ void DigitalFace_DrawUpdate(void) {
     }
 
     // Redraw everything if format changed
-    if (state->time_format != last_format_drawn) {
+    if (state->time_format != s_last_format_drawn) {
         DigitalFace_Draw();
         return;
     }
 
     // Seconds
-    if (now.second != last_time_drawn.second) {
-        draw_seconds(last_time_drawn.second, COLOR_BG);
+    if (now.second != s_last_time_drawn.second) {
+        draw_seconds(s_last_time_drawn.second, COLOR_BG);
         draw_seconds(now.second, COLOR_DIM);
     }
 
     // Minutes
-    if (now.minute != last_time_drawn.minute) {
-        draw_time_digits(last_time_drawn.minute, TIME_X_MIN, TIME_Y, COLOR_BG, 3, 4);
-        draw_time_digits(now.minute, TIME_X_MIN, TIME_Y, COLOR_PRIMARY, 3, 4);
+    uint8_t time_w = time_text_width();
+    uint8_t time_x = (uint8_t)((SCREEN_W - time_w) / 2);
+    uint8_t hour_x = time_x;
+    uint8_t colon_x = (uint8_t)(hour_x + 2 * (FONT_W * TIME_SCALE_X + FONT_SPACING));
+    uint8_t min_x = (uint8_t)(colon_x + (FONT_W * TIME_SCALE_X + FONT_SPACING));
+
+    if (now.minute != s_last_time_drawn.minute) {
+        draw_time_digits(s_last_time_drawn.minute, min_x, TIME_Y, COLOR_BG, TIME_SCALE_X, TIME_SCALE_Y);
+        draw_time_digits(now.minute, min_x, TIME_Y, COLOR_PRIMARY, TIME_SCALE_X, TIME_SCALE_Y);
         needs_hour_update = true; // hour may change at 12/24 boundary
     }
 
     // Hours
-    uint8_t last_hour_12 = last_time_drawn.hour;
+    uint8_t last_hour_12 = s_last_time_drawn.hour;
     bool last_is_pm = false;
     if (state->time_format == FORMAT_12H) {
-        last_hour_12 = Timekeeper_Convert24to12(last_time_drawn.hour, &last_is_pm);
+        last_hour_12 = Timekeeper_Convert24to12(s_last_time_drawn.hour, &last_is_pm);
         if (current_hour_12 != last_hour_12) needs_hour_update = true;
         if (is_pm != last_is_pm) {
             draw_ampm(!is_pm, COLOR_BG);
             draw_ampm(is_pm, COLOR_SECONDARY);
         }
-    } else if (now.hour != last_time_drawn.hour) {
+    } else if (now.hour != s_last_time_drawn.hour) {
         needs_hour_update = true;
     }
 
     if (needs_hour_update) {
-        uint8_t last_hour_to_draw = (state->time_format == FORMAT_12H) ? last_hour_12 : last_time_drawn.hour;
+        uint8_t last_hour_to_draw = (state->time_format == FORMAT_12H) ? last_hour_12 : s_last_time_drawn.hour;
         uint8_t current_hour_to_draw = (state->time_format == FORMAT_12H) ? current_hour_12 : now.hour;
-        draw_time_digits(last_hour_to_draw, TIME_X_HOUR, TIME_Y, COLOR_BG, 3, 4);
-        draw_time_digits(current_hour_to_draw, TIME_X_HOUR, TIME_Y, COLOR_PRIMARY, 3, 4);
+        draw_time_digits(last_hour_to_draw, hour_x, TIME_Y, COLOR_BG, TIME_SCALE_X, TIME_SCALE_Y);
+        draw_time_digits(current_hour_to_draw, hour_x, TIME_Y, COLOR_PRIMARY, TIME_SCALE_X, TIME_SCALE_Y);
     }
 
     // Date
-    WatchFace_DrawDate(DATE_X, DATE_Y, &today, &last_date_drawn, COLOR_DIM, COLOR_BG);
+    uint8_t date_text_w = (uint8_t)(5 * (FONT_W + FONT_SPACING));
+    uint8_t date_x = (uint8_t)((SCREEN_W - date_text_w) / 2);
+    WatchFace_DrawDate(date_x, DATE_Y_BOTTOM, &today, &s_last_date_drawn, COLOR_DIM, COLOR_BG);
 
     // Alarm
     WatchFace_DrawAlarmIcon(ALARM_X, ALARM_Y, ALARM_W, ALARM_H, state->alarm.enabled);
 
-    last_time_drawn = now;
-    last_format_drawn = state->time_format;
+    s_last_time_drawn = now;
+    s_last_format_drawn = state->time_format;
 }

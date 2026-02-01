@@ -121,14 +121,14 @@ typedef struct {
 // COLOR DEFINITIONS (RGB565 format)
 // ============================================================================
 
-// Carefully chosen palette for good contrast on 96x96 OLED
-#define COLOR_BG        0x0000  // Black background
-#define COLOR_PRIMARY   0x07FF  // Cyan (good visibility)
-#define COLOR_SECONDARY 0xFD20  // Orange
-#define COLOR_TEXT      0xFFFF  // White
-#define COLOR_ACCENT    0xF81F  // Magenta
-#define COLOR_WARNING   0xF800  // Red
-#define COLOR_SUCCESS   0x07E0  // Green
-#define COLOR_DIM       0x7BEF  // Light gray
+// Catppuccin Mocha palette (RGB565)
+#define COLOR_BG        0x20E6  // Base
+#define COLOR_PRIMARY   0x8D9E  // Blue
+#define COLOR_SECONDARY 0xCD3E  // Mauve
+#define COLOR_TEXT      0xCEBE  // Text
+#define COLOR_ACCENT    0xB5FF  // Lavender
+#define COLOR_WARNING   0xF454  // Red
+#define COLOR_SUCCESS   0xA714  // Green
+#define COLOR_DIM       0x6B90  // Overlay0
 
 #endif // WATCH_TYPES_H

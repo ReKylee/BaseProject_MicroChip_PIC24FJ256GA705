@@ -15,7 +15,7 @@
 // -----------------------------------------------------------------------------
 
 // Draw the current display mode and watch face entirely
-static void _APP_DrawFull(WatchState_t* state) {
+static void app_draw_full(WatchState_t* state) {
     switch (state->display_mode) {
         case MODE_WATCH:
             switch (state->watch_face) {
@@ -35,7 +35,7 @@ static void _APP_DrawFull(WatchState_t* state) {
 }
 
 // Perform partial updates for the current watch face
-static void _APP_DrawPartial(WatchState_t* state) {
+static void app_draw_partial(WatchState_t* state) {
     switch (state->display_mode) {
         case MODE_WATCH:
             switch (state->watch_face) {
@@ -69,13 +69,13 @@ void APP_UpdateDisplay(void) {
     if (state->needs_full_redraw) {
         state->needs_full_redraw = false;
         state->needs_redraw = false;
-        _APP_DrawFull(state);
+        app_draw_full(state);
         return;
     }
 
     // If a partial redraw is requested
     if (state->needs_redraw) {
         state->needs_redraw = false;
-        _APP_DrawPartial(state); // Call partial draw directly
+        app_draw_partial(state); // Call partial draw directly
     }
 }

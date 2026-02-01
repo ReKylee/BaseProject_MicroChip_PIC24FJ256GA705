@@ -7,6 +7,7 @@
 #include "../shared/watch_state.h"
 #include "../shared/watch_types.h"
 #include "../watchCore/timekeeper.h"
+#include "watch_face_common.h"
 #include "../../oledDriver/oledC.h"
 #include "../../oledDriver/oledC_shapes.h"
 #include <stdint.h>
@@ -18,19 +19,22 @@
 // ============================================================================
 
 #define DOT_SIZE        5
-#define DOT_SPACING     10
-#define START_X         16
-#define START_Y         20
-#define COL_SPACING_FIX 5  // extra spacing between hours/minutes/seconds
+#define DOT_SPACING     9
+#define COL_SPACING_FIX 4  // extra spacing between hours/minutes/seconds
+#define GRID_ROWS       4
+#define GRID_COLS       6
+#define SCREEN_W        96
+#define SCREEN_H        96
 
-static const uint8_t LABEL_X[3] = {START_X + 5, START_X + 30, START_X + 55};
-static const uint8_t LABEL_Y = 78;
-
-static const uint8_t BIT_LABELS_Y[4] = {START_Y - 3, START_Y + 7, START_Y + 17, START_Y + 27};
-static const char* BIT_LABELS = "8421";
+static uint8_t s_origin_x = 0;
+static uint8_t s_origin_y = 0;
+static uint8_t s_label_x[3];
+static uint8_t s_label_y = 0;
+static uint8_t s_bit_labels_y[4];
+static const char* s_bit_labels = "8421";
 
 // Colors per column (hour, min, sec)
-static const uint16_t COLORS[6] = {COLOR_PRIMARY, COLOR_PRIMARY,
+static const uint16_t s_colors[6] = {COLOR_PRIMARY, COLOR_PRIMARY,
     COLOR_SECONDARY, COLOR_SECONDARY,
     COLOR_ACCENT, COLOR_ACCENT};
 
@@ -39,14 +43,15 @@ static const uint16_t COLORS[6] = {COLOR_PRIMARY, COLOR_PRIMARY,
 typedef struct {
     uint8_t x, y;
 } DotPos_t;
-static DotPos_t dot_pos[6][4]; // col x row
+static DotPos_t s_dot_pos[GRID_COLS][GRID_ROWS]; // col x row
 
 // ============================================================================
 // STATE
 // ============================================================================
 
-static Time_t last_time_drawn;
-static TimeFormat_t last_format_drawn;
+static Time_t s_last_time_drawn;
+static TimeFormat_t s_last_format_drawn;
+static Date_t s_last_date_drawn;
 
 // ============================================================================
 // PRIVATE FUNCTIONS
@@ -56,14 +61,38 @@ static inline uint8_t get_bit(uint8_t value, uint8_t bit_pos) {
     return (value >> bit_pos) & 1;
 }
 
-static void InitDotPositions(void) {
-    for (uint8_t col = 0; col < 6; col++) {
-        for (uint8_t row = 0; row < 4; row++) {
-            uint8_t x = START_X + col * DOT_SPACING + (col / 2) * COL_SPACING_FIX;
-            uint8_t y = START_Y + row * DOT_SPACING;
-            dot_pos[col][row].x = x;
-            dot_pos[col][row].y = y;
+static void init_dot_positions(void) {
+    uint8_t grid_w = (GRID_COLS - 1) * DOT_SPACING + 2 * COL_SPACING_FIX;
+    uint8_t grid_h = (GRID_ROWS - 1) * DOT_SPACING;
+    s_origin_x = (uint8_t)((SCREEN_W - grid_w) / 2);
+    s_origin_y = 20;
+
+    for (uint8_t col = 0; col < GRID_COLS; col++) {
+        for (uint8_t row = 0; row < GRID_ROWS; row++) {
+            uint8_t x = s_origin_x + col * DOT_SPACING + (col / 2) * COL_SPACING_FIX;
+            uint8_t y = s_origin_y + row * DOT_SPACING;
+            s_dot_pos[col][row].x = x;
+            s_dot_pos[col][row].y = y;
         }
+    }
+
+    s_label_x[0] = s_origin_x + 4;
+    s_label_x[1] = s_origin_x + DOT_SPACING * 2 + COL_SPACING_FIX + 4;
+    s_label_x[2] = s_origin_x + DOT_SPACING * 4 + COL_SPACING_FIX * 2 + 4;
+    s_label_y = s_origin_y + grid_h + 16;
+
+    for (uint8_t row = 0; row < GRID_ROWS; row++) {
+        s_bit_labels_y[row] = s_origin_y + row * DOT_SPACING - 4;
+    }
+}
+
+static void draw_dot(uint8_t x, uint8_t y, bool on, uint16_t color_on) {
+    uint8_t half = DOT_SIZE / 2;
+    oledC_DrawRectangle(x - half - 1, y - half - 1, x + half + 1, y + half + 1, COLOR_BG);
+    if (on) {
+        oledC_DrawCircle(x, y, half, color_on);
+    } else {
+        oledC_DrawRing(x, y, half, 1, COLOR_DIM);
     }
 }
 
@@ -74,36 +103,41 @@ static void InitDotPositions(void) {
 void BinaryFace_Init(void) {
     oledC_setBackground(COLOR_BG);
 
-    InitDotPositions();
+    init_dot_positions();
 
     // Draw static labels (H M S)
     for (uint8_t i = 0; i < 3; i++) {
-        oledC_DrawString(LABEL_X[i], LABEL_Y, 1, 1, (uint8_t*) (i == 0 ? "H" : i == 1 ? "M" : "S"), COLOR_DIM);
+        oledC_DrawString(s_label_x[i], s_label_y, 1, 1, (uint8_t*) (i == 0 ? "H" : i == 1 ? "M" : "S"), COLOR_TEXT);
     }
 
     // Draw bit labels (8,4,2,1)
     for (uint8_t row = 0; row < 4; row++) {
 
-        oledC_DrawString(2, BIT_LABELS_Y[row], 1, 1, (uint8_t[]) {
-            BIT_LABELS[row], 0}, COLOR_DIM);
+        oledC_DrawString(2, s_bit_labels_y[row], 1, 1, (uint8_t[]) {
+            s_bit_labels[row], 0}, COLOR_TEXT);
     }
 
-    // Draw separators (simple small rings)
-    oledC_DrawCircle(START_X + 20, START_Y + 12, 1, COLOR_DIM);
-    oledC_DrawCircle(START_X + 20, START_Y + 22, 1, COLOR_DIM);
-    oledC_DrawCircle(START_X + 45, START_Y + 12, 1, COLOR_DIM);
-    oledC_DrawCircle(START_X + 45, START_Y + 22, 1, COLOR_DIM);
+    // Draw separators (simple small rings) centered between HH|MM|SS
+    uint8_t sep1_x = (uint8_t)((s_dot_pos[1][0].x + s_dot_pos[2][0].x) / 2);
+    uint8_t sep2_x = (uint8_t)((s_dot_pos[3][0].x + s_dot_pos[4][0].x) / 2);
+    uint8_t sep_y0 = s_dot_pos[0][1].y;
+    uint8_t sep_y1 = s_dot_pos[0][2].y;
+    oledC_DrawCircle(sep1_x, sep_y0, 1, COLOR_DIM);
+    oledC_DrawCircle(sep1_x, sep_y1, 1, COLOR_DIM);
+    oledC_DrawCircle(sep2_x, sep_y0, 1, COLOR_DIM);
+    oledC_DrawCircle(sep2_x, sep_y1, 1, COLOR_DIM);
 
     // Draw all dots as rings initially
     for (uint8_t col = 0; col < 6; col++) {
         for (uint8_t row = 0; row < 4; row++) {
-            oledC_DrawRing(dot_pos[col][row].x, dot_pos[col][row].y, DOT_SIZE / 2, 1, COLOR_DIM);
+            oledC_DrawRing(s_dot_pos[col][row].x, s_dot_pos[col][row].y, DOT_SIZE / 2, 1, COLOR_DIM);
         }
     }
 
-    memset(&last_time_drawn, 0, sizeof (Time_t));
-    last_time_drawn.second = 99; // force full redraw
-    last_format_drawn = FORMAT_24H;
+    memset(&s_last_time_drawn, 0, sizeof (Time_t));
+    s_last_time_drawn.second = 99; // force full redraw
+    s_last_format_drawn = FORMAT_24H;
+    memset(&s_last_date_drawn, 0, sizeof(Date_t));
 }
 
 void BinaryFace_Draw(void) {
@@ -116,24 +150,24 @@ void BinaryFace_DrawUpdate(void) {
     Time_t now = state->current_time;
 
     // Redraw everything if format changed
-    if (state->time_format != last_format_drawn) {
+    if (state->time_format != s_last_format_drawn) {
         BinaryFace_Init();
-        last_format_drawn = state->time_format;
+        s_last_format_drawn = state->time_format;
         return;
     }
 
     // Extract digits (hour, min, sec)
     uint8_t hour = now.hour;
-    uint8_t last_hour = last_time_drawn.hour;
+    uint8_t last_hour = s_last_time_drawn.hour;
     if (state->time_format == FORMAT_12H) {
         bool is_pm, was_pm;
         hour = Timekeeper_Convert24to12(now.hour, &is_pm);
-        last_hour = Timekeeper_Convert24to12(last_time_drawn.hour, &was_pm);
+        last_hour = Timekeeper_Convert24to12(s_last_time_drawn.hour, &was_pm);
     }
 
     uint8_t digits[6] = {hour / 10, hour % 10, now.minute / 10, now.minute % 10, now.second / 10, now.second % 10};
-    uint8_t last_digits[6] = {last_hour / 10, last_hour % 10, last_time_drawn.minute / 10, last_time_drawn.minute % 10,
-        last_time_drawn.second / 10, last_time_drawn.second % 10};
+    uint8_t last_digits[6] = {last_hour / 10, last_hour % 10, s_last_time_drawn.minute / 10, s_last_time_drawn.minute % 10,
+        s_last_time_drawn.second / 10, s_last_time_drawn.second % 10};
 
     // Iterate columns and rows
     for (uint8_t col = 0; col < 6; col++) {
@@ -144,16 +178,17 @@ void BinaryFace_DrawUpdate(void) {
             bool bit_last = get_bit(last_digits[col], 3 - row);
             if (bit_now == bit_last) continue;
 
-            uint8_t x = dot_pos[col][row].x;
-            uint8_t y = dot_pos[col][row].y;
+            uint8_t x = s_dot_pos[col][row].x;
+            uint8_t y = s_dot_pos[col][row].y;
 
-            if (bit_now) {
-                oledC_DrawCircle(x, y, DOT_SIZE / 2, COLORS[col]);
-            } else {
-                oledC_DrawRing(x, y, DOT_SIZE / 2, 1, COLOR_DIM);
-            }
+            draw_dot(x, y, bit_now, s_colors[col]);
         }
     }
 
-    last_time_drawn = now;
+    s_last_time_drawn = now;
+
+    // Date
+    uint8_t date_text_w = 30;
+    uint8_t date_x = (uint8_t)((SCREEN_W - date_text_w) / 2);
+    WatchFace_DrawDate(date_x, 82, &state->current_date, &s_last_date_drawn, COLOR_DIM, COLOR_BG);
 }

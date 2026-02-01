@@ -18,7 +18,7 @@
 // STATE
 // ============================================================================
 
-static bool last_flash_state = false;
+static bool s_last_flash_state = false;
 
 // ============================================================================
 // PUBLIC FUNCTIONS
@@ -28,7 +28,7 @@ void AlarmFace_Init(void) {
     oledC_setBackground(COLOR_WARNING);
     // Could draw a static icon or big circle to indicate alarm
     oledC_DrawCircle(CENTER_X, CENTER_Y, RADIUS, COLOR_ACCENT);
-    last_flash_state = false;
+    s_last_flash_state = false;
 }
 
 void AlarmFace_Draw(void) {
@@ -43,10 +43,10 @@ void AlarmFace_DrawUpdate(void) {
     // Flashing logic: toggle every second
     bool flash = (state->current_time.second % 2) == 0;
 
-    if (flash != last_flash_state) {
+    if (flash != s_last_flash_state) {
         oledC_setBackground(flash ? COLOR_WARNING : COLOR_BG);
         oledC_DrawCircle(CENTER_X, CENTER_Y, RADIUS, COLOR_ACCENT);
-        last_flash_state = flash;
+        s_last_flash_state = flash;
     }
 }
 
