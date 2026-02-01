@@ -50,6 +50,22 @@ extern uint8_t s_edit_last_draw_field;
 extern bool s_skip_next_partial;
 extern bool s_edit_full_drawn;
 
+typedef enum {
+    MENU_EVT_NONE = 0,
+    MENU_EVT_RADIAL_SELECT,
+    MENU_EVT_EDIT_VALUE,
+    MENU_EVT_EDIT_FIELD
+} MenuEventType_t;
+
+typedef struct {
+    MenuEventType_t type;
+    MenuState_t state;
+} MenuEvent_t;
+
+bool MenuEvent_Push(MenuEvent_t ev);
+bool MenuEvent_Pop(MenuEvent_t* ev);
+void MenuEvent_Clear(void);
+
 // Pot tuning
 #define POT_DEADBAND 6
 #define POT_FAST_THRESHOLD 80

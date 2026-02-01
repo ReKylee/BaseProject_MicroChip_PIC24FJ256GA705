@@ -15,12 +15,12 @@
 #define MENU_BITMAP_W 32
 #define MENU_ICON_ROWS 16
 #define MENU_CENTER_LABEL_PAD 4
-#define MENU_HEADER_Y 0
+#define MENU_HEADER_Y 1
 #define MENU_HEADER_H 10
 #define MENU_TIME_X 2
-#define MENU_TIME_Y 2
+#define MENU_TIME_Y 1
 #define MENU_TITLE_X 58
-#define MENU_TITLE_Y 2
+#define MENU_TITLE_Y 1
 
 // Geometry reference for SEC_POINTS scaling
 #define MENU_GEOM_CENTER_X 47

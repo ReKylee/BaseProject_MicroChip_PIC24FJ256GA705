@@ -62,6 +62,40 @@ uint8_t s_edit_last_draw_field = 0xFF;
 bool s_skip_next_partial = false;
 bool s_edit_full_drawn = false;
 
+// Menu event queue
+#define MENU_EVENT_QUEUE_SIZE 8
+static MenuEvent_t s_menu_events[MENU_EVENT_QUEUE_SIZE];
+static uint8_t s_menu_evt_head = 0;
+static uint8_t s_menu_evt_tail = 0;
+
+static bool menu_evt_is_full(uint8_t next_head) {
+    return next_head == s_menu_evt_tail;
+}
+
+bool MenuEvent_Push(MenuEvent_t ev) {
+    uint8_t next_head = (uint8_t)((s_menu_evt_head + 1) % MENU_EVENT_QUEUE_SIZE);
+    if (menu_evt_is_full(next_head)) {
+        return false;
+    }
+    s_menu_events[s_menu_evt_head] = ev;
+    s_menu_evt_head = next_head;
+    return true;
+}
+
+bool MenuEvent_Pop(MenuEvent_t* ev) {
+    if (s_menu_evt_head == s_menu_evt_tail) {
+        return false;
+    }
+    *ev = s_menu_events[s_menu_evt_tail];
+    s_menu_evt_tail = (uint8_t)((s_menu_evt_tail + 1) % MENU_EVENT_QUEUE_SIZE);
+    return true;
+}
+
+void MenuEvent_Clear(void) {
+    s_menu_evt_head = 0;
+    s_menu_evt_tail = 0;
+}
+
 // Selection accessors for radial menus
 static uint8_t get_main_selection(void) { return s_radial_selection; }
 static void set_main_selection(uint8_t idx) { s_radial_selection = idx; }
@@ -208,6 +242,8 @@ void MenuState_OnChange(MenuState_t new_state, bool seed_pot, uint16_t pot_value
     s_pot_filtered = seed_pot ? pot_value : 0xFFFF;
     s_pot_last_raw = seed_pot ? pot_value : 0xFFFF;
     s_skip_next_partial = true;
+
+    MenuEvent_Clear();
 
     if (new_state == MENU_SET_TIME || new_state == MENU_SET_DATE ||
         new_state == MENU_SET_ALARM || new_state == MENU_POMODORO) {

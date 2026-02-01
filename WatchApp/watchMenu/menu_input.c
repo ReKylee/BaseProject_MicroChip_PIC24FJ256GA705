@@ -11,6 +11,7 @@ static bool edit_field_init(uint8_t field) {
         s_edit_last_field = field;
         s_edit_last_draw_val = 0xFF;
         s_edit_last_draw_field = 0xFF;
+        MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_EDIT_FIELD, .state = Watch_GetState()->menu_state});
         return true;
     }
     return false;
@@ -37,6 +38,9 @@ static bool edit_handle_buttons(const EditInputConfig_t* cfg, uint8_t field, But
             state->menu_edit_field++;
             s_edit_last_draw_field = state->menu_edit_field;
             s_edit_last_draw_val = 0xFF;
+            s_edit_last_field = state->menu_edit_field;
+            s_edit_last_raw = s_pot_filtered;
+            MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_EDIT_FIELD, .state = state->menu_state});
         } else {
             if (cfg->on_commit) cfg->on_commit();
             MenuState_OnChange(MENU_MAIN, true, pot_value);
@@ -124,6 +128,9 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
                 if (MenuCore_HandlePot(&s_main_menu_radial, s_pot_filtered, 24)) changed = true;
             }
         }
+        if (changed) {
+            MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_RADIAL_SELECT, .state = state->menu_state});
+        }
 
         if (btn == BTN_S2_SHORT) {
             MenuState_t next_state = main_menu[s_radial_selection].next_state;
@@ -153,6 +160,9 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
                 if (MenuCore_HandlePot(&s_display_menu_radial, s_pot_filtered, 20)) changed = true;
             }
         }
+        if (changed) {
+            MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_RADIAL_SELECT, .state = state->menu_state});
+        }
         if (btn == BTN_S1_SHORT || btn == BTN_S2_SHORT) {
             MenuState_OnChange(MENU_MAIN, true, pot_value);
             state->needs_full_redraw = true;
@@ -163,6 +173,9 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
             if (pot_delta > POT_FAST_THRESHOLD) {
                 if (MenuCore_HandlePot(&s_format_menu_radial, s_pot_filtered, 20)) changed = true;
             }
+        }
+        if (changed) {
+            MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_RADIAL_SELECT, .state = state->menu_state});
         }
         if (btn == BTN_S1_SHORT || btn == BTN_S2_SHORT) {
             MenuState_OnChange(MENU_MAIN, true, pot_value);
@@ -175,6 +188,9 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
                 if (MenuCore_HandlePot(&s_alarm_toggle_radial, s_pot_filtered, 20)) changed = true;
             }
         }
+        if (changed) {
+            MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_RADIAL_SELECT, .state = state->menu_state});
+        }
         if (btn == BTN_S1_SHORT || btn == BTN_S2_SHORT) {
             MenuState_OnChange(MENU_MAIN, true, pot_value);
             state->needs_full_redraw = true;
@@ -183,25 +199,37 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
         EditInputConfig_t cfg = {0, 23, 0, 59, &s_temp_time.hour, &s_temp_time.minute, commit_set_time};
         changed |= edit_field_init(state->menu_edit_field);
         s_edit_last_val = (state->menu_edit_field == 0) ? s_temp_time.hour : s_temp_time.minute;
-        if (edit_handle_range(&cfg, state->menu_edit_field, pot_changed, pot_delta)) changed = true;
+        if (edit_handle_range(&cfg, state->menu_edit_field, pot_changed, pot_delta)) {
+            changed = true;
+            MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_EDIT_VALUE, .state = state->menu_state});
+        }
         if (edit_handle_buttons(&cfg, state->menu_edit_field, btn, pot_value)) changed = true;
     } else if (state->menu_state == MENU_SET_DATE) {
         EditInputConfig_t cfg = {1, 31, 1, 12, &s_temp_date.day, &s_temp_date.month, commit_set_date};
         changed |= edit_field_init(state->menu_edit_field);
         s_edit_last_val = (state->menu_edit_field == 0) ? s_temp_date.day : s_temp_date.month;
-        if (edit_handle_range(&cfg, state->menu_edit_field, pot_changed, pot_delta)) changed = true;
+        if (edit_handle_range(&cfg, state->menu_edit_field, pot_changed, pot_delta)) {
+            changed = true;
+            MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_EDIT_VALUE, .state = state->menu_state});
+        }
         if (edit_handle_buttons(&cfg, state->menu_edit_field, btn, pot_value)) changed = true;
     } else if (state->menu_state == MENU_SET_ALARM) {
         EditInputConfig_t cfg = {0, 23, 0, 59, &s_temp_alarm.hour, &s_temp_alarm.minute, commit_set_alarm};
         changed |= edit_field_init(state->menu_edit_field);
         s_edit_last_val = (state->menu_edit_field == 0) ? s_temp_alarm.hour : s_temp_alarm.minute;
-        if (edit_handle_range(&cfg, state->menu_edit_field, pot_changed, pot_delta)) changed = true;
+        if (edit_handle_range(&cfg, state->menu_edit_field, pot_changed, pot_delta)) {
+            changed = true;
+            MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_EDIT_VALUE, .state = state->menu_state});
+        }
         if (edit_handle_buttons(&cfg, state->menu_edit_field, btn, pot_value)) changed = true;
     } else if (state->menu_state == MENU_POMODORO) {
         EditInputConfig_t cfg = {1, 60, 1, 30, &s_temp_pomo_work, &s_temp_pomo_break, commit_pomodoro};
         changed |= edit_field_init(state->menu_edit_field);
         s_edit_last_val = (state->menu_edit_field == 0) ? s_temp_pomo_work : s_temp_pomo_break;
-        if (edit_handle_range(&cfg, state->menu_edit_field, pot_changed, pot_delta)) changed = true;
+        if (edit_handle_range(&cfg, state->menu_edit_field, pot_changed, pot_delta)) {
+            changed = true;
+            MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_EDIT_VALUE, .state = state->menu_state});
+        }
         if (edit_handle_buttons(&cfg, state->menu_edit_field, btn, pot_value)) changed = true;
     }
 

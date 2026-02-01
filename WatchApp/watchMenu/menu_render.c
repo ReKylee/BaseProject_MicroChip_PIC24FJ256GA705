@@ -160,6 +160,14 @@ static void get_edit_ring_params(MenuState_t state, uint8_t field, uint8_t* coun
     }
 }
 
+static bool edit_label_at_index(MenuState_t state, uint8_t field, uint8_t idx, uint8_t count, uint8_t step) {
+    if ((idx % step) != 0) return false;
+    if (state == MENU_SET_DATE && field == 0 && count == 31 && idx == 30) {
+        return false; // avoid 31 overlapping 1
+    }
+    return true;
+}
+
 static void fill_edit_spec(MenuState_t state, EditRingSpec_t* spec, char* center_text) {
     WatchState_t* w = Watch_GetState();
     uint8_t field = w->menu_edit_field;
@@ -229,7 +237,7 @@ static void draw_edit_ring_labels(MenuState_t state, uint8_t field) {
     get_edit_ring_params(state, field, &count, &step, &offset);
 
     for (uint8_t i = 0; i < count; i++) {
-        if ((i % step) != 0) continue;
+        if (!edit_label_at_index(state, field, i, count, step)) continue;
         int x, y;
         radial_idx_to_xy(i, count, MENU_EDIT_RING_RADIUS, &x, &y);
         char label[3];
@@ -239,18 +247,25 @@ static void draw_edit_ring_labels(MenuState_t state, uint8_t field) {
 }
 
 static void clear_edit_ring_area(void) {
-    uint8_t inner = (uint8_t)(MENU_EDIT_RING_RADIUS > 6 ? (MENU_EDIT_RING_RADIUS - 6) : 0);
-    uint8_t outer = (uint8_t)(MENU_EDIT_RING_RADIUS + 6);
+    uint8_t inner = (uint8_t)(MENU_EDIT_RING_RADIUS > 7 ? (MENU_EDIT_RING_RADIUS - 7) : 0);
+    uint8_t outer = (uint8_t)(MENU_EDIT_RING_RADIUS + 7);
     uint8_t radius = (uint8_t)((inner + outer) / 2);
     uint8_t width = (uint8_t)(outer - inner + 1);
     oledC_DrawRing(MENU_CENTER_X, MENU_CENTER_Y, radius, width, COLOR_BG);
 }
 
-static void draw_edit_tick_partial(uint8_t old_val, uint8_t new_val, uint8_t count) {
+static void draw_edit_tick_partial(MenuState_t state, uint8_t field,
+                                   uint8_t old_val, uint8_t new_val,
+                                   uint8_t count, uint8_t step, uint8_t offset) {
     if (old_val == new_val) return;
     int x, y;
     radial_idx_to_xy(old_val, count, MENU_EDIT_RING_RADIUS, &x, &y);
     oledC_DrawCircle(x, y, MENU_EDIT_TICK_RADIUS, COLOR_BG);
+    if (edit_label_at_index(state, field, old_val, count, step)) {
+        char label[3];
+        sprintf(label, "%02d", (uint8_t)(old_val + offset));
+        oledC_DrawString(x - 6, y - 3, 1, 1, (uint8_t*)label, COLOR_DIM);
+    }
     radial_idx_to_xy(new_val, count, MENU_EDIT_RING_RADIUS, &x, &y);
     oledC_DrawCircle(x, y, MENU_EDIT_TICK_RADIUS, COLOR_PRIMARY);
 }
@@ -273,35 +288,52 @@ static void draw_edit_full(MenuState_t state) {
     s_edit_full_drawn = true;
 }
 
-static void draw_edit_partial(MenuState_t state) {
+static void draw_edit_field_update(MenuState_t state) {
+    EditRingSpec_t spec;
+    char center_text[9];
+    fill_edit_spec(state, &spec, center_text);
+
+    clear_edit_ring_area();
+    draw_edit_ring_labels(state, Watch_GetState()->menu_edit_field);
+    draw_center_label(center_text);
+    int sx, sy;
+    radial_idx_to_xy(spec.selected, spec.count, MENU_EDIT_RING_RADIUS, &sx, &sy);
+    oledC_DrawCircle(sx, sy, MENU_EDIT_TICK_RADIUS, COLOR_PRIMARY);
+    s_edit_last_draw_val = spec.selected;
+    s_edit_last_draw_field = Watch_GetState()->menu_edit_field;
+    s_edit_full_drawn = true;
+}
+
+static void draw_edit_value_update(MenuState_t state) {
     EditRingSpec_t spec;
     char center_text[9];
     fill_edit_spec(state, &spec, center_text);
 
     if (!s_edit_full_drawn || s_edit_last_draw_val == 0xFF ||
         s_edit_last_draw_field != Watch_GetState()->menu_edit_field) {
-        clear_edit_ring_area();
-        draw_edit_ring_labels(state, Watch_GetState()->menu_edit_field);
-        draw_center_label(center_text);
-        int sx, sy;
-        radial_idx_to_xy(spec.selected, spec.count, MENU_EDIT_RING_RADIUS, &sx, &sy);
-        oledC_DrawCircle(sx, sy, MENU_EDIT_TICK_RADIUS, COLOR_PRIMARY);
-        s_edit_last_draw_val = spec.selected;
-        s_edit_last_draw_field = Watch_GetState()->menu_edit_field;
-        s_edit_full_drawn = true;
+        draw_edit_field_update(state);
         return;
     }
 
     uint8_t last_count = spec.count;
+    uint8_t step = spec.label_step;
+    uint8_t offset = spec.label_offset;
     if (state == MENU_SET_TIME || state == MENU_SET_ALARM) {
         last_count = (s_edit_last_draw_field == 0) ? 24 : 60;
+        step = (s_edit_last_draw_field == 0) ? 2 : 5;
+        offset = 0;
     } else if (state == MENU_SET_DATE) {
         last_count = (s_edit_last_draw_field == 0) ? 31 : 12;
+        step = (s_edit_last_draw_field == 0) ? 5 : 1;
+        offset = 1;
     } else if (state == MENU_POMODORO) {
         last_count = (s_edit_last_draw_field == 0) ? 60 : 30;
+        step = 5;
+        offset = 1;
     }
 
-    draw_edit_tick_partial(s_edit_last_draw_val, spec.selected, last_count);
+    draw_edit_tick_partial(state, Watch_GetState()->menu_edit_field,
+                           s_edit_last_draw_val, spec.selected, last_count, step, offset);
     draw_center_label(center_text);
     s_edit_last_draw_val = spec.selected;
     s_edit_last_draw_field = Watch_GetState()->menu_edit_field;
@@ -335,16 +367,41 @@ void Menu_DrawPartial(void) {
     }
     draw_small_time_update();
     WatchState_t* state = Watch_GetState();
+    MenuEvent_t ev;
+    bool had_event = false;
+    bool field_updated = false;
+    while (MenuEvent_Pop(&ev)) {
+        had_event = true;
+        switch (ev.type) {
+            case MENU_EVT_RADIAL_SELECT:
+                switch(state->menu_state) {
+                    case MENU_MAIN: draw_radial_menu_partial(&s_main_menu_cfg); break;
+                    case MENU_DISPLAY_MODE: draw_radial_menu_partial(&s_display_menu_cfg); break;
+                    case MENU_TIME_FORMAT: draw_radial_menu_partial(&s_format_menu_cfg); break;
+                    case MENU_ALARM_TOGGLE: draw_radial_menu_partial(&s_alarm_toggle_cfg); break;
+                    default: break;
+                }
+                break;
+            case MENU_EVT_EDIT_FIELD:
+                if (state->menu_state == MENU_SET_TIME) draw_edit_field_update(MENU_SET_TIME);
+                else if (state->menu_state == MENU_SET_DATE) draw_edit_field_update(MENU_SET_DATE);
+                else if (state->menu_state == MENU_SET_ALARM) draw_edit_field_update(MENU_SET_ALARM);
+                else if (state->menu_state == MENU_POMODORO) draw_edit_field_update(MENU_POMODORO);
+                field_updated = true;
+                break;
+            case MENU_EVT_EDIT_VALUE:
+                if (field_updated) break;
+                if (state->menu_state == MENU_SET_TIME) draw_edit_value_update(MENU_SET_TIME);
+                else if (state->menu_state == MENU_SET_DATE) draw_edit_value_update(MENU_SET_DATE);
+                else if (state->menu_state == MENU_SET_ALARM) draw_edit_value_update(MENU_SET_ALARM);
+                else if (state->menu_state == MENU_POMODORO) draw_edit_value_update(MENU_POMODORO);
+                break;
+            default:
+                break;
+        }
+    }
 
-    switch(state->menu_state) {
-        case MENU_MAIN: draw_radial_menu_partial(&s_main_menu_cfg); break;
-        case MENU_DISPLAY_MODE: draw_radial_menu_partial(&s_display_menu_cfg); break;
-        case MENU_TIME_FORMAT: draw_radial_menu_partial(&s_format_menu_cfg); break;
-        case MENU_ALARM_TOGGLE: draw_radial_menu_partial(&s_alarm_toggle_cfg); break;
-        case MENU_SET_TIME: draw_edit_partial(MENU_SET_TIME); break;
-        case MENU_SET_DATE: draw_edit_partial(MENU_SET_DATE); break;
-        case MENU_SET_ALARM: draw_edit_partial(MENU_SET_ALARM); break;
-        case MENU_POMODORO: draw_edit_partial(MENU_POMODORO); break;
-        default: Menu_DrawFull(); break;
+    if (!had_event && state->menu_state == MENU_POMODORO) {
+        draw_edit_value_update(MENU_POMODORO);
     }
 }
