@@ -100,11 +100,13 @@ static void handle_pomodoro_mode(ButtonEvent_t btn, AccelEvent_t accel) {
         return;
     }
 
-    if (accel == ACCEL_FLIP || accel == ACCEL_SHAKE) {
+    if (btn == BTN_S2_LONG) {
         Menu_Exit();
         state->needs_full_redraw = true;
         return;
     }
+
+    (void)accel;
 
     app_button_led_feedback(btn); // Use helper for feedback
 
