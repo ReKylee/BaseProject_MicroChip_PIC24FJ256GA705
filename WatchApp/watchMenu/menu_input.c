@@ -68,6 +68,7 @@ static void commit_set_alarm(void) {
     WatchState_t* state = Watch_GetState();
     state->alarm.hour = s_temp_alarm.hour;
     state->alarm.minute = s_temp_alarm.minute;
+    state->alarm.enabled = true;
 }
 
 static void commit_pomodoro(void) {

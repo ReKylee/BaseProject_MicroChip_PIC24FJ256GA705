@@ -105,6 +105,9 @@ void BinaryFace_Init(void) {
 
     init_dot_positions();
 
+    // Alarm icon
+    WatchFace_DrawAlarmIcon(ALARM_X, ALARM_Y, ALARM_W, ALARM_H, Watch_GetState()->alarm.enabled);
+
     // Draw static labels (H M S)
     for (uint8_t i = 0; i < 3; i++) {
         oledC_DrawString(s_label_x[i], s_label_y, 1, 1, (uint8_t*) (i == 0 ? "H" : i == 1 ? "M" : "S"), COLOR_TEXT);
@@ -191,4 +194,7 @@ void BinaryFace_DrawUpdate(void) {
     uint8_t date_text_w = 30;
     uint8_t date_x = (uint8_t)((SCREEN_W - date_text_w) / 2);
     WatchFace_DrawDate(date_x, 82, &state->current_date, &s_last_date_drawn, COLOR_DIM, COLOR_BG);
+
+    // Alarm icon
+    WatchFace_DrawAlarmIcon(ALARM_X, ALARM_Y, ALARM_W, ALARM_H, state->alarm.enabled);
 }

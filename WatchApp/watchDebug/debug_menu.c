@@ -192,7 +192,8 @@ void DebugMenu_HandleInput(ButtonEvent_t btn) {
         uint32_t now = (uint32_t)state->current_time.hour * 3600U +
                        (uint32_t)state->current_time.minute * 60U +
                        (uint32_t)state->current_time.second;
-        uint32_t target = now + 10U;
+        uint32_t to_next_min = (state->current_time.second == 0) ? 0U : (60U - state->current_time.second);
+        uint32_t target = now + to_next_min;
         uint8_t hour = (uint8_t)((target / 3600U) % 24U);
         uint8_t minute = (uint8_t)((target / 60U) % 60U);
 
@@ -202,6 +203,7 @@ void DebugMenu_HandleInput(ButtonEvent_t btn) {
         state->alarm.triggered = false;
         state->alarm.trigger_count = 0;
         state->needs_redraw = true;
+        DebugMenu_Exit();
     }
 }
 #endif

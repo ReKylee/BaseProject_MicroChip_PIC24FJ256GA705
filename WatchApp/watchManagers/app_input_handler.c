@@ -119,6 +119,12 @@ static void handle_pomodoro_mode(ButtonEvent_t btn, AccelEvent_t accel) {
 void APP_HandleInputEvents(ButtonEvent_t btn, AccelEvent_t accel) {
     WatchState_t* state = Watch_GetState();
 
+    if (Alarm_IsRinging() && (accel == ACCEL_FLIP || accel == ACCEL_SHAKE)) {
+        Alarm_Dismiss();
+        state->needs_full_redraw = true;
+        return;
+    }
+
 #ifdef DEBUG_MODE
     if (btn == BTN_BOTH_LONG) {
         DebugMenu_Toggle();

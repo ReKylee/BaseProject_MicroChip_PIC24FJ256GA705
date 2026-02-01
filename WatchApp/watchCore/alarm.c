@@ -3,6 +3,8 @@
  * Implementation of alarm functionality
  */
 
+#include <stdlib.h>
+
 #include "alarm.h"
 #include "../shared/watch_state.h"
 #include "../../oledDriver/oledC.h"
@@ -77,6 +79,7 @@ void Alarm_Dismiss(void) {
     state->alarm.triggered = false;
     state->alarm.trigger_count = 0;
     state->watch_face = state->prev_watch_face; // Restore previous watch face
+    oledC_sendCommand(OLEDC_CMD_SET_DISPLAY_MODE_ON, NULL, 0);
     oledC_setBackground(COLOR_BG); // Reset background
     state->needs_full_redraw = true; // Force full redraw to show restored face
 }
