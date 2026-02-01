@@ -62,6 +62,9 @@ typedef enum {
     MODE_WATCH = 0, // Normal watch display
     MODE_MENU, // Menu navigation
     MODE_POMODORO, // Pomodoro timer
+#ifdef DEBUG_MODE
+    MODE_DEBUG, // Debug display
+#endif
     DISPLAY_MODE_COUNT
 } DisplayMode_t;
 
@@ -86,7 +89,8 @@ typedef enum {
     BTN_S1_SHORT,
     BTN_S1_LONG,
     BTN_S2_SHORT,
-    BTN_S2_LONG
+    BTN_S2_LONG,
+    BTN_BOTH_LONG
 } ButtonEvent_t;
 
 typedef enum {

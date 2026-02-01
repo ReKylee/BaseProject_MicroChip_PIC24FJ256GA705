@@ -202,13 +202,13 @@ section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x100              0x15da          0x20c7  (8391)
 .const                      0x16da               0x7fe           0xbfd  (3069)
-.text                       0x1ed8              0x4ca0          0x72f0  (29424)
-.dinit                      0x6b78               0x164           0x216  (534)
-.text                       0x6cdc               0xa44           0xf66  (3942)
-.init.delay32               0x7720                0x1c            0x2a  (42)
-.text                       0x773c                0x24            0x36  (54)
+.text                       0x1ed8              0x4e72          0x75ab  (30123)
+.dinit                      0x6d4a               0x164           0x216  (534)
+.text                       0x6eae               0xa44           0xf66  (3942)
+.init.delay32               0x78f2                0x1c            0x2a  (42)
+.text                       0x790e                0x24            0x36  (54)
 
-                 Total "program" memory used (bytes):         0xb190  (45456) 17%
+                 Total "program" memory used (bytes):         0xb44b  (46155) 17%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x4000]
@@ -216,26 +216,26 @@ section                    address   length (PC units)   length (bytes) (dec)
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
 .ndata                       0x800                   0            0x16  (22)
-.nbss                        0x816                   0            0x3e  (62)
-.ndata                       0x854                   0             0x8  (8)
-.nbss                        0x85c                   0             0xa  (10)
-System/where_was_i.s.scn1     0x866                   0             0x4  (4)
-.nbss                        0x86a                   0             0x8  (8)
-.ndata                       0x872                   0             0x4  (4)
-.nbss                        0x876                   0            0x10  (16)
-.ndata                       0x886                   0             0x2  (2)
-.nbss                        0x888                   0             0x2  (2)
-.ndata                       0x88a                   0             0x4  (4)
-.nbss                        0x88e                   0             0x2  (2)
-.ndata                       0x890                   0             0x4  (4)
-.nbss                        0x894                   0             0x4  (4)
-.bss                         0x898                   0           0x200  (512)
-.data                        0xa98                   0            0x4e  (78)
-.bss                         0xae6                   0            0xb4  (180)
-.data                        0xb9a                   0            0x1e  (30)
-.bss                         0xbb8                   0            0x38  (56)
+.nbss                        0x816                   0            0x40  (64)
+.ndata                       0x856                   0             0x8  (8)
+.nbss                        0x85e                   0             0xa  (10)
+System/where_was_i.s.scn1     0x868                   0             0x4  (4)
+.nbss                        0x86c                   0             0x8  (8)
+.ndata                       0x874                   0             0x4  (4)
+.nbss                        0x878                   0            0x10  (16)
+.ndata                       0x888                   0             0x2  (2)
+.nbss                        0x88a                   0             0x2  (2)
+.ndata                       0x88c                   0             0x4  (4)
+.nbss                        0x890                   0             0x2  (2)
+.ndata                       0x892                   0             0x4  (4)
+.nbss                        0x896                   0             0x4  (4)
+.bss                         0x89a                   0           0x200  (512)
+.data                        0xa9a                   0            0x4e  (78)
+.bss                         0xae8                   0            0xb4  (180)
+.data                        0xb9c                   0            0x1e  (30)
+.bss                         0xbba                   0            0x38  (56)
 
-                 Total "data" memory used (bytes):          0x3f0  (1008) 6%
+                 Total "data" memory used (bytes):          0x3f2  (1010) 6%
 
 
 Dynamic Memory Usage
@@ -243,9 +243,9 @@ Dynamic Memory Usage
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
 heap                             0                                   0  (0)
-stack                        0xbf0                              0x3c10  (15376)
+stack                        0xbf2                              0x3c0e  (15374)
 
-                 Maximum dynamic memory (bytes):         0x3c10  (15376)
+                 Maximum dynamic memory (bytes):         0x3c0e  (15374)
 
 Info: Project is using a large data memory model when small data memory model is sufficient.
 
@@ -266,69 +266,69 @@ External Symbols in Data Memory (by address):
                     0x0812                  _s_edit_last_field
                     0x0813                  _s_edit_last_draw_val
                     0x0814                  _s_edit_last_draw_field
-                    0x0840                  _s_temp_pomo_work
-                    0x0841                  _s_temp_pomo_break
-                    0x0842                  _s_radial_selection
-                    0x0843                  _s_main_last_sel
-                    0x0844                  _s_display_last_sel
-                    0x0845                  _s_format_last_sel
-                    0x0846                  _s_alarm_last_sel
-                    0x0847                  _s_edit_last_val
-                    0x0848                  _s_skip_next_partial
-                    0x0849                  _s_edit_full_drawn
-                    0x084c                  _t1_ticks
-                    0x0850                  _t2_ticks
-                    0x0866                  _trapSrcAddr
-                    0x0888                  _spi1_interruptHandler
-                    0x0aa6                  _s_main_menu_radial
-                    0x0ab6                  _s_display_menu_radial
-                    0x0ac6                  _s_format_menu_radial
-                    0x0ad6                  _s_alarm_toggle_radial
-                    0x0b24                  _s_temp_time
-                    0x0b28                  _s_temp_date
-                    0x0b2a                  _s_temp_alarm
-                    0x0b2e                  _s_last_small_time
-                    0x0bee                  ___errno_val
+                    0x0842                  _s_temp_pomo_work
+                    0x0843                  _s_temp_pomo_break
+                    0x0844                  _s_radial_selection
+                    0x0845                  _s_main_last_sel
+                    0x0846                  _s_display_last_sel
+                    0x0847                  _s_format_last_sel
+                    0x0848                  _s_alarm_last_sel
+                    0x0849                  _s_edit_last_val
+                    0x084a                  _s_skip_next_partial
+                    0x084b                  _s_edit_full_drawn
+                    0x084e                  _t1_ticks
+                    0x0852                  _t2_ticks
+                    0x0868                  _trapSrcAddr
+                    0x088a                  _spi1_interruptHandler
+                    0x0aa8                  _s_main_menu_radial
+                    0x0ab8                  _s_display_menu_radial
+                    0x0ac8                  _s_format_menu_radial
+                    0x0ad8                  _s_alarm_toggle_radial
+                    0x0b26                  _s_temp_time
+                    0x0b2a                  _s_temp_date
+                    0x0b2c                  _s_temp_alarm
+                    0x0b30                  _s_last_small_time
+                    0x0bf0                  ___errno_val
 
 External Symbols in Data Memory (by name):
 
-                    0x0bee                  ___errno_val
+                    0x0bf0                  ___errno_val
                     0x080e                  _s_alarm_last_raw
-                    0x0846                  _s_alarm_last_sel
+                    0x0848                  _s_alarm_last_sel
                     0x0803                  _s_alarm_last_selection
-                    0x0ad6                  _s_alarm_toggle_radial
+                    0x0ad8                  _s_alarm_toggle_radial
                     0x080a                  _s_display_last_raw
-                    0x0844                  _s_display_last_sel
+                    0x0846                  _s_display_last_sel
                     0x0801                  _s_display_last_selection
-                    0x0ab6                  _s_display_menu_radial
-                    0x0849                  _s_edit_full_drawn
+                    0x0ab8                  _s_display_menu_radial
+                    0x084b                  _s_edit_full_drawn
                     0x0814                  _s_edit_last_draw_field
                     0x0813                  _s_edit_last_draw_val
                     0x0812                  _s_edit_last_field
                     0x0810                  _s_edit_last_raw
-                    0x0847                  _s_edit_last_val
+                    0x0849                  _s_edit_last_val
                     0x080c                  _s_format_last_raw
-                    0x0845                  _s_format_last_sel
+                    0x0847                  _s_format_last_sel
                     0x0802                  _s_format_last_selection
-                    0x0ac6                  _s_format_menu_radial
+                    0x0ac8                  _s_format_menu_radial
                     0x0800                  _s_last_radial_selection
-                    0x0b2e                  _s_last_small_time
+                    0x0b30                  _s_last_small_time
                     0x0808                  _s_main_last_raw
-                    0x0843                  _s_main_last_sel
-                    0x0aa6                  _s_main_menu_radial
+                    0x0845                  _s_main_last_sel
+                    0x0aa8                  _s_main_menu_radial
                     0x0804                  _s_pot_filtered
                     0x0806                  _s_pot_last_raw
-                    0x0842                  _s_radial_selection
-                    0x0848                  _s_skip_next_partial
-                    0x0b2a                  _s_temp_alarm
-                    0x0b28                  _s_temp_date
-                    0x0841                  _s_temp_pomo_break
-                    0x0840                  _s_temp_pomo_work
-                    0x0b24                  _s_temp_time
-                    0x0888                  _spi1_interruptHandler
-                    0x084c                  _t1_ticks
-                    0x0850                  _t2_ticks
-                    0x0866                  _trapSrcAddr
+                    0x0844                  _s_radial_selection
+                    0x084a                  _s_skip_next_partial
+                    0x0b2c                  _s_temp_alarm
+                    0x0b2a                  _s_temp_date
+                    0x0843                  _s_temp_pomo_break
+                    0x0842                  _s_temp_pomo_work
+                    0x0b26                  _s_temp_time
+                    0x088a                  _spi1_interruptHandler
+                    0x084e                  _t1_ticks
+                    0x0852                  _t2_ticks
+                    0x0868                  _trapSrcAddr
 
 External Symbols in Program Memory (by address):
 
@@ -400,302 +400,302 @@ External Symbols in Program Memory (by address):
                   0x001c7a                  _HOUR_POINTS
                   0x001cf2                  _MIN_POINTS
                   0x001d6a                  _SEC_POINTS
-                  0x002176                  build/default/production/WatchApp/watchMenu/menu_render.o:_draw_radial_item
-                  0x00221a                  build/default/production/WatchApp/watchMenu/menu_render.o:_draw_radial_center
-                  0x002824                  _Menu_DrawFull
-                  0x0028aa                  _Menu_DrawPartial
-                  0x0029ac                  _oledC_createShape
-                  0x002adc                  _oledC_ReadPoint
-                  0x002b0c                  _oledC_DrawPoint
-                  0x002b44                  _oledC_DrawThickPoint
-                  0x002c4c                  _oledC_DrawCircle
-                  0x002d5e                  _oledC_DrawRing
-                  0x002e5a                  _oledC_DrawLine
-                  0x002f6c                  _oledC_DrawRectangle
-                  0x002fba                  _oledC_DrawCharacter
-                  0x003078                  _oledC_DrawString
-                  0x0030be                  _oledC_DrawBitmap
-                  0x003192                  build/default/production/oledDriver/oledC_shapes.o:_drawPoint
-                  0x0031a8                  build/default/production/oledDriver/oledC_shapes.o:_drawCircle
-                  0x0031c2                  build/default/production/oledDriver/oledC_shapes.o:_drawRing
-                  0x0031e0                  build/default/production/oledDriver/oledC_shapes.o:_drawRectangle
-                  0x0031fe                  build/default/production/oledDriver/oledC_shapes.o:_drawLine
-                  0x003220                  build/default/production/oledDriver/oledC_shapes.o:_drawCharacter
-                  0x003242                  build/default/production/oledDriver/oledC_shapes.o:_drawString
-                  0x003264                  build/default/production/oledDriver/oledC_shapes.o:_drawBitmap
-                  0x0033cc                  _test_discrete_leds
-                  0x003448                  _test_rgb_raw_pwm
-                  0x0034a2                  _test_rgb_color_constants
-                  0x003544                  _test_rgb_intensity_scaling
-                  0x0035fe                  _test_raw_vs_scaled
-                  0x00364e                  _test_rgb_intensity_fade
-                  0x003712                  _test_rgb_color_wheel
-                  0x0037d8                  _test_rgb_edge_cases
-                  0x003832                  _test_custom_colors
-                  0x0038aa                  _test_rainbow_sequence
-                  0x003902                  _test_intensity_persistence
-                  0x003978                  _LED_RunTests
-                  0x003f20                  _Pomodoro_Init
-                  0x003f4e                  _Pomodoro_Start
-                  0x003f6c                  _Pomodoro_Pause
-                  0x003f7c                  _Pomodoro_Reset
-                  0x003f84                  _Pomodoro_Update
-                  0x003fe2                  _Pomodoro_Draw
-                  0x0040a2                  _Pomodoro_DrawUpdate
-                  0x004138                  _Pomodoro_HandleInput
-                  0x00428e                  build/default/production/WatchApp/watchMenu/menu_input.o:_commit_set_time
-                  0x0042b8                  build/default/production/WatchApp/watchMenu/menu_input.o:_commit_set_date
-                  0x0042d4                  build/default/production/WatchApp/watchMenu/menu_input.o:_commit_set_alarm
-                  0x0042ee                  build/default/production/WatchApp/watchMenu/menu_input.o:_commit_pomodoro
-                  0x00430a                  _Menu_Init
-                  0x00432c                  _Menu_Enter
-                  0x004352                  _Menu_Exit
-                  0x004368                  _Menu_HandleInput
-                  0x004990                  _BinaryFace_Init
-                  0x004ada                  _BinaryFace_Draw
-                  0x004ae2                  _BinaryFace_DrawUpdate
-                  0x004de0                  _MenuCore_HandleRange
-                  0x004ea4                  _MenuCore_ResetState
-                  0x004ee6                  _MenuCore_DrawRadialFull
-                  0x004f5e                  _MenuCore_DrawRadialPartial
-                  0x004fe2                  _MenuCore_HandlePot
-                  0x0050fe                  _DigitalFace_Init
-                  0x005124                  _DigitalFace_Draw
-                  0x005216                  _DigitalFace_DrawUpdate
-                  0x00568c                  _AnalogFace_Init
-                  0x0056c2                  _AnalogFace_DrawUpdate
-                  0x00570c                  _AnalogFace_Draw
-                  0x0057b0                  _oledC_parseIntToRGB
-                  0x0057fe                  _oledC_parseRGBToInt
-                  0x005848                  _oledC_sendCommand
-                  0x005886                  _oledC_setRowAddressBounds
-                  0x0058b0                  _oledC_setColumnAddressBounds
-                  0x0058e6                  _oledC_setSleepMode
-                  0x005900                  _oledC_readColor
-                  0x00591e                  _oledC_sendColor
-                  0x005934                  _oledC_sendColorInt
-                  0x00595a                  _oledC_open
-                  0x005962                  _oledC_setup
-                  0x0059a4                  _oledC_clearScreen
-                  0x0059de                  _oledC_setBackground
-                  0x0059ec                  _oledC_getBackground
-                  0x0059f4                  _i2c_init
-                  0x005bdc                  _i2c_writeReg
-                  0x005c0e                  _i2c_readRegs
-                  0x005c4e                  _i2c_readReg
-                  0x005ca0                  _ADC_Init
-                  0x005d62                  _ADC_SetChannel
-                  0x005da4                  _ADC_ReadRaw
-                  0x005df2                  _ADC_ReadFloat
-                  0x005e7a                  _ADC_IsInitialized
-                  0x005e82                  _ADC_GetConfig
-                  0x005ebc                  _ADC_Disable
-                  0x005ec6                  _Timekeeper_Init
-                  0x005efe                  _Timekeeper_SetTime
-                  0x005f44                  _Timekeeper_SetDate
-                  0x005f98                  _Timekeeper_GetTime
-                  0x006082                  _Timekeeper_GetDate
-                  0x006096                  _Timekeeper_GetMillis
-                  0x0060a0                  _Timekeeper_Convert24to12
-                  0x0060d0                  _Timekeeper_GetDaysInMonth
-                  0x006104                  _MenuEvent_Push
-                  0x00614a                  _MenuEvent_Pop
-                  0x00618c                  _MenuEvent_Clear
-                  0x006196                  build/default/production/WatchApp/watchMenu/menu_state.o:_get_main_selection
-                  0x00619e                  build/default/production/WatchApp/watchMenu/menu_state.o:_set_main_selection
-                  0x0061ac                  build/default/production/WatchApp/watchMenu/menu_state.o:_get_display_selection
-                  0x0061b8                  build/default/production/WatchApp/watchMenu/menu_state.o:_set_display_selection
-                  0x0061c6                  build/default/production/WatchApp/watchMenu/menu_state.o:_get_format_selection
-                  0x0061d2                  build/default/production/WatchApp/watchMenu/menu_state.o:_set_format_selection
-                  0x0061e0                  build/default/production/WatchApp/watchMenu/menu_state.o:_get_alarm_toggle_selection
-                  0x0061ea                  build/default/production/WatchApp/watchMenu/menu_state.o:_set_alarm_toggle_selection
-                  0x0061fe                  _MenuState_GetMainMenuIcon
-                  0x006242                  _MenuState_GetMainMenuLabel
-                  0x006254                  _MenuState_GetAlarmToggleLabel
-                  0x006268                  _MenuState_OnChange
-                  0x006316                  build/default/production/oledDriver/oledC_shapeHandler.o:_dummyshape
-                  0x00631e                  _initShapesMem
-                  0x00634a                  _oledC_removeShape
-                  0x006380                  _oledC_getShape
-                  0x00639c                  _oledC_addShape
-                  0x0063f6                  _oledC_redrawIndex
-                  0x006414                  _oledC_redrawTo
-                  0x006422                  _oledC_redrawFrom
-                  0x006430                  _oledC_redrawSome
-                  0x00647c                  _oledC_eraseShape
-                  0x0064a6                  _oledC_eraseAll
-                  0x0064d2                  _oledC_redrawAll
-                  0x0065f0                  _AccelInput_Init
-                  0x006604                  _AccelInput_Check
-                  0x006816                  _APP_HandleInputEvents
-                  0x0068f4                  _Switch_Init
-                  0x006948                  _S1_WasPressed
-                  0x006964                  _S1_WasReleased
-                  0x006980                  _S2_WasPressed
-                  0x00699c                  _S2_WasReleased
-                  0x0069b8                  _Switch_ResetState
-                  0x0069f6                  _Buttons_Init
-                  0x0069fe                  _Buttons_Update
-                  0x006b46                  _Buttons_GetState
-                  0x006cdc                  _WatchFace_DrawAlarmIcon
-                  0x006db6                  _WatchFace_DrawDate
-                  0x006e3e                  _Pot_Init
-                  0x006e6c                  _Pot_GetRaw
-                  0x006e78                  _Pot_GetMapped
-                  0x006f14                  _Pot_GetMenuSelection
-                  0x006f86                  _Alarm_Init
-                  0x006f8c                  _Alarm_Check
-                  0x006ff0                  _Alarm_SetTime
-                  0x00701e                  _Alarm_Enable
-                  0x007034                  _Alarm_Disable
-                  0x007050                  _Alarm_Toggle
-                  0x007068                  _Alarm_Dismiss
-                  0x007090                  _Alarm_IsRinging
-                  0x00709e                  _Alarm_Update
-                  0x0070c4                  _spi1_close
-                  0x0070cc                  _spi1_open
-                  0x0070ec                  _spi1_exchangeByte
-                  0x007106                  _spi1_exchangeBlock
-                  0x007138                  _spi1_writeBlock
-                  0x007166                  _spi1_readBlock
-                  0x007196                  _spi1_writeByte
-                  0x0071a2                  _spi1_readByte
-                  0x0071ac                  _spi1_isr
-                  0x0071c8                  _spi1_setSpiISR
-                  0x007268                  _APP_UpdateDisplay
-                  0x00729e                  _ACCEL3_Init
-                  0x0072fa                  _ACCEL3_ReadXYZ
-                  0x00735c                  _Timer1_Init
-                  0x0073a2                  _Timer2_Init
-                  0x0073e8                  _Timer_GetTicks
-                  0x007414                  _Watch_GetState
-                  0x00741c                  _Watch_InitState
-                  0x0074a2                  _PIN_MANAGER_Initialize
-                  0x007512                  _AlarmFace_Init
-                  0x007528                  _AlarmFace_Draw
-                  0x00753c                  _AlarmFace_DrawUpdate
-                  0x00757a                  _APP_InitializeHardware
-                  0x0075da                  _DELAY_milliseconds
-                  0x0075fc                  _DELAY_microseconds
-                  0x007630                  _CLOCK_Initialize
-                  0x007676                  _APP_UpdateTimeAndAlarms
-                  0x0076c4                  _INTERRUPT_Initialize
-                  0x0076e0                  _watch_main
-                  0x007720                  ___delay32
-                  0x00773c                  _where_was_i
-                  0x00774c                  _SYSTEM_Initialize
-                  0x007758                  _main
+                  0x0021d4                  build/default/production/WatchApp/watchMenu/menu_render.o:_draw_radial_item
+                  0x002278                  build/default/production/WatchApp/watchMenu/menu_render.o:_draw_radial_center
+                  0x002886                  _Menu_DrawFull
+                  0x00290a                  _Menu_DrawPartial
+                  0x002a0c                  _oledC_createShape
+                  0x002b3c                  _oledC_ReadPoint
+                  0x002b6c                  _oledC_DrawPoint
+                  0x002ba4                  _oledC_DrawThickPoint
+                  0x002cac                  _oledC_DrawCircle
+                  0x002dbe                  _oledC_DrawRing
+                  0x002eba                  _oledC_DrawLine
+                  0x002fcc                  _oledC_DrawRectangle
+                  0x00301a                  _oledC_DrawCharacter
+                  0x0030d8                  _oledC_DrawString
+                  0x00311e                  _oledC_DrawBitmap
+                  0x0031f2                  build/default/production/oledDriver/oledC_shapes.o:_drawPoint
+                  0x003208                  build/default/production/oledDriver/oledC_shapes.o:_drawCircle
+                  0x003222                  build/default/production/oledDriver/oledC_shapes.o:_drawRing
+                  0x003240                  build/default/production/oledDriver/oledC_shapes.o:_drawRectangle
+                  0x00325e                  build/default/production/oledDriver/oledC_shapes.o:_drawLine
+                  0x003280                  build/default/production/oledDriver/oledC_shapes.o:_drawCharacter
+                  0x0032a2                  build/default/production/oledDriver/oledC_shapes.o:_drawString
+                  0x0032c4                  build/default/production/oledDriver/oledC_shapes.o:_drawBitmap
+                  0x0037b0                  _Pomodoro_Init
+                  0x0037de                  _Pomodoro_Start
+                  0x0037fc                  _Pomodoro_Pause
+                  0x00380c                  _Pomodoro_Reset
+                  0x003814                  _Pomodoro_Update
+                  0x003872                  _Pomodoro_Draw
+                  0x003932                  _Pomodoro_DrawUpdate
+                  0x003aa4                  _Pomodoro_HandleInput
+                  0x003c1a                  _test_discrete_leds
+                  0x003c96                  _test_rgb_raw_pwm
+                  0x003cf0                  _test_rgb_color_constants
+                  0x003d92                  _test_rgb_intensity_scaling
+                  0x003e4c                  _test_raw_vs_scaled
+                  0x003e9c                  _test_rgb_intensity_fade
+                  0x003f60                  _test_rgb_color_wheel
+                  0x004026                  _test_rgb_edge_cases
+                  0x004080                  _test_custom_colors
+                  0x0040f8                  _test_rainbow_sequence
+                  0x004150                  _test_intensity_persistence
+                  0x0041c6                  _LED_RunTests
+                  0x0043dc                  build/default/production/WatchApp/watchMenu/menu_input.o:_commit_set_time
+                  0x004406                  build/default/production/WatchApp/watchMenu/menu_input.o:_commit_set_date
+                  0x004422                  build/default/production/WatchApp/watchMenu/menu_input.o:_commit_set_alarm
+                  0x00443c                  build/default/production/WatchApp/watchMenu/menu_input.o:_commit_pomodoro
+                  0x004458                  _Menu_Init
+                  0x00447a                  _Menu_Enter
+                  0x0044a0                  _Menu_Exit
+                  0x0044b6                  _Menu_HandleInput
+                  0x004ade                  _BinaryFace_Init
+                  0x004c28                  _BinaryFace_Draw
+                  0x004c30                  _BinaryFace_DrawUpdate
+                  0x004f2e                  _MenuCore_HandleRange
+                  0x004ff2                  _MenuCore_ResetState
+                  0x005034                  _MenuCore_DrawRadialFull
+                  0x0050ac                  _MenuCore_DrawRadialPartial
+                  0x005130                  _MenuCore_HandlePot
+                  0x00524c                  _DigitalFace_Init
+                  0x005272                  _DigitalFace_Draw
+                  0x005364                  _DigitalFace_DrawUpdate
+                  0x0057da                  _AnalogFace_Init
+                  0x005810                  _AnalogFace_DrawUpdate
+                  0x00585a                  _AnalogFace_Draw
+                  0x0058fe                  _oledC_parseIntToRGB
+                  0x00594c                  _oledC_parseRGBToInt
+                  0x005996                  _oledC_sendCommand
+                  0x0059d4                  _oledC_setRowAddressBounds
+                  0x0059fe                  _oledC_setColumnAddressBounds
+                  0x005a34                  _oledC_setSleepMode
+                  0x005a4e                  _oledC_readColor
+                  0x005a6c                  _oledC_sendColor
+                  0x005a82                  _oledC_sendColorInt
+                  0x005aa8                  _oledC_open
+                  0x005ab0                  _oledC_setup
+                  0x005af2                  _oledC_clearScreen
+                  0x005b2c                  _oledC_setBackground
+                  0x005b3a                  _oledC_getBackground
+                  0x005b42                  _i2c_init
+                  0x005d2a                  _i2c_writeReg
+                  0x005d5c                  _i2c_readRegs
+                  0x005d9c                  _i2c_readReg
+                  0x005dee                  _ADC_Init
+                  0x005eb0                  _ADC_SetChannel
+                  0x005ef2                  _ADC_ReadRaw
+                  0x005f40                  _ADC_ReadFloat
+                  0x005fc8                  _ADC_IsInitialized
+                  0x005fd0                  _ADC_GetConfig
+                  0x00600a                  _ADC_Disable
+                  0x006014                  _Timekeeper_Init
+                  0x00604c                  _Timekeeper_SetTime
+                  0x006092                  _Timekeeper_SetDate
+                  0x0060e6                  _Timekeeper_GetTime
+                  0x0061d0                  _Timekeeper_GetDate
+                  0x0061e4                  _Timekeeper_GetMillis
+                  0x0061ee                  _Timekeeper_Convert24to12
+                  0x00621e                  _Timekeeper_GetDaysInMonth
+                  0x006252                  _MenuEvent_Push
+                  0x006298                  _MenuEvent_Pop
+                  0x0062da                  _MenuEvent_Clear
+                  0x0062e4                  build/default/production/WatchApp/watchMenu/menu_state.o:_get_main_selection
+                  0x0062ec                  build/default/production/WatchApp/watchMenu/menu_state.o:_set_main_selection
+                  0x0062fa                  build/default/production/WatchApp/watchMenu/menu_state.o:_get_display_selection
+                  0x006306                  build/default/production/WatchApp/watchMenu/menu_state.o:_set_display_selection
+                  0x006314                  build/default/production/WatchApp/watchMenu/menu_state.o:_get_format_selection
+                  0x006320                  build/default/production/WatchApp/watchMenu/menu_state.o:_set_format_selection
+                  0x00632e                  build/default/production/WatchApp/watchMenu/menu_state.o:_get_alarm_toggle_selection
+                  0x006338                  build/default/production/WatchApp/watchMenu/menu_state.o:_set_alarm_toggle_selection
+                  0x00634c                  _MenuState_GetMainMenuIcon
+                  0x006390                  _MenuState_GetMainMenuLabel
+                  0x0063a2                  _MenuState_GetAlarmToggleLabel
+                  0x0063b6                  _MenuState_OnChange
+                  0x006464                  _Buttons_Init
+                  0x00646c                  _Buttons_Update
+                  0x006638                  _Buttons_GetState
+                  0x00666a                  build/default/production/oledDriver/oledC_shapeHandler.o:_dummyshape
+                  0x006672                  _initShapesMem
+                  0x00669e                  _oledC_removeShape
+                  0x0066d4                  _oledC_getShape
+                  0x0066f0                  _oledC_addShape
+                  0x00674a                  _oledC_redrawIndex
+                  0x006768                  _oledC_redrawTo
+                  0x006776                  _oledC_redrawFrom
+                  0x006784                  _oledC_redrawSome
+                  0x0067d0                  _oledC_eraseShape
+                  0x0067fa                  _oledC_eraseAll
+                  0x006826                  _oledC_redrawAll
+                  0x006944                  _AccelInput_Init
+                  0x006958                  _AccelInput_Check
+                  0x006b6a                  _APP_HandleInputEvents
+                  0x006c48                  _Switch_Init
+                  0x006c9c                  _S1_WasPressed
+                  0x006cb8                  _S1_WasReleased
+                  0x006cd4                  _S2_WasPressed
+                  0x006cf0                  _S2_WasReleased
+                  0x006d0c                  _Switch_ResetState
+                  0x006eae                  _WatchFace_DrawAlarmIcon
+                  0x006f88                  _WatchFace_DrawDate
+                  0x007010                  _Pot_Init
+                  0x00703e                  _Pot_GetRaw
+                  0x00704a                  _Pot_GetMapped
+                  0x0070e6                  _Pot_GetMenuSelection
+                  0x007158                  _Alarm_Init
+                  0x00715e                  _Alarm_Check
+                  0x0071c2                  _Alarm_SetTime
+                  0x0071f0                  _Alarm_Enable
+                  0x007206                  _Alarm_Disable
+                  0x007222                  _Alarm_Toggle
+                  0x00723a                  _Alarm_Dismiss
+                  0x007262                  _Alarm_IsRinging
+                  0x007270                  _Alarm_Update
+                  0x007296                  _spi1_close
+                  0x00729e                  _spi1_open
+                  0x0072be                  _spi1_exchangeByte
+                  0x0072d8                  _spi1_exchangeBlock
+                  0x00730a                  _spi1_writeBlock
+                  0x007338                  _spi1_readBlock
+                  0x007368                  _spi1_writeByte
+                  0x007374                  _spi1_readByte
+                  0x00737e                  _spi1_isr
+                  0x00739a                  _spi1_setSpiISR
+                  0x00743a                  _APP_UpdateDisplay
+                  0x007470                  _ACCEL3_Init
+                  0x0074cc                  _ACCEL3_ReadXYZ
+                  0x00752e                  _Timer1_Init
+                  0x007574                  _Timer2_Init
+                  0x0075ba                  _Timer_GetTicks
+                  0x0075e6                  _Watch_GetState
+                  0x0075ee                  _Watch_InitState
+                  0x007674                  _PIN_MANAGER_Initialize
+                  0x0076e4                  _AlarmFace_Init
+                  0x0076fa                  _AlarmFace_Draw
+                  0x00770e                  _AlarmFace_DrawUpdate
+                  0x00774c                  _APP_InitializeHardware
+                  0x0077ac                  _DELAY_milliseconds
+                  0x0077ce                  _DELAY_microseconds
+                  0x007802                  _CLOCK_Initialize
+                  0x007848                  _APP_UpdateTimeAndAlarms
+                  0x007896                  _INTERRUPT_Initialize
+                  0x0078b2                  _watch_main
+                  0x0078f2                  ___delay32
+                  0x00790e                  _where_was_i
+                  0x00791e                  _SYSTEM_Initialize
+                  0x00792a                  _main
                   0x02af00                  __FSEC.sec
 
 External Symbols in Program Memory (by name):
 
-                  0x00729e                  _ACCEL3_Init
-                  0x0072fa                  _ACCEL3_ReadXYZ
-                  0x005ebc                  _ADC_Disable
-                  0x005e82                  _ADC_GetConfig
-                  0x005ca0                  _ADC_Init
-                  0x005e7a                  _ADC_IsInitialized
-                  0x005df2                  _ADC_ReadFloat
-                  0x005da4                  _ADC_ReadRaw
-                  0x005d62                  _ADC_SetChannel
-                  0x006816                  _APP_HandleInputEvents
-                  0x00757a                  _APP_InitializeHardware
-                  0x007268                  _APP_UpdateDisplay
-                  0x007676                  _APP_UpdateTimeAndAlarms
-                  0x006604                  _AccelInput_Check
-                  0x0065f0                  _AccelInput_Init
-                  0x007528                  _AlarmFace_Draw
-                  0x00753c                  _AlarmFace_DrawUpdate
-                  0x007512                  _AlarmFace_Init
-                  0x006f8c                  _Alarm_Check
-                  0x007034                  _Alarm_Disable
-                  0x007068                  _Alarm_Dismiss
-                  0x00701e                  _Alarm_Enable
-                  0x006f86                  _Alarm_Init
-                  0x007090                  _Alarm_IsRinging
-                  0x006ff0                  _Alarm_SetTime
-                  0x007050                  _Alarm_Toggle
-                  0x00709e                  _Alarm_Update
-                  0x00570c                  _AnalogFace_Draw
-                  0x0056c2                  _AnalogFace_DrawUpdate
-                  0x00568c                  _AnalogFace_Init
-                  0x004ada                  _BinaryFace_Draw
-                  0x004ae2                  _BinaryFace_DrawUpdate
-                  0x004990                  _BinaryFace_Init
-                  0x006b46                  _Buttons_GetState
-                  0x0069f6                  _Buttons_Init
-                  0x0069fe                  _Buttons_Update
-                  0x007630                  _CLOCK_Initialize
-                  0x0075fc                  _DELAY_microseconds
-                  0x0075da                  _DELAY_milliseconds
-                  0x005124                  _DigitalFace_Draw
-                  0x005216                  _DigitalFace_DrawUpdate
-                  0x0050fe                  _DigitalFace_Init
+                  0x007470                  _ACCEL3_Init
+                  0x0074cc                  _ACCEL3_ReadXYZ
+                  0x00600a                  _ADC_Disable
+                  0x005fd0                  _ADC_GetConfig
+                  0x005dee                  _ADC_Init
+                  0x005fc8                  _ADC_IsInitialized
+                  0x005f40                  _ADC_ReadFloat
+                  0x005ef2                  _ADC_ReadRaw
+                  0x005eb0                  _ADC_SetChannel
+                  0x006b6a                  _APP_HandleInputEvents
+                  0x00774c                  _APP_InitializeHardware
+                  0x00743a                  _APP_UpdateDisplay
+                  0x007848                  _APP_UpdateTimeAndAlarms
+                  0x006958                  _AccelInput_Check
+                  0x006944                  _AccelInput_Init
+                  0x0076fa                  _AlarmFace_Draw
+                  0x00770e                  _AlarmFace_DrawUpdate
+                  0x0076e4                  _AlarmFace_Init
+                  0x00715e                  _Alarm_Check
+                  0x007206                  _Alarm_Disable
+                  0x00723a                  _Alarm_Dismiss
+                  0x0071f0                  _Alarm_Enable
+                  0x007158                  _Alarm_Init
+                  0x007262                  _Alarm_IsRinging
+                  0x0071c2                  _Alarm_SetTime
+                  0x007222                  _Alarm_Toggle
+                  0x007270                  _Alarm_Update
+                  0x00585a                  _AnalogFace_Draw
+                  0x005810                  _AnalogFace_DrawUpdate
+                  0x0057da                  _AnalogFace_Init
+                  0x004c28                  _BinaryFace_Draw
+                  0x004c30                  _BinaryFace_DrawUpdate
+                  0x004ade                  _BinaryFace_Init
+                  0x006638                  _Buttons_GetState
+                  0x006464                  _Buttons_Init
+                  0x00646c                  _Buttons_Update
+                  0x007802                  _CLOCK_Initialize
+                  0x0077ce                  _DELAY_microseconds
+                  0x0077ac                  _DELAY_milliseconds
+                  0x005272                  _DigitalFace_Draw
+                  0x005364                  _DigitalFace_DrawUpdate
+                  0x00524c                  _DigitalFace_Init
                   0x001c7a                  _HOUR_POINTS
-                  0x0076c4                  _INTERRUPT_Initialize
-                  0x003978                  _LED_RunTests
+                  0x007896                  _INTERRUPT_Initialize
+                  0x0041c6                  _LED_RunTests
                   0x001cf2                  _MIN_POINTS
-                  0x004ee6                  _MenuCore_DrawRadialFull
-                  0x004f5e                  _MenuCore_DrawRadialPartial
-                  0x004fe2                  _MenuCore_HandlePot
-                  0x004de0                  _MenuCore_HandleRange
-                  0x004ea4                  _MenuCore_ResetState
-                  0x00618c                  _MenuEvent_Clear
-                  0x00614a                  _MenuEvent_Pop
-                  0x006104                  _MenuEvent_Push
-                  0x006254                  _MenuState_GetAlarmToggleLabel
-                  0x0061fe                  _MenuState_GetMainMenuIcon
-                  0x006242                  _MenuState_GetMainMenuLabel
-                  0x006268                  _MenuState_OnChange
-                  0x002824                  _Menu_DrawFull
-                  0x0028aa                  _Menu_DrawPartial
-                  0x00432c                  _Menu_Enter
-                  0x004352                  _Menu_Exit
-                  0x004368                  _Menu_HandleInput
-                  0x00430a                  _Menu_Init
-                  0x0074a2                  _PIN_MANAGER_Initialize
-                  0x003fe2                  _Pomodoro_Draw
-                  0x0040a2                  _Pomodoro_DrawUpdate
-                  0x004138                  _Pomodoro_HandleInput
-                  0x003f20                  _Pomodoro_Init
-                  0x003f6c                  _Pomodoro_Pause
-                  0x003f7c                  _Pomodoro_Reset
-                  0x003f4e                  _Pomodoro_Start
-                  0x003f84                  _Pomodoro_Update
-                  0x006e78                  _Pot_GetMapped
-                  0x006f14                  _Pot_GetMenuSelection
-                  0x006e6c                  _Pot_GetRaw
-                  0x006e3e                  _Pot_Init
-                  0x006948                  _S1_WasPressed
-                  0x006964                  _S1_WasReleased
-                  0x006980                  _S2_WasPressed
-                  0x00699c                  _S2_WasReleased
+                  0x005034                  _MenuCore_DrawRadialFull
+                  0x0050ac                  _MenuCore_DrawRadialPartial
+                  0x005130                  _MenuCore_HandlePot
+                  0x004f2e                  _MenuCore_HandleRange
+                  0x004ff2                  _MenuCore_ResetState
+                  0x0062da                  _MenuEvent_Clear
+                  0x006298                  _MenuEvent_Pop
+                  0x006252                  _MenuEvent_Push
+                  0x0063a2                  _MenuState_GetAlarmToggleLabel
+                  0x00634c                  _MenuState_GetMainMenuIcon
+                  0x006390                  _MenuState_GetMainMenuLabel
+                  0x0063b6                  _MenuState_OnChange
+                  0x002886                  _Menu_DrawFull
+                  0x00290a                  _Menu_DrawPartial
+                  0x00447a                  _Menu_Enter
+                  0x0044a0                  _Menu_Exit
+                  0x0044b6                  _Menu_HandleInput
+                  0x004458                  _Menu_Init
+                  0x007674                  _PIN_MANAGER_Initialize
+                  0x003872                  _Pomodoro_Draw
+                  0x003932                  _Pomodoro_DrawUpdate
+                  0x003aa4                  _Pomodoro_HandleInput
+                  0x0037b0                  _Pomodoro_Init
+                  0x0037fc                  _Pomodoro_Pause
+                  0x00380c                  _Pomodoro_Reset
+                  0x0037de                  _Pomodoro_Start
+                  0x003814                  _Pomodoro_Update
+                  0x00704a                  _Pot_GetMapped
+                  0x0070e6                  _Pot_GetMenuSelection
+                  0x00703e                  _Pot_GetRaw
+                  0x007010                  _Pot_Init
+                  0x006c9c                  _S1_WasPressed
+                  0x006cb8                  _S1_WasReleased
+                  0x006cd4                  _S2_WasPressed
+                  0x006cf0                  _S2_WasReleased
                   0x001d6a                  _SEC_POINTS
-                  0x00774c                  _SYSTEM_Initialize
-                  0x0068f4                  _Switch_Init
-                  0x0069b8                  _Switch_ResetState
-                  0x0060a0                  _Timekeeper_Convert24to12
-                  0x006082                  _Timekeeper_GetDate
-                  0x0060d0                  _Timekeeper_GetDaysInMonth
-                  0x006096                  _Timekeeper_GetMillis
-                  0x005f98                  _Timekeeper_GetTime
-                  0x005ec6                  _Timekeeper_Init
-                  0x005f44                  _Timekeeper_SetDate
-                  0x005efe                  _Timekeeper_SetTime
-                  0x00735c                  _Timer1_Init
-                  0x0073a2                  _Timer2_Init
-                  0x0073e8                  _Timer_GetTicks
-                  0x006cdc                  _WatchFace_DrawAlarmIcon
-                  0x006db6                  _WatchFace_DrawDate
-                  0x007414                  _Watch_GetState
-                  0x00741c                  _Watch_InitState
+                  0x00791e                  _SYSTEM_Initialize
+                  0x006c48                  _Switch_Init
+                  0x006d0c                  _Switch_ResetState
+                  0x0061ee                  _Timekeeper_Convert24to12
+                  0x0061d0                  _Timekeeper_GetDate
+                  0x00621e                  _Timekeeper_GetDaysInMonth
+                  0x0061e4                  _Timekeeper_GetMillis
+                  0x0060e6                  _Timekeeper_GetTime
+                  0x006014                  _Timekeeper_Init
+                  0x006092                  _Timekeeper_SetDate
+                  0x00604c                  _Timekeeper_SetTime
+                  0x00752e                  _Timer1_Init
+                  0x007574                  _Timer2_Init
+                  0x0075ba                  _Timer_GetTicks
+                  0x006eae                  _WatchFace_DrawAlarmIcon
+                  0x006f88                  _WatchFace_DrawDate
+                  0x0075e6                  _Watch_GetState
+                  0x0075ee                  _Watch_InitState
                   0x00051c                  __DefaultInterrupt
                   0x02af00                  __FSEC.sec
                   0x00026c                  __MI2C1Interrupt
                   0x0004ec                  __T1Interrupt
                   0x000504                  __T2Interrupt
                   0x000b84                  ___cvt_u
-                  0x007720                  ___delay32
+                  0x0078f2                  ___delay32
                   0x00161e                  ___divdi3
                   0x00054c                  ___divsf3
                   0x00054c                  ___divsf3x
@@ -740,50 +740,50 @@ External Symbols in Program Memory (by name):
                   0x00070a                  __typef
                   0x0007e4                  __unpackf
                   0x0012de                  _atoi
-                  0x0059f4                  _i2c_init
-                  0x005c4e                  _i2c_readReg
-                  0x005c0e                  _i2c_readRegs
-                  0x005bdc                  _i2c_writeReg
-                  0x00631e                  _initShapesMem
-                  0x007758                  _main
+                  0x005b42                  _i2c_init
+                  0x005d9c                  _i2c_readReg
+                  0x005d5c                  _i2c_readRegs
+                  0x005d2a                  _i2c_writeReg
+                  0x006672                  _initShapesMem
+                  0x00792a                  _main
                   0x0019e6                  _main_menu
                   0x00132a                  _memcpy
                   0x00090e                  _memset
-                  0x0030be                  _oledC_DrawBitmap
-                  0x002fba                  _oledC_DrawCharacter
-                  0x002c4c                  _oledC_DrawCircle
-                  0x002e5a                  _oledC_DrawLine
-                  0x002b0c                  _oledC_DrawPoint
-                  0x002f6c                  _oledC_DrawRectangle
-                  0x002d5e                  _oledC_DrawRing
-                  0x003078                  _oledC_DrawString
-                  0x002b44                  _oledC_DrawThickPoint
-                  0x002adc                  _oledC_ReadPoint
-                  0x00639c                  _oledC_addShape
-                  0x0059a4                  _oledC_clearScreen
-                  0x0029ac                  _oledC_createShape
-                  0x0064a6                  _oledC_eraseAll
-                  0x00647c                  _oledC_eraseShape
-                  0x0059ec                  _oledC_getBackground
-                  0x006380                  _oledC_getShape
-                  0x00595a                  _oledC_open
-                  0x0057b0                  _oledC_parseIntToRGB
-                  0x0057fe                  _oledC_parseRGBToInt
-                  0x005900                  _oledC_readColor
-                  0x0064d2                  _oledC_redrawAll
-                  0x006422                  _oledC_redrawFrom
-                  0x0063f6                  _oledC_redrawIndex
-                  0x006430                  _oledC_redrawSome
-                  0x006414                  _oledC_redrawTo
-                  0x00634a                  _oledC_removeShape
-                  0x00591e                  _oledC_sendColor
-                  0x005934                  _oledC_sendColorInt
-                  0x005848                  _oledC_sendCommand
-                  0x0059de                  _oledC_setBackground
-                  0x0058b0                  _oledC_setColumnAddressBounds
-                  0x005886                  _oledC_setRowAddressBounds
-                  0x0058e6                  _oledC_setSleepMode
-                  0x005962                  _oledC_setup
+                  0x00311e                  _oledC_DrawBitmap
+                  0x00301a                  _oledC_DrawCharacter
+                  0x002cac                  _oledC_DrawCircle
+                  0x002eba                  _oledC_DrawLine
+                  0x002b6c                  _oledC_DrawPoint
+                  0x002fcc                  _oledC_DrawRectangle
+                  0x002dbe                  _oledC_DrawRing
+                  0x0030d8                  _oledC_DrawString
+                  0x002ba4                  _oledC_DrawThickPoint
+                  0x002b3c                  _oledC_ReadPoint
+                  0x0066f0                  _oledC_addShape
+                  0x005af2                  _oledC_clearScreen
+                  0x002a0c                  _oledC_createShape
+                  0x0067fa                  _oledC_eraseAll
+                  0x0067d0                  _oledC_eraseShape
+                  0x005b3a                  _oledC_getBackground
+                  0x0066d4                  _oledC_getShape
+                  0x005aa8                  _oledC_open
+                  0x0058fe                  _oledC_parseIntToRGB
+                  0x00594c                  _oledC_parseRGBToInt
+                  0x005a4e                  _oledC_readColor
+                  0x006826                  _oledC_redrawAll
+                  0x006776                  _oledC_redrawFrom
+                  0x00674a                  _oledC_redrawIndex
+                  0x006784                  _oledC_redrawSome
+                  0x006768                  _oledC_redrawTo
+                  0x00669e                  _oledC_removeShape
+                  0x005a6c                  _oledC_sendColor
+                  0x005a82                  _oledC_sendColorInt
+                  0x005996                  _oledC_sendCommand
+                  0x005b2c                  _oledC_setBackground
+                  0x0059fe                  _oledC_setColumnAddressBounds
+                  0x0059d4                  _oledC_setRowAddressBounds
+                  0x005a34                  _oledC_setSleepMode
+                  0x005ab0                  _oledC_setup
                   0x001a8c                  _s_alarm_toggle_cfg
                   0x001a3c                  _s_alarm_toggle_icons
                   0x001a62                  _s_display_menu_cfg
@@ -793,56 +793,56 @@ External Symbols in Program Memory (by name):
                   0x001a4c                  _s_main_menu_cfg
                   0x001a38                  _s_time_format_icons
                   0x001a2e                  _s_time_formats
-                  0x0070c4                  _spi1_close
-                  0x007106                  _spi1_exchangeBlock
-                  0x0070ec                  _spi1_exchangeByte
-                  0x0071ac                  _spi1_isr
-                  0x0070cc                  _spi1_open
-                  0x007166                  _spi1_readBlock
-                  0x0071a2                  _spi1_readByte
-                  0x0071c8                  _spi1_setSpiISR
-                  0x007138                  _spi1_writeBlock
-                  0x007196                  _spi1_writeByte
+                  0x007296                  _spi1_close
+                  0x0072d8                  _spi1_exchangeBlock
+                  0x0072be                  _spi1_exchangeByte
+                  0x00737e                  _spi1_isr
+                  0x00729e                  _spi1_open
+                  0x007338                  _spi1_readBlock
+                  0x007374                  _spi1_readByte
+                  0x00739a                  _spi1_setSpiISR
+                  0x00730a                  _spi1_writeBlock
+                  0x007368                  _spi1_writeByte
                   0x0009d6                  _strlen
                   0x000a06                  _strncpy
-                  0x003832                  _test_custom_colors
-                  0x0033cc                  _test_discrete_leds
-                  0x003902                  _test_intensity_persistence
-                  0x0038aa                  _test_rainbow_sequence
-                  0x0035fe                  _test_raw_vs_scaled
-                  0x0034a2                  _test_rgb_color_constants
-                  0x003712                  _test_rgb_color_wheel
-                  0x0037d8                  _test_rgb_edge_cases
-                  0x00364e                  _test_rgb_intensity_fade
-                  0x003544                  _test_rgb_intensity_scaling
-                  0x003448                  _test_rgb_raw_pwm
+                  0x004080                  _test_custom_colors
+                  0x003c1a                  _test_discrete_leds
+                  0x004150                  _test_intensity_persistence
+                  0x0040f8                  _test_rainbow_sequence
+                  0x003e4c                  _test_raw_vs_scaled
+                  0x003cf0                  _test_rgb_color_constants
+                  0x003f60                  _test_rgb_color_wheel
+                  0x004026                  _test_rgb_edge_cases
+                  0x003e9c                  _test_rgb_intensity_fade
+                  0x003d92                  _test_rgb_intensity_scaling
+                  0x003c96                  _test_rgb_raw_pwm
                   0x0013a2                  _tolower
                   0x0013b0                  _toupper
-                  0x0076e0                  _watch_main
-                  0x00773c                  _where_was_i
-                  0x0042ee                  build/default/production/WatchApp/watchMenu/menu_input.o:_commit_pomodoro
-                  0x0042d4                  build/default/production/WatchApp/watchMenu/menu_input.o:_commit_set_alarm
-                  0x0042b8                  build/default/production/WatchApp/watchMenu/menu_input.o:_commit_set_date
-                  0x00428e                  build/default/production/WatchApp/watchMenu/menu_input.o:_commit_set_time
-                  0x00221a                  build/default/production/WatchApp/watchMenu/menu_render.o:_draw_radial_center
-                  0x002176                  build/default/production/WatchApp/watchMenu/menu_render.o:_draw_radial_item
-                  0x0061e0                  build/default/production/WatchApp/watchMenu/menu_state.o:_get_alarm_toggle_selection
-                  0x0061ac                  build/default/production/WatchApp/watchMenu/menu_state.o:_get_display_selection
-                  0x0061c6                  build/default/production/WatchApp/watchMenu/menu_state.o:_get_format_selection
-                  0x006196                  build/default/production/WatchApp/watchMenu/menu_state.o:_get_main_selection
-                  0x0061ea                  build/default/production/WatchApp/watchMenu/menu_state.o:_set_alarm_toggle_selection
-                  0x0061b8                  build/default/production/WatchApp/watchMenu/menu_state.o:_set_display_selection
-                  0x0061d2                  build/default/production/WatchApp/watchMenu/menu_state.o:_set_format_selection
-                  0x00619e                  build/default/production/WatchApp/watchMenu/menu_state.o:_set_main_selection
-                  0x006316                  build/default/production/oledDriver/oledC_shapeHandler.o:_dummyshape
-                  0x003264                  build/default/production/oledDriver/oledC_shapes.o:_drawBitmap
-                  0x003220                  build/default/production/oledDriver/oledC_shapes.o:_drawCharacter
-                  0x0031a8                  build/default/production/oledDriver/oledC_shapes.o:_drawCircle
-                  0x0031fe                  build/default/production/oledDriver/oledC_shapes.o:_drawLine
-                  0x003192                  build/default/production/oledDriver/oledC_shapes.o:_drawPoint
-                  0x0031e0                  build/default/production/oledDriver/oledC_shapes.o:_drawRectangle
-                  0x0031c2                  build/default/production/oledDriver/oledC_shapes.o:_drawRing
-                  0x003242                  build/default/production/oledDriver/oledC_shapes.o:_drawString
+                  0x0078b2                  _watch_main
+                  0x00790e                  _where_was_i
+                  0x00443c                  build/default/production/WatchApp/watchMenu/menu_input.o:_commit_pomodoro
+                  0x004422                  build/default/production/WatchApp/watchMenu/menu_input.o:_commit_set_alarm
+                  0x004406                  build/default/production/WatchApp/watchMenu/menu_input.o:_commit_set_date
+                  0x0043dc                  build/default/production/WatchApp/watchMenu/menu_input.o:_commit_set_time
+                  0x002278                  build/default/production/WatchApp/watchMenu/menu_render.o:_draw_radial_center
+                  0x0021d4                  build/default/production/WatchApp/watchMenu/menu_render.o:_draw_radial_item
+                  0x00632e                  build/default/production/WatchApp/watchMenu/menu_state.o:_get_alarm_toggle_selection
+                  0x0062fa                  build/default/production/WatchApp/watchMenu/menu_state.o:_get_display_selection
+                  0x006314                  build/default/production/WatchApp/watchMenu/menu_state.o:_get_format_selection
+                  0x0062e4                  build/default/production/WatchApp/watchMenu/menu_state.o:_get_main_selection
+                  0x006338                  build/default/production/WatchApp/watchMenu/menu_state.o:_set_alarm_toggle_selection
+                  0x006306                  build/default/production/WatchApp/watchMenu/menu_state.o:_set_display_selection
+                  0x006320                  build/default/production/WatchApp/watchMenu/menu_state.o:_set_format_selection
+                  0x0062ec                  build/default/production/WatchApp/watchMenu/menu_state.o:_set_main_selection
+                  0x00666a                  build/default/production/oledDriver/oledC_shapeHandler.o:_dummyshape
+                  0x0032c4                  build/default/production/oledDriver/oledC_shapes.o:_drawBitmap
+                  0x003280                  build/default/production/oledDriver/oledC_shapes.o:_drawCharacter
+                  0x003208                  build/default/production/oledDriver/oledC_shapes.o:_drawCircle
+                  0x00325e                  build/default/production/oledDriver/oledC_shapes.o:_drawLine
+                  0x0031f2                  build/default/production/oledDriver/oledC_shapes.o:_drawPoint
+                  0x003240                  build/default/production/oledDriver/oledC_shapes.o:_drawRectangle
+                  0x003222                  build/default/production/oledDriver/oledC_shapes.o:_drawRing
+                  0x0032a2                  build/default/production/oledDriver/oledC_shapes.o:_drawString
 
 Memory Configuration
 
@@ -1144,7 +1144,7 @@ __FDEVOPT1
 .comment
  *(.comment)
 
-.debug_info       0x000000      0x16068
+.debug_info       0x000000      0x161b9
  *(.debug_info)
  .debug_info      0x000000        0x357 build/default/production/accel3Driver/ACCEL3.o
  .debug_info      0x000357        0xb5d build/default/production/adcDriver/ADC.o
@@ -1163,45 +1163,45 @@ __FDEVOPT1
  .debug_info      0x008090        0x431 build/default/production/System/traps.o
  .debug_info      0x0084c1         0x91 build/default/production/System/where_was_i.o
  .debug_info      0x008552        0xd7d build/default/production/Timers/Timers.o
- .debug_info      0x0092cf        0xf2d build/default/production/WatchApp/pomodoroTimer/pomodoro.o
- .debug_info      0x00a1fc        0x76d build/default/production/WatchApp/shared/watch_state.o
- .debug_info      0x00a969        0x8ba build/default/production/WatchApp/watchCore/alarm.o
- .debug_info      0x00b223        0xa6c build/default/production/WatchApp/watchCore/timekeeper.o
- .debug_info      0x00bc8f        0xb71 build/default/production/WatchApp/watchFaces/analog_face.o
- .debug_info      0x00c800        0xc7a build/default/production/WatchApp/watchFaces/binary_face.o
- .debug_info      0x00d47a        0xb98 build/default/production/WatchApp/watchFaces/digital_face.o
- .debug_info      0x00e012        0x7b9 build/default/production/WatchApp/watchFaces/alarm_face.o
- .debug_info      0x00e7cb        0x33f build/default/production/WatchApp/watchFaces/watch_face_common.o
- .debug_info      0x00eb0a        0x1c4 build/default/production/WatchApp/watchFaces/watch_face_geometry.o
- .debug_info      0x00ecce        0x393 build/default/production/WatchApp/watchInput/accel_input.o
- .debug_info      0x00f061        0x36d build/default/production/WatchApp/watchInput/buttons.o
- .debug_info      0x00f3ce        0x4d1 build/default/production/WatchApp/watchInput/potentiometer.o
- .debug_info      0x00f89f        0x7b7 build/default/production/WatchApp/watchManagers/app_display_manager.o
- .debug_info      0x010056        0xa04 build/default/production/WatchApp/watchManagers/app_input_handler.o
- .debug_info      0x010a5a        0x7a2 build/default/production/WatchApp/watchManagers/app_time_manager.o
- .debug_info      0x0111fc        0x146 build/default/production/WatchApp/watchMenu/menu.o
- .debug_info      0x011342        0x2d2 build/default/production/WatchApp/app_init.o
- .debug_info      0x011614        0x267 build/default/production/WatchApp/watch_main.o
- .debug_info      0x01187b         0xaf build/default/production/main.o
- .debug_info      0x01192a        0x567 build/default/production/WatchApp/watchMenu/menu_core.o
- .debug_info      0x011e91       0x15ab build/default/production/WatchApp/watchMenu/menu_state.o
- .debug_info      0x01343c       0x15a0 build/default/production/WatchApp/watchMenu/menu_render.o
- .debug_info      0x0149dc        0xfa8 build/default/production/WatchApp/watchMenu/menu_input.o
- .debug_info      0x015984         0x91 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatunsisf.DA_o)
- .debug_info      0x015a15         0x8d c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(udivsi3.DA_o)
- .debug_info      0x015aa2         0x8d c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(umodsi3.DA_o)
- .debug_info      0x015b2f         0x9d c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divsf3x.DA_o)
- .debug_info      0x015bcc         0x9c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(typefx.DA_o)
- .debug_info      0x015c68         0x9d c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(spackfx.DA_o)
- .debug_info      0x015d05         0x9e c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(unpackfx.DA_o)
- .debug_info      0x015da3         0x91 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatundisf.DA_o)
- .debug_info      0x015e34         0x8b c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(fpack.DA_o)
- .debug_info      0x015ebf         0x90 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(extendsfdf.DA_o)
- .debug_info      0x015f4f         0x8d c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(funpack.DA_o)
- .debug_info      0x015fdc         0x8c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(mulsi3.DA_o)
+ .debug_info      0x0092cf        0xfbc build/default/production/WatchApp/pomodoroTimer/pomodoro.o
+ .debug_info      0x00a28b        0x76d build/default/production/WatchApp/shared/watch_state.o
+ .debug_info      0x00a9f8        0x8ba build/default/production/WatchApp/watchCore/alarm.o
+ .debug_info      0x00b2b2        0xa6c build/default/production/WatchApp/watchCore/timekeeper.o
+ .debug_info      0x00bd1e        0xb71 build/default/production/WatchApp/watchFaces/analog_face.o
+ .debug_info      0x00c88f        0xc7a build/default/production/WatchApp/watchFaces/binary_face.o
+ .debug_info      0x00d509        0xb98 build/default/production/WatchApp/watchFaces/digital_face.o
+ .debug_info      0x00e0a1        0x7b9 build/default/production/WatchApp/watchFaces/alarm_face.o
+ .debug_info      0x00e85a        0x33f build/default/production/WatchApp/watchFaces/watch_face_common.o
+ .debug_info      0x00eb99        0x1c4 build/default/production/WatchApp/watchFaces/watch_face_geometry.o
+ .debug_info      0x00ed5d        0x393 build/default/production/WatchApp/watchInput/accel_input.o
+ .debug_info      0x00f0f0        0x3b1 build/default/production/WatchApp/watchInput/buttons.o
+ .debug_info      0x00f4a1        0x4d1 build/default/production/WatchApp/watchInput/potentiometer.o
+ .debug_info      0x00f972        0x7b7 build/default/production/WatchApp/watchManagers/app_display_manager.o
+ .debug_info      0x010129        0xa14 build/default/production/WatchApp/watchManagers/app_input_handler.o
+ .debug_info      0x010b3d        0x7a2 build/default/production/WatchApp/watchManagers/app_time_manager.o
+ .debug_info      0x0112df        0x146 build/default/production/WatchApp/watchMenu/menu.o
+ .debug_info      0x011425        0x2d2 build/default/production/WatchApp/app_init.o
+ .debug_info      0x0116f7        0x277 build/default/production/WatchApp/watch_main.o
+ .debug_info      0x01196e         0xaf build/default/production/main.o
+ .debug_info      0x011a1d        0x567 build/default/production/WatchApp/watchMenu/menu_core.o
+ .debug_info      0x011f84       0x15ab build/default/production/WatchApp/watchMenu/menu_state.o
+ .debug_info      0x01352f       0x15ee build/default/production/WatchApp/watchMenu/menu_render.o
+ .debug_info      0x014b1d        0xfb8 build/default/production/WatchApp/watchMenu/menu_input.o
+ .debug_info      0x015ad5         0x91 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatunsisf.DA_o)
+ .debug_info      0x015b66         0x8d c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(udivsi3.DA_o)
+ .debug_info      0x015bf3         0x8d c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(umodsi3.DA_o)
+ .debug_info      0x015c80         0x9d c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divsf3x.DA_o)
+ .debug_info      0x015d1d         0x9c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(typefx.DA_o)
+ .debug_info      0x015db9         0x9d c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(spackfx.DA_o)
+ .debug_info      0x015e56         0x9e c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(unpackfx.DA_o)
+ .debug_info      0x015ef4         0x91 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatundisf.DA_o)
+ .debug_info      0x015f85         0x8b c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(fpack.DA_o)
+ .debug_info      0x016010         0x90 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(extendsfdf.DA_o)
+ .debug_info      0x0160a0         0x8d c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(funpack.DA_o)
+ .debug_info      0x01612d         0x8c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(mulsi3.DA_o)
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev     0x000000       0x28e8
+.debug_abbrev     0x000000       0x28fb
  *(.debug_abbrev)
  .debug_abbrev    0x000000         0xb7 build/default/production/accel3Driver/ACCEL3.o
  .debug_abbrev    0x0000b7        0x19f build/default/production/adcDriver/ADC.o
@@ -1220,44 +1220,44 @@ __FDEVOPT1
  .debug_abbrev    0x0010dd        0x100 build/default/production/System/traps.o
  .debug_abbrev    0x0011dd         0x14 build/default/production/System/where_was_i.o
  .debug_abbrev    0x0011f1        0x168 build/default/production/Timers/Timers.o
- .debug_abbrev    0x001359        0x17b build/default/production/WatchApp/pomodoroTimer/pomodoro.o
- .debug_abbrev    0x0014d4         0xa2 build/default/production/WatchApp/shared/watch_state.o
- .debug_abbrev    0x001576         0xfd build/default/production/WatchApp/watchCore/alarm.o
- .debug_abbrev    0x001673        0x103 build/default/production/WatchApp/watchCore/timekeeper.o
- .debug_abbrev    0x001776        0x12e build/default/production/WatchApp/watchFaces/analog_face.o
- .debug_abbrev    0x0018a4        0x10a build/default/production/WatchApp/watchFaces/binary_face.o
- .debug_abbrev    0x0019ae        0x105 build/default/production/WatchApp/watchFaces/digital_face.o
- .debug_abbrev    0x001ab3         0xa2 build/default/production/WatchApp/watchFaces/alarm_face.o
- .debug_abbrev    0x001b55         0xa6 build/default/production/WatchApp/watchFaces/watch_face_common.o
- .debug_abbrev    0x001bfb         0x56 build/default/production/WatchApp/watchFaces/watch_face_geometry.o
- .debug_abbrev    0x001c51         0xae build/default/production/WatchApp/watchInput/accel_input.o
- .debug_abbrev    0x001cff         0xeb build/default/production/WatchApp/watchInput/buttons.o
- .debug_abbrev    0x001dea         0xb5 build/default/production/WatchApp/watchInput/potentiometer.o
- .debug_abbrev    0x001e9f         0xbe build/default/production/WatchApp/watchManagers/app_display_manager.o
- .debug_abbrev    0x001f5d         0xf6 build/default/production/WatchApp/watchManagers/app_input_handler.o
- .debug_abbrev    0x002053         0x9c build/default/production/WatchApp/watchManagers/app_time_manager.o
- .debug_abbrev    0x0020ef         0x1f build/default/production/WatchApp/watchMenu/menu.o
- .debug_abbrev    0x00210e         0x86 build/default/production/WatchApp/app_init.o
- .debug_abbrev    0x002194         0x71 build/default/production/WatchApp/watch_main.o
- .debug_abbrev    0x002205         0x36 build/default/production/main.o
- .debug_abbrev    0x00223b        0x114 build/default/production/WatchApp/watchMenu/menu_core.o
- .debug_abbrev    0x00234f        0x1a8 build/default/production/WatchApp/watchMenu/menu_state.o
- .debug_abbrev    0x0024f7        0x19d build/default/production/WatchApp/watchMenu/menu_render.o
- .debug_abbrev    0x002694        0x164 build/default/production/WatchApp/watchMenu/menu_input.o
- .debug_abbrev    0x0027f8         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatunsisf.DA_o)
- .debug_abbrev    0x00280c         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(udivsi3.DA_o)
- .debug_abbrev    0x002820         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(umodsi3.DA_o)
- .debug_abbrev    0x002834         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divsf3x.DA_o)
- .debug_abbrev    0x002848         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(typefx.DA_o)
- .debug_abbrev    0x00285c         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(spackfx.DA_o)
- .debug_abbrev    0x002870         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(unpackfx.DA_o)
- .debug_abbrev    0x002884         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatundisf.DA_o)
- .debug_abbrev    0x002898         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(fpack.DA_o)
- .debug_abbrev    0x0028ac         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(extendsfdf.DA_o)
- .debug_abbrev    0x0028c0         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(funpack.DA_o)
- .debug_abbrev    0x0028d4         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(mulsi3.DA_o)
+ .debug_abbrev    0x001359        0x18e build/default/production/WatchApp/pomodoroTimer/pomodoro.o
+ .debug_abbrev    0x0014e7         0xa2 build/default/production/WatchApp/shared/watch_state.o
+ .debug_abbrev    0x001589         0xfd build/default/production/WatchApp/watchCore/alarm.o
+ .debug_abbrev    0x001686        0x103 build/default/production/WatchApp/watchCore/timekeeper.o
+ .debug_abbrev    0x001789        0x12e build/default/production/WatchApp/watchFaces/analog_face.o
+ .debug_abbrev    0x0018b7        0x10a build/default/production/WatchApp/watchFaces/binary_face.o
+ .debug_abbrev    0x0019c1        0x105 build/default/production/WatchApp/watchFaces/digital_face.o
+ .debug_abbrev    0x001ac6         0xa2 build/default/production/WatchApp/watchFaces/alarm_face.o
+ .debug_abbrev    0x001b68         0xa6 build/default/production/WatchApp/watchFaces/watch_face_common.o
+ .debug_abbrev    0x001c0e         0x56 build/default/production/WatchApp/watchFaces/watch_face_geometry.o
+ .debug_abbrev    0x001c64         0xae build/default/production/WatchApp/watchInput/accel_input.o
+ .debug_abbrev    0x001d12         0xeb build/default/production/WatchApp/watchInput/buttons.o
+ .debug_abbrev    0x001dfd         0xb5 build/default/production/WatchApp/watchInput/potentiometer.o
+ .debug_abbrev    0x001eb2         0xbe build/default/production/WatchApp/watchManagers/app_display_manager.o
+ .debug_abbrev    0x001f70         0xf6 build/default/production/WatchApp/watchManagers/app_input_handler.o
+ .debug_abbrev    0x002066         0x9c build/default/production/WatchApp/watchManagers/app_time_manager.o
+ .debug_abbrev    0x002102         0x1f build/default/production/WatchApp/watchMenu/menu.o
+ .debug_abbrev    0x002121         0x86 build/default/production/WatchApp/app_init.o
+ .debug_abbrev    0x0021a7         0x71 build/default/production/WatchApp/watch_main.o
+ .debug_abbrev    0x002218         0x36 build/default/production/main.o
+ .debug_abbrev    0x00224e        0x114 build/default/production/WatchApp/watchMenu/menu_core.o
+ .debug_abbrev    0x002362        0x1a8 build/default/production/WatchApp/watchMenu/menu_state.o
+ .debug_abbrev    0x00250a        0x19d build/default/production/WatchApp/watchMenu/menu_render.o
+ .debug_abbrev    0x0026a7        0x164 build/default/production/WatchApp/watchMenu/menu_input.o
+ .debug_abbrev    0x00280b         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatunsisf.DA_o)
+ .debug_abbrev    0x00281f         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(udivsi3.DA_o)
+ .debug_abbrev    0x002833         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(umodsi3.DA_o)
+ .debug_abbrev    0x002847         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divsf3x.DA_o)
+ .debug_abbrev    0x00285b         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(typefx.DA_o)
+ .debug_abbrev    0x00286f         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(spackfx.DA_o)
+ .debug_abbrev    0x002883         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(unpackfx.DA_o)
+ .debug_abbrev    0x002897         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatundisf.DA_o)
+ .debug_abbrev    0x0028ab         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(fpack.DA_o)
+ .debug_abbrev    0x0028bf         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(extendsfdf.DA_o)
+ .debug_abbrev    0x0028d3         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(funpack.DA_o)
+ .debug_abbrev    0x0028e7         0x14 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(mulsi3.DA_o)
 
-.debug_line       0x000000       0x36cf
+.debug_line       0x000000       0x370e
  *(.debug_line)
  .debug_line      0x000000         0xd5 build/default/production/accel3Driver/ACCEL3.o
  .debug_line      0x0000d5        0x17b build/default/production/adcDriver/ADC.o
@@ -1276,45 +1276,45 @@ __FDEVOPT1
  .debug_line      0x0012f5        0x144 build/default/production/System/traps.o
  .debug_line      0x001439         0x48 build/default/production/System/where_was_i.o
  .debug_line      0x001481        0x13c build/default/production/Timers/Timers.o
- .debug_line      0x0015bd        0x1ce build/default/production/WatchApp/pomodoroTimer/pomodoro.o
- .debug_line      0x00178b         0xd4 build/default/production/WatchApp/shared/watch_state.o
- .debug_line      0x00185f        0x115 build/default/production/WatchApp/watchCore/alarm.o
- .debug_line      0x001974        0x120 build/default/production/WatchApp/watchCore/timekeeper.o
- .debug_line      0x001a94        0x160 build/default/production/WatchApp/watchFaces/analog_face.o
- .debug_line      0x001bf4        0x15b build/default/production/WatchApp/watchFaces/binary_face.o
- .debug_line      0x001d4f        0x146 build/default/production/WatchApp/watchFaces/digital_face.o
- .debug_line      0x001e95         0xec build/default/production/WatchApp/watchFaces/alarm_face.o
- .debug_line      0x001f81         0xec build/default/production/WatchApp/watchFaces/watch_face_common.o
- .debug_line      0x00206d         0x96 build/default/production/WatchApp/watchFaces/watch_face_geometry.o
- .debug_line      0x002103         0xff build/default/production/WatchApp/watchInput/accel_input.o
- .debug_line      0x002202        0x177 build/default/production/WatchApp/watchInput/buttons.o
- .debug_line      0x002379         0xff build/default/production/WatchApp/watchInput/potentiometer.o
- .debug_line      0x002478        0x14a build/default/production/WatchApp/watchManagers/app_display_manager.o
- .debug_line      0x0025c2        0x1bf build/default/production/WatchApp/watchManagers/app_input_handler.o
- .debug_line      0x002781         0xf2 build/default/production/WatchApp/watchManagers/app_time_manager.o
- .debug_line      0x002873         0x1a build/default/production/WatchApp/watchMenu/menu.o
- .debug_line      0x00288d        0x155 build/default/production/WatchApp/app_init.o
- .debug_line      0x0029e2         0xbb build/default/production/WatchApp/watch_main.o
- .debug_line      0x002a9d         0x33 build/default/production/main.o
- .debug_line      0x002ad0        0x115 build/default/production/WatchApp/watchMenu/menu_core.o
- .debug_line      0x002be5        0x16a build/default/production/WatchApp/watchMenu/menu_state.o
- .debug_line      0x002d4f        0x29f build/default/production/WatchApp/watchMenu/menu_render.o
- .debug_line      0x002fee        0x1d9 build/default/production/WatchApp/watchMenu/menu_input.o
- .debug_line      0x0031c7         0x3b c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatunsisf.DA_o)
- .debug_line      0x003202         0x45 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(udivsi3.DA_o)
- .debug_line      0x003247         0x38 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(umodsi3.DA_o)
- .debug_line      0x00327f        0x124 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divsf3x.DA_o)
- .debug_line      0x0033a3         0x5e c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(typefx.DA_o)
- .debug_line      0x003401         0x98 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(spackfx.DA_o)
- .debug_line      0x003499         0x79 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(unpackfx.DA_o)
- .debug_line      0x003512         0x1a c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(errno.DA_o)
- .debug_line      0x00352c         0x6c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatundisf.DA_o)
- .debug_line      0x003598         0x5a c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(fpack.DA_o)
- .debug_line      0x0035f2         0x59 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(extendsfdf.DA_o)
- .debug_line      0x00364b         0x4a c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(funpack.DA_o)
- .debug_line      0x003695         0x3a c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(mulsi3.DA_o)
+ .debug_line      0x0015bd        0x1e8 build/default/production/WatchApp/pomodoroTimer/pomodoro.o
+ .debug_line      0x0017a5         0xd4 build/default/production/WatchApp/shared/watch_state.o
+ .debug_line      0x001879        0x115 build/default/production/WatchApp/watchCore/alarm.o
+ .debug_line      0x00198e        0x120 build/default/production/WatchApp/watchCore/timekeeper.o
+ .debug_line      0x001aae        0x160 build/default/production/WatchApp/watchFaces/analog_face.o
+ .debug_line      0x001c0e        0x15b build/default/production/WatchApp/watchFaces/binary_face.o
+ .debug_line      0x001d69        0x146 build/default/production/WatchApp/watchFaces/digital_face.o
+ .debug_line      0x001eaf         0xec build/default/production/WatchApp/watchFaces/alarm_face.o
+ .debug_line      0x001f9b         0xec build/default/production/WatchApp/watchFaces/watch_face_common.o
+ .debug_line      0x002087         0x96 build/default/production/WatchApp/watchFaces/watch_face_geometry.o
+ .debug_line      0x00211d         0xff build/default/production/WatchApp/watchInput/accel_input.o
+ .debug_line      0x00221c        0x18e build/default/production/WatchApp/watchInput/buttons.o
+ .debug_line      0x0023aa         0xff build/default/production/WatchApp/watchInput/potentiometer.o
+ .debug_line      0x0024a9        0x14c build/default/production/WatchApp/watchManagers/app_display_manager.o
+ .debug_line      0x0025f5        0x1c1 build/default/production/WatchApp/watchManagers/app_input_handler.o
+ .debug_line      0x0027b6         0xf2 build/default/production/WatchApp/watchManagers/app_time_manager.o
+ .debug_line      0x0028a8         0x1a build/default/production/WatchApp/watchMenu/menu.o
+ .debug_line      0x0028c2        0x155 build/default/production/WatchApp/app_init.o
+ .debug_line      0x002a17         0xbb build/default/production/WatchApp/watch_main.o
+ .debug_line      0x002ad2         0x33 build/default/production/main.o
+ .debug_line      0x002b05        0x115 build/default/production/WatchApp/watchMenu/menu_core.o
+ .debug_line      0x002c1a        0x16a build/default/production/WatchApp/watchMenu/menu_state.o
+ .debug_line      0x002d84        0x2a9 build/default/production/WatchApp/watchMenu/menu_render.o
+ .debug_line      0x00302d        0x1d9 build/default/production/WatchApp/watchMenu/menu_input.o
+ .debug_line      0x003206         0x3b c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatunsisf.DA_o)
+ .debug_line      0x003241         0x45 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(udivsi3.DA_o)
+ .debug_line      0x003286         0x38 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(umodsi3.DA_o)
+ .debug_line      0x0032be        0x124 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(divsf3x.DA_o)
+ .debug_line      0x0033e2         0x5e c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(typefx.DA_o)
+ .debug_line      0x003440         0x98 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(spackfx.DA_o)
+ .debug_line      0x0034d8         0x79 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(unpackfx.DA_o)
+ .debug_line      0x003551         0x1a c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(errno.DA_o)
+ .debug_line      0x00356b         0x6c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(floatundisf.DA_o)
+ .debug_line      0x0035d7         0x5a c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(fpack.DA_o)
+ .debug_line      0x003631         0x59 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(extendsfdf.DA_o)
+ .debug_line      0x00368a         0x4a c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(funpack.DA_o)
+ .debug_line      0x0036d4         0x3a c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(mulsi3.DA_o)
 
-.debug_frame      0x000000       0x1fb6
+.debug_frame      0x000000       0x1ff8
  *(.debug_frame)
  .debug_frame     0x000000         0x48 build/default/production/accel3Driver/ACCEL3.o
  .debug_frame     0x000048         0xfe build/default/production/adcDriver/ADC.o
@@ -1332,30 +1332,30 @@ __FDEVOPT1
  .debug_frame     0x000c90         0x2e build/default/production/System/system.o
  .debug_frame     0x000cbe        0x17e build/default/production/System/traps.o
  .debug_frame     0x000e3c         0xaa build/default/production/Timers/Timers.o
- .debug_frame     0x000ee6        0x22c build/default/production/WatchApp/pomodoroTimer/pomodoro.o
- .debug_frame     0x001112         0x48 build/default/production/WatchApp/shared/watch_state.o
- .debug_frame     0x00115a         0xfe build/default/production/WatchApp/watchCore/alarm.o
- .debug_frame     0x001258         0xe4 build/default/production/WatchApp/watchCore/timekeeper.o
- .debug_frame     0x00133c        0x118 build/default/production/WatchApp/watchFaces/analog_face.o
- .debug_frame     0x001454         0xb0 build/default/production/WatchApp/watchFaces/binary_face.o
- .debug_frame     0x001504         0xe6 build/default/production/WatchApp/watchFaces/digital_face.o
- .debug_frame     0x0015ea         0x62 build/default/production/WatchApp/watchFaces/alarm_face.o
- .debug_frame     0x00164c         0x64 build/default/production/WatchApp/watchFaces/watch_face_common.o
- .debug_frame     0x0016b0         0x7c build/default/production/WatchApp/watchInput/accel_input.o
- .debug_frame     0x00172c         0x62 build/default/production/WatchApp/watchInput/buttons.o
- .debug_frame     0x00178e         0x84 build/default/production/WatchApp/watchInput/potentiometer.o
- .debug_frame     0x001812         0x62 build/default/production/WatchApp/watchManagers/app_display_manager.o
- .debug_frame     0x001874         0x96 build/default/production/WatchApp/watchManagers/app_input_handler.o
- .debug_frame     0x00190a         0x2e build/default/production/WatchApp/watchManagers/app_time_manager.o
- .debug_frame     0x001938         0x2e build/default/production/WatchApp/app_init.o
- .debug_frame     0x001966         0x2e build/default/production/WatchApp/watch_main.o
- .debug_frame     0x001994         0x2e build/default/production/main.o
- .debug_frame     0x0019c2         0xb0 build/default/production/WatchApp/watchMenu/menu_core.o
- .debug_frame     0x001a72        0x1b4 build/default/production/WatchApp/watchMenu/menu_state.o
- .debug_frame     0x001c26        0x256 build/default/production/WatchApp/watchMenu/menu_render.o
- .debug_frame     0x001e7c        0x13a build/default/production/WatchApp/watchMenu/menu_input.o
+ .debug_frame     0x000ee6        0x246 build/default/production/WatchApp/pomodoroTimer/pomodoro.o
+ .debug_frame     0x00112c         0x48 build/default/production/WatchApp/shared/watch_state.o
+ .debug_frame     0x001174         0xfe build/default/production/WatchApp/watchCore/alarm.o
+ .debug_frame     0x001272         0xe4 build/default/production/WatchApp/watchCore/timekeeper.o
+ .debug_frame     0x001356        0x118 build/default/production/WatchApp/watchFaces/analog_face.o
+ .debug_frame     0x00146e         0xb0 build/default/production/WatchApp/watchFaces/binary_face.o
+ .debug_frame     0x00151e         0xe6 build/default/production/WatchApp/watchFaces/digital_face.o
+ .debug_frame     0x001604         0x62 build/default/production/WatchApp/watchFaces/alarm_face.o
+ .debug_frame     0x001666         0x64 build/default/production/WatchApp/watchFaces/watch_face_common.o
+ .debug_frame     0x0016ca         0x7c build/default/production/WatchApp/watchInput/accel_input.o
+ .debug_frame     0x001746         0x62 build/default/production/WatchApp/watchInput/buttons.o
+ .debug_frame     0x0017a8         0x84 build/default/production/WatchApp/watchInput/potentiometer.o
+ .debug_frame     0x00182c         0x62 build/default/production/WatchApp/watchManagers/app_display_manager.o
+ .debug_frame     0x00188e         0x96 build/default/production/WatchApp/watchManagers/app_input_handler.o
+ .debug_frame     0x001924         0x2e build/default/production/WatchApp/watchManagers/app_time_manager.o
+ .debug_frame     0x001952         0x2e build/default/production/WatchApp/app_init.o
+ .debug_frame     0x001980         0x2e build/default/production/WatchApp/watch_main.o
+ .debug_frame     0x0019ae         0x2e build/default/production/main.o
+ .debug_frame     0x0019dc         0xb0 build/default/production/WatchApp/watchMenu/menu_core.o
+ .debug_frame     0x001a8c        0x1b4 build/default/production/WatchApp/watchMenu/menu_state.o
+ .debug_frame     0x001c40        0x27e build/default/production/WatchApp/watchMenu/menu_render.o
+ .debug_frame     0x001ebe        0x13a build/default/production/WatchApp/watchMenu/menu_input.o
 
-.debug_str        0x000000        0x9ff
+.debug_str        0x000000        0xa2f
  *(.debug_str)
  .debug_str       0x000000         0x34 build/default/production/adcDriver/ADC.o
  .debug_str       0x000034         0x67 build/default/production/i2cDriver/I2C.o
@@ -1371,16 +1371,16 @@ __FDEVOPT1
  .debug_str       0x00038b          0xc build/default/production/System/system.o
  .debug_str       0x000397         0x18 build/default/production/System/traps.o
  .debug_str       0x0003af         0x53 build/default/production/Timers/Timers.o
- .debug_str       0x000402         0x49 build/default/production/WatchApp/pomodoroTimer/pomodoro.o
- .debug_str       0x00044b          0xd build/default/production/WatchApp/watchCore/alarm.o
- .debug_str       0x000458         0x28 build/default/production/WatchApp/watchFaces/analog_face.o
- .debug_str       0x000480          0xc build/default/production/WatchApp/watchFaces/digital_face.o
- .debug_str       0x00048c          0x6 build/default/production/WatchApp/watchManagers/app_display_manager.o
- .debug_str       0x000492          0xc build/default/production/WatchApp/watchManagers/app_input_handler.o
- .debug_str       0x00049e         0x1d build/default/production/WatchApp/watchMenu/menu_core.o
- .debug_str       0x0004bb        0x26c build/default/production/WatchApp/watchMenu/menu_state.o
- .debug_str       0x000727        0x134 build/default/production/WatchApp/watchMenu/menu_render.o
- .debug_str       0x00085b        0x1a4 build/default/production/WatchApp/watchMenu/menu_input.o
+ .debug_str       0x000402         0x79 build/default/production/WatchApp/pomodoroTimer/pomodoro.o
+ .debug_str       0x00047b          0xd build/default/production/WatchApp/watchCore/alarm.o
+ .debug_str       0x000488         0x28 build/default/production/WatchApp/watchFaces/analog_face.o
+ .debug_str       0x0004b0          0xc build/default/production/WatchApp/watchFaces/digital_face.o
+ .debug_str       0x0004bc          0x6 build/default/production/WatchApp/watchManagers/app_display_manager.o
+ .debug_str       0x0004c2          0xc build/default/production/WatchApp/watchManagers/app_input_handler.o
+ .debug_str       0x0004ce         0x1d build/default/production/WatchApp/watchMenu/menu_core.o
+ .debug_str       0x0004eb        0x26c build/default/production/WatchApp/watchMenu/menu_state.o
+ .debug_str       0x000757        0x134 build/default/production/WatchApp/watchMenu/menu_render.o
+ .debug_str       0x00088b        0x1a4 build/default/production/WatchApp/watchMenu/menu_input.o
 
 .debug_loc
  *(.debug_loc)
@@ -3262,107 +3262,107 @@ __c30_signature
                     0x0813                  _s_edit_last_draw_val
                     0x0814                  _s_edit_last_draw_field
 
-.nbss               0x0816         0x3e
- .nbss              0x0816         0x10 build/default/production/WatchApp/watchInput/buttons.o
- .nbss              0x0826          0xe build/default/production/i2cDriver/I2C.o
- .nbss              0x0834          0xc build/default/production/WatchApp/watchInput/accel_input.o
- .nbss              0x0840          0xc build/default/production/WatchApp/watchMenu/menu_state.o
-                    0x0840                  _s_temp_pomo_work
-                    0x0841                  _s_temp_pomo_break
-                    0x0842                  _s_radial_selection
-                    0x0843                  _s_main_last_sel
-                    0x0844                  _s_display_last_sel
-                    0x0845                  _s_format_last_sel
-                    0x0846                  _s_alarm_last_sel
-                    0x0847                  _s_edit_last_val
-                    0x0848                  _s_skip_next_partial
-                    0x0849                  _s_edit_full_drawn
- .nbss              0x084c          0x8 build/default/production/Timers/Timers.o
-                    0x084c                  _t1_ticks
-                    0x0850                  _t2_ticks
+.nbss               0x0816         0x40
+ .nbss              0x0816         0x12 build/default/production/WatchApp/watchInput/buttons.o
+ .nbss              0x0828          0xe build/default/production/i2cDriver/I2C.o
+ .nbss              0x0836          0xc build/default/production/WatchApp/watchInput/accel_input.o
+ .nbss              0x0842          0xc build/default/production/WatchApp/watchMenu/menu_state.o
+                    0x0842                  _s_temp_pomo_work
+                    0x0843                  _s_temp_pomo_break
+                    0x0844                  _s_radial_selection
+                    0x0845                  _s_main_last_sel
+                    0x0846                  _s_display_last_sel
+                    0x0847                  _s_format_last_sel
+                    0x0848                  _s_alarm_last_sel
+                    0x0849                  _s_edit_last_val
+                    0x084a                  _s_skip_next_partial
+                    0x084b                  _s_edit_full_drawn
+ .nbss              0x084e          0x8 build/default/production/Timers/Timers.o
+                    0x084e                  _t1_ticks
+                    0x0852                  _t2_ticks
 
-.ndata              0x0854          0x8
- .ndata             0x0854          0x8 build/default/production/WatchApp/pomodoroTimer/pomodoro.o
+.ndata              0x0856          0x8
+ .ndata             0x0856          0x8 build/default/production/WatchApp/pomodoroTimer/pomodoro.o
 
-.nbss               0x085c          0xa
- .nbss              0x085c          0x6 build/default/production/WatchApp/watchFaces/binary_face.o
- .nbss              0x0862          0x4 build/default/production/oledDriver/oledC.o
+.nbss               0x085e          0xa
+ .nbss              0x085e          0x6 build/default/production/WatchApp/watchFaces/binary_face.o
+ .nbss              0x0864          0x4 build/default/production/oledDriver/oledC.o
 
 System/where_was_i.s.scn1
-                    0x0866          0x4
+                    0x0868          0x4
  System/where_was_i.s.scn1
-                    0x0866          0x4 build/default/production/System/where_was_i.o
-                    0x0866                  _trapSrcAddr
+                    0x0868          0x4 build/default/production/System/where_was_i.o
+                    0x0868                  _trapSrcAddr
 
-.nbss               0x086a          0x8
- .nbss              0x086a          0x4 build/default/production/WatchApp/pomodoroTimer/pomodoro.o
- .nbss              0x086e          0x4 build/default/production/WatchApp/watchCore/timekeeper.o
+.nbss               0x086c          0x8
+ .nbss              0x086c          0x4 build/default/production/WatchApp/pomodoroTimer/pomodoro.o
+ .nbss              0x0870          0x4 build/default/production/WatchApp/watchCore/timekeeper.o
 
-.ndata              0x0872          0x4
- .ndata             0x0872          0x4 build/default/production/WatchApp/watchFaces/analog_face.o
+.ndata              0x0874          0x4
+ .ndata             0x0874          0x4 build/default/production/WatchApp/watchFaces/analog_face.o
 
-.nbss               0x0876         0x10
- .nbss              0x0876          0x4 build/default/production/WatchApp/watchFaces/digital_face.o
- .nbss              0x087a          0x4 build/default/production/WatchApp/watchInput/potentiometer.o
- .nbss              0x087e          0x4 build/default/production/WatchApp/watchManagers/app_input_handler.o
- .nbss              0x0882          0x2 build/default/production/accel3Driver/ACCEL3.o
- .nbss              0x0884          0x2 build/default/production/adcDriver/ADC.o
+.nbss               0x0878         0x10
+ .nbss              0x0878          0x4 build/default/production/WatchApp/watchFaces/digital_face.o
+ .nbss              0x087c          0x4 build/default/production/WatchApp/watchInput/potentiometer.o
+ .nbss              0x0880          0x4 build/default/production/WatchApp/watchManagers/app_input_handler.o
+ .nbss              0x0884          0x2 build/default/production/accel3Driver/ACCEL3.o
+ .nbss              0x0886          0x2 build/default/production/adcDriver/ADC.o
 
-.ndata              0x0886          0x2
- .ndata             0x0886          0x2 build/default/production/ledDriver/LED_tests.o
+.ndata              0x0888          0x2
+ .ndata             0x0888          0x2 build/default/production/ledDriver/LED_tests.o
 
-.nbss               0x0888          0x2
- .nbss              0x0888          0x2 build/default/production/spiDriver/spi1_driver.o
-                    0x0888                  _spi1_interruptHandler
+.nbss               0x088a          0x2
+ .nbss              0x088a          0x2 build/default/production/spiDriver/spi1_driver.o
+                    0x088a                  _spi1_interruptHandler
 
-.ndata              0x088a          0x4
- .ndata             0x088a          0x2 build/default/production/System/traps.o
- .ndata             0x088c          0x2 build/default/production/WatchApp/watchFaces/binary_face.o
+.ndata              0x088c          0x4
+ .ndata             0x088c          0x2 build/default/production/System/traps.o
+ .ndata             0x088e          0x2 build/default/production/WatchApp/watchFaces/binary_face.o
 
-.nbss               0x088e          0x2
- .nbss              0x088e          0x2 build/default/production/WatchApp/watchFaces/alarm_face.o
+.nbss               0x0890          0x2
+ .nbss              0x0890          0x2 build/default/production/WatchApp/watchFaces/alarm_face.o
 
-.ndata              0x0890          0x4
- .ndata             0x0890          0x2 build/default/production/WatchApp/watchInput/accel_input.o
- .ndata             0x0892          0x2 build/default/production/WatchApp/watchInput/potentiometer.o
+.ndata              0x0892          0x4
+ .ndata             0x0892          0x2 build/default/production/WatchApp/watchInput/accel_input.o
+ .ndata             0x0894          0x2 build/default/production/WatchApp/watchInput/potentiometer.o
 
-.nbss               0x0894          0x4
- .nbss              0x0894          0x2 build/default/production/WatchApp/watchMenu/menu_render.o
- .nbss              0x0896          0x2 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(errno.DA_o)
-                    0x0896                  _errno
+.nbss               0x0896          0x4
+ .nbss              0x0896          0x2 build/default/production/WatchApp/watchMenu/menu_render.o
+ .nbss              0x0898          0x2 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(errno.DA_o)
+                    0x0898                  _errno
 
-.bss                0x0898        0x200
- .bss               0x0898        0x200 build/default/production/oledDriver/oledC_shapeHandler.o
+.bss                0x089a        0x200
+ .bss               0x089a        0x200 build/default/production/oledDriver/oledC_shapeHandler.o
 
-.data               0x0a98         0x4e
- .data              0x0a98         0x4e build/default/production/WatchApp/watchMenu/menu_state.o
-                    0x0aa6                  _s_main_menu_radial
-                    0x0ab6                  _s_display_menu_radial
-                    0x0ac6                  _s_format_menu_radial
-                    0x0ad6                  _s_alarm_toggle_radial
+.data               0x0a9a         0x4e
+ .data              0x0a9a         0x4e build/default/production/WatchApp/watchMenu/menu_state.o
+                    0x0aa8                  _s_main_menu_radial
+                    0x0ab8                  _s_display_menu_radial
+                    0x0ac8                  _s_format_menu_radial
+                    0x0ad8                  _s_alarm_toggle_radial
 
-.bss                0x0ae6         0xb4
- .bss               0x0ae6         0x3e build/default/production/WatchApp/watchFaces/binary_face.o
- .bss               0x0b24         0x2e build/default/production/WatchApp/watchMenu/menu_state.o
-                    0x0b24                  _s_temp_time
-                    0x0b28                  _s_temp_date
-                    0x0b2a                  _s_temp_alarm
-                    0x0b2e                  _s_last_small_time
- .bss               0x0b52         0x28 build/default/production/WatchApp/shared/watch_state.o
- .bss               0x0b7a         0x20 build/default/production/System/traps.o
+.bss                0x0ae8         0xb4
+ .bss               0x0ae8         0x3e build/default/production/WatchApp/watchFaces/binary_face.o
+ .bss               0x0b26         0x2e build/default/production/WatchApp/watchMenu/menu_state.o
+                    0x0b26                  _s_temp_time
+                    0x0b2a                  _s_temp_date
+                    0x0b2c                  _s_temp_alarm
+                    0x0b30                  _s_last_small_time
+ .bss               0x0b54         0x28 build/default/production/WatchApp/shared/watch_state.o
+ .bss               0x0b7c         0x20 build/default/production/System/traps.o
 
-.data               0x0b9a         0x1e
- .data              0x0b9a         0x1e c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__printf_core.DA_o)
+.data               0x0b9c         0x1e
+ .data              0x0b9c         0x1e c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__printf_core.DA_o)
 
-.bss                0x0bb8         0x38
- .bss               0x0bb8         0x12 build/default/production/i2cDriver/I2C.o
- .bss               0x0bca          0xc build/default/production/switchDriver/Switch.o
- .bss               0x0bd6          0xa build/default/production/adcDriver/ADC.o
- .bss               0x0be0          0x6 build/default/production/WatchApp/watchCore/timekeeper.o
- .bss               0x0be6          0x6 build/default/production/WatchApp/watchFaces/digital_face.o
- .bss               0x0bec          0x2 build/default/production/WatchApp/watchFaces/analog_face.o
- .bss               0x0bee          0x2 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__errno_location.DA_o)
-                    0x0bee                  ___errno_val
+.bss                0x0bba         0x38
+ .bss               0x0bba         0x12 build/default/production/i2cDriver/I2C.o
+ .bss               0x0bcc          0xc build/default/production/switchDriver/Switch.o
+ .bss               0x0bd8          0xa build/default/production/adcDriver/ADC.o
+ .bss               0x0be2          0x6 build/default/production/WatchApp/watchCore/timekeeper.o
+ .bss               0x0be8          0x6 build/default/production/WatchApp/watchFaces/digital_face.o
+ .bss               0x0bee          0x2 build/default/production/WatchApp/watchFaces/analog_face.o
+ .bss               0x0bf0          0x2 c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-elf.a(__errno_location.DA_o)
+                    0x0bf0                  ___errno_val
 
 .ivt._MI2C1Interrupt
                   0x000036          0x2
@@ -3455,239 +3455,239 @@ System/where_was_i.s.scn1
  .const             0x9ec2          0xc build/default/production/WatchApp/watchCore/timekeeper.o
  .const             0x9ece          0xa build/default/production/WatchApp/watchFaces/watch_face_common.o
 
-.text             0x001ed8       0x4ca0
- .text            0x001ed8        0xad4 build/default/production/WatchApp/watchMenu/menu_render.o
-                  0x002176                  build/default/production/WatchApp/watchMenu/menu_render.o:_draw_radial_item
-                  0x00221a                  build/default/production/WatchApp/watchMenu/menu_render.o:_draw_radial_center
-                  0x002824                  _Menu_DrawFull
-                  0x0028aa                  _Menu_DrawPartial
- .text            0x0029ac        0x8de build/default/production/oledDriver/oledC_shapes.o
-                  0x0029ac                  _oledC_createShape
-                  0x002adc                  _oledC_ReadPoint
-                  0x002b0c                  _oledC_DrawPoint
-                  0x002b44                  _oledC_DrawThickPoint
-                  0x002c4c                  _oledC_DrawCircle
-                  0x002d5e                  _oledC_DrawRing
-                  0x002e5a                  _oledC_DrawLine
-                  0x002f6c                  _oledC_DrawRectangle
-                  0x002fba                  _oledC_DrawCharacter
-                  0x003078                  _oledC_DrawString
-                  0x0030be                  _oledC_DrawBitmap
-                  0x003192                  build/default/production/oledDriver/oledC_shapes.o:_drawPoint
-                  0x0031a8                  build/default/production/oledDriver/oledC_shapes.o:_drawCircle
-                  0x0031c2                  build/default/production/oledDriver/oledC_shapes.o:_drawRing
-                  0x0031e0                  build/default/production/oledDriver/oledC_shapes.o:_drawRectangle
-                  0x0031fe                  build/default/production/oledDriver/oledC_shapes.o:_drawLine
-                  0x003220                  build/default/production/oledDriver/oledC_shapes.o:_drawCharacter
-                  0x003242                  build/default/production/oledDriver/oledC_shapes.o:_drawString
-                  0x003264                  build/default/production/oledDriver/oledC_shapes.o:_drawBitmap
- .text            0x00328a        0x7e2 build/default/production/ledDriver/LED_tests.o
-                  0x0033cc                  _test_discrete_leds
-                  0x003448                  _test_rgb_raw_pwm
-                  0x0034a2                  _test_rgb_color_constants
-                  0x003544                  _test_rgb_intensity_scaling
-                  0x0035fe                  _test_raw_vs_scaled
-                  0x00364e                  _test_rgb_intensity_fade
-                  0x003712                  _test_rgb_color_wheel
-                  0x0037d8                  _test_rgb_edge_cases
-                  0x003832                  _test_custom_colors
-                  0x0038aa                  _test_rainbow_sequence
-                  0x003902                  _test_intensity_persistence
-                  0x003978                  _LED_RunTests
- .text            0x003a6c        0x700 build/default/production/WatchApp/pomodoroTimer/pomodoro.o
-                  0x003f20                  _Pomodoro_Init
-                  0x003f4e                  _Pomodoro_Start
-                  0x003f6c                  _Pomodoro_Pause
-                  0x003f7c                  _Pomodoro_Reset
-                  0x003f84                  _Pomodoro_Update
-                  0x003fe2                  _Pomodoro_Draw
-                  0x0040a2                  _Pomodoro_DrawUpdate
-                  0x004138                  _Pomodoro_HandleInput
- .text            0x00416c        0x6e2 build/default/production/WatchApp/watchMenu/menu_input.o
-                  0x00428e                  build/default/production/WatchApp/watchMenu/menu_input.o:_commit_set_time
-                  0x0042b8                  build/default/production/WatchApp/watchMenu/menu_input.o:_commit_set_date
-                  0x0042d4                  build/default/production/WatchApp/watchMenu/menu_input.o:_commit_set_alarm
-                  0x0042ee                  build/default/production/WatchApp/watchMenu/menu_input.o:_commit_pomodoro
-                  0x00430a                  _Menu_Init
-                  0x00432c                  _Menu_Enter
-                  0x004352                  _Menu_Exit
-                  0x004368                  _Menu_HandleInput
- .text            0x00484e        0x496 build/default/production/WatchApp/watchFaces/binary_face.o
-                  0x004990                  _BinaryFace_Init
-                  0x004ada                  _BinaryFace_Draw
-                  0x004ae2                  _BinaryFace_DrawUpdate
- .text            0x004ce4        0x36e build/default/production/WatchApp/watchMenu/menu_core.o
-                  0x004de0                  _MenuCore_HandleRange
-                  0x004ea4                  _MenuCore_ResetState
-                  0x004ee6                  _MenuCore_DrawRadialFull
-                  0x004f5e                  _MenuCore_DrawRadialPartial
-                  0x004fe2                  _MenuCore_HandlePot
- .text            0x005052        0x366 build/default/production/WatchApp/watchFaces/digital_face.o
-                  0x0050fe                  _DigitalFace_Init
-                  0x005124                  _DigitalFace_Draw
-                  0x005216                  _DigitalFace_DrawUpdate
- .text            0x0053b8        0x35c build/default/production/WatchApp/watchFaces/analog_face.o
-                  0x00568c                  _AnalogFace_Init
-                  0x0056c2                  _AnalogFace_DrawUpdate
-                  0x00570c                  _AnalogFace_Draw
- .text            0x005714        0x2e0 build/default/production/oledDriver/oledC.o
-                  0x0057b0                  _oledC_parseIntToRGB
-                  0x0057fe                  _oledC_parseRGBToInt
-                  0x005848                  _oledC_sendCommand
-                  0x005886                  _oledC_setRowAddressBounds
-                  0x0058b0                  _oledC_setColumnAddressBounds
-                  0x0058e6                  _oledC_setSleepMode
-                  0x005900                  _oledC_readColor
-                  0x00591e                  _oledC_sendColor
-                  0x005934                  _oledC_sendColorInt
-                  0x00595a                  _oledC_open
-                  0x005962                  _oledC_setup
-                  0x0059a4                  _oledC_clearScreen
-                  0x0059de                  _oledC_setBackground
-                  0x0059ec                  _oledC_getBackground
- .text            0x0059f4        0x270 build/default/production/i2cDriver/I2C.o
-                  0x0059f4                  _i2c_init
-                  0x005bdc                  _i2c_writeReg
-                  0x005c0e                  _i2c_readRegs
-                  0x005c4e                  _i2c_readReg
- .text            0x005c64        0x262 build/default/production/adcDriver/ADC.o
-                  0x005ca0                  _ADC_Init
-                  0x005d62                  _ADC_SetChannel
-                  0x005da4                  _ADC_ReadRaw
-                  0x005df2                  _ADC_ReadFloat
-                  0x005e7a                  _ADC_IsInitialized
-                  0x005e82                  _ADC_GetConfig
-                  0x005ebc                  _ADC_Disable
- .text            0x005ec6        0x22a build/default/production/WatchApp/watchCore/timekeeper.o
-                  0x005ec6                  _Timekeeper_Init
-                  0x005efe                  _Timekeeper_SetTime
-                  0x005f44                  _Timekeeper_SetDate
-                  0x005f98                  _Timekeeper_GetTime
-                  0x006082                  _Timekeeper_GetDate
-                  0x006096                  _Timekeeper_GetMillis
-                  0x0060a0                  _Timekeeper_Convert24to12
-                  0x0060d0                  _Timekeeper_GetDaysInMonth
- .text            0x0060f0        0x226 build/default/production/WatchApp/watchMenu/menu_state.o
-                  0x006104                  _MenuEvent_Push
-                  0x00614a                  _MenuEvent_Pop
-                  0x00618c                  _MenuEvent_Clear
-                  0x006196                  build/default/production/WatchApp/watchMenu/menu_state.o:_get_main_selection
-                  0x00619e                  build/default/production/WatchApp/watchMenu/menu_state.o:_set_main_selection
-                  0x0061ac                  build/default/production/WatchApp/watchMenu/menu_state.o:_get_display_selection
-                  0x0061b8                  build/default/production/WatchApp/watchMenu/menu_state.o:_set_display_selection
-                  0x0061c6                  build/default/production/WatchApp/watchMenu/menu_state.o:_get_format_selection
-                  0x0061d2                  build/default/production/WatchApp/watchMenu/menu_state.o:_set_format_selection
-                  0x0061e0                  build/default/production/WatchApp/watchMenu/menu_state.o:_get_alarm_toggle_selection
-                  0x0061ea                  build/default/production/WatchApp/watchMenu/menu_state.o:_set_alarm_toggle_selection
-                  0x0061fe                  _MenuState_GetMainMenuIcon
-                  0x006242                  _MenuState_GetMainMenuLabel
-                  0x006254                  _MenuState_GetAlarmToggleLabel
-                  0x006268                  _MenuState_OnChange
- .text            0x006316        0x1c8 build/default/production/oledDriver/oledC_shapeHandler.o
-                  0x006316                  build/default/production/oledDriver/oledC_shapeHandler.o:_dummyshape
-                  0x00631e                  _initShapesMem
-                  0x00634a                  _oledC_removeShape
-                  0x006380                  _oledC_getShape
-                  0x00639c                  _oledC_addShape
-                  0x0063f6                  _oledC_redrawIndex
-                  0x006414                  _oledC_redrawTo
-                  0x006422                  _oledC_redrawFrom
-                  0x006430                  _oledC_redrawSome
-                  0x00647c                  _oledC_eraseShape
-                  0x0064a6                  _oledC_eraseAll
-                  0x0064d2                  _oledC_redrawAll
- .text            0x0064de        0x1ba build/default/production/WatchApp/watchInput/accel_input.o
-                  0x0065f0                  _AccelInput_Init
-                  0x006604                  _AccelInput_Check
- .text            0x006698        0x1b6 build/default/production/WatchApp/watchManagers/app_input_handler.o
-                  0x006816                  _APP_HandleInputEvents
- .text            0x00684e        0x1a8 build/default/production/switchDriver/Switch.o
-                  0x0068f4                  _Switch_Init
-                  0x006948                  _S1_WasPressed
-                  0x006964                  _S1_WasReleased
-                  0x006980                  _S2_WasPressed
-                  0x00699c                  _S2_WasReleased
-                  0x0069b8                  _Switch_ResetState
- .text            0x0069f6        0x182 build/default/production/WatchApp/watchInput/buttons.o
-                  0x0069f6                  _Buttons_Init
-                  0x0069fe                  _Buttons_Update
-                  0x006b46                  _Buttons_GetState
+.text             0x001ed8       0x4e72
+ .text            0x001ed8        0xb34 build/default/production/WatchApp/watchMenu/menu_render.o
+                  0x0021d4                  build/default/production/WatchApp/watchMenu/menu_render.o:_draw_radial_item
+                  0x002278                  build/default/production/WatchApp/watchMenu/menu_render.o:_draw_radial_center
+                  0x002886                  _Menu_DrawFull
+                  0x00290a                  _Menu_DrawPartial
+ .text            0x002a0c        0x8de build/default/production/oledDriver/oledC_shapes.o
+                  0x002a0c                  _oledC_createShape
+                  0x002b3c                  _oledC_ReadPoint
+                  0x002b6c                  _oledC_DrawPoint
+                  0x002ba4                  _oledC_DrawThickPoint
+                  0x002cac                  _oledC_DrawCircle
+                  0x002dbe                  _oledC_DrawRing
+                  0x002eba                  _oledC_DrawLine
+                  0x002fcc                  _oledC_DrawRectangle
+                  0x00301a                  _oledC_DrawCharacter
+                  0x0030d8                  _oledC_DrawString
+                  0x00311e                  _oledC_DrawBitmap
+                  0x0031f2                  build/default/production/oledDriver/oledC_shapes.o:_drawPoint
+                  0x003208                  build/default/production/oledDriver/oledC_shapes.o:_drawCircle
+                  0x003222                  build/default/production/oledDriver/oledC_shapes.o:_drawRing
+                  0x003240                  build/default/production/oledDriver/oledC_shapes.o:_drawRectangle
+                  0x00325e                  build/default/production/oledDriver/oledC_shapes.o:_drawLine
+                  0x003280                  build/default/production/oledDriver/oledC_shapes.o:_drawCharacter
+                  0x0032a2                  build/default/production/oledDriver/oledC_shapes.o:_drawString
+                  0x0032c4                  build/default/production/oledDriver/oledC_shapes.o:_drawBitmap
+ .text            0x0032ea        0x7ee build/default/production/WatchApp/pomodoroTimer/pomodoro.o
+                  0x0037b0                  _Pomodoro_Init
+                  0x0037de                  _Pomodoro_Start
+                  0x0037fc                  _Pomodoro_Pause
+                  0x00380c                  _Pomodoro_Reset
+                  0x003814                  _Pomodoro_Update
+                  0x003872                  _Pomodoro_Draw
+                  0x003932                  _Pomodoro_DrawUpdate
+                  0x003aa4                  _Pomodoro_HandleInput
+ .text            0x003ad8        0x7e2 build/default/production/ledDriver/LED_tests.o
+                  0x003c1a                  _test_discrete_leds
+                  0x003c96                  _test_rgb_raw_pwm
+                  0x003cf0                  _test_rgb_color_constants
+                  0x003d92                  _test_rgb_intensity_scaling
+                  0x003e4c                  _test_raw_vs_scaled
+                  0x003e9c                  _test_rgb_intensity_fade
+                  0x003f60                  _test_rgb_color_wheel
+                  0x004026                  _test_rgb_edge_cases
+                  0x004080                  _test_custom_colors
+                  0x0040f8                  _test_rainbow_sequence
+                  0x004150                  _test_intensity_persistence
+                  0x0041c6                  _LED_RunTests
+ .text            0x0042ba        0x6e2 build/default/production/WatchApp/watchMenu/menu_input.o
+                  0x0043dc                  build/default/production/WatchApp/watchMenu/menu_input.o:_commit_set_time
+                  0x004406                  build/default/production/WatchApp/watchMenu/menu_input.o:_commit_set_date
+                  0x004422                  build/default/production/WatchApp/watchMenu/menu_input.o:_commit_set_alarm
+                  0x00443c                  build/default/production/WatchApp/watchMenu/menu_input.o:_commit_pomodoro
+                  0x004458                  _Menu_Init
+                  0x00447a                  _Menu_Enter
+                  0x0044a0                  _Menu_Exit
+                  0x0044b6                  _Menu_HandleInput
+ .text            0x00499c        0x496 build/default/production/WatchApp/watchFaces/binary_face.o
+                  0x004ade                  _BinaryFace_Init
+                  0x004c28                  _BinaryFace_Draw
+                  0x004c30                  _BinaryFace_DrawUpdate
+ .text            0x004e32        0x36e build/default/production/WatchApp/watchMenu/menu_core.o
+                  0x004f2e                  _MenuCore_HandleRange
+                  0x004ff2                  _MenuCore_ResetState
+                  0x005034                  _MenuCore_DrawRadialFull
+                  0x0050ac                  _MenuCore_DrawRadialPartial
+                  0x005130                  _MenuCore_HandlePot
+ .text            0x0051a0        0x366 build/default/production/WatchApp/watchFaces/digital_face.o
+                  0x00524c                  _DigitalFace_Init
+                  0x005272                  _DigitalFace_Draw
+                  0x005364                  _DigitalFace_DrawUpdate
+ .text            0x005506        0x35c build/default/production/WatchApp/watchFaces/analog_face.o
+                  0x0057da                  _AnalogFace_Init
+                  0x005810                  _AnalogFace_DrawUpdate
+                  0x00585a                  _AnalogFace_Draw
+ .text            0x005862        0x2e0 build/default/production/oledDriver/oledC.o
+                  0x0058fe                  _oledC_parseIntToRGB
+                  0x00594c                  _oledC_parseRGBToInt
+                  0x005996                  _oledC_sendCommand
+                  0x0059d4                  _oledC_setRowAddressBounds
+                  0x0059fe                  _oledC_setColumnAddressBounds
+                  0x005a34                  _oledC_setSleepMode
+                  0x005a4e                  _oledC_readColor
+                  0x005a6c                  _oledC_sendColor
+                  0x005a82                  _oledC_sendColorInt
+                  0x005aa8                  _oledC_open
+                  0x005ab0                  _oledC_setup
+                  0x005af2                  _oledC_clearScreen
+                  0x005b2c                  _oledC_setBackground
+                  0x005b3a                  _oledC_getBackground
+ .text            0x005b42        0x270 build/default/production/i2cDriver/I2C.o
+                  0x005b42                  _i2c_init
+                  0x005d2a                  _i2c_writeReg
+                  0x005d5c                  _i2c_readRegs
+                  0x005d9c                  _i2c_readReg
+ .text            0x005db2        0x262 build/default/production/adcDriver/ADC.o
+                  0x005dee                  _ADC_Init
+                  0x005eb0                  _ADC_SetChannel
+                  0x005ef2                  _ADC_ReadRaw
+                  0x005f40                  _ADC_ReadFloat
+                  0x005fc8                  _ADC_IsInitialized
+                  0x005fd0                  _ADC_GetConfig
+                  0x00600a                  _ADC_Disable
+ .text            0x006014        0x22a build/default/production/WatchApp/watchCore/timekeeper.o
+                  0x006014                  _Timekeeper_Init
+                  0x00604c                  _Timekeeper_SetTime
+                  0x006092                  _Timekeeper_SetDate
+                  0x0060e6                  _Timekeeper_GetTime
+                  0x0061d0                  _Timekeeper_GetDate
+                  0x0061e4                  _Timekeeper_GetMillis
+                  0x0061ee                  _Timekeeper_Convert24to12
+                  0x00621e                  _Timekeeper_GetDaysInMonth
+ .text            0x00623e        0x226 build/default/production/WatchApp/watchMenu/menu_state.o
+                  0x006252                  _MenuEvent_Push
+                  0x006298                  _MenuEvent_Pop
+                  0x0062da                  _MenuEvent_Clear
+                  0x0062e4                  build/default/production/WatchApp/watchMenu/menu_state.o:_get_main_selection
+                  0x0062ec                  build/default/production/WatchApp/watchMenu/menu_state.o:_set_main_selection
+                  0x0062fa                  build/default/production/WatchApp/watchMenu/menu_state.o:_get_display_selection
+                  0x006306                  build/default/production/WatchApp/watchMenu/menu_state.o:_set_display_selection
+                  0x006314                  build/default/production/WatchApp/watchMenu/menu_state.o:_get_format_selection
+                  0x006320                  build/default/production/WatchApp/watchMenu/menu_state.o:_set_format_selection
+                  0x00632e                  build/default/production/WatchApp/watchMenu/menu_state.o:_get_alarm_toggle_selection
+                  0x006338                  build/default/production/WatchApp/watchMenu/menu_state.o:_set_alarm_toggle_selection
+                  0x00634c                  _MenuState_GetMainMenuIcon
+                  0x006390                  _MenuState_GetMainMenuLabel
+                  0x0063a2                  _MenuState_GetAlarmToggleLabel
+                  0x0063b6                  _MenuState_OnChange
+ .text            0x006464        0x206 build/default/production/WatchApp/watchInput/buttons.o
+                  0x006464                  _Buttons_Init
+                  0x00646c                  _Buttons_Update
+                  0x006638                  _Buttons_GetState
+ .text            0x00666a        0x1c8 build/default/production/oledDriver/oledC_shapeHandler.o
+                  0x00666a                  build/default/production/oledDriver/oledC_shapeHandler.o:_dummyshape
+                  0x006672                  _initShapesMem
+                  0x00669e                  _oledC_removeShape
+                  0x0066d4                  _oledC_getShape
+                  0x0066f0                  _oledC_addShape
+                  0x00674a                  _oledC_redrawIndex
+                  0x006768                  _oledC_redrawTo
+                  0x006776                  _oledC_redrawFrom
+                  0x006784                  _oledC_redrawSome
+                  0x0067d0                  _oledC_eraseShape
+                  0x0067fa                  _oledC_eraseAll
+                  0x006826                  _oledC_redrawAll
+ .text            0x006832        0x1ba build/default/production/WatchApp/watchInput/accel_input.o
+                  0x006944                  _AccelInput_Init
+                  0x006958                  _AccelInput_Check
+ .text            0x0069ec        0x1b6 build/default/production/WatchApp/watchManagers/app_input_handler.o
+                  0x006b6a                  _APP_HandleInputEvents
+ .text            0x006ba2        0x1a8 build/default/production/switchDriver/Switch.o
+                  0x006c48                  _Switch_Init
+                  0x006c9c                  _S1_WasPressed
+                  0x006cb8                  _S1_WasReleased
+                  0x006cd4                  _S2_WasPressed
+                  0x006cf0                  _S2_WasReleased
+                  0x006d0c                  _Switch_ResetState
 
-.dinit            0x006b78        0x164
- .dinit           0x006b78        0x164 data_init
+.dinit            0x006d4a        0x164
+ .dinit           0x006d4a        0x164 data_init
 
-.text             0x006cdc        0xa44
- .text            0x006cdc        0x162 build/default/production/WatchApp/watchFaces/watch_face_common.o
-                  0x006cdc                  _WatchFace_DrawAlarmIcon
-                  0x006db6                  _WatchFace_DrawDate
- .text            0x006e3e        0x148 build/default/production/WatchApp/watchInput/potentiometer.o
-                  0x006e3e                  _Pot_Init
-                  0x006e6c                  _Pot_GetRaw
-                  0x006e78                  _Pot_GetMapped
-                  0x006f14                  _Pot_GetMenuSelection
- .text            0x006f86        0x13e build/default/production/WatchApp/watchCore/alarm.o
-                  0x006f86                  _Alarm_Init
-                  0x006f8c                  _Alarm_Check
-                  0x006ff0                  _Alarm_SetTime
-                  0x00701e                  _Alarm_Enable
-                  0x007034                  _Alarm_Disable
-                  0x007050                  _Alarm_Toggle
-                  0x007068                  _Alarm_Dismiss
-                  0x007090                  _Alarm_IsRinging
-                  0x00709e                  _Alarm_Update
- .text            0x0070c4        0x110 build/default/production/spiDriver/spi1_driver.o
-                  0x0070c4                  _spi1_close
-                  0x0070cc                  _spi1_open
-                  0x0070ec                  _spi1_exchangeByte
-                  0x007106                  _spi1_exchangeBlock
-                  0x007138                  _spi1_writeBlock
-                  0x007166                  _spi1_readBlock
-                  0x007196                  _spi1_writeByte
-                  0x0071a2                  _spi1_readByte
-                  0x0071ac                  _spi1_isr
-                  0x0071c8                  _spi1_setSpiISR
- .text            0x0071d4         0xca build/default/production/WatchApp/watchManagers/app_display_manager.o
-                  0x007268                  _APP_UpdateDisplay
- .text            0x00729e         0xbe build/default/production/accel3Driver/ACCEL3.o
-                  0x00729e                  _ACCEL3_Init
-                  0x0072fa                  _ACCEL3_ReadXYZ
- .text            0x00735c         0xb8 build/default/production/Timers/Timers.o
-                  0x00735c                  _Timer1_Init
-                  0x0073a2                  _Timer2_Init
-                  0x0073e8                  _Timer_GetTicks
- .text            0x007414         0x8e build/default/production/WatchApp/shared/watch_state.o
-                  0x007414                  _Watch_GetState
-                  0x00741c                  _Watch_InitState
- .text            0x0074a2         0x70 build/default/production/System/pin_manager.o
-                  0x0074a2                  _PIN_MANAGER_Initialize
- .text            0x007512         0x68 build/default/production/WatchApp/watchFaces/alarm_face.o
-                  0x007512                  _AlarmFace_Init
-                  0x007528                  _AlarmFace_Draw
-                  0x00753c                  _AlarmFace_DrawUpdate
- .text            0x00757a         0x60 build/default/production/WatchApp/app_init.o
-                  0x00757a                  _APP_InitializeHardware
- .text            0x0075da         0x56 build/default/production/System/delay.o
-                  0x0075da                  _DELAY_milliseconds
-                  0x0075fc                  _DELAY_microseconds
- .text            0x007630         0x46 build/default/production/System/clock.o
-                  0x007630                  _CLOCK_Initialize
- .text            0x007676         0x42 build/default/production/WatchApp/watchManagers/app_time_manager.o
-                  0x007676                  _APP_UpdateTimeAndAlarms
- .text            0x0076b8         0x28 build/default/production/System/interrupt_manager.o
-                  0x0076c4                  _INTERRUPT_Initialize
- .text            0x0076e0         0x24 build/default/production/WatchApp/watch_main.o
-                  0x0076e0                  _watch_main
- .text            0x007704         0x1c build/default/production/System/traps.o
-                  0x007704                  _TRAPS_halt_on_error
+.text             0x006eae        0xa44
+ .text            0x006eae        0x162 build/default/production/WatchApp/watchFaces/watch_face_common.o
+                  0x006eae                  _WatchFace_DrawAlarmIcon
+                  0x006f88                  _WatchFace_DrawDate
+ .text            0x007010        0x148 build/default/production/WatchApp/watchInput/potentiometer.o
+                  0x007010                  _Pot_Init
+                  0x00703e                  _Pot_GetRaw
+                  0x00704a                  _Pot_GetMapped
+                  0x0070e6                  _Pot_GetMenuSelection
+ .text            0x007158        0x13e build/default/production/WatchApp/watchCore/alarm.o
+                  0x007158                  _Alarm_Init
+                  0x00715e                  _Alarm_Check
+                  0x0071c2                  _Alarm_SetTime
+                  0x0071f0                  _Alarm_Enable
+                  0x007206                  _Alarm_Disable
+                  0x007222                  _Alarm_Toggle
+                  0x00723a                  _Alarm_Dismiss
+                  0x007262                  _Alarm_IsRinging
+                  0x007270                  _Alarm_Update
+ .text            0x007296        0x110 build/default/production/spiDriver/spi1_driver.o
+                  0x007296                  _spi1_close
+                  0x00729e                  _spi1_open
+                  0x0072be                  _spi1_exchangeByte
+                  0x0072d8                  _spi1_exchangeBlock
+                  0x00730a                  _spi1_writeBlock
+                  0x007338                  _spi1_readBlock
+                  0x007368                  _spi1_writeByte
+                  0x007374                  _spi1_readByte
+                  0x00737e                  _spi1_isr
+                  0x00739a                  _spi1_setSpiISR
+ .text            0x0073a6         0xca build/default/production/WatchApp/watchManagers/app_display_manager.o
+                  0x00743a                  _APP_UpdateDisplay
+ .text            0x007470         0xbe build/default/production/accel3Driver/ACCEL3.o
+                  0x007470                  _ACCEL3_Init
+                  0x0074cc                  _ACCEL3_ReadXYZ
+ .text            0x00752e         0xb8 build/default/production/Timers/Timers.o
+                  0x00752e                  _Timer1_Init
+                  0x007574                  _Timer2_Init
+                  0x0075ba                  _Timer_GetTicks
+ .text            0x0075e6         0x8e build/default/production/WatchApp/shared/watch_state.o
+                  0x0075e6                  _Watch_GetState
+                  0x0075ee                  _Watch_InitState
+ .text            0x007674         0x70 build/default/production/System/pin_manager.o
+                  0x007674                  _PIN_MANAGER_Initialize
+ .text            0x0076e4         0x68 build/default/production/WatchApp/watchFaces/alarm_face.o
+                  0x0076e4                  _AlarmFace_Init
+                  0x0076fa                  _AlarmFace_Draw
+                  0x00770e                  _AlarmFace_DrawUpdate
+ .text            0x00774c         0x60 build/default/production/WatchApp/app_init.o
+                  0x00774c                  _APP_InitializeHardware
+ .text            0x0077ac         0x56 build/default/production/System/delay.o
+                  0x0077ac                  _DELAY_milliseconds
+                  0x0077ce                  _DELAY_microseconds
+ .text            0x007802         0x46 build/default/production/System/clock.o
+                  0x007802                  _CLOCK_Initialize
+ .text            0x007848         0x42 build/default/production/WatchApp/watchManagers/app_time_manager.o
+                  0x007848                  _APP_UpdateTimeAndAlarms
+ .text            0x00788a         0x28 build/default/production/System/interrupt_manager.o
+                  0x007896                  _INTERRUPT_Initialize
+ .text            0x0078b2         0x24 build/default/production/WatchApp/watch_main.o
+                  0x0078b2                  _watch_main
+ .text            0x0078d6         0x1c build/default/production/System/traps.o
+                  0x0078d6                  _TRAPS_halt_on_error
 
-.init.delay32     0x007720         0x1c
- .init.delay32    0x007720         0x1c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(delay32da.Meo)
-                  0x007720                  ___delay32
+.init.delay32     0x0078f2         0x1c
+ .init.delay32    0x0078f2         0x1c c:/program files/microchip/xc16/v2.10/bin/bin/../../lib\libc99-pic30-elf.a(delay32da.Meo)
+                  0x0078f2                  ___delay32
 
-.text             0x00773c         0x24
- .text            0x00773c         0x10 build/default/production/System/where_was_i.o
-                  0x00773c                  _where_was_i
- .text            0x00774c          0xc build/default/production/System/system.o
-                  0x00774c                  _SYSTEM_Initialize
- .text            0x007758          0x8 build/default/production/main.o
-                  0x007758                  _main
+.text             0x00790e         0x24
+ .text            0x00790e         0x10 build/default/production/System/where_was_i.o
+                  0x00790e                  _where_was_i
+ .text            0x00791e          0xc build/default/production/System/system.o
+                  0x00791e                  _SYSTEM_Initialize
+ .text            0x00792a          0x8 build/default/production/main.o
+                  0x00792a                  _main

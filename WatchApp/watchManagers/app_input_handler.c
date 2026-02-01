@@ -12,6 +12,9 @@
 #include "../watchInput/potentiometer.h"
 #include "../pomodoroTimer/pomodoro.h"
 #include "../watchCore/timekeeper.h"
+#ifdef DEBUG_MODE
+#include "../watchDebug/debug_menu.h"
+#endif
 
 // Private functions for handling inputs in different modes
 
@@ -116,6 +119,13 @@ static void handle_pomodoro_mode(ButtonEvent_t btn, AccelEvent_t accel) {
 void APP_HandleInputEvents(ButtonEvent_t btn, AccelEvent_t accel) {
     WatchState_t* state = Watch_GetState();
 
+#ifdef DEBUG_MODE
+    if (btn == BTN_BOTH_LONG) {
+        DebugMenu_Toggle();
+        return;
+    }
+#endif
+
     switch (state->display_mode) {
         case MODE_WATCH:
             handle_watch_mode(btn, accel);
@@ -126,6 +136,11 @@ void APP_HandleInputEvents(ButtonEvent_t btn, AccelEvent_t accel) {
         case MODE_POMODORO:
             handle_pomodoro_mode(btn, accel);
             break;
+#ifdef DEBUG_MODE
+        case MODE_DEBUG:
+            DebugMenu_HandleInput(btn);
+            break;
+#endif
         default: break;
     }
 }

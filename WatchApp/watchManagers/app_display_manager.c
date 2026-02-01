@@ -9,6 +9,9 @@
 #include "../pomodoroTimer/pomodoro.h"
 #include "../watchCore/alarm.h" // Not directly used but good to have related to alarm_face.h
 #include "../watchCore/timekeeper.h" // Not directly used but good to have related to watch_state.h
+#ifdef DEBUG_MODE
+#include "../watchDebug/debug_menu.h"
+#endif
 
 // -----------------------------------------------------------------------------
 // PRIVATE HELPERS
@@ -29,6 +32,9 @@ static void app_draw_full(WatchState_t* state) {
 
         case MODE_MENU:      Menu_DrawFull(); break; // Call Menu_DrawFull
         case MODE_POMODORO:  Pomodoro_Draw(); break;
+#ifdef DEBUG_MODE
+        case MODE_DEBUG:     DebugMenu_DrawFull(); break;
+#endif
 
         default: break;
     }
@@ -53,6 +59,11 @@ static void app_draw_partial(WatchState_t* state) {
         case MODE_POMODORO:
             Pomodoro_DrawUpdate();
             break;
+#ifdef DEBUG_MODE
+        case MODE_DEBUG:
+            DebugMenu_DrawUpdate();
+            break;
+#endif
         default:
             break;
     }

@@ -34,6 +34,12 @@ static uint16_t s_last_total = 0xFFFF;
 static uint8_t s_last_min = 0xFF;
 static uint8_t s_last_sec = 0xFF;
 
+static void clear_label_area(void) {
+    oledC_DrawRectangle(0, (uint8_t)(POMO_LABEL_Y - 1),
+                        95, (uint8_t)(POMO_LABEL_Y + 17),
+                        COLOR_BG);
+}
+
 static const char* get_state_label(PomodoroState_t state) {
     switch (state) {
         case POMODORO_WORK: return "WORK";
@@ -299,7 +305,34 @@ void Pomodoro_DrawUpdate(void) {
 
     if (state->pomodoro.state != s_last_state ||
         state->pomodoro.work_sessions != s_last_sessions) {
-        Pomodoro_Draw();
+        const char* state_label = get_state_label(state->pomodoro.state);
+        uint16_t label_color = get_state_color(state->pomodoro.state);
+        uint16_t total_seconds = get_total_seconds(state);
+        uint8_t label_len = get_state_label_len(state->pomodoro.state);
+        uint8_t label_w = (uint8_t)(label_len * (5 * 2 + 1));
+        uint8_t label_x = (uint8_t)((96 - label_w) / 2);
+
+        draw_session_counter(state, state->pomodoro.work_sessions);
+        clear_label_area();
+        oledC_DrawString(label_x, POMO_LABEL_Y, 2, 1, (uint8_t*)state_label, label_color);
+        draw_time_full(state->pomodoro.remaining_seconds);
+        draw_progress_bar_full(state->pomodoro.remaining_seconds, total_seconds);
+
+        uint8_t text_w = (uint8_t)(6 * (5 + 1));
+        uint8_t x0 = (uint8_t)((96 - text_w) / 2);
+        oledC_DrawRectangle(x0 - 1, POMO_PAUSE_Y - 1,
+                            (uint8_t)(x0 + text_w + 1), (uint8_t)(POMO_PAUSE_Y + 7),
+                            COLOR_BG);
+        if (state->pomodoro.paused) {
+            oledC_DrawString(x0, POMO_PAUSE_Y, 1, 1, (uint8_t*)"PAUSED", COLOR_ACCENT);
+        }
+
+        s_last_state = state->pomodoro.state;
+        s_last_remaining = state->pomodoro.remaining_seconds;
+        s_last_sessions = state->pomodoro.work_sessions;
+        s_last_paused = state->pomodoro.paused;
+        s_last_min = (uint8_t)(state->pomodoro.remaining_seconds / 60);
+        s_last_sec = (uint8_t)(state->pomodoro.remaining_seconds % 60);
         return;
     }
 
