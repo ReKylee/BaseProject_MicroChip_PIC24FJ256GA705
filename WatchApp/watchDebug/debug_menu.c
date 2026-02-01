@@ -204,14 +204,4 @@ void DebugMenu_HandleInput(ButtonEvent_t btn) {
         state->needs_redraw = true;
     }
 }
-
-#else
-
-void DebugMenu_Enter(void) {}
-void DebugMenu_Exit(void) {}
-void DebugMenu_Toggle(void) {}
-void DebugMenu_DrawFull(void) {}
-void DebugMenu_DrawUpdate(void) {}
-void DebugMenu_HandleInput(ButtonEvent_t btn) { (void)btn; }
-
 #endif

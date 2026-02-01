@@ -4,10 +4,11 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <xc.h>
+#include "../System/clock.h"
 
 /* Defaults if not provided */
 #ifndef FCY
-#define FCY _XTAL_FREQ/2
+#define FCY CLOCK_PeripheralFrequencyGet()
 #endif
 
 /* Configuration Struct */
