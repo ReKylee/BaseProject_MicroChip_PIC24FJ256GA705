@@ -17,7 +17,7 @@ const MenuItem_t main_menu[] = {
     {"Set Date", MENU_SET_DATE},
     {"Set Alarm", MENU_SET_ALARM},
     {"Alarm On/Off", MENU_ALARM_TOGGLE},
-    {"Pomodoro", MENU_POMODORO}
+    {"POMO DORO", MENU_POMODORO}
 };
 
 const char* const s_display_modes[] = {"Digital", "Analog", "Binary"};

@@ -43,6 +43,14 @@ static const char* get_state_label(PomodoroState_t state) {
     }
 }
 
+static uint8_t get_state_label_len(PomodoroState_t state) {
+    switch (state) {
+        case POMODORO_WORK: return 4;
+        case POMODORO_SHORT_BREAK: return 5;
+        case POMODORO_LONG_BREAK: return 4;
+        default: return 5;
+    }
+}
 static uint16_t get_state_color(PomodoroState_t state) {
     switch (state) {
         case POMODORO_WORK: return COLOR_WARNING;
@@ -265,7 +273,10 @@ void Pomodoro_Draw(void) {
     uint16_t label_color = get_state_color(state->pomodoro.state);
     uint16_t total_seconds = get_total_seconds(state);
 
-    oledC_DrawString(34, POMO_LABEL_Y, 2, 1, (uint8_t*)state_label, label_color);
+    uint8_t label_len = get_state_label_len(state->pomodoro.state);
+    uint8_t label_w = (uint8_t)(label_len * (5 * 2 + 1));
+    uint8_t label_x = (uint8_t)((96 - label_w) / 2);
+    oledC_DrawString(label_x, POMO_LABEL_Y, 2, 1, (uint8_t*)state_label, label_color);
     
     draw_time_full(state->pomodoro.remaining_seconds);
     
@@ -299,9 +310,13 @@ void Pomodoro_DrawUpdate(void) {
     }
 
     if (state->pomodoro.paused != s_last_paused) {
-        oledC_DrawRectangle(0, POMO_PAUSE_Y - 1, 95, (uint8_t)(POMO_PAUSE_Y + 9), COLOR_BG);
+        uint8_t text_w = (uint8_t)(6 * (5 + 1));
+        uint8_t x0 = (uint8_t)((96 - text_w) / 2);
+        oledC_DrawRectangle(x0 - 1, POMO_PAUSE_Y - 1,
+                            (uint8_t)(x0 + text_w + 1), (uint8_t)(POMO_PAUSE_Y + 9),
+                            COLOR_BG);
         if (state->pomodoro.paused) {
-            oledC_DrawString(34, POMO_PAUSE_Y, 1, 1, (uint8_t*)"PAUSED", COLOR_ACCENT);
+            oledC_DrawString(x0, POMO_PAUSE_Y, 1, 1, (uint8_t*)"PAUSED", COLOR_ACCENT);
         }
         s_last_paused = state->pomodoro.paused;
     }
