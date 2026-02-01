@@ -25,17 +25,8 @@ static uint8_t pot_select(uint16_t raw, uint8_t min, uint8_t max, uint16_t hyste
         return *last_sel;
     }
 
-    // If the pot moves far, allow a direct jump.
-    uint8_t sel_idx = (uint8_t)(*last_sel - min);
-    uint8_t tgt_idx = (uint8_t)(target - min);
-    if ((tgt_idx > sel_idx && (tgt_idx - sel_idx) > 1) ||
-        (sel_idx > tgt_idx && (sel_idx - tgt_idx) > 1)) {
-        *last_sel = target;
-        *last_raw = raw;
-        return target;
-    }
-
     // Hysteresis around the current bin boundaries.
+    uint8_t sel_idx = (uint8_t)(*last_sel - min);
     uint16_t lower = (uint16_t)(sel_idx * bin);
     uint16_t upper = (uint16_t)((sel_idx + 1) * bin - 1);
 
@@ -52,11 +43,33 @@ static uint8_t pot_select(uint16_t raw, uint8_t min, uint8_t max, uint16_t hyste
 bool MenuCore_HandleRange(uint16_t raw, uint8_t min, uint8_t max, uint16_t hysteresis,
                           uint16_t *last_raw, uint8_t *last_val, uint8_t *value) {
     if (!last_raw || !last_val || !value) return false;
-    uint8_t mapped = pot_select(raw, min, max, hysteresis, last_raw, last_val);
-    if (mapped != *value) {
+    if (max <= min) {
+        *value = min;
+        *last_val = min;
+        *last_raw = raw;
+        return false;
+    }
+
+    uint8_t count = (uint8_t)(max - min + 1);
+    uint8_t mapped = (uint8_t)(min + (uint8_t)((raw * count) / 1024));
+    if (mapped > max) mapped = max;
+
+    if (*last_raw == 0xFFFF) {
+        *last_raw = raw;
+        *last_val = *value;
+        return false;
+    }
+
+    int16_t diff = (int16_t)raw - (int16_t)(*last_raw);
+    if (diff < 0) diff = -diff;
+
+    if (mapped != *value && (uint16_t)diff >= hysteresis) {
         *value = mapped;
+        *last_val = mapped;
+        *last_raw = raw;
         return true;
     }
+
     return false;
 }
 
