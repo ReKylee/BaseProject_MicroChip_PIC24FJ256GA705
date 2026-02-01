@@ -52,6 +52,7 @@ static DotPos_t s_dot_pos[GRID_COLS][GRID_ROWS]; // col x row
 static Time_t s_last_time_drawn;
 static TimeFormat_t s_last_format_drawn;
 static Date_t s_last_date_drawn;
+static bool s_last_alarm_drawn;
 
 // ============================================================================
 // PRIVATE FUNCTIONS
@@ -105,9 +106,6 @@ void BinaryFace_Init(void) {
 
     init_dot_positions();
 
-    // Alarm icon
-    WatchFace_DrawAlarmIcon(ALARM_X, ALARM_Y, ALARM_W, ALARM_H, Watch_GetState()->alarm.enabled);
-
     // Draw static labels (H M S)
     for (uint8_t i = 0; i < 3; i++) {
         oledC_DrawString(s_label_x[i], s_label_y, 1, 1, (uint8_t*) (i == 0 ? "H" : i == 1 ? "M" : "S"), COLOR_TEXT);
@@ -141,10 +139,15 @@ void BinaryFace_Init(void) {
     s_last_time_drawn.second = 99; // force full redraw
     s_last_format_drawn = FORMAT_24H;
     memset(&s_last_date_drawn, 0, sizeof(Date_t));
+    s_last_alarm_drawn = Watch_GetState()->alarm.enabled;
+
+    // Alarm icon
+    WatchFace_DrawAlarmIcon(ALARM_X, ALARM_Y, ALARM_W, ALARM_H, s_last_alarm_drawn);
 }
 
 void BinaryFace_Draw(void) {
-    // Full redraw relies on BinaryFace_Init being called on face entry.
+    // Full redraw needs static labels/dots plus current time/date.
+    BinaryFace_Init();
     BinaryFace_DrawUpdate();
 }
 
@@ -196,5 +199,8 @@ void BinaryFace_DrawUpdate(void) {
     WatchFace_DrawDate(date_x, 82, &state->current_date, &s_last_date_drawn, COLOR_DIM, COLOR_BG);
 
     // Alarm icon
-    WatchFace_DrawAlarmIcon(ALARM_X, ALARM_Y, ALARM_W, ALARM_H, state->alarm.enabled);
+    if (state->alarm.enabled != s_last_alarm_drawn) {
+        WatchFace_DrawAlarmIcon(ALARM_X, ALARM_Y, ALARM_W, ALARM_H, state->alarm.enabled);
+        s_last_alarm_drawn = state->alarm.enabled;
+    }
 }

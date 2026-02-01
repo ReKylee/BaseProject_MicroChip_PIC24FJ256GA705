@@ -40,10 +40,8 @@ void APP_InitializeHardware(void) {
     // Initialize watch state
     Watch_InitState();
 
-    // Initialize all watch faces
+    // Initialize only the default watch face to avoid startup flicker
     DigitalFace_Init();
-    AnalogFace_Init();
-    BinaryFace_Init();
     AlarmFace_Init();
 
     // Initialize menu system

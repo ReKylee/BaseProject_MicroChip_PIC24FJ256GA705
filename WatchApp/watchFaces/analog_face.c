@@ -42,6 +42,7 @@ static uint8_t s_last_hour = 255;
 static uint8_t s_last_min = 255;
 static uint8_t s_last_sec = 255;
 static Date_t s_last_date_drawn;
+static bool s_last_alarm_drawn;
 
 static void draw_markers(void) {
     for (uint8_t i = 0; i < 12; i++) {
@@ -61,6 +62,17 @@ static void draw_hand(const int8_t points[][2], uint8_t idx, uint8_t width, uint
 
 static void erase_hand(const int8_t points[][2], uint8_t idx, uint8_t width) {
     draw_hand(points, idx, width, COLOR_BG);
+}
+
+static void draw_hands_full(uint8_t hour, uint8_t min, uint8_t sec) {
+    draw_hand(HOUR_POINTS, hour, 3, COLOR_SECONDARY);
+    draw_hand(MIN_POINTS, min, 2, COLOR_PRIMARY);
+    draw_hand(SEC_POINTS, sec, 1, COLOR_ACCENT);
+    oledC_DrawCircle(CENTER_X, CENTER_Y, CENTER_DOT_RADIUS, COLOR_ACCENT);
+
+    s_last_hour = hour;
+    s_last_min = min;
+    s_last_sec = sec;
 }
 
 static void draw_marker_at(uint8_t sec_idx) {
@@ -142,6 +154,8 @@ void AnalogFace_Init(void) {
     // Date - Initial draw
     WatchState_t* state = Watch_GetState();
     WatchFace_DrawDate(ANALOG_DATE_X, ANALOG_DATE_Y, &state->current_date, &s_last_date_drawn, COLOR_DIM, COLOR_BG);
+    s_last_alarm_drawn = state->alarm.enabled;
+    WatchFace_DrawAlarmIcon(ALARM_X, ALARM_Y, ALARM_W, ALARM_H, s_last_alarm_drawn);
 
     // Reset hand state
     s_last_hour = s_last_min = s_last_sec = 255;
@@ -155,10 +169,29 @@ void AnalogFace_DrawUpdate(void) {
     uint8_t hour = compute_hour_idx(s->current_time.hour, min);
 
     draw_hands(hour, min, sec);
-    WatchFace_DrawAlarmIcon(ALARM_X, ALARM_Y, ALARM_W, ALARM_H, s->alarm.enabled);
+    if (s->alarm.enabled != s_last_alarm_drawn) {
+        WatchFace_DrawAlarmIcon(ALARM_X, ALARM_Y, ALARM_W, ALARM_H, s->alarm.enabled);
+        s_last_alarm_drawn = s->alarm.enabled;
+    }
     WatchFace_DrawDate(ANALOG_DATE_X, ANALOG_DATE_Y, &s->current_date, &s_last_date_drawn, COLOR_DIM, COLOR_BG);
 }
 
 void AnalogFace_Draw(void) {
-    AnalogFace_DrawUpdate();
+    WatchState_t* state = Watch_GetState();
+
+    oledC_setBackground(COLOR_BG);
+    draw_markers();
+
+    // Draw hands immediately on full redraw to avoid a visible delay.
+    uint8_t sec = state->current_time.second;
+    uint8_t min = state->current_time.minute;
+    uint8_t hour = compute_hour_idx(state->current_time.hour, min);
+    draw_hands_full(hour, min, sec);
+
+    // Force date and alarm icon to redraw after a full clear.
+    s_last_date_drawn.day = 0;
+    s_last_date_drawn.month = 0;
+    WatchFace_DrawDate(ANALOG_DATE_X, ANALOG_DATE_Y, &state->current_date, &s_last_date_drawn, COLOR_DIM, COLOR_BG);
+    WatchFace_DrawAlarmIcon(ALARM_X, ALARM_Y, ALARM_W, ALARM_H, state->alarm.enabled);
+    s_last_alarm_drawn = state->alarm.enabled;
 }

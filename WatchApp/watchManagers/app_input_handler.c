@@ -4,9 +4,6 @@
 #include "../watchInput/accel_input.h"
 #include "../watchMenu/menu.h"
 #include "../watchCore/alarm.h"
-#include "../watchFaces/digital_face.h"
-#include "../watchFaces/analog_face.h"
-#include "../watchFaces/binary_face.h"
 #include "../../ledDriver/LED.h"
 #include "../../System/delay.h"
 #include "../watchInput/potentiometer.h"
@@ -58,16 +55,6 @@ static void handle_watch_mode(ButtonEvent_t btn, AccelEvent_t accel) {
 
     if (btn == BTN_S2_SHORT) {
         state->watch_face = (state->watch_face + 1) % FACE_COUNT_SELECTABLE;
-        // Re-initialize the face to build its specific shape list
-        switch (state->watch_face) {
-            case FACE_DIGITAL: DigitalFace_Init();
-                break;
-            case FACE_ANALOG: AnalogFace_Init();
-                break;
-            case FACE_BINARY: BinaryFace_Init();
-                break;
-            default: break;
-        }
         state->needs_full_redraw = true;
         app_button_led_feedback(BTN_S2_SHORT); // Use helper for feedback
         return;

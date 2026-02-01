@@ -18,22 +18,31 @@
 // -----------------------------------------------------------------------------
 
 // Draw the current display mode and watch face entirely
+
 static void app_draw_full(WatchState_t* state) {
+
     switch (state->display_mode) {
         case MODE_WATCH:
             switch (state->watch_face) {
-                case FACE_DIGITAL: DigitalFace_Draw(); break;
-                case FACE_ANALOG:  AnalogFace_Draw(); break;
-                case FACE_BINARY:  BinaryFace_Draw(); break;
-                case FACE_ALARM:   AlarmFace_Draw(); break; // Handle FACE_ALARM
+                case FACE_DIGITAL: DigitalFace_Draw();
+                    break;
+                case FACE_ANALOG: AnalogFace_Draw();
+                    break;
+                case FACE_BINARY: BinaryFace_Draw();
+                    break;
+                case FACE_ALARM: AlarmFace_Draw();
+                    break; // Handle FACE_ALARM
                 default: break;
             }
             break;
 
-        case MODE_MENU:      Menu_DrawFull(); break; // Call Menu_DrawFull
-        case MODE_POMODORO:  Pomodoro_Draw(); break;
+        case MODE_MENU: Menu_DrawFull();
+            break; // Call Menu_DrawFull
+        case MODE_POMODORO: Pomodoro_Draw();
+            break;
 #ifdef DEBUG_MODE
-        case MODE_DEBUG:     DebugMenu_DrawFull(); break;
+        case MODE_DEBUG: DebugMenu_DrawFull();
+            break;
 #endif
 
         default: break;
@@ -45,16 +54,20 @@ static void app_draw_partial(WatchState_t* state) {
     switch (state->display_mode) {
         case MODE_WATCH:
             switch (state->watch_face) {
-                case FACE_DIGITAL: DigitalFace_DrawUpdate(); break;
-                case FACE_ANALOG:  AnalogFace_DrawUpdate(); break;
-                case FACE_BINARY:  BinaryFace_DrawUpdate(); break;
-                case FACE_ALARM:   AlarmFace_DrawUpdate(); break; // Handle FACE_ALARM
+                case FACE_DIGITAL: DigitalFace_DrawUpdate();
+                    break;
+                case FACE_ANALOG: AnalogFace_DrawUpdate();
+                    break;
+                case FACE_BINARY: BinaryFace_DrawUpdate();
+                    break;
+                case FACE_ALARM: AlarmFace_DrawUpdate();
+                    break; 
                 default: break;
             }
             break;
 
         case MODE_MENU:
-            Menu_DrawPartial(); // Call Menu_DrawPartial
+            Menu_DrawPartial();
             break;
         case MODE_POMODORO:
             Pomodoro_DrawUpdate();
