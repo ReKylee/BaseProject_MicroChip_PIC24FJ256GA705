@@ -23,7 +23,7 @@
 #define POMO_BAR_Y 80
 #define POMO_BAR_W 80
 #define POMO_BAR_H 8
-#define POMO_PAUSE_Y 70
+#define POMO_PAUSE_Y 66
 
 static PomodoroState_t s_last_state = POMODORO_IDLE;
 static uint16_t s_last_remaining = 0xFFFF;
@@ -313,7 +313,7 @@ void Pomodoro_DrawUpdate(void) {
         uint8_t text_w = (uint8_t)(6 * (5 + 1));
         uint8_t x0 = (uint8_t)((96 - text_w) / 2);
         oledC_DrawRectangle(x0 - 1, POMO_PAUSE_Y - 1,
-                            (uint8_t)(x0 + text_w + 1), (uint8_t)(POMO_PAUSE_Y + 9),
+                            (uint8_t)(x0 + text_w + 1), (uint8_t)(POMO_PAUSE_Y + 7),
                             COLOR_BG);
         if (state->pomodoro.paused) {
             oledC_DrawString(x0, POMO_PAUSE_Y, 1, 1, (uint8_t*)"PAUSED", COLOR_ACCENT);

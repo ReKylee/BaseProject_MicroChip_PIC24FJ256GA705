@@ -80,11 +80,24 @@ static void draw_small_time_update(void) {
     WatchState_t* state = Watch_GetState();
     if (state->current_time.second != s_last_small_time.second) {
         char new_str[9];
-        oledC_DrawRectangle(0, MENU_HEADER_Y, 57, MENU_HEADER_Y + MENU_HEADER_H, COLOR_BG);
+        oledC_DrawRectangle(MENU_TIME_X - 1, MENU_HEADER_Y,
+                            95, MENU_HEADER_Y + MENU_HEADER_H,
+                            COLOR_BG);
         sprintf(new_str, "%02d:%02d:%02d", state->current_time.hour, state->current_time.minute, state->current_time.second);
         oledC_DrawString(MENU_TIME_X, MENU_TIME_Y, 1, 1, (uint8_t*)new_str, COLOR_DIM);
         s_last_small_time = state->current_time;
     }
+}
+
+static void draw_small_time_full(void) {
+    WatchState_t* state = Watch_GetState();
+    char new_str[9];
+    oledC_DrawRectangle(MENU_TIME_X - 1, MENU_HEADER_Y,
+                        95, MENU_HEADER_Y + MENU_HEADER_H,
+                        COLOR_BG);
+    sprintf(new_str, "%02d:%02d:%02d", state->current_time.hour, state->current_time.minute, state->current_time.second);
+    oledC_DrawString(MENU_TIME_X, MENU_TIME_Y, 1, 1, (uint8_t*)new_str, COLOR_DIM);
+    s_last_small_time = state->current_time;
 }
 
 static void draw_radial_item(uint8_t idx, bool selected) {
@@ -113,6 +126,7 @@ static void draw_radial_menu_full(const RadialMenuConfig_t* cfg) {
     cfg->radial->draw_center = draw_radial_center;
     oledC_DrawRectangle(0, 12, 95, 95, COLOR_BG);
     draw_menu_header(cfg->title);
+    draw_small_time_full();
     if (cfg->draw_inner_circle) {
         oledC_DrawCircle(MENU_CENTER_X, MENU_CENTER_Y, MENU_INNER_RADIUS, COLOR_BG);
     }
@@ -277,6 +291,7 @@ static void draw_edit_full(MenuState_t state) {
 
     oledC_DrawRectangle(0, 12, 95, 95, COLOR_BG);
     draw_menu_header(spec.title);
+    draw_small_time_full();
     draw_edit_ring_labels(state, Watch_GetState()->menu_edit_field);
     draw_center_label(center_text);
 
@@ -340,7 +355,6 @@ static void draw_edit_value_update(MenuState_t state) {
 }
 
 void Menu_DrawFull(void) {
-    draw_small_time_update();
     WatchState_t* state = Watch_GetState();
 
     s_skip_next_partial = true;
