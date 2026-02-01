@@ -10,10 +10,7 @@
 // CONFIGURATION
 // ============================================================================
 
-#define ALARM_ICON_R_OUTER 28
-#define ALARM_ICON_R_INNER 24
-#define ALARM_HAND_MIN_LEN 18
-#define ALARM_HAND_HOUR_LEN 12
+#define ALARM_CLOCK_R 28
 
 // ============================================================================
 // STATE
@@ -24,21 +21,15 @@ static bool s_drawn = false;
 
 static void draw_alarm_icon(void) {
     // Clock ring
-    oledC_DrawRing(CENTER_X, CENTER_Y, ALARM_ICON_R_OUTER, 2, COLOR_ACCENT);
-    oledC_DrawRing(CENTER_X, CENTER_Y, ALARM_ICON_R_INNER, 1, COLOR_ACCENT);
-
-    // 12/3/6/9 markers
-    oledC_DrawLine(CENTER_X, CENTER_Y - ALARM_ICON_R_INNER, CENTER_X, CENTER_Y - (ALARM_ICON_R_INNER - 4), 2, COLOR_ACCENT);
-    oledC_DrawLine(CENTER_X + ALARM_ICON_R_INNER, CENTER_Y, CENTER_X + (ALARM_ICON_R_INNER - 4), CENTER_Y, 2, COLOR_ACCENT);
-    oledC_DrawLine(CENTER_X, CENTER_Y + ALARM_ICON_R_INNER, CENTER_X, CENTER_Y + (ALARM_ICON_R_INNER - 4), 2, COLOR_ACCENT);
-    oledC_DrawLine(CENTER_X - ALARM_ICON_R_INNER, CENTER_Y, CENTER_X - (ALARM_ICON_R_INNER - 4), CENTER_Y, 2, COLOR_ACCENT);
+    oledC_DrawRing(CENTER_X, CENTER_Y, ALARM_CLOCK_R, 2, COLOR_ACCENT);
+    oledC_DrawRing(CENTER_X, CENTER_Y, (uint8_t)(ALARM_CLOCK_R - 3), 1, COLOR_WARNING);
 
     // Hands (10:10 style)
-    oledC_DrawLine(CENTER_X, CENTER_Y, CENTER_X + ALARM_HAND_MIN_LEN, CENTER_Y - 6, 2, COLOR_ACCENT);
-    oledC_DrawLine(CENTER_X, CENTER_Y, CENTER_X - 6, CENTER_Y - ALARM_HAND_HOUR_LEN, 3, COLOR_ACCENT);
+    oledC_DrawLine(CENTER_X, CENTER_Y, (uint8_t)(CENTER_X + 14), (uint8_t)(CENTER_Y - 4), 3, COLOR_ACCENT);
+    oledC_DrawLine(CENTER_X, CENTER_Y, (uint8_t)(CENTER_X - 4), (uint8_t)(CENTER_Y - 14), 3, COLOR_ACCENT);
 
-    // Center dot
-    oledC_DrawCircle(CENTER_X, CENTER_Y, 2, COLOR_ACCENT);
+    // Center cap
+    oledC_DrawCircle(CENTER_X, CENTER_Y, 3, COLOR_WARNING);
 }
 
 // ============================================================================

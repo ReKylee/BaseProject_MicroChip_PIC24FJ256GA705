@@ -78,6 +78,7 @@ void Alarm_Dismiss(void) {
     WatchState_t* state = Watch_GetState();
     state->alarm.triggered = false;
     state->alarm.trigger_count = 0;
+    state->alarm.enabled = false;
     state->watch_face = state->prev_watch_face; // Restore previous watch face
     oledC_sendCommand(OLEDC_CMD_SET_DISPLAY_MODE_ON, NULL, 0);
     oledC_setBackground(COLOR_BG); // Reset background
