@@ -7,7 +7,7 @@
 // --- Step 1: Enable only what you need (Memory Efficiency) ---
 #define USE_TIMER1
 #define USE_TIMER2
-// #define USE_TIMER3 // Commented out = Timer3 is free for other modules
+// #define USE_TIMER3
 
 // --- Step 2: API (Resolution Flexibility) ---
 

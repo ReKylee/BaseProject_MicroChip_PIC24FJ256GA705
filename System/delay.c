@@ -26,12 +26,18 @@
 **/
 
 
+
+#include "delay.h"
+#include "clock.h"
+#include <xc.h>
+#include <stdint.h>
+#ifndef _XTAL_FREQ
+#error "_XTAL_FREQ must be defined"
+#endif
 #ifndef FCY
 #define FCY (_XTAL_FREQ/2)
 #endif
-#include "clock.h"
 #include <libpic30.h>
-#include <stdint.h>
 
 /**
 *  \ingroup doc_driver_delay_code

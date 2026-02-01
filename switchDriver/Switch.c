@@ -1,7 +1,6 @@
 #include "Switch.h"
 #include "../Timers/Timers.h"
 
-#define USE_TIMER2
 
 /**
  * @file Switch.c

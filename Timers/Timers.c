@@ -1,7 +1,10 @@
 #include "Timers.h"
-
+#include "../System/clock.h"
+#ifndef _XTAL_FREQ
+#error "_XTAL_FREQ must be defined"
+#endif
 #ifndef FCY
-#define FCY _XTAL_FREQ/2
+#define FCY (_XTAL_FREQ/2)
 #endif
 
 /** * This Macro writes the actual function and ISR code. 

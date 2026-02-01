@@ -55,7 +55,7 @@
 #define _XTAL_FREQ  8000000UL
 #endif
 
-#define CLOCK_SystemFrequencyGet()        (8000000UL)
+#define CLOCK_SystemFrequencyGet()        (_XTAL_FREQ)
 
 #define CLOCK_PeripheralFrequencyGet()    (CLOCK_SystemFrequencyGet() / 2)
 
