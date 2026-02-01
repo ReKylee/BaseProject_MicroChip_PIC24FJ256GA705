@@ -20,10 +20,10 @@ void WatchFace_DrawAlarmIcon(uint8_t x, uint8_t y, uint8_t width, uint8_t height
     // If disabled, just clear the area.
     if (!enabled) return;
 
-    // Small clock icon: ring + two hands
-    oledC_DrawRing(cx, cy, 4, 1, color);
-    oledC_DrawLine(cx, cy, (uint8_t)(cx + 3), (uint8_t)(cy - 1), 1, color);
-    oledC_DrawLine(cx, cy, (uint8_t)(cx - 1), (uint8_t)(cy - 3), 1, color);
+    // Small clock icon: filled face with bg-color hands (12 and 3)
+    oledC_DrawCircle(cx, cy, 6, color);
+    oledC_DrawLine(cx, (uint8_t)(cy - 5), cx, (uint8_t)(cy - 1), 1, COLOR_BG);
+    oledC_DrawLine((uint8_t)(cx + 1), cy, (uint8_t)(cx + 5), cy, 1, COLOR_BG);
 }
 
 void WatchFace_DrawDate(uint8_t x, uint8_t y, const Date_t* current_date, Date_t* last_date_drawn, uint16_t color, uint16_t bg_color) {

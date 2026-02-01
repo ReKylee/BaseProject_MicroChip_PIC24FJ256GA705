@@ -16,10 +16,10 @@
 // Common UI element positions
 #define DATE_X    2
 #define DATE_Y    5
-#define ALARM_X   82
-#define ALARM_Y   3
-#define ALARM_W   12
-#define ALARM_H   12
+#define ALARM_X   78
+#define ALARM_Y   1
+#define ALARM_W   16
+#define ALARM_H   16
 
 // ============================================================================
 // COMMON WATCH FACE DRAWING FUNCTIONS
