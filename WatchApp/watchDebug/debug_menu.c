@@ -14,6 +14,7 @@
 #include "../watchCore/alarm.h"
 #include "../watchCore/timekeeper.h"
 #include <stdio.h>
+#include <string.h>
 
 #define DEBUG_HEADER_Y 1
 #define DEBUG_HEADER_H 10
@@ -32,6 +33,10 @@ static int16_t s_dbg_last_az = 0x7FFF;
 static uint8_t s_dbg_last_alarm_hour = 0xFF;
 static uint8_t s_dbg_last_alarm_min = 0xFF;
 static uint8_t s_dbg_last_alarm_en = 0xFF;
+static uint8_t s_dbg_last_date_day = 0xFF;
+static uint8_t s_dbg_last_date_month = 0xFF;
+static char s_date_step_msg[22] = "DT STEP READY";
+static char s_last_date_step_msg[22] = "";
 static Time_t s_last_time = {0xFF, 0xFF, 0xFF};
 static TimeFormat_t s_last_time_format = FORMAT_24H;
 
@@ -72,6 +77,28 @@ static void draw_time_update(void) {
 static void draw_line(uint8_t y, const char* text) {
     oledC_DrawRectangle(0, y, 95, (uint8_t)(y + 8), COLOR_BG);
     oledC_DrawString(2, y, 1, 1, (uint8_t*)text, COLOR_PRIMARY);
+}
+
+static void debug_increment_date(void) {
+    WatchState_t* state = Watch_GetState();
+    Date_t prev = state->current_date;
+    Date_t next = state->current_date;
+    uint8_t max_days = Timekeeper_GetDaysInMonth(next.month);
+
+    next.day++;
+    if (next.day > max_days) {
+        next.day = 1;
+        next.month++;
+        if (next.month > 12) {
+            next.month = 1;
+        }
+    }
+
+    Timekeeper_SetDate(&next);
+    state->current_date = next;
+    snprintf(s_date_step_msg, sizeof(s_date_step_msg), "DT %02d/%02d>%02d/%02d",
+             prev.day, prev.month, next.day, next.month);
+    state->needs_redraw = true;
 }
 
 void DebugMenu_Enter(void) {
@@ -127,7 +154,11 @@ void DebugMenu_DrawFull(void) {
             state->alarm.hour, state->alarm.minute,
             state->alarm.enabled ? "ON" : "OFF");
     draw_line(44, line);
-    draw_line(54, "S2=ALARM");
+    sprintf(line, "DT %02d/%02d", state->current_date.day, state->current_date.month);
+    draw_line(54, line);
+    draw_line(64, "S1=DATE+1");
+    draw_line(74, "S2=ALARM");
+    draw_line(84, s_date_step_msg);
 
     s_dbg_last_pot_raw = pot_raw;
     s_dbg_last_pot_pct = pot_pct;
@@ -137,6 +168,9 @@ void DebugMenu_DrawFull(void) {
     s_dbg_last_alarm_hour = state->alarm.hour;
     s_dbg_last_alarm_min = state->alarm.minute;
     s_dbg_last_alarm_en = state->alarm.enabled ? 1 : 0;
+    s_dbg_last_date_day = state->current_date.day;
+    s_dbg_last_date_month = state->current_date.month;
+    strcpy(s_last_date_step_msg, s_date_step_msg);
     s_debug_drawn = true;
 }
 
@@ -193,11 +227,27 @@ void DebugMenu_DrawUpdate(void) {
         s_dbg_last_alarm_min = state->alarm.minute;
         s_dbg_last_alarm_en = state->alarm.enabled ? 1 : 0;
     }
+    if (state->current_date.day != s_dbg_last_date_day ||
+        state->current_date.month != s_dbg_last_date_month) {
+        sprintf(line, "DT %02d/%02d", state->current_date.day, state->current_date.month);
+        draw_line(54, line);
+        s_dbg_last_date_day = state->current_date.day;
+        s_dbg_last_date_month = state->current_date.month;
+    }
+    if (strcmp(s_date_step_msg, s_last_date_step_msg) != 0) {
+        draw_line(84, s_date_step_msg);
+        strcpy(s_last_date_step_msg, s_date_step_msg);
+    }
 
     draw_time_update();
 }
 
 void DebugMenu_HandleInput(ButtonEvent_t btn) {
+    if (btn == BTN_S1_SHORT) {
+        debug_increment_date();
+        return;
+    }
+
     if (btn == BTN_S2_SHORT) {
         WatchState_t* state = Watch_GetState();
         uint32_t now = (uint32_t)state->current_time.hour * 3600U +

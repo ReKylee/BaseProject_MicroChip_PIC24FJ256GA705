@@ -19,9 +19,11 @@
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchFaces/watch_face_common.c</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchFaces/watch_face_geometry.h</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchCore/alarm.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchCore/timekeeper.h</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchManagers/app_display_manager.c</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchFaces/watch_face_common.h</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watch_main.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchCore/timekeeper.c</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchMenu/menu_layout.h</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchManagers/app_input_handler.h</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchMenu/menu_state.c</file>
