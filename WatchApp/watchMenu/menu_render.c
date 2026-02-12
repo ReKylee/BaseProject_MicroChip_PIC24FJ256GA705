@@ -221,7 +221,7 @@ static void get_edit_ring_params(MenuState_t state, uint8_t field, uint8_t* coun
 static bool edit_label_at_index(MenuState_t state, uint8_t field, uint8_t idx, uint8_t count, uint8_t step) {
     if ((idx % step) != 0) return false;
     if (state == MENU_SET_DATE && field == 0 && count == 31 && idx == 30) {
-        return false; // avoid 31 overlapping 1
+        return false;
     }
     return true;
 }

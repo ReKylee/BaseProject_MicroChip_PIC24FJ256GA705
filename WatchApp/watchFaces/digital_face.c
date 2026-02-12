@@ -11,7 +11,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
-#include "watch_face_common.h" // Include common drawing functions
+#include "watch_face_common.h"
 
 // ============================================================================
 // CONFIG
@@ -68,7 +68,6 @@ static void draw_ampm(bool is_pm, uint16_t color) {
 }
 
 static uint8_t time_text_width(void) {
-    // "HH:MM" -> 5 chars
     return (uint8_t)(5 * (FONT_W * TIME_SCALE_X + FONT_SPACING));
 }
 
@@ -80,7 +79,7 @@ void DigitalFace_Init(void) {
     oledC_setBackground(COLOR_BG);
     memset(&s_last_time_drawn, 0, sizeof(Time_t));
     memset(&s_last_date_drawn, 0, sizeof(Date_t));
-    s_last_time_drawn.second = 255; // force initial draw
+    s_last_time_drawn.second = 255;
     s_last_format_drawn = FORMAT_24H;
     s_last_alarm_drawn = false;
 }
@@ -95,7 +94,6 @@ void DigitalFace_Draw(void) {
         hour = Timekeeper_Convert24to12(hour, &is_pm);
     }
 
-    // Time
     uint8_t time_w = time_text_width();
     uint8_t time_x = (uint8_t)((SCREEN_W - time_w) / 2);
     uint8_t hour_x = time_x;
@@ -107,21 +105,17 @@ void DigitalFace_Draw(void) {
     draw_time_digits(state->current_time.minute, min_x, TIME_Y, COLOR_PRIMARY, TIME_SCALE_X, TIME_SCALE_Y);
     draw_seconds(state->current_time.second, COLOR_DIM);
 
-    // Date
     s_last_date_drawn.day = 0;
     uint8_t date_text_w = (uint8_t)(5 * (FONT_W + FONT_SPACING));
     uint8_t date_x = (uint8_t)((SCREEN_W - date_text_w) / 2);
     WatchFace_DrawDate(date_x, DATE_Y_BOTTOM, &state->current_date, &s_last_date_drawn, COLOR_DIM, COLOR_BG);
 
-    // AM/PM
     if (state->time_format == FORMAT_12H) {
         draw_ampm(is_pm, COLOR_SECONDARY);
     }
 
-    // Alarm
     WatchFace_DrawAlarmIcon(ALARM_X, ALARM_Y, ALARM_W, ALARM_H, state->alarm.enabled);
 
-    // Save state
     s_last_time_drawn = state->current_time;
     s_last_date_drawn = state->current_date;
     s_last_alarm_drawn = state->alarm.enabled;
@@ -142,19 +136,16 @@ void DigitalFace_DrawUpdate(void) {
         current_hour_12 = Timekeeper_Convert24to12(now.hour, &is_pm);
     }
 
-    // Redraw everything if format changed
     if (state->time_format != s_last_format_drawn) {
         DigitalFace_Draw();
         return;
     }
 
-    // Seconds
     if (now.second != s_last_time_drawn.second) {
         draw_seconds(s_last_time_drawn.second, COLOR_BG);
         draw_seconds(now.second, COLOR_DIM);
     }
 
-    // Minutes
     uint8_t time_w = time_text_width();
     uint8_t time_x = (uint8_t)((SCREEN_W - time_w) / 2);
     uint8_t hour_x = time_x;
@@ -166,7 +157,6 @@ void DigitalFace_DrawUpdate(void) {
         draw_time_digits(now.minute, min_x, TIME_Y, COLOR_PRIMARY, TIME_SCALE_X, TIME_SCALE_Y);
     }
 
-    // Hours
     uint8_t last_hour_12 = s_last_time_drawn.hour;
     bool last_is_pm = false;
     if (state->time_format == FORMAT_12H) {
@@ -187,12 +177,10 @@ void DigitalFace_DrawUpdate(void) {
         draw_time_digits(current_hour_to_draw, hour_x, TIME_Y, COLOR_PRIMARY, TIME_SCALE_X, TIME_SCALE_Y);
     }
 
-    // Date
     uint8_t date_text_w = (uint8_t)(5 * (FONT_W + FONT_SPACING));
     uint8_t date_x = (uint8_t)((SCREEN_W - date_text_w) / 2);
     WatchFace_DrawDate(date_x, DATE_Y_BOTTOM, &today, &s_last_date_drawn, COLOR_DIM, COLOR_BG);
 
-    // Alarm
     if (state->alarm.enabled != s_last_alarm_drawn) {
         WatchFace_DrawAlarmIcon(ALARM_X, ALARM_Y, ALARM_W, ALARM_H, state->alarm.enabled);
         s_last_alarm_drawn = state->alarm.enabled;

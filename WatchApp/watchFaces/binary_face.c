@@ -19,7 +19,7 @@
 
 #define DOT_SIZE        5
 #define DOT_SPACING     9
-#define COL_SPACING_FIX 4  // extra spacing between hours/minutes/seconds
+#define COL_SPACING_FIX 4
 #define GRID_ROWS       4
 #define GRID_COLS       6
 #define SCREEN_W        96
@@ -32,17 +32,15 @@ static uint8_t s_label_y = 0;
 static uint8_t s_bit_labels_y[4];
 static const char* s_bit_labels = "8421";
 
-// Colors per column (hour, min, sec)
 static const uint16_t s_colors[6] = {COLOR_PRIMARY, COLOR_PRIMARY,
     COLOR_SECONDARY, COLOR_SECONDARY,
     COLOR_ACCENT, COLOR_ACCENT};
 
-// Precompute dot positions
 
 typedef struct {
     uint8_t x, y;
 } DotPos_t;
-static DotPos_t s_dot_pos[GRID_COLS][GRID_ROWS]; // col x row
+static DotPos_t s_dot_pos[GRID_COLS][GRID_ROWS];
 
 // ============================================================================
 // STATE
@@ -105,19 +103,16 @@ void BinaryFace_Init(void) {
 
     init_dot_positions();
 
-    // Draw static labels (H M S)
     for (uint8_t i = 0; i < 3; i++) {
         oledC_DrawString(s_label_x[i], s_label_y, 1, 1, (uint8_t*) (i == 0 ? "H" : i == 1 ? "M" : "S"), COLOR_TEXT);
     }
 
-    // Draw bit labels (8,4,2,1)
     for (uint8_t row = 0; row < 4; row++) {
 
         oledC_DrawString(2, s_bit_labels_y[row], 1, 1, (uint8_t[]) {
             s_bit_labels[row], 0}, COLOR_TEXT);
     }
 
-    // Draw separators (simple small rings) centered between HH|MM|SS
     uint8_t sep1_x = (uint8_t)((s_dot_pos[1][0].x + s_dot_pos[2][0].x) / 2);
     uint8_t sep2_x = (uint8_t)((s_dot_pos[3][0].x + s_dot_pos[4][0].x) / 2);
     uint8_t sep_y0 = s_dot_pos[0][1].y;
@@ -127,7 +122,6 @@ void BinaryFace_Init(void) {
     oledC_DrawCircle(sep2_x, sep_y0, 1, COLOR_DIM);
     oledC_DrawCircle(sep2_x, sep_y1, 1, COLOR_DIM);
 
-    // Draw all dots as rings initially
     for (uint8_t col = 0; col < 6; col++) {
         for (uint8_t row = 0; row < 4; row++) {
             oledC_DrawRing(s_dot_pos[col][row].x, s_dot_pos[col][row].y, DOT_SIZE / 2, 1, COLOR_DIM);
@@ -135,17 +129,15 @@ void BinaryFace_Init(void) {
     }
 
     memset(&s_last_time_drawn, 0, sizeof (Time_t));
-    s_last_time_drawn.second = 99; // force full redraw
+    s_last_time_drawn.second = 99;
     s_last_format_drawn = FORMAT_24H;
     memset(&s_last_date_drawn, 0, sizeof(Date_t));
     s_last_alarm_drawn = Watch_GetState()->alarm.enabled;
 
-    // Alarm icon
     WatchFace_DrawAlarmIcon(ALARM_X, ALARM_Y, ALARM_W, ALARM_H, s_last_alarm_drawn);
 }
 
 void BinaryFace_Draw(void) {
-    // Full redraw needs static labels/dots plus current time/date.
     BinaryFace_Init();
     BinaryFace_DrawUpdate();
 }
@@ -154,13 +146,11 @@ void BinaryFace_DrawUpdate(void) {
     WatchState_t* state = Watch_GetState();
     Time_t now = state->current_time;
 
-    // Redraw everything if format changed
     if (state->time_format != s_last_format_drawn) {
         BinaryFace_Init();
         s_last_format_drawn = state->time_format;
     }
 
-    // Extract digits (hour, min, sec)
     uint8_t hour = now.hour;
     uint8_t last_hour = s_last_time_drawn.hour;
     if (state->time_format == FORMAT_12H) {
@@ -173,9 +163,8 @@ void BinaryFace_DrawUpdate(void) {
     uint8_t last_digits[6] = {last_hour / 10, last_hour % 10, s_last_time_drawn.minute / 10, s_last_time_drawn.minute % 10,
         s_last_time_drawn.second / 10, s_last_time_drawn.second % 10};
 
-    // Iterate columns and rows
     for (uint8_t col = 0; col < 6; col++) {
-        if (digits[col] == last_digits[col]) continue; // skip unchanged digits
+        if (digits[col] == last_digits[col]) continue;
 
         for (uint8_t row = 0; row < 4; row++) {
             bool bit_now = get_bit(digits[col], 3 - row);
@@ -191,12 +180,10 @@ void BinaryFace_DrawUpdate(void) {
 
     s_last_time_drawn = now;
 
-    // Date
     uint8_t date_text_w = 30;
     uint8_t date_x = (uint8_t)((SCREEN_W - date_text_w) / 2);
     WatchFace_DrawDate(date_x, 82, &state->current_date, &s_last_date_drawn, COLOR_DIM, COLOR_BG);
 
-    // Alarm icon
     if (state->alarm.enabled != s_last_alarm_drawn) {
         WatchFace_DrawAlarmIcon(ALARM_X, ALARM_Y, ALARM_W, ALARM_H, state->alarm.enabled);
         s_last_alarm_drawn = state->alarm.enabled;

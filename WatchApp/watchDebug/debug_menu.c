@@ -15,7 +15,6 @@
 #include "../watchCore/timekeeper.h"
 #include <stdio.h>
 
-// Layout
 #define DEBUG_HEADER_Y 1
 #define DEBUG_HEADER_H 10
 #define DEBUG_TIME_X 48

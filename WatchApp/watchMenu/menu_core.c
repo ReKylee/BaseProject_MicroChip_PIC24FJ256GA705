@@ -31,7 +31,6 @@ static uint8_t pot_select(uint16_t raw, uint8_t min, uint8_t max, uint16_t hyste
         return *last_sel;
     }
 
-    // Hysteresis around the current bin boundaries.
     uint8_t sel_idx = (uint8_t)(*last_sel - min);
     uint16_t lower = (uint16_t)(sel_idx * bin);
     uint16_t upper = (uint16_t)((sel_idx + 1) * bin - 1);

@@ -13,11 +13,11 @@
 // CONFIGURATION
 // ============================================================================
 
-#define FLIP_THRESHOLD_Z        200      // Z-axis threshold for flip (negative Z)
-#define SHAKE_THRESHOLD_DELTA   200      // Minimum delta squared magnitude for shake
+#define FLIP_THRESHOLD_Z        200
+#define SHAKE_THRESHOLD_DELTA   200
 #define SHAKE_COUNT_REQUIRED    3
 #define SHAKE_TIMEOUT_MS        1000
-#define SHAKE_DEADZONE          50       // Ignore very small movements (noise)
+#define SHAKE_DEADZONE          50
 
 // ============================================================================
 // PRIVATE DATA
@@ -44,11 +44,9 @@ static bool is_shaking(int16_t x, int16_t y, int16_t z) {
     int64_t deadzone_sq = (int64_t)SHAKE_DEADZONE * SHAKE_DEADZONE;
     int64_t threshold_sq = (int64_t)SHAKE_THRESHOLD_DELTA * SHAKE_THRESHOLD_DELTA;
 
-    // Ignore very small movements
     if (delta_sq < deadzone_sq)
         return false;
 
-    // Check if total delta exceeds threshold
     return delta_sq >= threshold_sq;
 }
 
@@ -75,7 +73,6 @@ AccelEvent_t AccelInput_Check(void) {
         return ACCEL_NONE;
     }
 
-    // --- Flip detection ---
     if (is_flipped(z)) {
         s_last_x = x;
         s_last_y = y;
@@ -83,7 +80,6 @@ AccelEvent_t AccelInput_Check(void) {
         return ACCEL_FLIP;
     }
 
-    // --- Shake detection ---
     if (is_shaking(x, y, z)) {
         uint32_t now = Timekeeper_GetMillis();
 
@@ -101,7 +97,6 @@ AccelEvent_t AccelInput_Check(void) {
             return ACCEL_SHAKE;
         }
     } else {
-        // Update last values only if not shaking (filter out noise)
         s_last_x = x;
         s_last_y = y;
         s_last_z = z;

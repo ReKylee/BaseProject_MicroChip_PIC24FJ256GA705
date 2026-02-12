@@ -16,9 +16,7 @@
 #include "../watchDebug/debug_menu.h"
 #endif
 
-// Private functions for handling inputs in different modes
 
-// Helper function for LED feedback
 static void app_sync_led_feedback(void) {
     bool s1_pressed = false;
     bool s2_pressed = false;
@@ -47,7 +45,7 @@ static void handle_watch_mode(ButtonEvent_t btn, AccelEvent_t accel) {
 
     if (Alarm_IsRinging() && (btn == BTN_S1_SHORT || btn == BTN_S2_SHORT)) {
         Alarm_Dismiss();
-        state->needs_full_redraw = true; // Force redraw to clear alarm state
+        state->needs_full_redraw = true;
         return;
     }
 

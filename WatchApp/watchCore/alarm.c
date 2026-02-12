@@ -15,29 +15,25 @@
 // ============================================================================
 
 void Alarm_Init(void) {
-    // Alarm state is in global WatchState
 }
 
 void Alarm_Check(void) {
     WatchState_t* state = Watch_GetState();
     
-    // Only check if alarm is enabled and not already triggered
     if (!state->alarm.enabled || state->alarm.triggered) {
         return;
     }
     
-    // Check if current time matches alarm time
     if (state->current_time.hour == state->alarm.hour &&
         state->current_time.minute == state->alarm.minute &&
-        state->current_time.second == 0) {  // Trigger at :00 seconds
+        state->current_time.second == 0) {
         
-        // Trigger alarm
         state->alarm.triggered = true;
         state->alarm.trigger_count = 0;
-        state->prev_display_mode = state->display_mode; // Store current mode
-        state->prev_watch_face = state->watch_face; // Store current watch face
-        state->display_mode = MODE_WATCH; // Ensure alarm face is visible from any mode
-        state->watch_face = FACE_ALARM; // Switch to alarm face
+        state->prev_display_mode = state->display_mode;
+        state->prev_watch_face = state->watch_face;
+        state->display_mode = MODE_WATCH;
+        state->watch_face = FACE_ALARM;
         state->needs_full_redraw = true;
     }
 }
@@ -80,11 +76,11 @@ void Alarm_Dismiss(void) {
     state->alarm.triggered = false;
     state->alarm.trigger_count = 0;
     state->alarm.enabled = false;
-    state->display_mode = state->prev_display_mode; // Restore previous mode
-    state->watch_face = state->prev_watch_face; // Restore previous watch face
+    state->display_mode = state->prev_display_mode;
+    state->watch_face = state->prev_watch_face;
     oledC_sendCommand(OLEDC_CMD_SET_DISPLAY_MODE_ON, NULL, 0);
-    oledC_setBackground(COLOR_BG); // Reset background
-    state->needs_full_redraw = true; // Force full redraw to show restored face
+    oledC_setBackground(COLOR_BG);
+    state->needs_full_redraw = true;
 }
 
 bool Alarm_IsRinging(void) {
@@ -95,11 +91,9 @@ bool Alarm_IsRinging(void) {
 void Alarm_Update(void) {
     WatchState_t* state = Watch_GetState();
     
-    // If alarm is triggered, increment counter
     if (state->alarm.triggered) {
         state->alarm.trigger_count++;
         
-        // Auto-dismiss after 20 seconds
         if (state->alarm.trigger_count >= ALARM_AUTO_OFF_SECONDS) {
             Alarm_Dismiss();
         }

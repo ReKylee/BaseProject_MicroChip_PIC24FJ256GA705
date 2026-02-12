@@ -16,49 +16,41 @@ static const uint8_t s_days_in_month[12] = {
     31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };
 
-// Base time and date stored when time is set
 static Time_t s_base_time;
 static Date_t s_base_date;
-static uint32_t s_base_time_ticks; // Uptime in seconds when time was set
+static uint32_t s_base_time_ticks;
 
 // ============================================================================
 // PUBLIC FUNCTIONS
 // ============================================================================
 
 void Timekeeper_Init(void) {
-    // Freq 1Hz, Priority 6 (high)
     Timer1_Init(1, 6);
-    // Freq ~1kHz (1042Hz), Priority 5
-    // PR = (4MHz / 256 / 1042Hz) - 1 = 14
     Timer2_Init(1042, 5);
     
-    // Set initial base time to 00:00:00 at boot
     s_base_time = (Time_t){0, 0, 0};
     s_base_date = (Date_t){1, 1};
     s_base_time_ticks = 0;
 }
 
 void Timekeeper_SetTime(const Time_t* time) {
-    // Validate and set time
     if (time->hour < 24 && time->minute < 60 && time->second < 60) {
-        __builtin_disi(0x3FFF); // Disable interrupts for atomic update
+        __builtin_disi(0x3FFF);
         s_base_time = *time;
         s_base_time_ticks = Timer_GetTicks(1);
-        __builtin_disi(0x0000); // Re-enable interrupts
+        __builtin_disi(0x0000);
     }
 }
 
 void Timekeeper_SetDate(const Date_t* date) {
-    // Validate and set date
     if (date->month >= 1 && date->month <= 12) {
         uint8_t max_days = Timekeeper_GetDaysInMonth(date->month);
         if (date->day >= 1 && date->day <= max_days) {
-             __builtin_disi(0x3FFF); // Disable interrupts for atomic update
+             __builtin_disi(0x3FFF);
             s_base_date = *date;
-            // Also reset the base time to prevent date calculation inconsistencies
             s_base_time = Watch_GetState()->current_time;
             s_base_time_ticks = Timer_GetTicks(1);
-             __builtin_disi(0x0000); // Re-enable interrupts
+             __builtin_disi(0x0000);
         }
     }
 }
@@ -70,8 +62,7 @@ void Timekeeper_GetTime(Time_t* time) {
     uint32_t base_total_seconds = s_base_time.hour * 3600 + s_base_time.minute * 60 + s_base_time.second;
     uint32_t current_total_seconds = base_total_seconds + elapsed_seconds;
     
-    // Date calculation
-    uint16_t days_passed = current_total_seconds / 86400; // 86400 seconds in a day
+    uint16_t days_passed = current_total_seconds / 86400;
     uint16_t day = (uint16_t)s_base_date.day + days_passed;
     uint8_t month = s_base_date.month;
 
@@ -87,7 +78,6 @@ void Timekeeper_GetTime(Time_t* time) {
     state->current_date.day = (uint8_t)day;
     state->current_date.month = month;
 
-    // Time calculation
     uint32_t seconds_into_day = current_total_seconds % 86400;
     time->hour = seconds_into_day / 3600;
     time->minute = (seconds_into_day % 3600) / 60;
@@ -99,8 +89,6 @@ void Timekeeper_GetDate(Date_t* date) {
 }
 
 uint32_t Timekeeper_GetMillis(void) {
-    // Timer2 is running at 1042Hz, so each tick is ~0.96ms.
-    // This is close enough to 1ms for debounce/long-press timing.
     return Timer_GetTicks(2);
 }
 
@@ -108,7 +96,7 @@ uint8_t Timekeeper_Convert24to12(uint8_t hour24, bool* is_pm) {
     *is_pm = (hour24 >= 12);
     
     if (hour24 == 0) {
-        return 12;  // Midnight is 12 AM
+        return 12;
     } else if (hour24 <= 12) {
         return hour24;
     } else {
@@ -118,7 +106,7 @@ uint8_t Timekeeper_Convert24to12(uint8_t hour24, bool* is_pm) {
 
 uint8_t Timekeeper_GetDaysInMonth(uint8_t month) {
     if (month < 1 || month > 12) {
-        return 30;  // Default fallback
+        return 30;
     }
     return s_days_in_month[month - 1];
 }

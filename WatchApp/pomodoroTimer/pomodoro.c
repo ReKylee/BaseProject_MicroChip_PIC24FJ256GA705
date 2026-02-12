@@ -113,11 +113,10 @@ static void start_work_session(WatchState_t* state) {
 }
 
 static void start_break(WatchState_t* state) {
-    // Determine break type
     if (state->pomodoro.work_sessions >= state->pomodoro.long_break_after_sessions) {
         state->pomodoro.state = POMODORO_LONG_BREAK;
         state->pomodoro.remaining_seconds = state->pomodoro.long_break_minutes * 60;
-        state->pomodoro.work_sessions = 0;  // Reset counter
+        state->pomodoro.work_sessions = 0;
     } else {
         state->pomodoro.state = POMODORO_SHORT_BREAK;
         state->pomodoro.remaining_seconds = state->pomodoro.short_break_minutes * 60;
@@ -278,24 +277,19 @@ void Pomodoro_Reset(void) {
 void Pomodoro_Update(void) {
     WatchState_t* state = Watch_GetState();
     
-    // Don't update if paused or idle
     if (state->pomodoro.paused || state->pomodoro.state == POMODORO_IDLE) {
         return;
     }
     
-    // Decrement timer
     if (state->pomodoro.remaining_seconds > 0) {
         state->pomodoro.remaining_seconds--;
     }
     
-    // Check if timer completed
     if (state->pomodoro.remaining_seconds == 0) {
         if (state->pomodoro.state == POMODORO_WORK) {
-            // Work session completed
             state->pomodoro.work_sessions++;
             start_break(state);
         } else {
-            // Break completed
             start_work_session(state);
         }
     }

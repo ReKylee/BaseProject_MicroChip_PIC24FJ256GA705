@@ -3,7 +3,7 @@
  */
 
 #include <stdbool.h>
-#include <stdint.h> // For uint32_t
+#include <stdint.h>
 
 #include "app_time_manager.h"
 #include "../shared/watch_state.h"
@@ -14,8 +14,6 @@
 
 void APP_UpdateTimeAndAlarms(uint32_t* last_uptime_s) {
     WatchState_t* state = Watch_GetState();
-
-    // --- Handle Time Updates ---
     uint32_t current_uptime_s = Timer_GetTicks(1);
     if (current_uptime_s != *last_uptime_s) {
         *last_uptime_s = current_uptime_s;

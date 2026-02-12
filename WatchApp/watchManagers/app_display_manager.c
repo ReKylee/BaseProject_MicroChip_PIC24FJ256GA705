@@ -6,13 +6,13 @@
 #include "../watchFaces/alarm_face.h" 
 #include "../watchMenu/menu.h" 
 #include "../shared/watch_state.h"
-#include "../../oledDriver/oledC.h" // For oledC_setBackground
+#include "../../oledDriver/oledC.h"
 #include "../watchFaces/digital_face.h"
 #include "../watchFaces/analog_face.h"
 #include "../watchFaces/binary_face.h"
 #include "../pomodoroTimer/pomodoro.h"
-#include "../watchCore/alarm.h" // Not directly used but good to have related to alarm_face.h
-#include "../watchCore/timekeeper.h" // Not directly used but good to have related to watch_state.h
+#include "../watchCore/alarm.h"
+#include "../watchCore/timekeeper.h"
 #ifdef DEBUG_MODE
 #include "../watchDebug/debug_menu.h"
 #endif
@@ -21,7 +21,6 @@
 // PRIVATE HELPERS
 // -----------------------------------------------------------------------------
 
-// Draw the current display mode and watch face entirely
 
 static void app_draw_full(WatchState_t* state) {
 
@@ -35,13 +34,13 @@ static void app_draw_full(WatchState_t* state) {
                 case FACE_BINARY: BinaryFace_Draw();
                     break;
                 case FACE_ALARM: AlarmFace_Draw();
-                    break; // Handle FACE_ALARM
+                    break;
                 default: break;
             }
             break;
 
         case MODE_MENU: Menu_DrawFull();
-            break; // Call Menu_DrawFull
+            break;
         case MODE_POMODORO: Pomodoro_Draw();
             break;
 #ifdef DEBUG_MODE
@@ -53,7 +52,6 @@ static void app_draw_full(WatchState_t* state) {
     }
 }
 
-// Perform partial updates for the current watch face
 static void app_draw_partial(WatchState_t* state) {
     switch (state->display_mode) {
         case MODE_WATCH:
@@ -93,7 +91,6 @@ static void app_draw_partial(WatchState_t* state) {
 void APP_UpdateDisplay(void) {
     WatchState_t* state = Watch_GetState();
 
-    // Full redraw has priority
     if (state->needs_full_redraw) {
         state->needs_full_redraw = false;
         state->needs_redraw = false;
@@ -101,9 +98,8 @@ void APP_UpdateDisplay(void) {
         return;
     }
 
-    // If a partial redraw is requested
     if (state->needs_redraw) {
         state->needs_redraw = false;
-        app_draw_partial(state); // Call partial draw directly
+        app_draw_partial(state);
     }
 }

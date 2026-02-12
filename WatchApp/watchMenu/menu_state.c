@@ -55,7 +55,6 @@ MenuStateData_t g_menu_data = {
     .edit_full_drawn = false,
 };
 
-// Menu event queue
 #define MENU_EVENT_QUEUE_SIZE 8
 static MenuEvent_t s_menu_events[MENU_EVENT_QUEUE_SIZE];
 static uint8_t s_menu_evt_head = 0;
@@ -89,7 +88,6 @@ void MenuEvent_Clear(void) {
     s_menu_evt_tail = 0;
 }
 
-// Selection accessors for radial menus
 static uint8_t get_main_selection(void) { return s_radial_selection; }
 static void set_main_selection(uint8_t idx) { s_radial_selection = idx; }
 static uint8_t get_display_selection(void) { return Watch_GetState()->watch_face; }
@@ -154,7 +152,6 @@ void MenuState_SeedEditBuffers(MenuState_t menu_state) {
     }
 }
 
-// Radial menu definitions
 MenuRadial_t s_main_menu_radial = {
     .count = MAIN_MENU_ITEMS,
     .draw_item = NULL,

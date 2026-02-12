@@ -16,21 +16,13 @@
 // CONFIGURATION
 // ============================================================================
 
-// Marker widths for main (3,6,9,12) vs minor markers
 #define MARKER_MAJOR_WIDTH  3
 #define MARKER_MINOR_WIDTH  1
 
-// Date position
 #define ANALOG_DATE_X  33
 #define ANALOG_DATE_Y  88
 
-// Alarm icon position
-// #define ALARM_X  88
-// #define ALARM_Y  5
-// #define ALARM_W  5
-// #define ALARM_H  5
 
-// Center dot
 #define CENTER_DOT_RADIUS  2
 
 // ============================================================================
@@ -116,23 +108,19 @@ static void draw_hands(uint8_t hour, uint8_t min, uint8_t sec) {
         restore_after_second(s_last_sec, hour, min);
         draw_hand(SEC_POINTS, sec, 1, COLOR_ACCENT);
     } else {
-        // Erase only the hands that changed so we don't wipe other hands.
         if (hour_changed && s_last_hour != 255) erase_hand(HOUR_POINTS, s_last_hour, 3);
         if (min_changed && s_last_min != 255) erase_hand(MIN_POINTS, s_last_min, 2);
         if (sec_changed && s_last_sec != 255) erase_hand(SEC_POINTS, s_last_sec, 1);
 
-        // Restore markers and ring after erasing.
         if (hour_changed || min_changed || sec_changed) {
             draw_markers();
         }
 
-        // Redraw all current hands to restore any erased overlap.
         draw_hand(HOUR_POINTS, hour, 3, COLOR_SECONDARY);
         draw_hand(MIN_POINTS, min, 2, COLOR_PRIMARY);
         draw_hand(SEC_POINTS, sec, 1, COLOR_ACCENT);
     }
 
-    // Redraw center dot to hide joins.
     oledC_DrawCircle(CENTER_X, CENTER_Y, CENTER_DOT_RADIUS, COLOR_ACCENT);
 
     s_last_hour = hour;
@@ -146,17 +134,15 @@ static void draw_hands(uint8_t hour, uint8_t min, uint8_t sec) {
 
 void AnalogFace_Init(void) {
     oledC_setBackground(COLOR_BG);
-    memset(&s_last_date_drawn, 0, sizeof(Date_t)); // Initialize last_date_drawn
+    memset(&s_last_date_drawn, 0, sizeof(Date_t));
 
     draw_markers();
 
-    // Date - Initial draw
     WatchState_t* state = Watch_GetState();
     WatchFace_DrawDate(ANALOG_DATE_X, ANALOG_DATE_Y, &state->current_date, &s_last_date_drawn, COLOR_DIM, COLOR_BG);
     s_last_alarm_drawn = state->alarm.enabled;
     WatchFace_DrawAlarmIcon(ALARM_X, ALARM_Y, ALARM_W, ALARM_H, s_last_alarm_drawn);
 
-    // Reset hand state
     s_last_hour = s_last_min = s_last_sec = 255;
 }
 
@@ -181,13 +167,11 @@ void AnalogFace_Draw(void) {
     oledC_setBackground(COLOR_BG);
     draw_markers();
 
-    // Draw hands immediately on full redraw to avoid a visible delay.
     uint8_t sec = state->current_time.second;
     uint8_t min = state->current_time.minute;
     uint8_t hour = compute_hour_idx(state->current_time.hour, min);
     draw_hands_full(hour, min, sec);
 
-    // Force date and alarm icon to redraw after a full clear.
     s_last_date_drawn.day = 0;
     s_last_date_drawn.month = 0;
     WatchFace_DrawDate(ANALOG_DATE_X, ANALOG_DATE_Y, &state->current_date, &s_last_date_drawn, COLOR_DIM, COLOR_BG);

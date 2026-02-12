@@ -22,12 +22,8 @@ int watch_main(void) {
 
     while (1) {
         APP_UpdateTimeAndAlarms(&last_uptime_s);
-
-        // --- Handle Inputs ---
         ButtonEvent_t btn = Buttons_Update();
         AccelEvent_t accel = AccelInput_Check();
-
-        // --- Handle Display Modes ---
         APP_HandleInputEvents(btn, accel);
         
         APP_UpdateDisplay();
