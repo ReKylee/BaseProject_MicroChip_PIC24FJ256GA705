@@ -1,5 +1,4 @@
 /*
- * digital_face.h
  * Digital watch face with large digits
  */
 

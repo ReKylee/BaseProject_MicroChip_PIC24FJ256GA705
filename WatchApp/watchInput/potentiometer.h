@@ -1,5 +1,4 @@
 /*
- * potentiometer.h
  * Potentiometer input with jitter prevention
  */
 

@@ -1,5 +1,4 @@
 /*
- * alarm.h
  * Alarm functionality for the watch
  */
 

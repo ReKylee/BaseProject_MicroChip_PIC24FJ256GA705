@@ -1,5 +1,4 @@
 /*
- * buttons.c
  * Implementation of button handling
  */
 

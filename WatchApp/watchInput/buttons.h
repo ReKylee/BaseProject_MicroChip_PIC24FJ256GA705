@@ -1,5 +1,4 @@
 /*
- * buttons.h
  * Button input handling with debounce and long press detection
  */
 

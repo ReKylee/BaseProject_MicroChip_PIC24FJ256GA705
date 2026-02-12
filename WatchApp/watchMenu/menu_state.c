@@ -1,3 +1,7 @@
+/*
+ * Menu configuration, shared state, and helper accessors.
+ */
+
 #include <stdlib.h>
 
 #include "menu_state.h"
@@ -26,41 +30,30 @@ const uint32_t* const s_display_mode_icons[] = {s_icon_display_digital, s_icon_d
 const uint32_t* const s_time_format_icons[] = {s_icon_time_12h, s_icon_time_24h};
 const uint32_t* const s_alarm_toggle_icons[] = {s_icon_alarm_toggle, s_icon_set_alarm};
 
-// Temporary editing state
-Time_t s_temp_time;
-Date_t s_temp_date;
-Time_t s_temp_alarm;
-uint8_t s_temp_pomo_work;
-uint8_t s_temp_pomo_break;
-Time_t s_last_small_time;
-
-// Selection state
-uint8_t s_radial_selection = 0;
-uint8_t s_last_radial_selection = 0xFF;
-uint8_t s_display_last_selection = 0xFF;
-uint8_t s_format_last_selection = 0xFF;
-uint8_t s_alarm_last_selection = 0xFF;
-uint8_t s_main_last_sel = 0;
-uint8_t s_display_last_sel = 0;
-uint8_t s_format_last_sel = 0;
-uint8_t s_alarm_last_sel = 0;
-
-// Pot state
-uint16_t s_pot_filtered = 0xFFFF;
-uint16_t s_pot_last_raw = 0xFFFF;
-uint16_t s_main_last_raw = 0xFFFF;
-uint16_t s_display_last_raw = 0xFFFF;
-uint16_t s_format_last_raw = 0xFFFF;
-uint16_t s_alarm_last_raw = 0xFFFF;
-uint16_t s_edit_last_raw = 0xFFFF;
-uint8_t s_edit_last_val = 0;
-uint8_t s_edit_last_field = 0xFF;
-uint8_t s_edit_last_draw_val = 0xFF;
-uint8_t s_edit_last_draw_field = 0xFF;
-
-// Flags
-bool s_skip_next_partial = false;
-bool s_edit_full_drawn = false;
+MenuStateData_t g_menu_data = {
+    .radial_selection = 0,
+    .last_radial_selection = 0xFF,
+    .display_last_selection = 0xFF,
+    .format_last_selection = 0xFF,
+    .alarm_last_selection = 0xFF,
+    .main_last_sel = 0,
+    .display_last_sel = 0,
+    .format_last_sel = 0,
+    .alarm_last_sel = 0,
+    .pot_filtered = 0xFFFF,
+    .pot_last_raw = 0xFFFF,
+    .main_last_raw = 0xFFFF,
+    .display_last_raw = 0xFFFF,
+    .format_last_raw = 0xFFFF,
+    .alarm_last_raw = 0xFFFF,
+    .edit_last_raw = 0xFFFF,
+    .edit_last_val = 0,
+    .edit_last_field = 0xFF,
+    .edit_last_draw_val = 0xFF,
+    .edit_last_draw_field = 0xFF,
+    .skip_next_partial = false,
+    .edit_full_drawn = false,
+};
 
 // Menu event queue
 #define MENU_EVENT_QUEUE_SIZE 8
@@ -123,6 +116,42 @@ const char* MenuState_GetMainMenuLabel(uint8_t idx) {
 
 const char* MenuState_GetAlarmToggleLabel(uint8_t idx) {
     return idx ? "ON" : "OFF";
+}
+
+void MenuState_SetSkipNextPartial(bool skip) {
+    g_menu_data.skip_next_partial = skip;
+}
+
+bool MenuState_ConsumeSkipNextPartial(void) {
+    if (!g_menu_data.skip_next_partial) {
+        return false;
+    }
+    g_menu_data.skip_next_partial = false;
+    return true;
+}
+
+void MenuState_SetEditFullDrawn(bool drawn) {
+    g_menu_data.edit_full_drawn = drawn;
+}
+
+bool MenuState_IsEditFullDrawn(void) {
+    return g_menu_data.edit_full_drawn;
+}
+
+void MenuState_SeedEditBuffers(MenuState_t menu_state) {
+    WatchState_t* state = Watch_GetState();
+    if (menu_state == MENU_SET_TIME) {
+        s_temp_time = state->current_time;
+    } else if (menu_state == MENU_SET_DATE) {
+        s_temp_date = state->current_date;
+    } else if (menu_state == MENU_SET_ALARM) {
+        s_temp_alarm.hour = state->alarm.hour;
+        s_temp_alarm.minute = state->alarm.minute;
+        s_temp_alarm.second = 0;
+    } else if (menu_state == MENU_POMODORO) {
+        s_temp_pomo_work = state->pomodoro.work_minutes;
+        s_temp_pomo_break = state->pomodoro.short_break_minutes;
+    }
 }
 
 // Radial menu definitions
@@ -227,7 +256,7 @@ void MenuState_OnChange(MenuState_t new_state, bool seed_pot, uint16_t pot_value
     s_edit_last_field = 0xFF;
     s_edit_last_draw_val = 0xFF;
     s_edit_last_draw_field = 0xFF;
-    s_edit_full_drawn = false;
+    MenuState_SetEditFullDrawn(false);
 
     s_last_radial_selection = s_radial_selection;
     s_display_last_selection = state->watch_face;
@@ -241,7 +270,7 @@ void MenuState_OnChange(MenuState_t new_state, bool seed_pot, uint16_t pot_value
 
     s_pot_filtered = seed_pot ? pot_value : 0xFFFF;
     s_pot_last_raw = seed_pot ? pot_value : 0xFFFF;
-    s_skip_next_partial = true;
+    MenuState_SetSkipNextPartial(true);
 
     MenuEvent_Clear();
 

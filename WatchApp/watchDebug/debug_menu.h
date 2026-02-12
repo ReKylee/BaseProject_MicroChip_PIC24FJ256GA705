@@ -1,3 +1,7 @@
+/*
+ * Debug-only screen for sensor/alarm diagnostics.
+ */
+
 #ifndef DEBUG_MENU_H
 #define DEBUG_MENU_H
 

@@ -1,5 +1,4 @@
 /*
- * watch_state.h
  * Central state management for the watch application
  * Single source of truth - no data duplication
  */
@@ -42,6 +41,7 @@ typedef struct {
     uint8_t last_alarm_second_flash_check; // To control flashing rate
     
     // Previous state for alarm exit
+    DisplayMode_t prev_display_mode;
     WatchFace_t prev_watch_face;
 } WatchState_t;
 

@@ -1,3 +1,7 @@
+/*
+ * Central input routing across watch/menu/pomodoro/debug modes.
+ */
+
 #include "app_input_handler.h"
 #include "../shared/watch_state.h"
 #include "../watchInput/buttons.h"
@@ -5,7 +9,6 @@
 #include "../watchMenu/menu.h"
 #include "../watchCore/alarm.h"
 #include "../../ledDriver/LED.h"
-#include "../../System/delay.h"
 #include "../watchInput/potentiometer.h"
 #include "../pomodoroTimer/pomodoro.h"
 #include "../watchCore/timekeeper.h"
@@ -16,17 +19,12 @@
 // Private functions for handling inputs in different modes
 
 // Helper function for LED feedback
-static void app_button_led_feedback(ButtonEvent_t btn) {
-    if (btn == BTN_S1_SHORT || btn == BTN_S1_LONG) {
-        LED1_On();
-        DELAY_milliseconds(50);
-        LED1_Off();
-    }
-    if (btn == BTN_S2_SHORT) {
-        LED2_On();
-        DELAY_milliseconds(50);
-        LED2_Off();
-    }
+static void app_sync_led_feedback(void) {
+    bool s1_pressed = false;
+    bool s2_pressed = false;
+    Buttons_GetState(&s1_pressed, &s2_pressed);
+    if (s1_pressed) LED1_On(); else LED1_Off();
+    if (s2_pressed) LED2_On(); else LED2_Off();
 }
 
 static uint32_t s_menu_enter_ms = 0;
@@ -56,7 +54,6 @@ static void handle_watch_mode(ButtonEvent_t btn, AccelEvent_t accel) {
     if (btn == BTN_S2_SHORT) {
         state->watch_face = (state->watch_face + 1) % FACE_COUNT_SELECTABLE;
         state->needs_full_redraw = true;
-        app_button_led_feedback(BTN_S2_SHORT); // Use helper for feedback
         return;
     }
 }
@@ -74,8 +71,6 @@ static void handle_menu_mode(ButtonEvent_t btn, AccelEvent_t accel) {
         state->needs_full_redraw = true;
         return;
     }
-
-    app_button_led_feedback(btn); // Use helper for feedback
 
     uint16_t pot_val = Pot_GetRaw();
     Menu_HandleInput(btn, pot_val);
@@ -98,13 +93,12 @@ static void handle_pomodoro_mode(ButtonEvent_t btn, AccelEvent_t accel) {
 
     (void)accel;
 
-    app_button_led_feedback(btn); // Use helper for feedback
-
     Pomodoro_HandleInput(btn == BTN_S2_SHORT, btn == BTN_S1_SHORT);
 }
 
 void APP_HandleInputEvents(ButtonEvent_t btn, AccelEvent_t accel) {
     WatchState_t* state = Watch_GetState();
+    app_sync_led_feedback();
 
     if (Alarm_IsRinging() && (accel == ACCEL_FLIP || accel == ACCEL_SHAKE)) {
         Alarm_Dismiss();

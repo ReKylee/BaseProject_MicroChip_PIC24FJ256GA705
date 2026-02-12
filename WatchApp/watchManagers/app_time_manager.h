@@ -1,3 +1,7 @@
+/*
+ * Time/alarm/pomodoro update manager API.
+ */
+
 #ifndef APP_TIME_MANAGER_H
 #define APP_TIME_MANAGER_H
 

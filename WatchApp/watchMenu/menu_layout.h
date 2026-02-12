@@ -1,3 +1,7 @@
+/*
+ * Shared menu layout constants.
+ */
+
 #ifndef MENU_LAYOUT_H
 #define MENU_LAYOUT_H
 

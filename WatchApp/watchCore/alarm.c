@@ -1,5 +1,4 @@
 /*
- * alarm.c
  * Implementation of alarm functionality
  */
 
@@ -35,7 +34,9 @@ void Alarm_Check(void) {
         // Trigger alarm
         state->alarm.triggered = true;
         state->alarm.trigger_count = 0;
+        state->prev_display_mode = state->display_mode; // Store current mode
         state->prev_watch_face = state->watch_face; // Store current watch face
+        state->display_mode = MODE_WATCH; // Ensure alarm face is visible from any mode
         state->watch_face = FACE_ALARM; // Switch to alarm face
         state->needs_full_redraw = true;
     }
@@ -79,6 +80,7 @@ void Alarm_Dismiss(void) {
     state->alarm.triggered = false;
     state->alarm.trigger_count = 0;
     state->alarm.enabled = false;
+    state->display_mode = state->prev_display_mode; // Restore previous mode
     state->watch_face = state->prev_watch_face; // Restore previous watch face
     oledC_sendCommand(OLEDC_CMD_SET_DISPLAY_MODE_ON, NULL, 0);
     oledC_setBackground(COLOR_BG); // Reset background

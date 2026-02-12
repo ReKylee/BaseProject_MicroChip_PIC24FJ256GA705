@@ -1,3 +1,7 @@
+/*
+ * Public API for the alarm watch face.
+ */
+
 #ifndef ALARM_FACE_H
 #define ALARM_FACE_H
 

@@ -1,5 +1,4 @@
 /*
- * accel_input.c
  * Fixed robust accelerometer detection
  */
 
@@ -41,13 +40,16 @@ static bool is_shaking(int16_t x, int16_t y, int16_t z) {
     int32_t dx = x - s_last_x;
     int32_t dy = y - s_last_y;
     int32_t dz = z - s_last_z;
+    int64_t delta_sq = (int64_t)dx * dx + (int64_t)dy * dy + (int64_t)dz * dz;
+    int64_t deadzone_sq = (int64_t)SHAKE_DEADZONE * SHAKE_DEADZONE;
+    int64_t threshold_sq = (int64_t)SHAKE_THRESHOLD_DELTA * SHAKE_THRESHOLD_DELTA;
 
     // Ignore very small movements
-    if (dx*dx + dy*dy + dz*dz < SHAKE_DEADZONE*SHAKE_DEADZONE)
+    if (delta_sq < deadzone_sq)
         return false;
 
     // Check if total delta exceeds threshold
-    return (dx*dx + dy*dy + dz*dz >= (int32_t)SHAKE_THRESHOLD_DELTA*SHAKE_THRESHOLD_DELTA);
+    return delta_sq >= threshold_sq;
 }
 
 // ============================================================================

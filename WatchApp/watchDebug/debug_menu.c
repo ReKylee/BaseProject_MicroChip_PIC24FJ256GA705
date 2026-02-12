@@ -1,5 +1,4 @@
 /*
- * debug_menu.c
  * Debug menu screen (compiled only with DEBUG_MODE)
  */
 

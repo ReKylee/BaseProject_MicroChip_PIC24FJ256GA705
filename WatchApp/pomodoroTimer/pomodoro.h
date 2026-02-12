@@ -1,5 +1,4 @@
 /*
- * pomodoro.h
  * Pomodoro timer module (25/5 minute intervals)
  */
 

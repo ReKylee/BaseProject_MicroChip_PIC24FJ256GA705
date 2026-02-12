@@ -1,5 +1,4 @@
 /*
- * analog_face.c
  * Optimized analog watch face with fully precomputed geometry
  * Immediate-mode drawing, minimal runtime math
  */

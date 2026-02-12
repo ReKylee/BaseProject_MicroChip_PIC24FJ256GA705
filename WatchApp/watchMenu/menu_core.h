@@ -1,3 +1,7 @@
+/*
+ * Core helpers for radial menu rendering and input mapping.
+ */
+
 #ifndef MENU_CORE_H
 #define MENU_CORE_H
 

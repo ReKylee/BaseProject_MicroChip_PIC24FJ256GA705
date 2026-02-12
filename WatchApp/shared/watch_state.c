@@ -1,5 +1,4 @@
 /*
- * watch_state.c
  * Implementation of central state management
  */
 
@@ -41,6 +40,7 @@ void Watch_InitState(void) {
     
     // Set display mode
     g_watch_state.display_mode = MODE_WATCH;
+    g_watch_state.prev_display_mode = MODE_WATCH;
     
     // Initialize alarm (disabled)
     g_watch_state.alarm.enabled = false;

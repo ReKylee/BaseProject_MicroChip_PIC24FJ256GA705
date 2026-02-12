@@ -1,5 +1,4 @@
 /*
- * binary_face.c
  * Binary watch face using immediate-mode drawing (optimized)
  */
 
@@ -159,7 +158,6 @@ void BinaryFace_DrawUpdate(void) {
     if (state->time_format != s_last_format_drawn) {
         BinaryFace_Init();
         s_last_format_drawn = state->time_format;
-        return;
     }
 
     // Extract digits (hour, min, sec)

@@ -1,3 +1,7 @@
+/*
+ * Hardware and module startup sequence for the watch app.
+ */
+
 #include "app_init.h"
 #include "../System/delay.h"
 #include "watchFaces/alarm_face.h"

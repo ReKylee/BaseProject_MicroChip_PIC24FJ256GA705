@@ -1,3 +1,7 @@
+/*
+ * Menu drawing logic (full and partial updates).
+ */
+
 #include "menu_state.h"
 #include "menu_core.h"
 #include "menu_layout.h"
@@ -15,6 +19,12 @@
 static const RadialMenuConfig_t* s_active_radial = NULL;
 static TimeFormat_t s_last_small_time_format = FORMAT_24H;
 static const char* s_last_header_title = NULL;
+
+static void format_2d(uint8_t value, char out[3]) {
+    out[0] = (char)('0' + (value / 10));
+    out[1] = (char)('0' + (value % 10));
+    out[2] = '\0';
+}
 
 static inline uint8_t idx_to_sec(uint8_t idx, uint8_t count) {
     return (uint8_t)((idx * NUM_CLOCK_POINTS) / count);
@@ -232,7 +242,10 @@ static void fill_edit_spec(MenuState_t state, EditRingSpec_t* spec, char* center
             spec->label_offset = 0;
             spec->selected = s_temp_time.minute;
         }
-        sprintf(center_text, "%02d:%02d", s_temp_time.hour, s_temp_time.minute);
+        format_2d(s_temp_time.hour, &center_text[0]);
+        center_text[2] = ':';
+        format_2d(s_temp_time.minute, &center_text[3]);
+        center_text[5] = '\0';
     } else if (state == MENU_SET_DATE) {
         spec->title = "DATE";
         if (field == 0) {
@@ -246,7 +259,10 @@ static void fill_edit_spec(MenuState_t state, EditRingSpec_t* spec, char* center
             spec->label_offset = 1;
             spec->selected = (uint8_t)(s_temp_date.month - 1);
         }
-        sprintf(center_text, "%02d/%02d", s_temp_date.day, s_temp_date.month);
+        format_2d(s_temp_date.day, &center_text[0]);
+        center_text[2] = '/';
+        format_2d(s_temp_date.month, &center_text[3]);
+        center_text[5] = '\0';
     } else if (state == MENU_POMODORO) {
         spec->title = "POMO";
         if (field == 0) {
@@ -260,7 +276,12 @@ static void fill_edit_spec(MenuState_t state, EditRingSpec_t* spec, char* center
             spec->label_offset = 1;
             spec->selected = (uint8_t)(s_temp_pomo_break - 1);
         }
-        sprintf(center_text, "W%02d B%02d", s_temp_pomo_work, s_temp_pomo_break);
+        center_text[0] = 'W';
+        format_2d(s_temp_pomo_work, &center_text[1]);
+        center_text[3] = ' ';
+        center_text[4] = 'B';
+        format_2d(s_temp_pomo_break, &center_text[5]);
+        center_text[7] = '\0';
     } else {
         spec->title = "ALARM";
         if (field == 0) {
@@ -274,7 +295,10 @@ static void fill_edit_spec(MenuState_t state, EditRingSpec_t* spec, char* center
             spec->label_offset = 0;
             spec->selected = s_temp_alarm.minute;
         }
-        sprintf(center_text, "%02d:%02d", s_temp_alarm.hour, s_temp_alarm.minute);
+        format_2d(s_temp_alarm.hour, &center_text[0]);
+        center_text[2] = ':';
+        format_2d(s_temp_alarm.minute, &center_text[3]);
+        center_text[5] = '\0';
     }
 }
 
@@ -289,7 +313,7 @@ static void draw_edit_ring_labels(MenuState_t state, uint8_t field) {
         int x, y;
         radial_idx_to_xy(i, count, MENU_EDIT_RING_RADIUS, &x, &y);
         char label[3];
-        sprintf(label, "%02d", (uint8_t)(i + offset));
+        format_2d((uint8_t)(i + offset), label);
         oledC_DrawString(x - 6, y - 3, 1, 1, (uint8_t*)label, COLOR_DIM);
     }
 }
@@ -311,7 +335,7 @@ static void draw_edit_tick_partial(MenuState_t state, uint8_t field,
     oledC_DrawCircle(x, y, MENU_EDIT_TICK_RADIUS, COLOR_BG);
     if (edit_label_at_index(state, field, old_val, count, step)) {
         char label[3];
-        sprintf(label, "%02d", (uint8_t)(old_val + offset));
+        format_2d((uint8_t)(old_val + offset), label);
         oledC_DrawString(x - 6, y - 3, 1, 1, (uint8_t*)label, COLOR_DIM);
     }
     radial_idx_to_xy(new_val, count, MENU_EDIT_RING_RADIUS, &x, &y);
@@ -334,7 +358,7 @@ static void draw_edit_full(MenuState_t state) {
     oledC_DrawCircle(sx, sy, MENU_EDIT_TICK_RADIUS, COLOR_PRIMARY);
     s_edit_last_draw_val = spec.selected;
     s_edit_last_draw_field = Watch_GetState()->menu_edit_field;
-    s_edit_full_drawn = true;
+    MenuState_SetEditFullDrawn(true);
 }
 
 static void draw_edit_field_update(MenuState_t state) {
@@ -350,7 +374,7 @@ static void draw_edit_field_update(MenuState_t state) {
     oledC_DrawCircle(sx, sy, MENU_EDIT_TICK_RADIUS, COLOR_PRIMARY);
     s_edit_last_draw_val = spec.selected;
     s_edit_last_draw_field = Watch_GetState()->menu_edit_field;
-    s_edit_full_drawn = true;
+    MenuState_SetEditFullDrawn(true);
 }
 
 static void draw_edit_value_update(MenuState_t state) {
@@ -358,7 +382,7 @@ static void draw_edit_value_update(MenuState_t state) {
     char center_text[9];
     fill_edit_spec(state, &spec, center_text);
 
-    if (!s_edit_full_drawn || s_edit_last_draw_val == 0xFF ||
+    if (!MenuState_IsEditFullDrawn() || s_edit_last_draw_val == 0xFF ||
         s_edit_last_draw_field != Watch_GetState()->menu_edit_field) {
         draw_edit_field_update(state);
         return;
@@ -388,10 +412,27 @@ static void draw_edit_value_update(MenuState_t state) {
     s_edit_last_draw_field = Watch_GetState()->menu_edit_field;
 }
 
+static bool is_edit_state(MenuState_t state) {
+    return state == MENU_SET_TIME ||
+           state == MENU_SET_DATE ||
+           state == MENU_SET_ALARM ||
+           state == MENU_POMODORO;
+}
+
+static void draw_edit_field_for_state(MenuState_t state) {
+    if (!is_edit_state(state)) return;
+    draw_edit_field_update(state);
+}
+
+static void draw_edit_value_for_state(MenuState_t state) {
+    if (!is_edit_state(state)) return;
+    draw_edit_value_update(state);
+}
+
 void Menu_DrawFull(void) {
     WatchState_t* state = Watch_GetState();
 
-    s_skip_next_partial = true;
+    MenuState_SetSkipNextPartial(true);
     switch(state->menu_state) {
         case MENU_MAIN: draw_radial_menu_full(&s_main_menu_cfg); break;
         case MENU_DISPLAY_MODE: draw_radial_menu_full(&s_display_menu_cfg); break;
@@ -409,8 +450,7 @@ void Menu_DrawFull(void) {
 }
 
 void Menu_DrawPartial(void) {
-    if (s_skip_next_partial) {
-        s_skip_next_partial = false;
+    if (MenuState_ConsumeSkipNextPartial()) {
         return;
     }
     draw_small_time_update();
@@ -431,18 +471,12 @@ void Menu_DrawPartial(void) {
                 }
                 break;
             case MENU_EVT_EDIT_FIELD:
-                if (state->menu_state == MENU_SET_TIME) draw_edit_field_update(MENU_SET_TIME);
-                else if (state->menu_state == MENU_SET_DATE) draw_edit_field_update(MENU_SET_DATE);
-                else if (state->menu_state == MENU_SET_ALARM) draw_edit_field_update(MENU_SET_ALARM);
-                else if (state->menu_state == MENU_POMODORO) draw_edit_field_update(MENU_POMODORO);
+                draw_edit_field_for_state(state->menu_state);
                 field_updated = true;
                 break;
             case MENU_EVT_EDIT_VALUE:
                 if (field_updated) break;
-                if (state->menu_state == MENU_SET_TIME) draw_edit_value_update(MENU_SET_TIME);
-                else if (state->menu_state == MENU_SET_DATE) draw_edit_value_update(MENU_SET_DATE);
-                else if (state->menu_state == MENU_SET_ALARM) draw_edit_value_update(MENU_SET_ALARM);
-                else if (state->menu_state == MENU_POMODORO) draw_edit_value_update(MENU_POMODORO);
+                draw_edit_value_for_state(state->menu_state);
                 break;
             default:
                 break;
@@ -450,6 +484,6 @@ void Menu_DrawPartial(void) {
     }
 
     if (!had_event && state->menu_state == MENU_POMODORO) {
-        draw_edit_value_update(MENU_POMODORO);
+        draw_edit_value_for_state(state->menu_state);
     }
 }

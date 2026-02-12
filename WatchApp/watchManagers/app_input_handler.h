@@ -1,3 +1,7 @@
+/*
+ * Input manager entry point.
+ */
+
 #ifndef APP_INPUT_HANDLER_H
 #define APP_INPUT_HANDLER_H
 

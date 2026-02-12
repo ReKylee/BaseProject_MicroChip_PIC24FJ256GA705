@@ -1,3 +1,7 @@
+/*
+ * Shared radial menu behavior: draw, selection, and pot mapping.
+ */
+
 #include "menu_core.h"
 
 static uint8_t pot_select(uint16_t raw, uint8_t min, uint8_t max, uint16_t hysteresis,
@@ -8,10 +12,12 @@ static uint8_t pot_select(uint16_t raw, uint8_t min, uint8_t max, uint16_t hyste
         return min;
     }
 
-    uint8_t count = (uint8_t)(max - min + 1);
-    uint16_t bin = (uint16_t)(1024 / count);
-    uint8_t target = (uint8_t)(raw / bin);
-    if (target >= count) target = (uint8_t)(count - 1);
+    uint16_t count = (uint16_t)max - (uint16_t)min + 1U;
+    uint16_t bin = (uint16_t)(1024U / count);
+    if (bin == 0U) bin = 1U;
+    uint16_t target_u16 = (uint16_t)(raw / bin);
+    if (target_u16 >= count) target_u16 = (uint16_t)(count - 1U);
+    uint8_t target = (uint8_t)target_u16;
     target = (uint8_t)(target + min);
 
     if (*last_raw == 0xFFFF) {
@@ -50,8 +56,8 @@ bool MenuCore_HandleRange(uint16_t raw, uint8_t min, uint8_t max, uint16_t hyste
         return false;
     }
 
-    uint8_t count = (uint8_t)(max - min + 1);
-    uint8_t mapped = (uint8_t)(min + (uint8_t)((raw * count) / 1024));
+    uint16_t count = (uint16_t)max - (uint16_t)min + 1U;
+    uint8_t mapped = (uint8_t)((uint16_t)min + (uint16_t)((raw * count) / 1024U));
     if (mapped > max) mapped = max;
 
     if (*last_raw == 0xFFFF) {
@@ -111,6 +117,7 @@ void MenuCore_DrawRadialPartial(const MenuRadial_t* menu) {
 
 bool MenuCore_HandlePot(const MenuRadial_t* menu, uint16_t raw, uint16_t hysteresis) {
     if (!menu || !menu->get_selection || !menu->set_selection || !menu->last_raw || !menu->last_sel) return false;
+    if (menu->count == 0) return false;
     uint8_t sel = menu->get_selection();
     uint8_t next = pot_select(raw, 0, (uint8_t)(menu->count - 1), hysteresis, menu->last_raw, menu->last_sel);
     if (next != sel) {

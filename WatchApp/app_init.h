@@ -1,3 +1,7 @@
+/*
+ * App initialization entry point.
+ */
+
 #ifndef APP_INIT_H
 #define APP_INIT_H
 

@@ -1,3 +1,7 @@
+/*
+ * Display manager entry points.
+ */
+
 #ifndef APP_DISPLAY_MANAGER_H
 #define APP_DISPLAY_MANAGER_H
 

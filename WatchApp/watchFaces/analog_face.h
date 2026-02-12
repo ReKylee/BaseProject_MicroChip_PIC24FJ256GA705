@@ -1,5 +1,4 @@
 /*
- * analog_face.h
  * Analog watch face with clock hands
  */
 

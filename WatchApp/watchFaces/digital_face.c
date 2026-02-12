@@ -1,5 +1,4 @@
 /*
- * digital_face.c
  * Optimized digital watch face with partial updates
  */
 
@@ -12,7 +11,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
-#include <stdio.h>
 #include "watch_face_common.h" // Include common drawing functions
 
 // ============================================================================
@@ -43,15 +41,21 @@ static TimeFormat_t s_last_format_drawn;
 // PRIVATE HELPERS
 // ============================================================================
 
+static void format_2d(uint8_t value, char out[3]) {
+    out[0] = (char)('0' + (value / 10));
+    out[1] = (char)('0' + (value % 10));
+    out[2] = '\0';
+}
+
 static void draw_time_digits(uint8_t value, uint8_t x, uint8_t y, uint16_t color, uint8_t scale_x, uint8_t scale_y) {
     char buf[3];
-    sprintf(buf, "%02d", value);
+    format_2d(value, buf);
     oledC_DrawString(x, y, scale_x, scale_y, (uint8_t*)buf, color);
 }
 
 static void draw_seconds(uint8_t value, uint16_t color) {
     char buf[3];
-    sprintf(buf, "%02d", value);
+    format_2d(value, buf);
     uint8_t text_w = (uint8_t)(2 * (FONT_W + FONT_SPACING));
     uint8_t x = (uint8_t)((SCREEN_W - text_w) / 2);
     oledC_DrawString(x, SECONDS_Y, 1, 1, (uint8_t*)buf, color);
@@ -160,7 +164,6 @@ void DigitalFace_DrawUpdate(void) {
     if (now.minute != s_last_time_drawn.minute) {
         draw_time_digits(s_last_time_drawn.minute, min_x, TIME_Y, COLOR_BG, TIME_SCALE_X, TIME_SCALE_Y);
         draw_time_digits(now.minute, min_x, TIME_Y, COLOR_PRIMARY, TIME_SCALE_X, TIME_SCALE_Y);
-        needs_hour_update = true; // hour may change at 12/24 boundary
     }
 
     // Hours
@@ -190,7 +193,10 @@ void DigitalFace_DrawUpdate(void) {
     WatchFace_DrawDate(date_x, DATE_Y_BOTTOM, &today, &s_last_date_drawn, COLOR_DIM, COLOR_BG);
 
     // Alarm
-    WatchFace_DrawAlarmIcon(ALARM_X, ALARM_Y, ALARM_W, ALARM_H, state->alarm.enabled);
+    if (state->alarm.enabled != s_last_alarm_drawn) {
+        WatchFace_DrawAlarmIcon(ALARM_X, ALARM_Y, ALARM_W, ALARM_H, state->alarm.enabled);
+        s_last_alarm_drawn = state->alarm.enabled;
+    }
 
     s_last_time_drawn = now;
     s_last_format_drawn = state->time_format;

@@ -1,5 +1,4 @@
 /*
- * accel_input.h
  * Accelerometer input for flip and shake detection
  */
 

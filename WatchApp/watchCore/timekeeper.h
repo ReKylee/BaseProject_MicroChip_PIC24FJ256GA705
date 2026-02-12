@@ -1,5 +1,4 @@
 /*
- * timekeeper.h
  * Core timekeeping functionality
  */
 

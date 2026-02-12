@@ -1,5 +1,4 @@
 /*
- * binary_face.h
  * Binary watch face - displays time in binary format
  */
 

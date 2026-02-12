@@ -1,3 +1,7 @@
+/*
+ * Routes full/partial draw calls to the active UI module.
+ */
+
 #include "app_display_manager.h"
 #include "../watchFaces/alarm_face.h" 
 #include "../watchMenu/menu.h" 

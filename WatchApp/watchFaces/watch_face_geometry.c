@@ -1,3 +1,7 @@
+/*
+ * Precomputed point tables for analog-style rendering.
+ */
+
 #include "watch_face_geometry.h"
 
 const int8_t HOUR_POINTS[NUM_CLOCK_POINTS][2] = {

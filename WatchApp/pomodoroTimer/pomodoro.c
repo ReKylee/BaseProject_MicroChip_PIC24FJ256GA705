@@ -1,5 +1,4 @@
 /*
- * pomodoro.c
  * Implementation of Pomodoro timer
  */
 
@@ -8,7 +7,6 @@
 #include "../shared/watch_types.h"
 #include "../../oledDriver/oledC.h"
 #include "../../oledDriver/oledC_shapes.h"
-#include <stdio.h>
 
 // ============================================================================
 // PRIVATE FUNCTIONS
@@ -24,6 +22,9 @@
 #define POMO_BAR_W 80
 #define POMO_BAR_H 8
 #define POMO_PAUSE_Y 66
+#define FONT_COLS 5
+#define FONT_ROWS 8
+#define FONT_GAP 1
 
 static PomodoroState_t s_last_state = POMODORO_IDLE;
 static uint16_t s_last_remaining = 0xFFFF;
@@ -33,6 +34,36 @@ static uint8_t s_last_fill_width = 0xFF;
 static uint16_t s_last_total = 0xFFFF;
 static uint8_t s_last_min = 0xFF;
 static uint8_t s_last_sec = 0xFF;
+
+static void format_2d(uint8_t value, char out[3]) {
+    out[0] = (char)('0' + (value / 10));
+    out[1] = (char)('0' + (value % 10));
+    out[2] = '\0';
+}
+
+static void get_time_layout(uint8_t* x0, uint8_t* min_w, uint8_t* colon_w, uint8_t* sec_w) {
+    uint8_t min_scale = 3;
+    uint8_t sec_scale = 2;
+    *min_w = (uint8_t)(2 * (FONT_COLS * min_scale + FONT_GAP));
+    *colon_w = (uint8_t)(1 * (FONT_COLS * sec_scale + FONT_GAP));
+    *sec_w = (uint8_t)(2 * (FONT_COLS * sec_scale + FONT_GAP));
+    uint8_t total_w = (uint8_t)(*min_w + *colon_w + *sec_w + 2);
+    *x0 = (uint8_t)((96 - total_w) / 2);
+}
+
+static void clear_time_area_full(void) {
+    uint8_t x0;
+    uint8_t min_w;
+    uint8_t colon_w;
+    uint8_t sec_w;
+    uint8_t min_scale = 3;
+
+    get_time_layout(&x0, &min_w, &colon_w, &sec_w);
+    oledC_DrawRectangle((uint8_t)(x0 - 1), (uint8_t)(POMO_TIME_Y - 1),
+                        (uint8_t)(x0 + min_w + colon_w + sec_w + 3),
+                        (uint8_t)(POMO_TIME_Y + ((FONT_ROWS + 1) * min_scale) + 1),
+                        COLOR_BG);
+}
 
 static void clear_label_area(void) {
     oledC_DrawRectangle(0, (uint8_t)(POMO_LABEL_Y - 1),
@@ -99,16 +130,18 @@ static void draw_time_full(uint16_t remaining_seconds) {
     uint8_t seconds = (uint8_t)(remaining_seconds % 60);
     char min_str[3];
     char sec_str[3];
-    sprintf(min_str, "%02d", minutes);
-    sprintf(sec_str, "%02d", seconds);
+    format_2d(minutes, min_str);
+    format_2d(seconds, sec_str);
 
     uint8_t min_scale = 3;
     uint8_t sec_scale = 2;
-    uint8_t min_w = (uint8_t)(2 * (5 * min_scale + 1));
-    uint8_t colon_w = (uint8_t)(1 * (5 * sec_scale + 1));
-    uint8_t sec_w = (uint8_t)(2 * (5 * sec_scale + 1));
-    uint8_t total_w = (uint8_t)(min_w + colon_w + sec_w + 2);
-    uint8_t x0 = (uint8_t)((96 - total_w) / 2);
+    uint8_t x0;
+    uint8_t min_w;
+    uint8_t colon_w;
+    uint8_t sec_w;
+
+    get_time_layout(&x0, &min_w, &colon_w, &sec_w);
+    clear_time_area_full();
 
     oledC_DrawString(x0, POMO_TIME_Y, min_scale, min_scale, (uint8_t*)min_str, COLOR_PRIMARY);
     oledC_DrawString((uint8_t)(x0 + min_w + 1), (uint8_t)(POMO_TIME_Y + 6), sec_scale, sec_scale, (uint8_t*)":", COLOR_DIM);
@@ -120,17 +153,19 @@ static void draw_time_partial(uint16_t remaining_seconds) {
     uint8_t seconds = (uint8_t)(remaining_seconds % 60);
     uint8_t min_scale = 3;
     uint8_t sec_scale = 2;
-    uint8_t min_w = (uint8_t)(2 * (5 * min_scale + 1));
-    uint8_t colon_w = (uint8_t)(1 * (5 * sec_scale + 1));
-    uint8_t sec_w = (uint8_t)(2 * (5 * sec_scale + 1));
-    uint8_t total_w = (uint8_t)(min_w + colon_w + sec_w + 2);
-    uint8_t x0 = (uint8_t)((96 - total_w) / 2);
+    uint8_t x0;
+    uint8_t min_w;
+    uint8_t colon_w;
+    uint8_t sec_w;
+
+    get_time_layout(&x0, &min_w, &colon_w, &sec_w);
 
     if (minutes != s_last_min) {
         char min_str[3];
-        sprintf(min_str, "%02d", minutes);
+        format_2d(minutes, min_str);
         oledC_DrawRectangle(x0 - 1, POMO_TIME_Y - 1,
-                            (uint8_t)(x0 + min_w + 1), (uint8_t)(POMO_TIME_Y + min_scale * 8 + 1),
+                            (uint8_t)(x0 + min_w + 1),
+                            (uint8_t)(POMO_TIME_Y + ((FONT_ROWS + 1) * min_scale) + 1),
                             COLOR_BG);
         oledC_DrawString(x0, POMO_TIME_Y, min_scale, min_scale, (uint8_t*)min_str, COLOR_PRIMARY);
         s_last_min = minutes;
@@ -138,7 +173,7 @@ static void draw_time_partial(uint16_t remaining_seconds) {
 
     if (seconds != s_last_sec) {
         char sec_str[3];
-        sprintf(sec_str, "%02d", seconds);
+        format_2d(seconds, sec_str);
         uint8_t sec_x = (uint8_t)(x0 + min_w + colon_w + 2);
         uint8_t sec_y = (uint8_t)(POMO_TIME_Y + 6);
         oledC_DrawRectangle((uint8_t)(x0 + min_w), (uint8_t)(POMO_TIME_Y + 4),

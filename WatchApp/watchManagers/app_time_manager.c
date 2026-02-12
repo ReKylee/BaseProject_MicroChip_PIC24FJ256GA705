@@ -1,3 +1,7 @@
+/*
+ * Per-second update coordinator for time, alarms, and pomodoro.
+ */
+
 #include <stdbool.h>
 #include <stdint.h> // For uint32_t
 

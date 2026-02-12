@@ -1,3 +1,7 @@
+/*
+ * Shared constants and helper draw APIs for watch faces.
+ */
+
 #ifndef WATCH_FACE_COMMON_H
 #define WATCH_FACE_COMMON_H
 

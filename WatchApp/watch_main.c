@@ -1,5 +1,4 @@
 /*
- * watch_main.c
  * Main application for PIC24 Watch Project
  */
 #include <xc.h>

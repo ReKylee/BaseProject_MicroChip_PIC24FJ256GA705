@@ -1,3 +1,7 @@
+/*
+ * Menu input state machine and edit handling.
+ */
+
 #include "menu_state.h"
 #include "menu_core.h"
 #include "../watchCore/timekeeper.h"
@@ -51,6 +55,27 @@ static bool edit_handle_buttons(const EditInputConfig_t* cfg, uint8_t field, But
     return false;
 }
 
+static bool handle_simple_radial_state(MenuRadial_t* radial, ButtonEvent_t btn,
+                                       uint16_t pot_value, bool pot_changed, uint16_t pot_delta) {
+    WatchState_t* state = Watch_GetState();
+    bool changed = false;
+
+    if (pot_changed) {
+        if (MenuCore_HandlePot(radial, s_pot_filtered, 20)) changed = true;
+        if (pot_delta > POT_FAST_THRESHOLD) {
+            if (MenuCore_HandlePot(radial, s_pot_filtered, 20)) changed = true;
+        }
+    }
+    if (changed) {
+        MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_RADIAL_SELECT, .state = state->menu_state});
+    }
+    if (btn == BTN_S1_SHORT || btn == BTN_S2_SHORT) {
+        MenuState_OnChange(MENU_MAIN, true, pot_value);
+        state->needs_full_redraw = true;
+    }
+    return changed;
+}
+
 static void commit_set_time(void) {
     WatchState_t* state = Watch_GetState();
     s_temp_time.second = 0;
@@ -58,8 +83,36 @@ static void commit_set_time(void) {
     state->current_time = s_temp_time;
 }
 
+static bool clamp_temp_date(void) {
+    bool changed = false;
+    if (s_temp_date.month < 1) {
+        s_temp_date.month = 1;
+        changed = true;
+    } else if (s_temp_date.month > 12) {
+        s_temp_date.month = 12;
+        changed = true;
+    }
+
+    uint8_t max_days = Timekeeper_GetDaysInMonth(s_temp_date.month);
+    if (s_temp_date.day < 1) {
+        s_temp_date.day = 1;
+        changed = true;
+    } else if (s_temp_date.day > max_days) {
+        s_temp_date.day = max_days;
+        changed = true;
+    }
+    return changed;
+}
+
 static void commit_set_date(void) {
     WatchState_t* state = Watch_GetState();
+    if (s_temp_date.month < 1 || s_temp_date.month > 12) {
+        return;
+    }
+    uint8_t max_days = Timekeeper_GetDaysInMonth(s_temp_date.month);
+    if (s_temp_date.day < 1 || s_temp_date.day > max_days) {
+        return;
+    }
     Timekeeper_SetDate(&s_temp_date);
     state->current_date = s_temp_date;
 }
@@ -83,7 +136,7 @@ void Menu_Init(void) {
     s_last_small_time.second = 99;
     s_last_radial_selection = 0xFF;
     MenuState_OnChange(MENU_MAIN, false, 0);
-    s_skip_next_partial = false;
+    MenuState_SetSkipNextPartial(false);
 }
 
 void Menu_Enter(void) {
@@ -140,62 +193,16 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
                 state->menu_edit_field = 0;
             }
             MenuState_OnChange(next_state, true, pot_value);
-            if (state->menu_state == MENU_SET_TIME) s_temp_time = state->current_time;
-            if (state->menu_state == MENU_SET_DATE) s_temp_date = state->current_date;
-            if (state->menu_state == MENU_SET_ALARM) {
-                s_temp_alarm.hour = state->alarm.hour;
-                s_temp_alarm.minute = state->alarm.minute;
-                s_temp_alarm.second = 0;
-            }
-            if (state->menu_state == MENU_POMODORO) {
-                s_temp_pomo_work = state->pomodoro.work_minutes;
-                s_temp_pomo_break = state->pomodoro.short_break_minutes;
-            }
+            MenuState_SeedEditBuffers(state->menu_state);
             state->needs_full_redraw = true;
             changed = true;
         }
     } else if (state->menu_state == MENU_DISPLAY_MODE) {
-        if (pot_changed) {
-            if (MenuCore_HandlePot(&s_display_menu_radial, s_pot_filtered, 20)) changed = true;
-            if (pot_delta > POT_FAST_THRESHOLD) {
-                if (MenuCore_HandlePot(&s_display_menu_radial, s_pot_filtered, 20)) changed = true;
-            }
-        }
-        if (changed) {
-            MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_RADIAL_SELECT, .state = state->menu_state});
-        }
-        if (btn == BTN_S1_SHORT || btn == BTN_S2_SHORT) {
-            MenuState_OnChange(MENU_MAIN, true, pot_value);
-            state->needs_full_redraw = true;
-        }
+        if (handle_simple_radial_state(&s_display_menu_radial, btn, pot_value, pot_changed, pot_delta)) changed = true;
     } else if (state->menu_state == MENU_TIME_FORMAT) {
-        if (pot_changed) {
-            if (MenuCore_HandlePot(&s_format_menu_radial, s_pot_filtered, 20)) changed = true;
-            if (pot_delta > POT_FAST_THRESHOLD) {
-                if (MenuCore_HandlePot(&s_format_menu_radial, s_pot_filtered, 20)) changed = true;
-            }
-        }
-        if (changed) {
-            MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_RADIAL_SELECT, .state = state->menu_state});
-        }
-        if (btn == BTN_S1_SHORT || btn == BTN_S2_SHORT) {
-            MenuState_OnChange(MENU_MAIN, true, pot_value);
-            state->needs_full_redraw = true;
-        }
+        if (handle_simple_radial_state(&s_format_menu_radial, btn, pot_value, pot_changed, pot_delta)) changed = true;
     } else if (state->menu_state == MENU_ALARM_TOGGLE) {
-        if (pot_changed) {
-            if (MenuCore_HandlePot(&s_alarm_toggle_radial, s_pot_filtered, 20)) changed = true;
-            if (pot_delta > POT_FAST_THRESHOLD) {
-                if (MenuCore_HandlePot(&s_alarm_toggle_radial, s_pot_filtered, 20)) changed = true;
-            }
-        }
-        if (changed) {
-            MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_RADIAL_SELECT, .state = state->menu_state});
-        }
-        if (btn == BTN_S1_SHORT || btn == BTN_S2_SHORT) {
-            MenuState_OnChange(MENU_MAIN, true, pot_value);
-            state->needs_full_redraw = true;
-        }
+        if (handle_simple_radial_state(&s_alarm_toggle_radial, btn, pot_value, pot_changed, pot_delta)) changed = true;
     } else if (state->menu_state == MENU_SET_TIME) {
         EditInputConfig_t cfg = {0, 23, 0, 59, &s_temp_time.hour, &s_temp_time.minute, commit_set_time};
         changed |= edit_field_init(state->menu_edit_field);
@@ -209,7 +216,11 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
         EditInputConfig_t cfg = {1, 31, 1, 12, &s_temp_date.day, &s_temp_date.month, commit_set_date};
         changed |= edit_field_init(state->menu_edit_field);
         s_edit_last_val = (state->menu_edit_field == 0) ? s_temp_date.day : s_temp_date.month;
-        if (edit_handle_range(&cfg, state->menu_edit_field, pot_changed, pot_delta)) {
+        bool date_changed = edit_handle_range(&cfg, state->menu_edit_field, pot_changed, pot_delta);
+        if (clamp_temp_date()) {
+            date_changed = true;
+        }
+        if (date_changed) {
             changed = true;
             MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_EDIT_VALUE, .state = state->menu_state});
         }

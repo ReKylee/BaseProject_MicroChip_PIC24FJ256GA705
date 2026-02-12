@@ -1,3 +1,7 @@
+/*
+ * Shared drawing helpers used by multiple watch faces.
+ */
+
 #include "watch_face_common.h"
 #include <stdio.h> // For sprintf
 

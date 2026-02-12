@@ -1,3 +1,7 @@
+/*
+ * Main application loop entry point.
+ */
+
 #ifndef WATCH_MAIN_H
 #define	WATCH_MAIN_H
 

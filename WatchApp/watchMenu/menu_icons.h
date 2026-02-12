@@ -1,3 +1,7 @@
+/*
+ * Bitmap icon assets used by menu screens.
+ */
+
 #ifndef MENU_ICONS_H
 #define MENU_ICONS_H
 

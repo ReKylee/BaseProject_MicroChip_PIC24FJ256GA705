@@ -1,3 +1,7 @@
+/*
+ * Geometry tables shared by analog/menu circular layouts.
+ */
+
 #ifndef WATCH_FACE_GEOMETRY_H
 #define WATCH_FACE_GEOMETRY_H
 

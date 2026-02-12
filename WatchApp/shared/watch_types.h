@@ -1,5 +1,4 @@
 /*
- * watch_types.h
  * Shared type definitions for the watch application
  */
 

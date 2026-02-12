@@ -1,5 +1,4 @@
 /*
- * timekeeper.c
  * Implementation of core timekeeping using hardware timers.
  * Merged from timekeeper.c and watch_timer.c.
  */
@@ -73,7 +72,7 @@ void Timekeeper_GetTime(Time_t* time) {
     
     // Date calculation
     uint16_t days_passed = current_total_seconds / 86400; // 86400 seconds in a day
-    uint8_t day = s_base_date.day + days_passed;
+    uint16_t day = (uint16_t)s_base_date.day + days_passed;
     uint8_t month = s_base_date.month;
 
     while (day > Timekeeper_GetDaysInMonth(month)) {
@@ -85,7 +84,7 @@ void Timekeeper_GetTime(Time_t* time) {
     }
     
     WatchState_t* state = Watch_GetState();
-    state->current_date.day = day;
+    state->current_date.day = (uint8_t)day;
     state->current_date.month = month;
 
     // Time calculation

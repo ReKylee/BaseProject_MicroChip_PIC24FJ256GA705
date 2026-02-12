@@ -1,3 +1,7 @@
+/*
+ * Alarm ringing face and flash behavior.
+ */
+
 #include <stdlib.h>
 
 #include "alarm_face.h"
