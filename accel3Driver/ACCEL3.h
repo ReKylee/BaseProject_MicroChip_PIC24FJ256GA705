@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "../i2cDriver/I2C.h"
 
 /* Addresses */
 #define ADXL345_ADDR_SDO_LOW   0x53 
@@ -28,5 +29,7 @@ typedef enum {
 /* API */
 ACCEL3_Status_t ACCEL3_Init(const ACCEL3_Config_t *cfg);
 ACCEL3_Status_t ACCEL3_ReadXYZ(int16_t *x, int16_t *y, int16_t *z);
+ACCEL3_Status_t ACCEL3_GetLastStatus(void);
+i2c_status_t ACCEL3_GetLastI2CStatus(void);
 
 #endif

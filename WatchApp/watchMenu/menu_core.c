@@ -17,8 +17,7 @@ static uint8_t pot_select(uint16_t raw, uint8_t min, uint8_t max, uint16_t hyste
     if (bin == 0U) bin = 1U;
     uint16_t target_u16 = (uint16_t)(raw / bin);
     if (target_u16 >= count) target_u16 = (uint16_t)(count - 1U);
-    uint8_t target = (uint8_t)target_u16;
-    target = (uint8_t)(target + min);
+    uint8_t target = (uint8_t)(target_u16 + min);
 
     if (*last_raw == 0xFFFF) {
         *last_raw = raw;
@@ -33,12 +32,12 @@ static uint8_t pot_select(uint16_t raw, uint8_t min, uint8_t max, uint16_t hyste
 
     uint8_t sel_idx = (uint8_t)(*last_sel - min);
     uint16_t lower = (uint16_t)(sel_idx * bin);
-    uint16_t upper = (uint16_t)((sel_idx + 1) * bin - 1);
+    uint16_t upper = (uint16_t)((sel_idx + 1U) * bin - 1U);
 
     if ((raw + hysteresis) < lower && *last_sel > min) {
-        *last_sel = (uint8_t)(*last_sel - 1);
+        *last_sel = (uint8_t)(*last_sel - 1U);
     } else if (raw > (uint16_t)(upper + hysteresis) && *last_sel < max) {
-        *last_sel = (uint8_t)(*last_sel + 1);
+        *last_sel = (uint8_t)(*last_sel + 1U);
     }
 
     *last_raw = raw;
@@ -48,16 +47,12 @@ static uint8_t pot_select(uint16_t raw, uint8_t min, uint8_t max, uint16_t hyste
 bool MenuCore_HandleRange(uint16_t raw, uint8_t min, uint8_t max, uint16_t hysteresis,
                           uint16_t *last_raw, uint8_t *last_val, uint8_t *value) {
     if (!last_raw || !last_val || !value) return false;
-    if (max <= min) {
+    if (max <= min || hysteresis == 0U) {
         *value = min;
         *last_val = min;
         *last_raw = raw;
         return false;
     }
-
-    uint16_t count = (uint16_t)max - (uint16_t)min + 1U;
-    uint8_t mapped = (uint8_t)((uint16_t)min + (uint16_t)((raw * count) / 1024U));
-    if (mapped > max) mapped = max;
 
     if (*last_raw == 0xFFFF) {
         *last_raw = raw;
@@ -65,14 +60,27 @@ bool MenuCore_HandleRange(uint16_t raw, uint8_t min, uint8_t max, uint16_t hyste
         return false;
     }
 
-    int16_t diff = (int16_t)raw - (int16_t)(*last_raw);
-    if (diff < 0) diff = -diff;
-
-    if (mapped != *value && (uint16_t)diff >= hysteresis) {
-        *value = mapped;
-        *last_val = mapped;
-        *last_raw = raw;
-        return true;
+    int16_t delta = (int16_t)raw - (int16_t)(*last_raw);
+    if (delta >= (int16_t)hysteresis) {
+        uint8_t steps = (uint8_t)(delta / (int16_t)hysteresis);
+        uint16_t next = (uint16_t)(*value + steps);
+        if (next > max) next = max;
+        *last_raw = (uint16_t)((int16_t)(*last_raw) + ((int16_t)steps * (int16_t)hysteresis));
+        if ((uint8_t)next != *value) {
+            *value = (uint8_t)next;
+            *last_val = *value;
+            return true;
+        }
+    } else if (delta <= -(int16_t)hysteresis) {
+        uint8_t steps = (uint8_t)((-delta) / (int16_t)hysteresis);
+        int16_t next = (int16_t)(*value) - (int16_t)steps;
+        if (next < (int16_t)min) next = min;
+        *last_raw = (uint16_t)((int16_t)(*last_raw) - ((int16_t)steps * (int16_t)hysteresis));
+        if ((uint8_t)next != *value) {
+            *value = (uint8_t)next;
+            *last_val = *value;
+            return true;
+        }
     }
 
     return false;

@@ -23,11 +23,22 @@ static bool edit_field_init(uint8_t field) {
 
 static bool edit_handle_range(const EditInputConfig_t* cfg, uint8_t field, bool pot_changed, uint16_t pot_delta) {
     if (!pot_changed) return false;
-    uint16_t hys = (pot_delta > POT_FAST_THRESHOLD) ? 6 : 10;
+    (void)pot_delta;
+    uint8_t min = (field == 0) ? cfg->min0 : cfg->min1;
+    uint8_t max = (field == 0) ? cfg->max0 : cfg->max1;
+    uint8_t span = (uint8_t)(max - min);
+    uint16_t hys;
+    if (span >= 50) {
+        hys = 10;   // minute-like fields
+    } else if (span >= 20) {
+        hys = 14;   // hour/day ranges
+    } else {
+        hys = 18;   // month/small ranges
+    }
     if (field == 0) {
         return MenuCore_HandleRange(s_pot_filtered, cfg->min0, cfg->max0, hys, &s_edit_last_raw, &s_edit_last_val, cfg->val0);
     }
-    return MenuCore_HandleRange(s_pot_filtered, cfg->min1, cfg->max1, (uint16_t)(hys - 2), &s_edit_last_raw, &s_edit_last_val, cfg->val1);
+    return MenuCore_HandleRange(s_pot_filtered, cfg->min1, cfg->max1, hys, &s_edit_last_raw, &s_edit_last_val, cfg->val1);
 }
 
 static bool edit_handle_buttons(const EditInputConfig_t* cfg, uint8_t field, ButtonEvent_t btn, uint16_t pot_value) {
@@ -62,9 +73,6 @@ static bool handle_simple_radial_state(MenuRadial_t* radial, ButtonEvent_t btn,
 
     if (pot_changed) {
         if (MenuCore_HandlePot(radial, s_pot_filtered, 20)) changed = true;
-        if (pot_delta > POT_FAST_THRESHOLD) {
-            if (MenuCore_HandlePot(radial, s_pot_filtered, 20)) changed = true;
-        }
     }
     if (changed) {
         MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_RADIAL_SELECT, .state = state->menu_state});
@@ -176,15 +184,13 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
     if (s_pot_filtered == 0xFFFF) {
         s_pot_filtered = pot_value;
     } else {
-        s_pot_filtered = (uint16_t)((s_pot_filtered * POT_SMOOTH_NUM + pot_value) / POT_SMOOTH_DEN);
+        // Mild smoothing: reduce ADC jitter while keeping controls responsive.
+        s_pot_filtered = (uint16_t)(((uint32_t)s_pot_filtered * 3U + (uint32_t)pot_value) / 4U);
     }
 
     if (state->menu_state == MENU_MAIN) {
         if (pot_changed) {
             if (MenuCore_HandlePot(&s_main_menu_radial, s_pot_filtered, 24)) changed = true;
-            if (pot_delta > POT_FAST_THRESHOLD) {
-                if (MenuCore_HandlePot(&s_main_menu_radial, s_pot_filtered, 24)) changed = true;
-            }
         }
         if (changed) {
             MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_RADIAL_SELECT, .state = state->menu_state});

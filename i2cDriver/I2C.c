@@ -84,6 +84,10 @@ typedef enum {
 #define I2C1_ACKNOWLEDGE_ENABLE_BIT             I2C1CONLbits.ACKEN
 #define I2C1_ACKNOWLEDGE_DATA_BIT               I2C1CONLbits.ACKDT
 
+#ifndef I2C_RECOVERY_CLOCK_PULSES
+#define I2C_RECOVERY_CLOCK_PULSES 16U
+#endif
+
 // ============================================================================
 // Private State
 // ============================================================================
@@ -134,7 +138,7 @@ static void i2c1_bus_recover(void) {
     DELAY_microseconds(5);
 
     if (PORTBbits.RB9 == 0) {
-        for (uint8_t i = 0; i < 9; i++) {
+        for (uint8_t i = 0; i < I2C_RECOVERY_CLOCK_PULSES; i++) {
             LATBbits.LATB8 = 0;
             DELAY_microseconds(5);
             LATBbits.LATB8 = 1;
@@ -498,7 +502,6 @@ static i2c_status_t i2c_wait_status(volatile I2C1_MESSAGE_STATUS *status) {
             return I2C_COLLISION;
         }
         if (timeout == 0) {
-            i2c_recover();
             return I2C_TIMEOUT;
         }
         DELAY_milliseconds(1);
@@ -517,7 +520,6 @@ static i2c_status_t i2c_wait_status(volatile I2C1_MESSAGE_STATUS *status) {
             return I2C_COLLISION;
         case I2C1_MESSAGE_FAIL:
         default:
-            i2c_recover();
             return I2C_COLLISION;
     }
 }
