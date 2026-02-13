@@ -36,11 +36,38 @@ static inline bool is_valid_channel(uint8_t channel) {
  * @param channel Channel number
  */
 static void configure_pin_analog(uint8_t channel) {
-    if (channel <= 15) {
-        // Configure as input
-        TRISB |= (1 << channel);
-        // Configure as analog
-        ANSELB |= (1 << channel);
+    switch (channel) {
+        case 0:   // AN0  -> RA0
+            TRISA |= (1U << 0);
+            ANSELA |= (1U << 0);
+            break;
+        case 1:   // AN1  -> RA1
+            TRISA |= (1U << 1);
+            ANSELA |= (1U << 1);
+            break;
+        case 6:   // AN6  -> RB14
+            TRISB |= (1U << 14);
+            ANSELB |= (1U << 14);
+            break;
+        case 7:   // AN7  -> RB13
+            TRISB |= (1U << 13);
+            ANSELB |= (1U << 13);
+            break;
+        case 8:   // AN8  -> RB12 (potentiometer on Curiosity board)
+            TRISB |= (1U << 12);
+            ANSELB |= (1U << 12);
+            break;
+        case 9:   // AN9  -> RB15
+            TRISB |= (1U << 15);
+            ANSELB |= (1U << 15);
+            break;
+        case 10:  // AN10 -> RC0
+            TRISC |= (1U << 0);
+            ANSELC |= (1U << 0);
+            break;
+        default:
+            // Channel selected in ADC peripheral, but no board pin mapping configured here.
+            break;
     }
 }
 

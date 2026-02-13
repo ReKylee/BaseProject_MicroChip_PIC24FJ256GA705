@@ -1,6 +1,14 @@
+// ============================================================================
+// Includes
+// ============================================================================
+
 #include "I2C.h"
 #include "../System/delay.h"
 #include <stdlib.h>
+
+// ============================================================================
+// Private Types
+// ============================================================================
 
 static i2c_config_t config;
 
@@ -61,6 +69,10 @@ typedef enum {
 #endif
 } I2C_MASTER_STATES;
 
+// ============================================================================
+// Register Access Macros
+// ============================================================================
+
 #define I2C1_TRANSMIT_REG                       I2C1TRN
 #define I2C1_RECEIVE_REG                        I2C1RCV
 #define I2C1_WRITE_COLLISION_STATUS_BIT         I2C1STATbits.IWCOL
@@ -72,6 +84,10 @@ typedef enum {
 #define I2C1_ACKNOWLEDGE_ENABLE_BIT             I2C1CONLbits.ACKEN
 #define I2C1_ACKNOWLEDGE_DATA_BIT               I2C1CONLbits.ACKDT
 
+// ============================================================================
+// Private State
+// ============================================================================
+
 static volatile I2C_TR_QUEUE_ENTRY i2c1_tr_queue[I2C1_CONFIG_TR_QUEUE_LENGTH];
 static I2C_OBJECT i2c1_object;
 static volatile I2C_MASTER_STATES i2c1_state = S_MASTER_IDLE;
@@ -79,6 +95,10 @@ static uint8_t i2c1_trb_count;
 
 static I2C1_TRANSACTION_REQUEST_BLOCK *p_i2c1_trb_current;
 static volatile I2C_TR_QUEUE_ENTRY *p_i2c1_current = NULL;
+
+// ============================================================================
+// Private Forward Declarations
+// ============================================================================
 
 static void i2c1_function_complete(void);
 static void i2c1_stop(I2C1_MESSAGE_STATUS completion_code);
@@ -94,6 +114,50 @@ static void i2c1_master_trb_insert(uint8_t count,
                                    I2C1_TRANSACTION_REQUEST_BLOCK *ptrb_list,
                                    I2C1_MESSAGE_STATUS *pflag);
 static i2c_status_t i2c_wait_status(volatile I2C1_MESSAGE_STATUS *status);
+static void i2c1_bus_recover(void);
+
+// ============================================================================
+// Private Helpers
+// ============================================================================
+
+static void i2c1_bus_recover(void) {
+    // RB8=SCL1, RB9=SDA1. If a slave is holding SDA low, pulse SCL to release it.
+    I2C1CONLbits.I2CEN = 0;
+    IEC1bits.MI2C1IE = 0;
+
+    ODCBbits.ODCB8 = 1;
+    ODCBbits.ODCB9 = 1;
+
+    TRISBbits.TRISB8 = 0; // drive SCL
+    TRISBbits.TRISB9 = 1; // sample SDA
+    LATBbits.LATB8 = 1;
+    DELAY_microseconds(5);
+
+    if (PORTBbits.RB9 == 0) {
+        for (uint8_t i = 0; i < 9; i++) {
+            LATBbits.LATB8 = 0;
+            DELAY_microseconds(5);
+            LATBbits.LATB8 = 1;
+            DELAY_microseconds(5);
+        }
+    }
+
+    // Generate a STOP-like condition: SDA low while SCL high, then release SDA.
+    TRISBbits.TRISB9 = 0;
+    LATBbits.LATB9 = 0;
+    DELAY_microseconds(5);
+    LATBbits.LATB8 = 1;
+    DELAY_microseconds(5);
+    LATBbits.LATB9 = 1;
+    DELAY_microseconds(5);
+
+    TRISBbits.TRISB8 = 1;
+    TRISBbits.TRISB9 = 1;
+}
+
+// ============================================================================
+// Public Core API
+// ============================================================================
 
 void i2c_init(const i2c_config_t *cfg) {
     if (cfg) config = *cfg;
@@ -111,6 +175,7 @@ void i2c_init(const i2c_config_t *cfg) {
 #endif
 
     I2C1CONLbits.I2CEN = 0;
+    i2c1_bus_recover();
     I2C1STAT = 0x0000;
     I2C1CONL = 0x0000;
     I2C1CONH = 0x0000;
@@ -128,6 +193,14 @@ void i2c_init(const i2c_config_t *cfg) {
     IEC1bits.MI2C1IE = 1;
 
 }
+
+void i2c_recover(void) {
+    i2c_init(&config);
+}
+
+// ============================================================================
+// I2C1 ISR State Machine
+// ============================================================================
 
 void __attribute__((interrupt, no_auto_psv)) _MI2C1Interrupt(void) {
     static uint8_t *pi2c_buf_ptr;
@@ -327,6 +400,10 @@ void __attribute__((interrupt, no_auto_psv)) _MI2C1Interrupt(void) {
     }
 }
 
+// ============================================================================
+// Private TRB/Queue Helpers
+// ============================================================================
+
 static void i2c1_function_complete(void) {
     p_i2c1_trb_current++;
     if (--i2c1_trb_count == 0) {
@@ -408,14 +485,22 @@ static void i2c1_master_write_trb_build(I2C1_TRANSACTION_REQUEST_BLOCK *ptrb,
     ptrb->pbuffer = pdata;
 }
 
+// ============================================================================
+// Private Blocking Wait
+// ============================================================================
+
 static i2c_status_t i2c_wait_status(volatile I2C1_MESSAGE_STATUS *status) {
     uint32_t timeout = config.timeout_ms;
     while (*status == I2C1_MESSAGE_PENDING) {
         if (I2C1STATbits.BCL) {
             I2C1STATbits.BCL = 0;
+            i2c_recover();
             return I2C_COLLISION;
         }
-        if (timeout == 0) return I2C_TIMEOUT;
+        if (timeout == 0) {
+            i2c_recover();
+            return I2C_TIMEOUT;
+        }
         DELAY_milliseconds(1);
         timeout--;
     }
@@ -428,12 +513,18 @@ static i2c_status_t i2c_wait_status(volatile I2C1_MESSAGE_STATUS *status) {
             return I2C_NACK;
         case I2C1_STUCK_START:
         case I2C1_LOST_STATE:
+            i2c_recover();
             return I2C_COLLISION;
         case I2C1_MESSAGE_FAIL:
         default:
+            i2c_recover();
             return I2C_COLLISION;
     }
 }
+
+// ============================================================================
+// Public Register Access API
+// ============================================================================
 
 i2c_status_t i2c_writeReg(uint8_t addr, uint8_t reg, uint8_t val) {
     uint8_t payload[2] = { reg, val };

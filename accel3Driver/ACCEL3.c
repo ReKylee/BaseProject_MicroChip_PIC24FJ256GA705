@@ -4,28 +4,58 @@
 
 static uint8_t slave_addr;
 
-ACCEL3_Status_t ACCEL3_Init(const ACCEL3_Config_t *cfg) {
-    // Determine address (Default to 0x1D if config is NULL)
-    slave_addr = (cfg) ? cfg->i2c_address : ADXL345_ADDR_SDO_HIGH;
+static ACCEL3_Status_t accel3_try_init_addr(uint8_t addr) {
+    for (uint8_t attempt = 0; attempt < 3; attempt++) {
+        uint8_t devid = 0;
+        if (i2c_readReg(addr, ADXL345_REG_DEVID, &devid) != I2C_OK) {
+            i2c_recover();
+            DELAY_milliseconds(2);
+            continue;
+        }
+        if (devid != 0xE5) {
+            DELAY_milliseconds(2);
+            continue;
+        }
 
+        if (i2c_writeReg(addr, ADXL345_REG_POWER_CTL, 0x00) != I2C_OK) {
+            i2c_recover();
+            DELAY_milliseconds(2);
+            continue;
+        }
+        DELAY_milliseconds(2);
+        if (i2c_writeReg(addr, ADXL345_REG_POWER_CTL, 0x08) != I2C_OK) {
+            i2c_recover();
+            DELAY_milliseconds(2);
+            continue;
+        }
+
+        slave_addr = addr;
+        return ACCEL3_OK;
+    }
+
+    return ACCEL3_ERR_I2C;
+}
+
+ACCEL3_Status_t ACCEL3_Init(const ACCEL3_Config_t *cfg) {
     // Init I2C Bus
     i2c_config_t i2c_cfg = {.bus_hz = 100000, .timeout_ms = 100};
     i2c_init(&i2c_cfg);
 
-    // Verify Device ID (Should be 0xE5)
-    uint8_t devid = 0;
-    if (i2c_readReg(slave_addr, ADXL345_REG_DEVID, &devid) != I2C_OK) {
-        return ACCEL3_ERR_I2C;
+    if (cfg) {
+        return accel3_try_init_addr(cfg->i2c_address);
     }
-    if (devid != 0xE5) {
-        return ACCEL3_ERR_ID;
-    }
-    DELAY_milliseconds(5);
-    // Configure Device
-    // Measure Mode (Power_CTL = 0x08)
-    if (i2c_writeReg(slave_addr, ADXL345_REG_POWER_CTL, 0x08) != I2C_OK) return ACCEL3_ERR_I2C;
 
-    return ACCEL3_OK;
+    ACCEL3_Status_t st = accel3_try_init_addr(ADXL345_ADDR_SDO_HIGH);
+    if (st == ACCEL3_OK) {
+        return ACCEL3_OK;
+    }
+
+    st = accel3_try_init_addr(ADXL345_ADDR_SDO_LOW);
+    if (st == ACCEL3_OK) {
+        return ACCEL3_OK;
+    }
+
+    return ACCEL3_ERR_ID;
 }
 
 ACCEL3_Status_t ACCEL3_ReadXYZ(int16_t *x, int16_t *y, int16_t *z) {
@@ -33,6 +63,9 @@ ACCEL3_Status_t ACCEL3_ReadXYZ(int16_t *x, int16_t *y, int16_t *z) {
 
     // Burst read 6 bytes starting from DATAX0
     if (i2c_readRegs(slave_addr, ADXL345_REG_DATAX0, data, 6) != I2C_OK) {
+        if (x) *x = 0;
+        if (y) *y = 0;
+        if (z) *z = 0;
         return ACCEL3_ERR_I2C;
     }
 

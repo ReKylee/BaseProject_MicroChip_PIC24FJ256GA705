@@ -78,9 +78,13 @@ static bool handle_simple_radial_state(MenuRadial_t* radial, ButtonEvent_t btn,
 
 static void commit_set_time(void) {
     WatchState_t* state = Watch_GetState();
-    s_temp_time.second = 0;
-    Timekeeper_SetTime(&s_temp_time);
-    state->current_time = s_temp_time;
+    Time_t requested = s_temp_time;
+    requested.second = 0;
+    if (!Timekeeper_SetTime(&requested)) {
+        return;
+    }
+    Timekeeper_GetTime(&state->current_time);
+    s_temp_time = state->current_time;
 }
 
 static bool clamp_temp_date(void) {

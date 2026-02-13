@@ -24,7 +24,7 @@ void Timekeeper_Init(void);
  * @brief Set the current time. This will also reset the internal tick counter.
  * @param time Pointer to time structure
  */
-void Timekeeper_SetTime(const Time_t* time);
+bool Timekeeper_SetTime(const Time_t* time);
 
 /**
  * @brief Set the current date.

@@ -33,13 +33,16 @@ void Timekeeper_Init(void) {
     s_base_time_ticks = 0;
 }
 
-void Timekeeper_SetTime(const Time_t* time) {
-    if (time->hour < 24 && time->minute < 60 && time->second < 60) {
-        __builtin_disi(0x3FFF);
-        s_base_time = *time;
-        s_base_time_ticks = Timer_GetTicks(1);
-        __builtin_disi(0x0000);
+bool Timekeeper_SetTime(const Time_t* time) {
+    if (time->hour >= 24 || time->minute >= 60 || time->second >= 60) {
+        return false;
     }
+
+    __builtin_disi(0x3FFF);
+    s_base_time = *time;
+    s_base_time_ticks = Timer_GetTicks(1);
+    __builtin_disi(0x0000);
+    return true;
 }
 
 void Timekeeper_SetDate(const Date_t* date) {

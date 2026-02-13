@@ -27,6 +27,8 @@ static int16_t s_last_x = 0, s_last_y = 0, s_last_z = 0;
 static bool s_first_read = true;
 static uint8_t s_shake_count = 0;
 static uint32_t s_last_shake_time = 0;
+static bool s_accel_ready = false;
+static uint32_t s_last_recover_ms = 0;
 
 // ============================================================================
 // PRIVATE FUNCTIONS
@@ -55,15 +57,35 @@ static bool is_shaking(int16_t x, int16_t y, int16_t z) {
 // ============================================================================
 
 void AccelInput_Init(void) {
-    ACCEL3_Init(NULL);
+    s_accel_ready = (ACCEL3_Init(NULL) == ACCEL3_OK);
     s_first_read = true;
     s_shake_count = 0;
     s_last_shake_time = 0;
+    s_last_recover_ms = 0;
 }
 
 AccelEvent_t AccelInput_Check(void) {
-    int16_t x, y, z;
-    ACCEL3_ReadXYZ(&x, &y, &z);
+    int16_t x = 0;
+    int16_t y = 0;
+    int16_t z = 0;
+    uint32_t now = Timekeeper_GetMillis();
+
+    if (!s_accel_ready) {
+        if ((s_last_recover_ms == 0) || ((now - s_last_recover_ms) > 500U)) {
+            s_last_recover_ms = now;
+            s_accel_ready = (ACCEL3_Init(NULL) == ACCEL3_OK);
+            s_first_read = true;
+        }
+        return ACCEL_NONE;
+    }
+
+    if (ACCEL3_ReadXYZ(&x, &y, &z) != ACCEL3_OK) {
+        s_accel_ready = false;
+        s_last_recover_ms = now;
+        s_first_read = true;
+        s_shake_count = 0;
+        return ACCEL_NONE;
+    }
 
     if (s_first_read) {
         s_last_x = x;
@@ -81,8 +103,6 @@ AccelEvent_t AccelInput_Check(void) {
     }
 
     if (is_shaking(x, y, z)) {
-        uint32_t now = Timekeeper_GetMillis();
-
         if (now - s_last_shake_time > SHAKE_TIMEOUT_MS)
             s_shake_count = 0;
 

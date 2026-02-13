@@ -48,6 +48,6 @@ void APP_InitializeHardware(void) {
 
     Time_t default_time = {12, 0, 0};
     Date_t default_date = {1, 1};
-    Timekeeper_SetTime(&default_time);
+    (void)Timekeeper_SetTime(&default_time);
     Timekeeper_SetDate(&default_date);
 }

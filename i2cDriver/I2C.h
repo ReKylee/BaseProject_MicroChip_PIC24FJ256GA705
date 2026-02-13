@@ -42,6 +42,8 @@ typedef enum {
 
 /* --- API --- */
 void i2c_init(const i2c_config_t *cfg);
+void i2c_recover(void);
+
 i2c_status_t i2c_writeReg(uint8_t addr, uint8_t reg, uint8_t val);
 i2c_status_t i2c_readReg(uint8_t addr, uint8_t reg, uint8_t *val);
 i2c_status_t i2c_readRegs(uint8_t addr, uint8_t reg, uint8_t *data, uint8_t len);
