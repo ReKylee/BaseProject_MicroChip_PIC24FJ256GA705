@@ -62,10 +62,13 @@ void Timekeeper_GetTime(Time_t* time) {
     uint32_t current_ticks = Timer_GetTicks(1);
     uint32_t elapsed_seconds = current_ticks - s_base_time_ticks;
 
-    uint32_t base_total_seconds = s_base_time.hour * 3600 + s_base_time.minute * 60 + s_base_time.second;
+    uint32_t base_total_seconds =
+        ((uint32_t)s_base_time.hour * 3600UL) +
+        ((uint32_t)s_base_time.minute * 60UL) +
+        (uint32_t)s_base_time.second;
     uint32_t current_total_seconds = base_total_seconds + elapsed_seconds;
     
-    uint16_t days_passed = current_total_seconds / 86400;
+    uint16_t days_passed = (uint16_t)(current_total_seconds / 86400UL);
     uint16_t day = (uint16_t)s_base_date.day + days_passed;
     uint8_t month = s_base_date.month;
 
@@ -81,10 +84,10 @@ void Timekeeper_GetTime(Time_t* time) {
     state->current_date.day = (uint8_t)day;
     state->current_date.month = month;
 
-    uint32_t seconds_into_day = current_total_seconds % 86400;
-    time->hour = seconds_into_day / 3600;
-    time->minute = (seconds_into_day % 3600) / 60;
-    time->second = seconds_into_day % 60;
+    uint32_t seconds_into_day = current_total_seconds % 86400UL;
+    time->hour = (uint8_t)(seconds_into_day / 3600UL);
+    time->minute = (uint8_t)((seconds_into_day % 3600UL) / 60UL);
+    time->second = (uint8_t)(seconds_into_day % 60UL);
 }
 
 void Timekeeper_GetDate(Date_t* date) {

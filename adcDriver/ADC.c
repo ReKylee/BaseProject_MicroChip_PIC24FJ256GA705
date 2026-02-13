@@ -53,7 +53,7 @@ static void configure_pin_analog(uint8_t channel) {
             TRISB |= (1U << 13);
             ANSELB |= (1U << 13);
             break;
-        case 8:   // AN8  -> RB12 (potentiometer on Curiosity board)
+        case 8:   // AN8  -> RB12
             TRISB |= (1U << 12);
             ANSELB |= (1U << 12);
             break;
