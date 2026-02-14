@@ -14,6 +14,7 @@
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchDebug/debug_menu.c</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchFaces/analog_face.c</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/oledDriver/oledC.c</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/accel3Driver/ACCEL3.c</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchMenu/menu_core.h</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchManagers/app_input_handler.c</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchFaces/watch_face_common.c</file>
@@ -26,6 +27,7 @@
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchCore/timekeeper.c</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchMenu/menu_layout.h</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchManagers/app_input_handler.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/adcDriver/ADC.c</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchMenu/menu_state.c</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watch_main.c</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchMenu/menu_state.h</file>
@@ -33,9 +35,11 @@
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/app_init.h</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/pomodoroTimer/pomodoro.c</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchMenu/menu_icons.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/Timers/Timers.c</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchMenu/menu_render.c</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/pomodoroTimer/pomodoro.h</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/i2cDriver/I2C.h</file>
+            <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/adcDriver/ADC.h</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchFaces/digital_face.c</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchInput/accel_input.c</file>
             <file>file:/P:/Projects/College/MPLABX/CuriosityOledBase.X/WatchApp/watchFaces/alarm_face.c</file>
