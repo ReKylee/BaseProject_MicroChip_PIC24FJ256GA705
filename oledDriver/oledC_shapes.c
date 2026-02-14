@@ -22,6 +22,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include "oledC_shapes.h"
 #include "oledC.h"
 
@@ -417,6 +418,53 @@ void oledC_DrawBitmap(uint8_t x, uint8_t y, uint16_t color, uint8_t sx, uint8_t 
                 oledC_DrawRectangle(curr_x, curr_y, curr_x+sx-1, curr_y+sy-1, color);
             }
             rowBits >>= 0x000001;
+        }
+    }
+}
+
+void oledC_DrawBitmapIndexed2bpp(uint8_t x, uint8_t y, uint8_t width, uint8_t height,
+                                 const uint8_t *packed_indices, const uint16_t palette[4])
+{
+    uint8_t x0;
+    uint8_t y0;
+    uint8_t x1;
+    uint8_t y1;
+    uint8_t row_bytes;
+    uint8_t py;
+    uint8_t px;
+
+    if (packed_indices == NULL || palette == NULL) {
+        return;
+    }
+    if (width == 0 || height == 0) {
+        return;
+    }
+    if (x > OLED_DIM_WIDTH || y > OLED_DIM_HEIGHT) {
+        return;
+    }
+
+    x0 = x;
+    y0 = y;
+    {
+        uint16_t x_end = (uint16_t)x + (uint16_t)width - 1U;
+        uint16_t y_end = (uint16_t)y + (uint16_t)height - 1U;
+        x1 = (x_end > OLED_DIM_WIDTH) ? OLED_DIM_WIDTH : (uint8_t)x_end;
+        y1 = (y_end > OLED_DIM_HEIGHT) ? OLED_DIM_HEIGHT : (uint8_t)y_end;
+    }
+    row_bytes = (uint8_t)((width + 3U) >> 2); // 4 pixels per byte, row-major.
+
+    oledC_setColumnAddressBounds(x0, x1);
+    oledC_setRowAddressBounds(y0, y1);
+
+    for (py = y0; py <= y1; py++) {
+        uint8_t src_y = (uint8_t)(py - y);
+        const uint8_t *row = &packed_indices[(uint16_t)src_y * (uint16_t)row_bytes];
+        for (px = x0; px <= x1; px++) {
+            uint8_t src_x = (uint8_t)(px - x);
+            uint8_t b = row[src_x >> 2];
+            uint8_t shift = (uint8_t)((3U - (src_x & 0x03U)) << 1);
+            uint8_t idx = (uint8_t)((b >> shift) & 0x03U);
+            oledC_sendColorInt(palette[idx]);
         }
     }
 }

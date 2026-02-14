@@ -130,5 +130,7 @@ void oledC_DrawString(uint8_t x, uint8_t y, uint8_t sx, uint8_t sy, uint8_t *str
 void oledC_DrawCharacterSolid(uint8_t x, uint8_t y, uint8_t sx, uint8_t sy, uint8_t ch, uint16_t fg_color, uint16_t bg_color);
 void oledC_DrawStringSolid(uint8_t x, uint8_t y, uint8_t sx, uint8_t sy, uint8_t *string, uint16_t fg_color, uint16_t bg_color);
 void oledC_DrawBitmap(uint8_t x, uint8_t y, uint16_t color, uint8_t sx, uint8_t sy, uint32_t *bit_array, uint8_t array_width);
+void oledC_DrawBitmapIndexed2bpp(uint8_t x, uint8_t y, uint8_t width, uint8_t height,
+                                 const uint8_t *packed_indices, const uint16_t palette[4]);
 
 #endif	/* OLEDC_SHAPES_H */

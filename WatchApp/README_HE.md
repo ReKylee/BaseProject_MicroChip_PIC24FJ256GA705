@@ -90,3 +90,9 @@
 - `WatchApp/watchMenu/`: לוגיקת תפריט ועריכה
 - `WatchApp/watchCore/`: Timekeeper ו-Alarm
 - `WatchApp/pomodoroTimer/`: טיימר פומודורו
+
+## קרדיטים לאייקונים
+
+- famfamfam silk (legacy mirror): https://github.com/legacy-icons/famfamfam-silk
+- tomato 16x16 pixel art: https://www.pixilart.com/art/tomato-16x16-sr2a62a94d910aws3
+- rpgiab icon pack: https://zeromatrix.itch.io/rpgiab-icons

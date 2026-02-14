@@ -26,9 +26,8 @@ const MenuItem_t main_menu[] = {
 
 const char* const s_display_modes[] = {"Digital", "Analog", "Binary"};
 const char* const s_time_formats[] = {"12 Hour", "24 Hour"};
-const uint32_t* const s_display_mode_icons[] = {s_icon_display_digital, s_icon_display_analog, s_icon_display_binary};
-const uint32_t* const s_time_format_icons[] = {s_icon_time_12h, s_icon_time_24h};
-const uint32_t* const s_alarm_toggle_icons[] = {s_icon_alarm_toggle, s_icon_set_alarm};
+const IconAsset_t* const s_display_mode_icons[] = {&s_asset_display_digital, &s_asset_display_analog, &s_asset_display_binary};
+const IconAsset_t* const s_alarm_toggle_icons[] = {&s_asset_alarm_toggle, &s_asset_alarm_on};
 
 MenuStateData_t g_menu_data = {
     .radial_selection = 0,
@@ -97,13 +96,10 @@ static void set_format_selection(uint8_t idx) { Watch_GetState()->time_format = 
 static uint8_t get_alarm_toggle_selection(void) { return Watch_GetState()->alarm.enabled ? 1 : 0; }
 static void set_alarm_toggle_selection(uint8_t idx) { Watch_GetState()->alarm.enabled = (idx != 0); }
 
-const uint32_t* MenuState_GetMainMenuIcon(uint8_t idx) {
+const IconAsset_t* MenuState_GetMainMenuIcon(uint8_t idx) {
     WatchState_t* state = Watch_GetState();
-    if (idx == 1) {
-        return (state->time_format == FORMAT_12H) ? s_icon_time_12h : s_icon_time_24h;
-    }
     if (idx == 5) {
-        return state->alarm.enabled ? s_icon_set_alarm : s_icon_alarm_toggle;
+        return state->alarm.enabled ? &s_asset_alarm_on : &s_asset_alarm_toggle;
     }
     return s_menu_icons[idx];
 }
@@ -222,7 +218,7 @@ const RadialMenuConfig_t s_format_menu_cfg = {
     .title = "FORMAT",
     .radius = 26,
     .draw_inner_circle = true,
-    .icons = s_time_format_icons,
+    .icons = NULL,
     .labels = s_time_formats,
     .get_icon = NULL,
     .get_label = NULL,

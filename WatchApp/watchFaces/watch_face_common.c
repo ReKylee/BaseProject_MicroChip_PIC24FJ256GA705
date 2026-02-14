@@ -3,27 +3,30 @@
  */
 
 #include "watch_face_common.h"
+#include "../watchMenu/menu_icons.h"
 
 // ============================================================================
 // SHARED DRAW HELPERS
 // ============================================================================
 
 void WatchFace_DrawAlarmIcon(uint8_t x, uint8_t y, uint8_t width, uint8_t height, bool enabled) {
-    uint16_t color = enabled ? COLOR_ACCENT : COLOR_BG;
-    uint8_t w = (width < 9) ? 9 : width;
-    uint8_t h = (height < 9) ? 9 : height;
-    uint8_t cx = x + w / 2;
-    uint8_t cy = y + h / 2;
-    (void)w;
-    (void)h;
+    uint16_t palette[4];
+    (void)width;
+    (void)height;
 
-    oledC_DrawRectangle(x, y, x + w, y + h, COLOR_BG);
+    if (enabled) {
+        palette[0] = COLOR_BG;
+        palette[1] = s_asset_alarm_indicator.palette[1];
+        palette[2] = s_asset_alarm_indicator.palette[2];
+        palette[3] = s_asset_alarm_indicator.palette[3];
+    } else {
+        palette[0] = COLOR_BG;
+        palette[1] = COLOR_BG;
+        palette[2] = COLOR_BG;
+        palette[3] = COLOR_BG;
+    }
 
-    if (!enabled) return;
-
-    oledC_DrawCircle(cx, cy, 6, color);
-    oledC_DrawLine(cx, (uint8_t)(cy - 5), cx, (uint8_t)(cy - 1), 1, COLOR_BG);
-    oledC_DrawLine((uint8_t)(cx + 1), cy, (uint8_t)(cx + 5), cy, 1, COLOR_BG);
+    oledC_DrawBitmapIndexed2bpp(x, y, ALARM_W, ALARM_H, s_asset_alarm_indicator.pixels, palette);
 }
 
 void WatchFace_DrawDate(uint8_t x, uint8_t y, const Date_t* current_date, Date_t* last_date_drawn, uint16_t color, uint16_t bg_color) {

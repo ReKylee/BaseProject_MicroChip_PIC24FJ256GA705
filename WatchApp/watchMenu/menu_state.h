@@ -7,6 +7,7 @@
 
 #include "menu.h"
 #include "menu_core.h"
+#include "icon_asset.h"
 #include "../shared/watch_state.h"
 #include "../shared/watch_types.h"
 
@@ -14,9 +15,8 @@
 extern const MenuItem_t main_menu[];
 extern const char* const s_display_modes[];
 extern const char* const s_time_formats[];
-extern const uint32_t* const s_display_mode_icons[];
-extern const uint32_t* const s_time_format_icons[];
-extern const uint32_t* const s_alarm_toggle_icons[];
+extern const IconAsset_t* const s_display_mode_icons[];
+extern const IconAsset_t* const s_alarm_toggle_icons[];
 
 typedef struct {
     // Temporary editing state
@@ -116,9 +116,9 @@ typedef struct {
     const char* title;
     uint8_t radius;
     bool draw_inner_circle;
-    const uint32_t* const* icons;
+    const IconAsset_t* const* icons;
     const char* const* labels;
-    const uint32_t* (*get_icon)(uint8_t idx);
+    const IconAsset_t* (*get_icon)(uint8_t idx);
     const char* (*get_label)(uint8_t idx);
     MenuRadial_t* radial;
 } RadialMenuConfig_t;
@@ -154,7 +154,7 @@ extern const RadialMenuConfig_t s_alarm_toggle_cfg;
 
 // State helpers
 void MenuState_OnChange(MenuState_t new_state, bool seed_pot, uint16_t pot_value);
-const uint32_t* MenuState_GetMainMenuIcon(uint8_t idx);
+const IconAsset_t* MenuState_GetMainMenuIcon(uint8_t idx);
 const char* MenuState_GetMainMenuLabel(uint8_t idx);
 const char* MenuState_GetAlarmToggleLabel(uint8_t idx);
 void MenuState_SetSkipNextPartial(bool skip);

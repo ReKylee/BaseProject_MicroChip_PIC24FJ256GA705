@@ -82,10 +82,20 @@ The following changes were made in `oledDriver/oledC.c`, `oledDriver/oledC_shape
 - Solid text draws both foreground and background pixels for each glyph cell.
 - This allows faster fixed-area text redraws (no separate clear step required for same-area updates).
 
-3. Solid glyph raster order fix
+3. New indexed palette bitmap API (2bpp)
+- Added `oledC_DrawBitmapIndexed2bpp(...)` in `oledC_shapes`.
+- Supports 4-color palette icons using packed 2-bit indices.
+- Packing format is row-major, 4 pixels per byte:
+  - bits `[7:6]` = pixel 0
+  - bits `[5:4]` = pixel 1
+  - bits `[3:2]` = pixel 2
+  - bits `[1:0]` = pixel 3
+- Uses a single OLED address window and streamed pixel writes for efficiency.
+
+4. Solid glyph raster order fix
 - Fixed pixel traversal order in `oledC_DrawCharacterSolid(...)` to match OLED RAM window expectations.
 - Result: prevents garbled text rendering when using solid text functions.
 
-4. Backward compatibility
+5. Backward compatibility
 - Existing transparent APIs (`oledC_DrawCharacter`, `oledC_DrawString`) are still present and unchanged.
 - Existing call sites can continue using transparent text where overlay behavior is desired.

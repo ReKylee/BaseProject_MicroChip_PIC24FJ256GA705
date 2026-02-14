@@ -120,3 +120,9 @@ Mode constant: `MODE_DEBUG` (only when `DEBUG_MODE` is enabled)
   - `needs_redraw`
 - Full redraw is used for mode switches and large state changes.
 - Partial redraw is used for normal ticking updates.
+
+## Icon Credits
+
+- famfamfam silk (legacy mirror): https://github.com/legacy-icons/famfamfam-silk
+- tomato 16x16 pixel art: https://www.pixilart.com/art/tomato-16x16-sr2a62a94d910aws3
+- rpgiab icon pack: https://zeromatrix.itch.io/rpgiab-icons

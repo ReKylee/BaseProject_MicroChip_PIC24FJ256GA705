@@ -172,6 +172,9 @@ static void draw_small_time_update(void) {
                             COLOR_BG);
         if (s_last_header_title) {
             oledC_DrawStringSolid(MENU_TITLE_X, MENU_TITLE_Y, 1, 1, (uint8_t*)s_last_header_title, COLOR_ACCENT, COLOR_BG);
+            if (state->menu_state == MENU_DISPLAY_MODE) {
+                oledC_DrawStringSolid(2, MENU_TITLE_Y, 1, 1, (uint8_t*)"<", COLOR_DIM, COLOR_BG);
+            }
         }
         oledC_DrawStringSolid(x, MENU_TIME_Y, 1, 1, (uint8_t*)new_str, COLOR_DIM, COLOR_BG);
         s_last_small_time = state->current_time;
@@ -188,6 +191,9 @@ static void draw_small_time_full(void) {
                         COLOR_BG);
     if (s_last_header_title) {
         oledC_DrawStringSolid(MENU_TITLE_X, MENU_TITLE_Y, 1, 1, (uint8_t*)s_last_header_title, COLOR_ACCENT, COLOR_BG);
+        if (state->menu_state == MENU_DISPLAY_MODE) {
+            oledC_DrawStringSolid(2, MENU_TITLE_Y, 1, 1, (uint8_t*)"<", COLOR_DIM, COLOR_BG);
+        }
     }
     oledC_DrawStringSolid(x, MENU_TIME_Y, 1, 1, (uint8_t*)new_str, COLOR_DIM, COLOR_BG);
     s_last_small_time = state->current_time;
@@ -198,14 +204,35 @@ static void draw_radial_item(uint8_t idx, bool selected) {
     if (!s_active_radial) return;
     int x, y;
     radial_idx_to_xy_arc(idx, s_active_radial->radial->count, s_active_radial->radius, &x, &y);
-    const uint32_t* icon = s_active_radial->get_icon ? s_active_radial->get_icon(idx) : s_active_radial->icons[idx];
+    if (s_active_radial == &s_format_menu_cfg) {
+        const char* tf = (idx == 0U) ? "12H" : "24H";
+        uint8_t w = (uint8_t)(strlen(tf) * 6);
+        if (selected) {
+            oledC_DrawCircle(x, y, MENU_RING_RADIUS, COLOR_PRIMARY);
+            oledC_DrawStringSolid((uint8_t)(x - (w / 2)), (uint8_t)(y - 3), 1, 1, (uint8_t*)tf, COLOR_BG, COLOR_PRIMARY);
+        } else {
+            oledC_DrawCircle(x, y, MENU_RING_RADIUS, COLOR_BG);
+            oledC_DrawStringSolid((uint8_t)(x - (w / 2)), (uint8_t)(y - 3), 1, 1, (uint8_t*)tf, COLOR_PRIMARY, COLOR_BG);
+        }
+        return;
+    }
+    const IconAsset_t* icon_asset = s_active_radial->get_icon ? s_active_radial->get_icon(idx) : s_active_radial->icons[idx];
+    const uint8_t* icon = icon_asset->pixels;
+    uint16_t palette[4];
     if (selected) {
         oledC_DrawCircle(x, y, MENU_RING_RADIUS, COLOR_PRIMARY);
-        oledC_DrawBitmap(x - (MENU_BITMAP_W/2), y - (MENU_ICON_SIZE/2), COLOR_BG, 1, 1, (uint32_t*)icon, MENU_ICON_ROWS);
+        palette[0] = COLOR_PRIMARY;
     } else {
         oledC_DrawCircle(x, y, MENU_RING_RADIUS, COLOR_BG);
-        oledC_DrawBitmap(x - (MENU_BITMAP_W/2), y - (MENU_ICON_SIZE/2), COLOR_DIM, 1, 1, (uint32_t*)icon, MENU_ICON_ROWS);
+        palette[0] = COLOR_BG;
     }
+    palette[1] = icon_asset->palette[1];
+    palette[2] = icon_asset->palette[2];
+    palette[3] = icon_asset->palette[3];
+    oledC_DrawBitmapIndexed2bpp((uint8_t)(x - (MENU_ICON_SIZE / 2)),
+                                (uint8_t)(y - (MENU_ICON_SIZE / 2)),
+                                MENU_ICON_SIZE, MENU_ICON_SIZE,
+                                icon, palette);
 }
 
 static void draw_radial_center(uint8_t idx) {
