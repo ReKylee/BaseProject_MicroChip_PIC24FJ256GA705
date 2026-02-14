@@ -204,6 +204,21 @@ static void draw_radial_item(uint8_t idx, bool selected) {
     if (!s_active_radial) return;
     int x, y;
     radial_idx_to_xy_arc(idx, s_active_radial->radial->count, s_active_radial->radius, &x, &y);
+
+    if (s_active_radial == &s_main_menu_cfg && idx == 1U) {
+        WatchState_t* state = Watch_GetState();
+        const char* tf = (state->time_format == FORMAT_12H) ? "12H" : "24H";
+        uint8_t w = (uint8_t)(strlen(tf) * 6);
+        if (selected) {
+            oledC_DrawCircle(x, y, MENU_RING_RADIUS, COLOR_PRIMARY);
+            oledC_DrawStringSolid((uint8_t)(x - (w / 2)), (uint8_t)(y - 3), 1, 1, (uint8_t*)tf, COLOR_BG, COLOR_PRIMARY);
+        } else {
+            oledC_DrawCircle(x, y, MENU_RING_RADIUS, COLOR_BG);
+            oledC_DrawStringSolid((uint8_t)(x - (w / 2)), (uint8_t)(y - 3), 1, 1, (uint8_t*)tf, COLOR_PRIMARY, COLOR_BG);
+        }
+        return;
+    }
+
     if (s_active_radial == &s_format_menu_cfg) {
         const char* tf = (idx == 0U) ? "12H" : "24H";
         uint8_t w = (uint8_t)(strlen(tf) * 6);
@@ -229,8 +244,9 @@ static void draw_radial_item(uint8_t idx, bool selected) {
     palette[1] = icon_asset->palette[1];
     palette[2] = icon_asset->palette[2];
     palette[3] = icon_asset->palette[3];
-    oledC_DrawBitmapIndexed2bpp((uint8_t)(x - (MENU_ICON_SIZE / 2)),
-                                (uint8_t)(y - (MENU_ICON_SIZE / 2)),
+    const uint8_t icon_offset = (uint8_t)((MENU_ICON_SIZE - 1U) / 2U);
+    oledC_DrawBitmapIndexed2bpp((uint8_t)(x - icon_offset),
+                                (uint8_t)(y - icon_offset),
                                 MENU_ICON_SIZE, MENU_ICON_SIZE,
                                 icon, palette);
 }
@@ -396,11 +412,8 @@ static void draw_edit_ring_labels(MenuState_t state, uint8_t field) {
 static void clear_edit_ring_area(void) {
     uint8_t max_r = MENU_EDIT_RING_RADIUS;
     if (MENU_EDIT_LABEL_RADIUS > max_r) max_r = MENU_EDIT_LABEL_RADIUS;
-    uint8_t inner = (uint8_t)(MENU_EDIT_RING_RADIUS > 7 ? (MENU_EDIT_RING_RADIUS - 7) : 0);
     uint8_t outer = (uint8_t)(max_r + 7);
-    uint8_t radius = (uint8_t)((inner + outer) / 2);
-    uint8_t width = (uint8_t)(outer - inner + 1);
-    oledC_DrawRing(MENU_CENTER_X, MENU_CENTER_Y, radius, width, COLOR_BG);
+    oledC_DrawCircle(MENU_CENTER_X, MENU_CENTER_Y, outer, COLOR_BG);
 }
 
 static void draw_edit_tick(uint8_t value, uint8_t count, uint16_t color) {
