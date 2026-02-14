@@ -19,6 +19,16 @@
 static const RadialMenuConfig_t* s_active_radial = NULL;
 static TimeFormat_t s_last_small_time_format = FORMAT_24H;
 static const char* s_last_header_title = NULL;
+static bool s_center_label_valid = false;
+static char s_center_prev_line1[12] = {0};
+static char s_center_prev_line2[12] = {0};
+static uint8_t s_center_prev_l1x = 0;
+static uint8_t s_center_prev_l1y = 0;
+static uint8_t s_center_prev_l2x = 0;
+static uint8_t s_center_prev_l2y = 0;
+// Main radial menu arc: 45 deg -> 315 deg clockwise (270 deg span).
+#define MENU_ARC_START_POINTS_X2 15U
+#define MENU_ARC_END_POINTS_X2   105U
 
 static void format_2d(uint8_t value, char out[3]) {
     out[0] = (char)('0' + (value / 10));
@@ -26,18 +36,42 @@ static void format_2d(uint8_t value, char out[3]) {
     out[2] = '\0';
 }
 
-static inline uint8_t idx_to_sec(uint8_t idx, uint8_t count) {
-    return (uint8_t)((idx * NUM_CLOCK_POINTS) / count);
+static inline uint8_t idx_to_sec_arc(uint8_t idx, uint8_t count) {
+    uint16_t sec_x2;
+    if (count <= 1U) {
+        sec_x2 = (uint16_t)((MENU_ARC_START_POINTS_X2 + MENU_ARC_END_POINTS_X2) / 2U);
+    } else {
+        if (idx == 0U) return MENU_ARC_START_POINTS_X2;
+        if (idx >= (uint8_t)(count - 1U)) return MENU_ARC_END_POINTS_X2;
+        uint16_t span_x2 = (uint16_t)(MENU_ARC_END_POINTS_X2 - MENU_ARC_START_POINTS_X2);
+        sec_x2 = (uint16_t)(MENU_ARC_START_POINTS_X2 +
+                            ((((uint32_t)idx * (uint32_t)span_x2) + ((uint32_t)(count - 1U) / 2UL)) /
+                             (uint32_t)(count - 1U)));
+    }
+    return (uint8_t)sec_x2;
 }
 
-static inline void radial_idx_to_xy(uint8_t idx, uint8_t count, uint8_t radius, int *x, int *y) {
-    uint8_t sec = idx_to_sec(idx, count);
-    int16_t dx = SEC_POINTS[sec][0] - MENU_GEOM_CENTER_X;
-    int16_t dy = SEC_POINTS[sec][1] - MENU_GEOM_CENTER_Y;
-    int16_t sx = (dx * radius) / MENU_GEOM_RADIUS;
-    int16_t sy = (dy * radius) / MENU_GEOM_RADIUS;
+static inline void arc_point_to_xy(uint8_t sec_x2, uint8_t radius, int *x, int *y) {
+    uint8_t sec = (uint8_t)((sec_x2 / 2U) % NUM_CLOCK_POINTS);
+    uint8_t next = (uint8_t)((sec + 1U) % NUM_CLOCK_POINTS);
+
+    int16_t dx_x2 = (int16_t)(((int16_t)SEC_POINTS[sec][0] - (int16_t)MENU_GEOM_CENTER_X) * 2);
+    int16_t dy_x2 = (int16_t)(((int16_t)SEC_POINTS[sec][1] - (int16_t)MENU_GEOM_CENTER_Y) * 2);
+    if ((sec_x2 & 1U) != 0U) {
+        dx_x2 = (int16_t)(((int16_t)SEC_POINTS[sec][0] - (int16_t)MENU_GEOM_CENTER_X) +
+                          ((int16_t)SEC_POINTS[next][0] - (int16_t)MENU_GEOM_CENTER_X));
+        dy_x2 = (int16_t)(((int16_t)SEC_POINTS[sec][1] - (int16_t)MENU_GEOM_CENTER_Y) +
+                          ((int16_t)SEC_POINTS[next][1] - (int16_t)MENU_GEOM_CENTER_Y));
+    }
+
+    int16_t sx = (int16_t)(((int32_t)dx_x2 * (int32_t)radius) / (int32_t)(2 * MENU_GEOM_RADIUS));
+    int16_t sy = (int16_t)(((int32_t)dy_x2 * (int32_t)radius) / (int32_t)(2 * MENU_GEOM_RADIUS));
     *x = MENU_CENTER_X + sx;
     *y = MENU_CENTER_Y + sy;
+}
+
+static inline void radial_idx_to_xy_arc(uint8_t idx, uint8_t count, uint8_t radius, int *x, int *y) {
+    arc_point_to_xy(idx_to_sec_arc(idx, count), radius, x, y);
 }
 
 static void draw_center_label(const char *text) {
@@ -68,25 +102,41 @@ static void draw_center_label(const char *text) {
 
     uint8_t line1_w = (uint8_t)(strlen(line1) * 6);
     uint8_t line2_w = (uint8_t)(strlen(line2) * 6);
-    uint8_t box_w = (line1_w > line2_w ? line1_w : line2_w) + MENU_CENTER_LABEL_PAD * 2;
-    uint8_t box_h = (line2[0] != '\0') ? 18 : 12;
-    uint8_t x0 = MENU_CENTER_X - (box_w / 2);
-    uint8_t y0 = MENU_CENTER_Y - (box_h / 2);
-    uint8_t x1 = MENU_CENTER_X + (box_w / 2);
-    uint8_t y1 = MENU_CENTER_Y + (box_h / 2);
+    uint8_t l1x = (uint8_t)(MENU_CENTER_X - (line1_w / 2));
+    uint8_t l2x = (uint8_t)(MENU_CENTER_X - (line2_w / 2));
+    uint8_t l1y = (line2[0] == '\0') ? (uint8_t)(MENU_CENTER_Y - 3) : (uint8_t)(MENU_CENTER_Y - 7);
+    uint8_t l2y = (uint8_t)(MENU_CENTER_Y + 1);
 
-    oledC_DrawRectangle(x0, y0, x1, y1, COLOR_BG);
-    if (line2[0] == '\0') {
-        oledC_DrawString(MENU_CENTER_X - (line1_w / 2), MENU_CENTER_Y - 3, 1, 1, (uint8_t*)line1, COLOR_PRIMARY);
-    } else {
-        oledC_DrawString(MENU_CENTER_X - (line1_w / 2), MENU_CENTER_Y - 7, 1, 1, (uint8_t*)line1, COLOR_PRIMARY);
-        oledC_DrawString(MENU_CENTER_X - (line2_w / 2), MENU_CENTER_Y + 1, 1, 1, (uint8_t*)line2, COLOR_PRIMARY);
+    if (s_center_label_valid) {
+        if (s_center_prev_line1[0] != '\0') {
+            oledC_DrawStringSolid(s_center_prev_l1x, s_center_prev_l1y, 1, 1, (uint8_t*)s_center_prev_line1, COLOR_BG, COLOR_BG);
+        }
+        if (s_center_prev_line2[0] != '\0') {
+            oledC_DrawStringSolid(s_center_prev_l2x, s_center_prev_l2y, 1, 1, (uint8_t*)s_center_prev_line2, COLOR_BG, COLOR_BG);
+        }
     }
+
+    if (line2[0] == '\0') {
+        oledC_DrawStringSolid(l1x, l1y, 1, 1, (uint8_t*)line1, COLOR_PRIMARY, COLOR_BG);
+    } else {
+        oledC_DrawStringSolid(l1x, l1y, 1, 1, (uint8_t*)line1, COLOR_PRIMARY, COLOR_BG);
+        oledC_DrawStringSolid(l2x, l2y, 1, 1, (uint8_t*)line2, COLOR_PRIMARY, COLOR_BG);
+    }
+
+    strncpy(s_center_prev_line1, line1, sizeof(s_center_prev_line1) - 1);
+    s_center_prev_line1[sizeof(s_center_prev_line1) - 1] = '\0';
+    strncpy(s_center_prev_line2, line2, sizeof(s_center_prev_line2) - 1);
+    s_center_prev_line2[sizeof(s_center_prev_line2) - 1] = '\0';
+    s_center_prev_l1x = l1x;
+    s_center_prev_l1y = l1y;
+    s_center_prev_l2x = l2x;
+    s_center_prev_l2y = l2y;
+    s_center_label_valid = true;
 }
 
 static void draw_menu_header(const char* title) {
     oledC_DrawRectangle(0, MENU_HEADER_Y, 95, MENU_HEADER_Y + MENU_HEADER_H, COLOR_BG);
-    oledC_DrawString(MENU_TITLE_X, MENU_TITLE_Y, 1, 1, (uint8_t*)title, COLOR_ACCENT);
+    oledC_DrawStringSolid(MENU_TITLE_X, MENU_TITLE_Y, 1, 1, (uint8_t*)title, COLOR_ACCENT, COLOR_BG);
     s_last_header_title = title;
 }
 
@@ -121,9 +171,9 @@ static void draw_small_time_update(void) {
                             95, MENU_HEADER_Y + MENU_HEADER_H,
                             COLOR_BG);
         if (s_last_header_title) {
-            oledC_DrawString(MENU_TITLE_X, MENU_TITLE_Y, 1, 1, (uint8_t*)s_last_header_title, COLOR_ACCENT);
+            oledC_DrawStringSolid(MENU_TITLE_X, MENU_TITLE_Y, 1, 1, (uint8_t*)s_last_header_title, COLOR_ACCENT, COLOR_BG);
         }
-        oledC_DrawString(x, MENU_TIME_Y, 1, 1, (uint8_t*)new_str, COLOR_DIM);
+        oledC_DrawStringSolid(x, MENU_TIME_Y, 1, 1, (uint8_t*)new_str, COLOR_DIM, COLOR_BG);
         s_last_small_time = state->current_time;
         s_last_small_time_format = state->time_format;
     }
@@ -137,9 +187,9 @@ static void draw_small_time_full(void) {
                         95, MENU_HEADER_Y + MENU_HEADER_H,
                         COLOR_BG);
     if (s_last_header_title) {
-        oledC_DrawString(MENU_TITLE_X, MENU_TITLE_Y, 1, 1, (uint8_t*)s_last_header_title, COLOR_ACCENT);
+        oledC_DrawStringSolid(MENU_TITLE_X, MENU_TITLE_Y, 1, 1, (uint8_t*)s_last_header_title, COLOR_ACCENT, COLOR_BG);
     }
-    oledC_DrawString(x, MENU_TIME_Y, 1, 1, (uint8_t*)new_str, COLOR_DIM);
+    oledC_DrawStringSolid(x, MENU_TIME_Y, 1, 1, (uint8_t*)new_str, COLOR_DIM, COLOR_BG);
     s_last_small_time = state->current_time;
     s_last_small_time_format = state->time_format;
 }
@@ -147,7 +197,7 @@ static void draw_small_time_full(void) {
 static void draw_radial_item(uint8_t idx, bool selected) {
     if (!s_active_radial) return;
     int x, y;
-    radial_idx_to_xy(idx, s_active_radial->radial->count, s_active_radial->radius, &x, &y);
+    radial_idx_to_xy_arc(idx, s_active_radial->radial->count, s_active_radial->radius, &x, &y);
     const uint32_t* icon = s_active_radial->get_icon ? s_active_radial->get_icon(idx) : s_active_radial->icons[idx];
     if (selected) {
         oledC_DrawCircle(x, y, MENU_RING_RADIUS, COLOR_PRIMARY);
@@ -218,11 +268,9 @@ static void get_edit_ring_params(MenuState_t state, uint8_t field, uint8_t* coun
     }
 }
 
-static bool edit_label_at_index(MenuState_t state, uint8_t field, uint8_t idx, uint8_t count, uint8_t step) {
+static bool edit_label_at_index(uint8_t idx, uint8_t count, uint8_t step) {
+    if (idx == 0U || idx == (uint8_t)(count - 1U)) return true;
     if ((idx % step) != 0) return false;
-    if (state == MENU_SET_DATE && field == 0 && count == 31 && idx == 30) {
-        return false;
-    }
     return true;
 }
 
@@ -309,107 +357,91 @@ static void draw_edit_ring_labels(MenuState_t state, uint8_t field) {
     get_edit_ring_params(state, field, &count, &step, &offset);
 
     for (uint8_t i = 0; i < count; i++) {
-        if (!edit_label_at_index(state, field, i, count, step)) continue;
+        if (!edit_label_at_index(i, count, step)) continue;
         int x, y;
-        radial_idx_to_xy(i, count, MENU_EDIT_RING_RADIUS, &x, &y);
+        radial_idx_to_xy_arc(i, count, MENU_EDIT_LABEL_RADIUS, &x, &y);
         char label[3];
         format_2d((uint8_t)(i + offset), label);
-        oledC_DrawString(x - 6, y - 3, 1, 1, (uint8_t*)label, COLOR_DIM);
+        oledC_DrawStringSolid((uint8_t)(x - 6), (uint8_t)(y - 3), 1, 1, (uint8_t*)label, COLOR_DIM, COLOR_BG);
     }
 }
 
 static void clear_edit_ring_area(void) {
+    uint8_t max_r = MENU_EDIT_RING_RADIUS;
+    if (MENU_EDIT_LABEL_RADIUS > max_r) max_r = MENU_EDIT_LABEL_RADIUS;
     uint8_t inner = (uint8_t)(MENU_EDIT_RING_RADIUS > 7 ? (MENU_EDIT_RING_RADIUS - 7) : 0);
-    uint8_t outer = (uint8_t)(MENU_EDIT_RING_RADIUS + 7);
+    uint8_t outer = (uint8_t)(max_r + 7);
     uint8_t radius = (uint8_t)((inner + outer) / 2);
     uint8_t width = (uint8_t)(outer - inner + 1);
     oledC_DrawRing(MENU_CENTER_X, MENU_CENTER_Y, radius, width, COLOR_BG);
 }
 
-static void draw_edit_tick_partial(MenuState_t state, uint8_t field,
-                                   uint8_t old_val, uint8_t new_val,
-                                   uint8_t count, uint8_t step, uint8_t offset) {
-    if (old_val == new_val) return;
+static void draw_edit_tick(uint8_t value, uint8_t count, uint16_t color) {
     int x, y;
-    radial_idx_to_xy(old_val, count, MENU_EDIT_RING_RADIUS, &x, &y);
-    oledC_DrawCircle(x, y, MENU_EDIT_TICK_RADIUS, COLOR_BG);
-    if (edit_label_at_index(state, field, old_val, count, step)) {
-        char label[3];
-        format_2d((uint8_t)(old_val + offset), label);
-        oledC_DrawString(x - 6, y - 3, 1, 1, (uint8_t*)label, COLOR_DIM);
+    radial_idx_to_xy_arc(value, count, MENU_EDIT_TICK_ORBIT_RADIUS, &x, &y);
+    oledC_DrawCircle(x, y, MENU_EDIT_TICK_RADIUS, color);
+}
+
+static const char* edit_title_for_state(MenuState_t state) {
+    switch (state) {
+        case MENU_SET_TIME: return "TIME";
+        case MENU_SET_DATE: return "DATE";
+        case MENU_SET_ALARM: return "ALARM";
+        case MENU_POMODORO: return "POMO";
+        default: return "EDIT";
     }
-    radial_idx_to_xy(new_val, count, MENU_EDIT_RING_RADIUS, &x, &y);
-    oledC_DrawCircle(x, y, MENU_EDIT_TICK_RADIUS, COLOR_PRIMARY);
+}
+
+static void set_edit_draw_cache(uint8_t selected, uint8_t field) {
+    s_edit_last_draw_val = selected;
+    s_edit_last_draw_field = field;
+    MenuState_SetEditFullDrawn(true);
+}
+
+static void draw_edit_core(MenuState_t state, bool clear_ring_only) {
+    EditRingSpec_t spec;
+    char center_text[9];
+    uint8_t field = Watch_GetState()->menu_edit_field;
+    fill_edit_spec(state, &spec, center_text);
+
+    if (clear_ring_only) {
+        clear_edit_ring_area();
+    }
+    draw_edit_ring_labels(state, field);
+    draw_center_label(center_text);
+    draw_edit_tick(spec.selected, spec.count, COLOR_PRIMARY);
+    set_edit_draw_cache(spec.selected, field);
 }
 
 static void draw_edit_full(MenuState_t state) {
-    EditRingSpec_t spec;
-    char center_text[9];
-    fill_edit_spec(state, &spec, center_text);
-
     oledC_DrawRectangle(0, 12, 95, 95, COLOR_BG);
-    draw_menu_header(spec.title);
+    draw_menu_header(edit_title_for_state(state));
     draw_small_time_full();
-    draw_edit_ring_labels(state, Watch_GetState()->menu_edit_field);
-    draw_center_label(center_text);
-
-    int sx, sy;
-    radial_idx_to_xy(spec.selected, spec.count, MENU_EDIT_RING_RADIUS, &sx, &sy);
-    oledC_DrawCircle(sx, sy, MENU_EDIT_TICK_RADIUS, COLOR_PRIMARY);
-    s_edit_last_draw_val = spec.selected;
-    s_edit_last_draw_field = Watch_GetState()->menu_edit_field;
-    MenuState_SetEditFullDrawn(true);
+    draw_edit_core(state, false);
 }
 
 static void draw_edit_field_update(MenuState_t state) {
-    EditRingSpec_t spec;
-    char center_text[9];
-    fill_edit_spec(state, &spec, center_text);
-
-    clear_edit_ring_area();
-    draw_edit_ring_labels(state, Watch_GetState()->menu_edit_field);
-    draw_center_label(center_text);
-    int sx, sy;
-    radial_idx_to_xy(spec.selected, spec.count, MENU_EDIT_RING_RADIUS, &sx, &sy);
-    oledC_DrawCircle(sx, sy, MENU_EDIT_TICK_RADIUS, COLOR_PRIMARY);
-    s_edit_last_draw_val = spec.selected;
-    s_edit_last_draw_field = Watch_GetState()->menu_edit_field;
-    MenuState_SetEditFullDrawn(true);
+    draw_edit_core(state, true);
 }
 
 static void draw_edit_value_update(MenuState_t state) {
     EditRingSpec_t spec;
     char center_text[9];
+    uint8_t field = Watch_GetState()->menu_edit_field;
     fill_edit_spec(state, &spec, center_text);
 
     if (!MenuState_IsEditFullDrawn() || s_edit_last_draw_val == 0xFF ||
-        s_edit_last_draw_field != Watch_GetState()->menu_edit_field) {
+        s_edit_last_draw_field != field) {
         draw_edit_field_update(state);
         return;
     }
 
-    uint8_t last_count = spec.count;
-    uint8_t step = spec.label_step;
-    uint8_t offset = spec.label_offset;
-    if (state == MENU_SET_TIME || state == MENU_SET_ALARM) {
-        last_count = (s_edit_last_draw_field == 0) ? 24 : 60;
-        step = (s_edit_last_draw_field == 0) ? 2 : 5;
-        offset = 0;
-    } else if (state == MENU_SET_DATE) {
-        last_count = (s_edit_last_draw_field == 0) ? 31 : 12;
-        step = (s_edit_last_draw_field == 0) ? 5 : 1;
-        offset = 1;
-    } else if (state == MENU_POMODORO) {
-        last_count = (s_edit_last_draw_field == 0) ? 60 : 30;
-        step = 5;
-        offset = 1;
+    if (spec.selected != s_edit_last_draw_val) {
+        draw_edit_tick(s_edit_last_draw_val, spec.count, COLOR_BG);
+        draw_edit_tick(spec.selected, spec.count, COLOR_PRIMARY);
+        draw_center_label(center_text);
+        s_edit_last_draw_val = spec.selected;
     }
-
-    draw_edit_tick_partial(state, Watch_GetState()->menu_edit_field,
-                           s_edit_last_draw_val, spec.selected, last_count, step, offset);
-    draw_center_label(center_text);
-    s_edit_last_draw_val = spec.selected;
-    s_edit_last_draw_field = Watch_GetState()->menu_edit_field;
 }
 
 static bool is_edit_state(MenuState_t state) {
@@ -444,7 +476,7 @@ void Menu_DrawFull(void) {
         case MENU_ALARM_TOGGLE: draw_radial_menu_full(&s_alarm_toggle_cfg); break;
         default:
             oledC_DrawRectangle(0, 12, 95, 95, COLOR_BG);
-            oledC_DrawString(10, 40, 1, 1, (uint8_t*)"Coming Soon", COLOR_PRIMARY);
+            oledC_DrawStringSolid(10, 40, 1, 1, (uint8_t*)"Coming Soon", COLOR_PRIMARY, COLOR_BG);
             break;
     }
 }

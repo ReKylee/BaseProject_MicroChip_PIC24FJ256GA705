@@ -50,7 +50,7 @@ static void format_2d(uint8_t value, char out[3]) {
 static void draw_time_digits(uint8_t value, uint8_t x, uint8_t y, uint16_t color, uint8_t scale_x, uint8_t scale_y) {
     char buf[3];
     format_2d(value, buf);
-    oledC_DrawString(x, y, scale_x, scale_y, (uint8_t*)buf, color);
+    oledC_DrawStringSolid(x, y, scale_x, scale_y, (uint8_t*)buf, color, COLOR_BG);
 }
 
 static void draw_seconds(uint8_t value, uint16_t color) {
@@ -58,13 +58,13 @@ static void draw_seconds(uint8_t value, uint16_t color) {
     format_2d(value, buf);
     uint8_t text_w = (uint8_t)(2 * (FONT_W + FONT_SPACING));
     uint8_t x = (uint8_t)((SCREEN_W - text_w) / 2);
-    oledC_DrawString(x, SECONDS_Y, 1, 1, (uint8_t*)buf, color);
+    oledC_DrawStringSolid(x, SECONDS_Y, 1, 1, (uint8_t*)buf, color, COLOR_BG);
 }
 
 static void draw_ampm(bool is_pm, uint16_t color) {
     uint8_t text_w = (uint8_t)(2 * (FONT_W + FONT_SPACING));
     uint8_t x = (uint8_t)((SCREEN_W - text_w) / 2);
-    oledC_DrawString(x, AMPM_Y, 1, 1, (uint8_t*)(is_pm ? "PM" : "AM"), color);
+    oledC_DrawStringSolid(x, AMPM_Y, 1, 1, (uint8_t*)(is_pm ? "PM" : "AM"), color, COLOR_BG);
 }
 
 static uint8_t time_text_width(void) {
@@ -101,7 +101,7 @@ void DigitalFace_Draw(void) {
     uint8_t min_x = (uint8_t)(colon_x + (FONT_W * TIME_SCALE_X + FONT_SPACING));
 
     draw_time_digits(hour, hour_x, TIME_Y, COLOR_PRIMARY, TIME_SCALE_X, TIME_SCALE_Y);
-    oledC_DrawString(colon_x, TIME_Y, TIME_SCALE_X, TIME_SCALE_Y, (uint8_t*)":", COLOR_PRIMARY);
+    oledC_DrawStringSolid(colon_x, TIME_Y, TIME_SCALE_X, TIME_SCALE_Y, (uint8_t*)":", COLOR_PRIMARY, COLOR_BG);
     draw_time_digits(state->current_time.minute, min_x, TIME_Y, COLOR_PRIMARY, TIME_SCALE_X, TIME_SCALE_Y);
     draw_seconds(state->current_time.second, COLOR_DIM);
 
@@ -142,7 +142,6 @@ void DigitalFace_DrawUpdate(void) {
     }
 
     if (now.second != s_last_time_drawn.second) {
-        draw_seconds(s_last_time_drawn.second, COLOR_BG);
         draw_seconds(now.second, COLOR_DIM);
     }
 
@@ -153,7 +152,6 @@ void DigitalFace_DrawUpdate(void) {
     uint8_t min_x = (uint8_t)(colon_x + (FONT_W * TIME_SCALE_X + FONT_SPACING));
 
     if (now.minute != s_last_time_drawn.minute) {
-        draw_time_digits(s_last_time_drawn.minute, min_x, TIME_Y, COLOR_BG, TIME_SCALE_X, TIME_SCALE_Y);
         draw_time_digits(now.minute, min_x, TIME_Y, COLOR_PRIMARY, TIME_SCALE_X, TIME_SCALE_Y);
     }
 
@@ -163,7 +161,6 @@ void DigitalFace_DrawUpdate(void) {
         last_hour_12 = Timekeeper_Convert24to12(s_last_time_drawn.hour, &last_is_pm);
         if (current_hour_12 != last_hour_12) needs_hour_update = true;
         if (is_pm != last_is_pm) {
-            draw_ampm(!is_pm, COLOR_BG);
             draw_ampm(is_pm, COLOR_SECONDARY);
         }
     } else if (now.hour != s_last_time_drawn.hour) {
@@ -171,9 +168,7 @@ void DigitalFace_DrawUpdate(void) {
     }
 
     if (needs_hour_update) {
-        uint8_t last_hour_to_draw = (state->time_format == FORMAT_12H) ? last_hour_12 : s_last_time_drawn.hour;
         uint8_t current_hour_to_draw = (state->time_format == FORMAT_12H) ? current_hour_12 : now.hour;
-        draw_time_digits(last_hour_to_draw, hour_x, TIME_Y, COLOR_BG, TIME_SCALE_X, TIME_SCALE_Y);
         draw_time_digits(current_hour_to_draw, hour_x, TIME_Y, COLOR_PRIMARY, TIME_SCALE_X, TIME_SCALE_Y);
     }
 

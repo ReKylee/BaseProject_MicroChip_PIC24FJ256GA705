@@ -63,3 +63,29 @@ Current app entry point:
 
 - `build/`, `dist/`, `.generated_files/` are build/generated outputs.
 - `nbproject/` contains MPLAB project configuration.
+
+## OLED Driver Updates (`oledDriver/`)
+
+The following changes were made in `oledDriver/oledC.c`, `oledDriver/oledC_shapes.c`, and `oledDriver/oledC_shapes.h`:
+
+1. Streaming performance improvements in `oledC.c`
+- Added explicit stream ownership handling for OLED write/read RAM streaming.
+- Kept SPI open during active pixel streams instead of opening/closing per pixel transfer.
+- Added proper stream stop behavior before sending non-stream commands.
+- Updated write/read paths to require active stream ownership before exchanging pixel data.
+- Result: lower command/transaction overhead during heavy drawing (text, shapes, fills).
+
+2. New solid text APIs in `oledC_shapes`
+- Added `oledC_DrawCharacterSolid(...)`.
+- Added `oledC_DrawStringSolid(...)`.
+- Added declarations in `oledC_shapes.h`.
+- Solid text draws both foreground and background pixels for each glyph cell.
+- This allows faster fixed-area text redraws (no separate clear step required for same-area updates).
+
+3. Solid glyph raster order fix
+- Fixed pixel traversal order in `oledC_DrawCharacterSolid(...)` to match OLED RAM window expectations.
+- Result: prevents garbled text rendering when using solid text functions.
+
+4. Backward compatibility
+- Existing transparent APIs (`oledC_DrawCharacter`, `oledC_DrawString`) are still present and unchanged.
+- Existing call sites can continue using transparent text where overlay behavior is desired.

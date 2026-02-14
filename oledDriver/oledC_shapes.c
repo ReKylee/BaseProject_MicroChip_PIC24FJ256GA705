@@ -330,11 +330,70 @@ void oledC_DrawCharacter(uint8_t x, uint8_t y, uint8_t sx, uint8_t sy, uint8_t c
     }
 }
 
+void oledC_DrawCharacterSolid(uint8_t x, uint8_t y, uint8_t sx, uint8_t sy, uint8_t ch, uint16_t fg_color, uint16_t bg_color)
+{
+    uint8_t i_x;
+    uint8_t i_y;
+    uint8_t x0;
+    uint8_t y0;
+    uint8_t x1;
+    uint8_t y1;
+    uint8_t col_block;
+    uint8_t row_block;
+    uint8_t row_mask;
+    uint8_t glyph_col;
+    const uint8_t *f;
+
+    if (sx == 0) sx = 1;
+    if (sy == 0) sy = 1;
+    if (ch < ' ' || ch > '~') ch = '?';
+
+    // Match existing DrawCharacter geometry (vertical offset starts at y + sy).
+    x0 = x;
+    y0 = (uint8_t)(y + sy);
+    x1 = (uint8_t)(x + (OLED_FONT_WIDTH * sx) - 1U);
+    y1 = (uint8_t)(y0 + (OLED_FONT_HEIGHT * sy) - 1U);
+
+    if (x0 > OLED_DIM_WIDTH || y0 > OLED_DIM_HEIGHT) {
+        return;
+    }
+    if (x1 > OLED_DIM_WIDTH) x1 = OLED_DIM_WIDTH;
+    if (y1 > OLED_DIM_HEIGHT) y1 = OLED_DIM_HEIGHT;
+
+    f = &font[(ch - ' ') * OLED_FONT_WIDTH];
+
+    oledC_setColumnAddressBounds(x0, x1);
+    oledC_setRowAddressBounds(y0, y1);
+
+    // OLED RAM window expects row-major stream for correct raster placement.
+    for (i_y = y0; i_y <= y1; i_y++) {
+        row_block = (uint8_t)((i_y - y0) / sy);   // 0..7 (top->bottom)
+        row_mask = (uint8_t)(1U << (7U - row_block));
+        for (i_x = x0; i_x <= x1; i_x++) {
+            col_block = (uint8_t)((i_x - x) / sx);
+            glyph_col = f[col_block];
+            oledC_sendColorInt((glyph_col & row_mask) ? fg_color : bg_color);
+        }
+    }
+}
+
 void oledC_DrawString(uint8_t x, uint8_t y, uint8_t sx, uint8_t sy, uint8_t *string, uint16_t color)
 {
     while(*string)
     {
         oledC_DrawCharacter(x, y, sx, sy, *string++, color);
+        x += OLED_FONT_WIDTH * sx + 1;
+    }
+}
+
+void oledC_DrawStringSolid(uint8_t x, uint8_t y, uint8_t sx, uint8_t sy, uint8_t *string, uint16_t fg_color, uint16_t bg_color)
+{
+    if (sx == 0) sx = 1;
+    if (sy == 0) sy = 1;
+
+    while(*string)
+    {
+        oledC_DrawCharacterSolid(x, y, sx, sy, *string++, fg_color, bg_color);
         x += OLED_FONT_WIDTH * sx + 1;
     }
 }

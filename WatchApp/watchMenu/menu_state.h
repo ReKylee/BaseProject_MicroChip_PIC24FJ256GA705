@@ -108,7 +108,7 @@ void MenuEvent_Clear(void);
 
 // Pot tuning
 #define POT_DEADBAND 6
-#define POT_FAST_THRESHOLD 80
+#define POT_FAST_THRESHOLD 24
 #define POT_SMOOTH_NUM 1
 #define POT_SMOOTH_DEN 2
 

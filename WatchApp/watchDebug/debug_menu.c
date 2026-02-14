@@ -42,7 +42,7 @@ static TimeFormat_t s_last_time_format = FORMAT_24H;
 
 static void draw_header(const char* title) {
     oledC_DrawRectangle(0, DEBUG_HEADER_Y, 95, DEBUG_HEADER_Y + DEBUG_HEADER_H, COLOR_BG);
-    oledC_DrawString(DEBUG_TITLE_X, DEBUG_TITLE_Y, 1, 1, (uint8_t*)title, COLOR_ACCENT);
+    oledC_DrawStringSolid(DEBUG_TITLE_X, DEBUG_TITLE_Y, 1, 1, (uint8_t*)title, COLOR_ACCENT, COLOR_BG);
 }
 
 static void draw_time_full(void) {
@@ -56,11 +56,11 @@ static void draw_time_full(void) {
         snprintf(buf, sizeof(buf), "%02d:%02d:%02d %s",
                  hour, state->current_time.minute, state->current_time.second,
                  is_pm ? "PM" : "AM");
-        oledC_DrawString((uint8_t)(96 - (11 * 6)), DEBUG_TIME_Y, 1, 1, (uint8_t*)buf, COLOR_DIM);
+        oledC_DrawStringSolid((uint8_t)(96 - (11 * 6)), DEBUG_TIME_Y, 1, 1, (uint8_t*)buf, COLOR_DIM, COLOR_BG);
     } else {
         snprintf(buf, sizeof(buf), "%02d:%02d:%02d",
                  hour, state->current_time.minute, state->current_time.second);
-        oledC_DrawString((uint8_t)(96 - (8 * 6)), DEBUG_TIME_Y, 1, 1, (uint8_t*)buf, COLOR_DIM);
+        oledC_DrawStringSolid((uint8_t)(96 - (8 * 6)), DEBUG_TIME_Y, 1, 1, (uint8_t*)buf, COLOR_DIM, COLOR_BG);
     }
     s_last_time = state->current_time;
     s_last_time_format = state->time_format;
@@ -76,7 +76,7 @@ static void draw_time_update(void) {
 
 static void draw_line(uint8_t y, const char* text) {
     oledC_DrawRectangle(0, y, 95, (uint8_t)(y + 8), COLOR_BG);
-    oledC_DrawString(2, y, 1, 1, (uint8_t*)text, COLOR_PRIMARY);
+    oledC_DrawStringSolid(2, y, 1, 1, (uint8_t*)text, COLOR_PRIMARY, COLOR_BG);
 }
 
 static void debug_increment_date(void) {
@@ -96,8 +96,13 @@ static void debug_increment_date(void) {
 
     Timekeeper_SetDate(&next);
     state->current_date = next;
-    snprintf(s_date_step_msg, sizeof(s_date_step_msg), "DT %02d/%02d>%02d/%02d",
-             prev.day, prev.month, next.day, next.month);
+    {
+        char prev_buf[6];
+        char next_buf[6];
+        Watch_FormatDateDDMM(&prev, prev_buf);
+        Watch_FormatDateDDMM(&next, next_buf);
+        snprintf(s_date_step_msg, sizeof(s_date_step_msg), "DT %s>%s", prev_buf, next_buf);
+    }
     state->needs_redraw = true;
 }
 
@@ -154,7 +159,11 @@ void DebugMenu_DrawFull(void) {
             state->alarm.hour, state->alarm.minute,
             state->alarm.enabled ? "ON" : "OFF");
     draw_line(44, line);
-    sprintf(line, "DT %02d/%02d", state->current_date.day, state->current_date.month);
+    {
+        char date_buf[6];
+        Watch_FormatDateDDMM(&state->current_date, date_buf);
+        snprintf(line, sizeof(line), "DT %s", date_buf);
+    }
     draw_line(54, line);
     draw_line(64, "S1=DATE+1");
     draw_line(74, "S2=ALARM");
@@ -229,7 +238,11 @@ void DebugMenu_DrawUpdate(void) {
     }
     if (state->current_date.day != s_dbg_last_date_day ||
         state->current_date.month != s_dbg_last_date_month) {
-        sprintf(line, "DT %02d/%02d", state->current_date.day, state->current_date.month);
+        {
+            char date_buf[6];
+            Watch_FormatDateDDMM(&state->current_date, date_buf);
+            snprintf(line, sizeof(line), "DT %s", date_buf);
+        }
         draw_line(54, line);
         s_dbg_last_date_day = state->current_date.day;
         s_dbg_last_date_month = state->current_date.month;

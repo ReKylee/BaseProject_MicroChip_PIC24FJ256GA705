@@ -198,7 +198,7 @@ MenuRadial_t s_alarm_toggle_radial = {
 
 const RadialMenuConfig_t s_main_menu_cfg = {
     .title = "MENU",
-    .radius = 32,
+    .radius = 35,
     .draw_inner_circle = false,
     .icons = s_menu_icons,
     .labels = NULL,

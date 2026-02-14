@@ -33,6 +33,7 @@ enum STREAMING_MODES
     NOSTREAM, WRITESTREAM, READSTREAM
 };
 static uint8_t streamingMode = NOSTREAM;
+static bool streamBusOwned = false;
 
 // static void startStreamingIfNeeded(OLEDC_COMMAND cmd);
 // static void stopStreaming(void);
@@ -51,20 +52,31 @@ static void startStreamingIfNeeded(OLEDC_COMMAND cmd)
     }
 }
 
-// static void stopStreaming(void)
-// {
-//     streamingMode = NOSTREAM;
-// }
+static void stopStreaming(void)
+{
+    if(streamBusOwned)
+    {
+        LATCbits.LATC9 = 1; /* set oledC_nCS output high */
+        LATCbits.LATC3 = 0; /* set oledC_DC output low */
+        spi1_close();
+        streamBusOwned = false;
+    }
+    streamingMode = NOSTREAM;
+}
 
 static uint16_t exchangeTwoBytes(uint8_t byte1, uint8_t byte2)
 {
-    if(!oledC_open())
+    bool opened = oledC_open();
+    if(!opened && !streamBusOwned)
     {
         return 0xFFFF;
     }
     byte1 = spi1_exchangeByte(byte1);
     byte2 = spi1_exchangeByte(byte2);
-    spi1_close();
+    if(opened)
+    {
+        spi1_close();
+    }
     return ((uint16_t)byte1) << 8 | byte2;
 }
 
@@ -80,15 +92,25 @@ static void oledC_setDisplayOrientation(void)
 static void oledC_startWritingDisplay(void)
 {
     oledC_sendCommand(OLEDC_CMD_WRITE_RAM, NULL, 0);    
+    if(!oledC_open())
+    {
+        return;
+    }
     LATCbits.LATC9 = 0; /* set oledC_nCS output low */
     LATCbits.LATC3 = 1; /* set oledC_DC output high */
+    streamBusOwned = true;
 }
 
 static void oledC_startReadingDisplay(void)
 {
     oledC_sendCommand(OLEDC_CMD_READ_RAM, NULL, 0);    
+    if(!oledC_open())
+    {
+        return;
+    }
     LATCbits.LATC9 = 0; /* set oledC_nCS output low */
     LATCbits.LATC3 = 1; /* set oledC_DC output high */
+    streamBusOwned = true;
 }
 
 //  ======  PUBLIC Functions   ========================================================
@@ -117,6 +139,10 @@ uint16_t oledC_parseRGBToInt(uint8_t red, uint8_t green, uint8_t blue)
 
 void oledC_sendCommand(OLEDC_COMMAND cmd, uint8_t *payload, uint8_t payload_size)
 {
+    if(streamBusOwned)
+    {
+        stopStreaming();
+    }
     if(!oledC_open())
     {
         return;
@@ -168,7 +194,7 @@ uint16_t oledC_readColor(void)
 {
     if(streamingMode != READSTREAM)
         oledC_startReadingDisplay();
-    if(streamingMode != READSTREAM)
+    if(streamingMode != READSTREAM || !streamBusOwned)
         return 0xFFFF;
 
     return exchangeTwoBytes(0xFF, 0xFF);
@@ -191,7 +217,7 @@ void oledC_sendColorInt(uint16_t raw)
 {
     if(streamingMode != WRITESTREAM)
         oledC_startWritingDisplay();
-    if(streamingMode != WRITESTREAM)
+    if(streamingMode != WRITESTREAM || !streamBusOwned)
         return;
 
     exchangeTwoBytes(raw >> 8, raw & 0x00FF);

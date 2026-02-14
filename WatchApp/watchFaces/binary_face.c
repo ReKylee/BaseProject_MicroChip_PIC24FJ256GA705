@@ -104,13 +104,13 @@ void BinaryFace_Init(void) {
     init_dot_positions();
 
     for (uint8_t i = 0; i < 3; i++) {
-        oledC_DrawString(s_label_x[i], s_label_y, 1, 1, (uint8_t*) (i == 0 ? "H" : i == 1 ? "M" : "S"), COLOR_TEXT);
+        oledC_DrawStringSolid(s_label_x[i], s_label_y, 1, 1, (uint8_t*) (i == 0 ? "H" : i == 1 ? "M" : "S"), COLOR_TEXT, COLOR_BG);
     }
 
     for (uint8_t row = 0; row < 4; row++) {
 
-        oledC_DrawString(2, s_bit_labels_y[row], 1, 1, (uint8_t[]) {
-            s_bit_labels[row], 0}, COLOR_TEXT);
+        oledC_DrawStringSolid(2, s_bit_labels_y[row], 1, 1, (uint8_t[]) {
+            s_bit_labels[row], 0}, COLOR_TEXT, COLOR_BG);
     }
 
     uint8_t sep1_x = (uint8_t)((s_dot_pos[1][0].x + s_dot_pos[2][0].x) / 2);

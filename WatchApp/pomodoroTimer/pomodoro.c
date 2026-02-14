@@ -2,6 +2,8 @@
  * Implementation of Pomodoro timer
  */
 
+#include <stdlib.h>
+
 #include "pomodoro.h"
 #include "../shared/watch_state.h"
 #include "../shared/watch_types.h"
@@ -44,10 +46,14 @@ static void format_2d(uint8_t value, char out[3]) {
 static void get_time_layout(uint8_t* x0, uint8_t* min_w, uint8_t* colon_w, uint8_t* sec_w) {
     uint8_t min_scale = 3;
     uint8_t sec_scale = 2;
+    uint8_t local_sec_w;
     *min_w = (uint8_t)(2 * (FONT_COLS * min_scale + FONT_GAP));
     *colon_w = (uint8_t)(1 * (FONT_COLS * sec_scale + FONT_GAP));
-    *sec_w = (uint8_t)(2 * (FONT_COLS * sec_scale + FONT_GAP));
-    uint8_t total_w = (uint8_t)(*min_w + *colon_w + *sec_w + 2);
+    local_sec_w = (uint8_t)(2 * (FONT_COLS * sec_scale + FONT_GAP));
+    if (sec_w != NULL) {
+        *sec_w = local_sec_w;
+    }
+    uint8_t total_w = (uint8_t)(*min_w + *colon_w + local_sec_w + 2);
     *x0 = (uint8_t)((96 - total_w) / 2);
 }
 
@@ -137,14 +143,13 @@ static void draw_time_full(uint16_t remaining_seconds) {
     uint8_t x0;
     uint8_t min_w;
     uint8_t colon_w;
-    uint8_t sec_w;
 
-    get_time_layout(&x0, &min_w, &colon_w, &sec_w);
+    get_time_layout(&x0, &min_w, &colon_w, NULL);
     clear_time_area_full();
 
-    oledC_DrawString(x0, POMO_TIME_Y, min_scale, min_scale, (uint8_t*)min_str, COLOR_PRIMARY);
-    oledC_DrawString((uint8_t)(x0 + min_w + 1), (uint8_t)(POMO_TIME_Y + 6), sec_scale, sec_scale, (uint8_t*)":", COLOR_DIM);
-    oledC_DrawString((uint8_t)(x0 + min_w + colon_w + 2), (uint8_t)(POMO_TIME_Y + 6), sec_scale, sec_scale, (uint8_t*)sec_str, COLOR_PRIMARY);
+    oledC_DrawStringSolid(x0, POMO_TIME_Y, min_scale, min_scale, (uint8_t*)min_str, COLOR_PRIMARY, COLOR_BG);
+    oledC_DrawStringSolid((uint8_t)(x0 + min_w + 1), (uint8_t)(POMO_TIME_Y + 6), sec_scale, sec_scale, (uint8_t*)":", COLOR_DIM, COLOR_BG);
+    oledC_DrawStringSolid((uint8_t)(x0 + min_w + colon_w + 2), (uint8_t)(POMO_TIME_Y + 6), sec_scale, sec_scale, (uint8_t*)sec_str, COLOR_PRIMARY, COLOR_BG);
 }
 
 static void draw_time_partial(uint16_t remaining_seconds) {
@@ -162,11 +167,7 @@ static void draw_time_partial(uint16_t remaining_seconds) {
     if (minutes != s_last_min) {
         char min_str[3];
         format_2d(minutes, min_str);
-        oledC_DrawRectangle(x0 - 1, POMO_TIME_Y - 1,
-                            (uint8_t)(x0 + min_w + 1),
-                            (uint8_t)(POMO_TIME_Y + ((FONT_ROWS + 1) * min_scale) + 1),
-                            COLOR_BG);
-        oledC_DrawString(x0, POMO_TIME_Y, min_scale, min_scale, (uint8_t*)min_str, COLOR_PRIMARY);
+        oledC_DrawStringSolid(x0, POMO_TIME_Y, min_scale, min_scale, (uint8_t*)min_str, COLOR_PRIMARY, COLOR_BG);
         s_last_min = minutes;
     }
 
@@ -175,11 +176,8 @@ static void draw_time_partial(uint16_t remaining_seconds) {
         format_2d(seconds, sec_str);
         uint8_t sec_x = (uint8_t)(x0 + min_w + colon_w + 2);
         uint8_t sec_y = (uint8_t)(POMO_TIME_Y + 6);
-        oledC_DrawRectangle((uint8_t)(x0 + min_w), (uint8_t)(POMO_TIME_Y + 4),
-                            (uint8_t)(sec_x + sec_w + 1), (uint8_t)(sec_y + sec_scale * 8 + 1),
-                            COLOR_BG);
-        oledC_DrawString((uint8_t)(x0 + min_w + 1), sec_y, sec_scale, sec_scale, (uint8_t*)":", COLOR_DIM);
-        oledC_DrawString(sec_x, sec_y, sec_scale, sec_scale, (uint8_t*)sec_str, COLOR_PRIMARY);
+        oledC_DrawStringSolid((uint8_t)(x0 + min_w + 1), sec_y, sec_scale, sec_scale, (uint8_t*)":", COLOR_DIM, COLOR_BG);
+        oledC_DrawStringSolid(sec_x, sec_y, sec_scale, sec_scale, (uint8_t*)sec_str, COLOR_PRIMARY, COLOR_BG);
         s_last_sec = seconds;
     }
 }
@@ -311,14 +309,14 @@ void Pomodoro_Draw(void) {
     uint8_t label_len = get_state_label_len(state->pomodoro.state);
     uint8_t label_w = (uint8_t)(label_len * (5 * 2 + 1));
     uint8_t label_x = (uint8_t)((96 - label_w) / 2);
-    oledC_DrawString(label_x, POMO_LABEL_Y, 2, 1, (uint8_t*)state_label, label_color);
+    oledC_DrawStringSolid(label_x, POMO_LABEL_Y, 2, 1, (uint8_t*)state_label, label_color, COLOR_BG);
     
     draw_time_full(state->pomodoro.remaining_seconds);
     
     draw_progress_bar_full(state->pomodoro.remaining_seconds, total_seconds);
     
     if (state->pomodoro.paused) {
-        oledC_DrawString(34, POMO_PAUSE_Y, 1, 1, (uint8_t*)"PAUSED", COLOR_ACCENT);
+        oledC_DrawStringSolid(34, POMO_PAUSE_Y, 1, 1, (uint8_t*)"PAUSED", COLOR_ACCENT, COLOR_BG);
     }
 
     s_last_state = state->pomodoro.state;
@@ -343,7 +341,7 @@ void Pomodoro_DrawUpdate(void) {
 
         draw_session_counter(state, state->pomodoro.work_sessions);
         clear_label_area();
-        oledC_DrawString(label_x, POMO_LABEL_Y, 2, 1, (uint8_t*)state_label, label_color);
+        oledC_DrawStringSolid(label_x, POMO_LABEL_Y, 2, 1, (uint8_t*)state_label, label_color, COLOR_BG);
         draw_time_full(state->pomodoro.remaining_seconds);
         draw_progress_bar_full(state->pomodoro.remaining_seconds, total_seconds);
 
@@ -353,7 +351,7 @@ void Pomodoro_DrawUpdate(void) {
                             (uint8_t)(x0 + text_w + 1), (uint8_t)(POMO_PAUSE_Y + 7),
                             COLOR_BG);
         if (state->pomodoro.paused) {
-            oledC_DrawString(x0, POMO_PAUSE_Y, 1, 1, (uint8_t*)"PAUSED", COLOR_ACCENT);
+            oledC_DrawStringSolid(x0, POMO_PAUSE_Y, 1, 1, (uint8_t*)"PAUSED", COLOR_ACCENT, COLOR_BG);
         }
 
         s_last_state = state->pomodoro.state;
@@ -378,7 +376,7 @@ void Pomodoro_DrawUpdate(void) {
                             (uint8_t)(x0 + text_w + 1), (uint8_t)(POMO_PAUSE_Y + 7),
                             COLOR_BG);
         if (state->pomodoro.paused) {
-            oledC_DrawString(x0, POMO_PAUSE_Y, 1, 1, (uint8_t*)"PAUSED", COLOR_ACCENT);
+            oledC_DrawStringSolid(x0, POMO_PAUSE_Y, 1, 1, (uint8_t*)"PAUSED", COLOR_ACCENT, COLOR_BG);
         }
         s_last_paused = state->pomodoro.paused;
     }

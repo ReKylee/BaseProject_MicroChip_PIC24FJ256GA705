@@ -127,6 +127,8 @@ uint16_t oledC_ReadPoint(uint8_t x, uint8_t y);
 void oledC_DrawThickPoint(uint8_t center_x, uint8_t center_y, uint8_t width, uint16_t color);
 void oledC_DrawCharacter(uint8_t x, uint8_t y, uint8_t sx, uint8_t sy, uint8_t ch, uint16_t color);
 void oledC_DrawString(uint8_t x, uint8_t y, uint8_t sx, uint8_t sy, uint8_t *string, uint16_t color);
+void oledC_DrawCharacterSolid(uint8_t x, uint8_t y, uint8_t sx, uint8_t sy, uint8_t ch, uint16_t fg_color, uint16_t bg_color);
+void oledC_DrawStringSolid(uint8_t x, uint8_t y, uint8_t sx, uint8_t sy, uint8_t *string, uint16_t fg_color, uint16_t bg_color);
 void oledC_DrawBitmap(uint8_t x, uint8_t y, uint16_t color, uint8_t sx, uint8_t sy, uint32_t *bit_array, uint8_t array_width);
 
 #endif	/* OLEDC_SHAPES_H */

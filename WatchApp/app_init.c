@@ -54,8 +54,8 @@ static void app_handle_accel_init_error(void) {
     snprintf(line1, sizeof(line1), "ACCEL INIT ERR %d", (int)ACCEL3_GetLastStatus());
     snprintf(line2, sizeof(line2), "I2C ERR %d", (int)ACCEL3_GetLastI2CStatus());
     oledC_DrawRectangle(0, 0, 95, 95, COLOR_BG);
-    oledC_DrawString(2, 34, 1, 1, (uint8_t*)line1, COLOR_WARNING);
-    oledC_DrawString(2, 46, 1, 1, (uint8_t*)line2, COLOR_WARNING);
+    oledC_DrawStringSolid(2, 34, 1, 1, (uint8_t*)line1, COLOR_WARNING, COLOR_BG);
+    oledC_DrawStringSolid(2, 46, 1, 1, (uint8_t*)line2, COLOR_WARNING, COLOR_BG);
     DELAY_milliseconds(ACCEL_ERROR_SCREEN_MS);
 
 #if ACCEL_INIT_HALT_ON_ERROR

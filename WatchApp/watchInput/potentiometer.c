@@ -30,8 +30,12 @@ void Pot_Init(void) {
 }
 
 uint16_t Pot_GetRaw(void) {
-    uint16_t r;
-    ADC_ReadRaw(&r);
+    uint16_t r = s_last_raw_value;
+    if (ADC_ReadRaw(&r) != ADC_OK) {
+        return s_last_raw_value;
+    }
+    if (r > 1023U) r = 1023U;
+    s_last_raw_value = r;
     return r;
 }
 

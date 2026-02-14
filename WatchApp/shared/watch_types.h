@@ -23,6 +23,15 @@ typedef struct {
     uint8_t month; // 1-12
 } Date_t;
 
+static inline void Watch_FormatDateDDMM(const Date_t* date, char out[6]) {
+    out[0] = (char)('0' + (date->day / 10));
+    out[1] = (char)('0' + (date->day % 10));
+    out[2] = '/';
+    out[3] = (char)('0' + (date->month / 10));
+    out[4] = (char)('0' + (date->month % 10));
+    out[5] = '\0';
+}
+
 typedef enum {
     FORMAT_12H = 0,
     FORMAT_24H = 1,

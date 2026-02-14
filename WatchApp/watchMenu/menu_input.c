@@ -184,8 +184,14 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
     if (s_pot_filtered == 0xFFFF) {
         s_pot_filtered = pot_value;
     } else {
-        // Mild smoothing: reduce ADC jitter while keeping controls responsive.
-        s_pot_filtered = (uint16_t)(((uint32_t)s_pot_filtered * 3U + (uint32_t)pot_value) / 4U);
+        if (pot_delta >= POT_FAST_THRESHOLD) {
+            s_pot_filtered = pot_value;
+        } else {
+            // Adaptive smoothing: keep precision near still points without adding knob lag.
+            uint32_t old_w = (uint32_t)POT_SMOOTH_NUM;
+            uint32_t new_w = (uint32_t)(POT_SMOOTH_DEN - POT_SMOOTH_NUM);
+            s_pot_filtered = (uint16_t)(((uint32_t)s_pot_filtered * old_w + (uint32_t)pot_value * new_w) / (uint32_t)POT_SMOOTH_DEN);
+        }
     }
 
     if (state->menu_state == MENU_MAIN) {
@@ -217,7 +223,8 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
         EditInputConfig_t cfg = {0, 23, 0, 59, &s_temp_time.hour, &s_temp_time.minute, commit_set_time};
         changed |= edit_field_init(state->menu_edit_field);
         s_edit_last_val = (state->menu_edit_field == 0) ? s_temp_time.hour : s_temp_time.minute;
-        if (edit_handle_range(&cfg, state->menu_edit_field, pot_changed, pot_delta)) {
+        bool value_changed = edit_handle_range(&cfg, state->menu_edit_field, pot_changed, pot_delta);
+        if (value_changed) {
             changed = true;
             MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_EDIT_VALUE, .state = state->menu_state});
         }
@@ -239,7 +246,8 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
         EditInputConfig_t cfg = {0, 23, 0, 59, &s_temp_alarm.hour, &s_temp_alarm.minute, commit_set_alarm};
         changed |= edit_field_init(state->menu_edit_field);
         s_edit_last_val = (state->menu_edit_field == 0) ? s_temp_alarm.hour : s_temp_alarm.minute;
-        if (edit_handle_range(&cfg, state->menu_edit_field, pot_changed, pot_delta)) {
+        bool value_changed = edit_handle_range(&cfg, state->menu_edit_field, pot_changed, pot_delta);
+        if (value_changed) {
             changed = true;
             MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_EDIT_VALUE, .state = state->menu_state});
         }
@@ -248,7 +256,8 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
         EditInputConfig_t cfg = {1, 60, 1, 30, &s_temp_pomo_work, &s_temp_pomo_break, commit_pomodoro};
         changed |= edit_field_init(state->menu_edit_field);
         s_edit_last_val = (state->menu_edit_field == 0) ? s_temp_pomo_work : s_temp_pomo_break;
-        if (edit_handle_range(&cfg, state->menu_edit_field, pot_changed, pot_delta)) {
+        bool value_changed = edit_handle_range(&cfg, state->menu_edit_field, pot_changed, pot_delta);
+        if (value_changed) {
             changed = true;
             MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_EDIT_VALUE, .state = state->menu_state});
         }
