@@ -35,6 +35,8 @@ This repo is set up as a reusable starting point for board drivers, small demos,
   - menu system
   - pomodoro timer
   - input/display/time managers
+- `flash_generated/`
+  MCC-generated flash driver used by watch settings persistence.
 
 WatchApp documentation:
 - English: `WatchApp/README.md`
@@ -63,6 +65,19 @@ Current app entry point:
 
 - `build/`, `dist/`, `.generated_files/` are build/generated outputs.
 - `nbproject/` contains MPLAB project configuration.
+
+## Watch Shared APIs
+
+Recent watch-side shared helpers are in `WatchApp/shared/`:
+
+- `fast_math.h`
+  Division/multiplication helpers that avoid heavy runtime div paths for common constants.
+- `watch_format.h`
+  Numeric/date text formatting helpers (`Watch_SplitDigits10`, `Watch_Format2D`, `Watch_FormatDateDDMM`).
+- `watch_ui_widgets.h` and `watch_ui_widgets.c`
+  Shared UI primitives for two-digit rendering, colon rendering, and centered dual-time layout math.
+- `watch_settings_store.h` (implemented in `WatchApp/shared/watch_state.c`)
+  Flash-backed persistence API for loading/saving a compact settings snapshot and applying it to runtime state.
 
 ## OLED Driver Updates (`oledDriver/`)
 

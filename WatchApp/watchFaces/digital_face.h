@@ -1,5 +1,5 @@
 /*
- * Digital watch face with large digits
+ * Arc-themed digital watch face with large time text and second progress trail.
  */
 
 #ifndef DIGITAL_FACE_H
@@ -10,18 +10,20 @@
 // ============================================================================
 
 /**
- * @brief Initialize digital watch face
+ * @brief Initialize digital face cached draw state.
+ * @note Must be called before first draw.
  */
 void DigitalFace_Init(void);
 
 /**
- * @brief Draw the digital watch face
+ * @brief Draw the full digital face from scratch.
+ * @note Rebuilds full layout: frame, time, seconds, date, AM/PM, and alarm icon.
  */
 void DigitalFace_Draw(void);
 
 /**
- * @brief Update digital watch face (called every second)
- * Only redraws pixels that have changed.
+ * @brief Incrementally update digital face elements.
+ * @note Intended for periodic updates; redraws only changed regions.
  */
 void DigitalFace_DrawUpdate(void);
 

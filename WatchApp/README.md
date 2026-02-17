@@ -113,6 +113,32 @@ Mode constant: `MODE_DEBUG` (only when `DEBUG_MODE` is enabled)
 - `watchDebug/`: debug screen
 - `pomodoroTimer/`: pomodoro logic and drawing
 
+## Shared Helper APIs
+
+Common cross-module helpers live in `WatchApp/shared/`:
+
+- `fast_math.h`
+  Constant-time helpers for common numeric transforms (for example `/10`, `/6`, `*60`, `*3600`, `/86400`).
+- `watch_format.h`
+  Formatting helpers for time/date text:
+  - `Watch_SplitDigits10`
+  - `Watch_Format2D`
+  - `Watch_FormatDateDDMM`
+- `watch_ui_widgets.h` + `watch_ui_widgets.c`
+  Reusable draw/layout helpers for clock-like UI:
+  - `WatchUi_DrawNN`
+  - `WatchUi_DrawColon`
+  - `WatchUi_ComputeDualTimeLayout`
+  - width/advance utilities for scaled glyphs
+- `watch_settings_store.h` (implementation in `shared/watch_state.c`)
+  Persistent settings interface:
+  - `WatchSettingsStore_Load` / `WatchSettingsStore_Save`
+  - `WatchSettingsStore_LoadState` / `WatchSettingsStore_SaveState`
+  - snapshot conversion helpers (`FromState`, `ApplyToState`)
+
+Guideline:
+- Use these shared APIs instead of re-implementing formatting/layout/math logic inside faces, menu, or pomodoro modules.
+
 ## Notes for Development
 
 - Display updates use two flags in shared state:
