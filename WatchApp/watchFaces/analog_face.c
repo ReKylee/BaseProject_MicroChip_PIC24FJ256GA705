@@ -6,6 +6,7 @@
 #include "analog_face.h"
 #include "watch_face_geometry.h"
 #include "watch_face_common.h"
+#include "../shared/fast_math.h"
 #include "../shared/watch_state.h"
 #include "../../oledDriver/oledC.h"
 #include "../../oledDriver/oledC_shapes.h"
@@ -18,6 +19,11 @@
 
 #define MARKER_MAJOR_WIDTH  3
 #define MARKER_MINOR_WIDTH  1
+/* Delay (in second indices) before restoring thick elements crossed by second hand. */
+#define SECOND_RESTORE_DELAY_STEPS 2U
+#define HOUR_HAND_W 3U
+#define MIN_HAND_W 2U
+#define SEC_HAND_W 1U
 
 #define ANALOG_DATE_X  33
 #define ANALOG_DATE_Y  88
@@ -35,13 +41,9 @@ static uint8_t s_last_sec = 255;
 static Date_t s_last_date_drawn;
 static bool s_last_alarm_drawn;
 
-static inline uint8_t mul5_u8(uint8_t v) {
-    return (uint8_t)((v << 2) + v);
-}
-
 static void draw_markers(void) {
     for (uint8_t i = 0; i < 12; i++) {
-        uint8_t idx = mul5_u8(i);
+        uint8_t idx = FastMath_Mul5U8(i);
         uint8_t width = (i == 0 || i == 3 || i == 6 || i == 9) ? MARKER_MAJOR_WIDTH : MARKER_MINOR_WIDTH;
         oledC_DrawLine(HOUR_POINTS[idx][0], HOUR_POINTS[idx][1],
                 MIN_POINTS[idx][0], MIN_POINTS[idx][1],
@@ -59,11 +61,42 @@ static void erase_hand(const int8_t points[][2], uint8_t idx, uint8_t width) {
     draw_hand(points, idx, width, COLOR_BG);
 }
 
-static void draw_hands_full(uint8_t hour, uint8_t min, uint8_t sec) {
-    draw_hand(HOUR_POINTS, hour, 3, COLOR_SECONDARY);
-    draw_hand(MIN_POINTS, min, 2, COLOR_PRIMARY);
-    draw_hand(SEC_POINTS, sec, 1, COLOR_ACCENT);
+static int8_t step_toward_zero_i8(int8_t v) {
+    if (v > 0) return (int8_t)(v - 1);
+    if (v < 0) return (int8_t)(v + 1);
+    return 0;
+}
+
+/* Draw second hand slightly inset so it does not cut through the outer ring. */
+static void draw_second_hand(uint8_t idx, uint16_t color) {
+    int8_t dx = (int8_t)(SEC_POINTS[idx][0] - CENTER_X);
+    int8_t dy = (int8_t)(SEC_POINTS[idx][1] - CENTER_Y);
+    dx = step_toward_zero_i8(dx);
+    dy = step_toward_zero_i8(dy);
+    oledC_DrawLine(CENTER_X, CENTER_Y,
+                   (uint8_t)(CENTER_X + dx),
+                   (uint8_t)(CENTER_Y + dy),
+                   SEC_HAND_W,
+                   color);
+}
+
+static void erase_second_hand(uint8_t idx) {
+    draw_second_hand(idx, COLOR_BG);
+}
+
+static void draw_center_dot(void) {
     oledC_DrawCircle(CENTER_X, CENTER_Y, CENTER_DOT_RADIUS, COLOR_ACCENT);
+}
+
+static void draw_all_hands(uint8_t hour, uint8_t min, uint8_t sec) {
+    draw_hand(HOUR_POINTS, hour, HOUR_HAND_W, COLOR_SECONDARY);
+    draw_hand(MIN_POINTS, min, MIN_HAND_W, COLOR_PRIMARY);
+    draw_second_hand(sec, COLOR_ACCENT);
+    draw_center_dot();
+}
+
+static void draw_hands_full(uint8_t hour, uint8_t min, uint8_t sec) {
+    draw_all_hands(hour, min, sec);
 
     s_last_hour = hour;
     s_last_min = min;
@@ -71,11 +104,7 @@ static void draw_hands_full(uint8_t hour, uint8_t min, uint8_t sec) {
 }
 
 static void draw_marker_at(uint8_t sec_idx) {
-    uint8_t rem = sec_idx;
-    while (rem >= 5U) {
-        rem = (uint8_t)(rem - 5U);
-    }
-    if (rem != 0U) return;
+    if (FastMath_Mod5U8(sec_idx) != 0U) return;
     uint8_t marker_idx = sec_idx;
     uint8_t width = (marker_idx == 0 || marker_idx == 15 || marker_idx == 30 || marker_idx == 45)
         ? MARKER_MAJOR_WIDTH
@@ -86,16 +115,23 @@ static void draw_marker_at(uint8_t sec_idx) {
                    COLOR_DIM);
 }
 
-static void restore_after_second(uint8_t old_sec, uint8_t hour_idx, uint8_t min_idx) {
-    if (old_sec == 255) return;
-    erase_hand(SEC_POINTS, old_sec, 1);
-    draw_marker_at(old_sec);
-    oledC_DrawRing(CENTER_X, CENTER_Y, RADIUS, 1, COLOR_DIM);
-    if (old_sec == s_last_hour) {
-        draw_hand(HOUR_POINTS, hour_idx, 3, COLOR_SECONDARY);
+static inline bool is_cardinal_idx(uint8_t idx) {
+    return (idx == 0U || idx == 15U || idx == 30U || idx == 45U);
+}
+
+static inline uint8_t sec_idx_sub_delay(uint8_t sec_idx) {
+    return FastMath_SubMod60U8(sec_idx, SECOND_RESTORE_DELAY_STEPS);
+}
+
+static void restore_thick_elements_at(uint8_t sec_idx, uint8_t hour_idx, uint8_t min_idx) {
+    if (is_cardinal_idx(sec_idx)) {
+        draw_marker_at(sec_idx);
     }
-    if (old_sec == s_last_min) {
-        draw_hand(MIN_POINTS, min_idx, 2, COLOR_PRIMARY);
+    if (sec_idx == hour_idx) {
+        draw_hand(HOUR_POINTS, hour_idx, HOUR_HAND_W, COLOR_SECONDARY);
+    }
+    if (sec_idx == min_idx) {
+        draw_hand(MIN_POINTS, min_idx, MIN_HAND_W, COLOR_PRIMARY);
     }
 }
 
@@ -106,7 +142,7 @@ static uint8_t compute_hour_idx(uint8_t hour, uint8_t min) {
     if (min >= 24U) minute_bucket = 2U;
     if (min >= 36U) minute_bucket = 3U;
     if (min >= 48U) minute_bucket = 4U;
-    return (uint8_t)(mul5_u8(hour12) + minute_bucket);
+    return (uint8_t)(FastMath_Mul5U8(hour12) + minute_bucket);
 }
 
 static void draw_hands(uint8_t hour, uint8_t min, uint8_t sec) {
@@ -119,23 +155,27 @@ static void draw_hands(uint8_t hour, uint8_t min, uint8_t sec) {
     }
 
     if (sec_changed && !hour_changed && !min_changed) {
-        restore_after_second(s_last_sec, hour, min);
-        draw_hand(SEC_POINTS, sec, 1, COLOR_ACCENT);
+        uint8_t old_sec = s_last_sec;
+        erase_second_hand(s_last_sec);
+
+        if (FastMath_Mod5U8(old_sec) == 0U && !is_cardinal_idx(old_sec)) {
+            draw_marker_at(old_sec);
+        }
+
+        restore_thick_elements_at(sec_idx_sub_delay(sec), hour, min);
+        draw_second_hand(sec, COLOR_ACCENT);
+        draw_center_dot();
     } else {
-        if (hour_changed && s_last_hour != 255) erase_hand(HOUR_POINTS, s_last_hour, 3);
-        if (min_changed && s_last_min != 255) erase_hand(MIN_POINTS, s_last_min, 2);
-        if (sec_changed && s_last_sec != 255) erase_hand(SEC_POINTS, s_last_sec, 1);
+        if (hour_changed && s_last_hour != 255) erase_hand(HOUR_POINTS, s_last_hour, HOUR_HAND_W);
+        if (min_changed && s_last_min != 255) erase_hand(MIN_POINTS, s_last_min, MIN_HAND_W);
+        if (sec_changed && s_last_sec != 255) erase_second_hand(s_last_sec);
 
         if (hour_changed || min_changed || sec_changed) {
             draw_markers();
         }
 
-        draw_hand(HOUR_POINTS, hour, 3, COLOR_SECONDARY);
-        draw_hand(MIN_POINTS, min, 2, COLOR_PRIMARY);
-        draw_hand(SEC_POINTS, sec, 1, COLOR_ACCENT);
+        draw_all_hands(hour, min, sec);
     }
-
-    oledC_DrawCircle(CENTER_X, CENTER_Y, CENTER_DOT_RADIUS, COLOR_ACCENT);
 
     s_last_hour = hour;
     s_last_min = min;

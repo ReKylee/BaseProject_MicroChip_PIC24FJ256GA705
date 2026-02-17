@@ -37,6 +37,42 @@ static inline uint8_t FastMath_Div6U8(uint8_t value) {
 }
 
 /**
+ * @brief Multiply an 8-bit value by 5 using shifts/adds.
+ * @param value 8-bit unsigned value.
+ * @return value * 5 (wraps modulo 256 if overflowed).
+ */
+static inline uint8_t FastMath_Mul5U8(uint8_t value) {
+    return (uint8_t)((value << 2) + value);
+}
+
+/**
+ * @brief Compute value modulo 5 without hardware division.
+ * @param value 8-bit unsigned value.
+ * @return value % 5.
+ */
+static inline uint8_t FastMath_Mod5U8(uint8_t value) {
+    uint8_t out = value;
+    while (out >= 5U) {
+        out = (uint8_t)(out - 5U);
+    }
+    return out;
+}
+
+/**
+ * @brief Subtract a delta on a circular 0..59 index.
+ * @param value Current index in [0, 59].
+ * @param delta Steps to subtract.
+ * @return (value - delta) modulo 60.
+ */
+static inline uint8_t FastMath_SubMod60U8(uint8_t value, uint8_t delta) {
+    uint8_t out = value;
+    while (out < delta) {
+        out = (uint8_t)(out + 60U);
+    }
+    return (uint8_t)(out - delta);
+}
+
+/**
  * @brief Absolute difference between two 16-bit unsigned values.
  * @return |a - b|.
  */
