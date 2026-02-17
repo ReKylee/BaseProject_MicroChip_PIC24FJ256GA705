@@ -50,7 +50,11 @@ static void handle_watch_mode(ButtonEvent_t btn, AccelEvent_t accel) {
     }
 
     if (btn == BTN_S2_SHORT) {
-        state->watch_face = (state->watch_face + 1) % FACE_COUNT_SELECTABLE;
+        uint8_t next_face = (uint8_t)(state->watch_face + 1U);
+        if (next_face >= FACE_COUNT_SELECTABLE) {
+            next_face = 0U;
+        }
+        state->watch_face = (WatchFace_t)next_face;
         state->needs_full_redraw = true;
         return;
     }

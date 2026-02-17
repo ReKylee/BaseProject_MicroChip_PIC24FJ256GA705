@@ -4,6 +4,7 @@
 
 #include "menu_state.h"
 #include "menu_core.h"
+#include "../shared/watch_settings_store.h"
 #include "../watchCore/timekeeper.h"
 #include "../pomodoroTimer/pomodoro.h"
 #include "../watchInput/potentiometer.h"
@@ -78,6 +79,7 @@ static bool handle_simple_radial_state(MenuRadial_t* radial, ButtonEvent_t btn,
         MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_RADIAL_SELECT, .state = state->menu_state});
     }
     if (btn == BTN_S1_SHORT || btn == BTN_S2_SHORT) {
+        (void)WatchSettingsStore_SaveState(state);
         MenuState_OnChange(MENU_MAIN, true, pot_value);
         state->needs_full_redraw = true;
     }
@@ -93,6 +95,7 @@ static void commit_set_time(void) {
     }
     Timekeeper_GetTime(&state->current_time);
     s_temp_time = state->current_time;
+    (void)WatchSettingsStore_SaveState(state);
 }
 
 static bool clamp_temp_date(void) {
@@ -127,6 +130,7 @@ static void commit_set_date(void) {
     }
     Timekeeper_SetDate(&s_temp_date);
     state->current_date = s_temp_date;
+    (void)WatchSettingsStore_SaveState(state);
 }
 
 static void commit_set_alarm(void) {
@@ -134,6 +138,7 @@ static void commit_set_alarm(void) {
     state->alarm.hour = s_temp_alarm.hour;
     state->alarm.minute = s_temp_alarm.minute;
     state->alarm.enabled = true;
+    (void)WatchSettingsStore_SaveState(state);
 }
 
 static void commit_pomodoro(void) {
@@ -187,10 +192,8 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
         if (pot_delta >= POT_FAST_THRESHOLD) {
             s_pot_filtered = pot_value;
         } else {
-            // Adaptive smoothing: keep precision near still points without adding knob lag.
-            uint32_t old_w = (uint32_t)POT_SMOOTH_NUM;
-            uint32_t new_w = (uint32_t)(POT_SMOOTH_DEN - POT_SMOOTH_NUM);
-            s_pot_filtered = (uint16_t)(((uint32_t)s_pot_filtered * old_w + (uint32_t)pot_value * new_w) / (uint32_t)POT_SMOOTH_DEN);
+            // With POT_SMOOTH_NUM=1 and POT_SMOOTH_DEN=2 this is a simple average.
+            s_pot_filtered = (uint16_t)(((uint32_t)s_pot_filtered + (uint32_t)pot_value) >> 1);
         }
     }
 
@@ -204,12 +207,18 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
 
         if (btn == BTN_S2_SHORT) {
             MenuState_t next_state = main_menu[s_radial_selection].next_state;
-            if (next_state == MENU_SET_TIME || next_state == MENU_SET_DATE ||
-                next_state == MENU_SET_ALARM || next_state == MENU_POMODORO) {
+            bool next_is_edit = (next_state == MENU_SET_TIME || next_state == MENU_SET_DATE ||
+                                 next_state == MENU_SET_ALARM || next_state == MENU_POMODORO);
+            if (next_is_edit) {
                 state->menu_edit_field = 0;
             }
             MenuState_OnChange(next_state, true, pot_value);
             MenuState_SeedEditBuffers(state->menu_state);
+            if (next_is_edit) {
+                // Seed edit hysteresis to current pot so first movement is not dropped.
+                s_edit_last_raw = s_pot_filtered;
+                s_edit_last_field = state->menu_edit_field;
+            }
             state->needs_full_redraw = true;
             changed = true;
         }

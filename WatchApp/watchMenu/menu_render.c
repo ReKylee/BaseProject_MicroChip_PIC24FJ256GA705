@@ -5,11 +5,14 @@
 #include "menu_state.h"
 #include "menu_core.h"
 #include "menu_layout.h"
+#include "../shared/fast_math.h"
+#include "../shared/ui_layout.h"
+#include "../shared/watch_ui_widgets.h"
+#include "../shared/watch_format.h"
 #include "../watchFaces/watch_face_geometry.h"
 #include "../../oledDriver/oledC.h"
 #include "../../oledDriver/oledC_shapes.h"
 #include "../watchCore/timekeeper.h"
-#include <stdio.h>
 #include <string.h>
 
 // ============================================================================
@@ -29,31 +32,49 @@ static uint8_t s_center_prev_l2y = 0;
 // Main radial menu arc: 45 deg -> 315 deg clockwise (270 deg span).
 #define MENU_ARC_START_POINTS_X2 15U
 #define MENU_ARC_END_POINTS_X2   105U
+#define MENU_FONT_W 5U
+#define MENU_FONT_GAP 1U
+#define MENU_FONT_SCALE 1U
+#define MENU_TIME_CHARS_12H 11U
+#define MENU_TIME_CHARS_24H 8U
+#define MENU_CENTER_LABEL_MAX_CHARS 11U
+#define MENU_CENTER_LABEL_SINGLE_Y_OFFSET 3U
+#define MENU_CENTER_LABEL_TOP_Y_OFFSET 7U
+#define MENU_CENTER_LABEL_BOTTOM_Y_OFFSET 1U
+#define MENU_EDIT_LABEL_X_OFFSET 6U
+#define MENU_EDIT_LABEL_Y_OFFSET 3U
+#define MENU_FALLBACK_TEXT "Coming Soon"
+#define MENU_FALLBACK_TEXT_Y 40U
 
-static void format_2d(uint8_t value, char out[3]) {
-    out[0] = (char)('0' + (value / 10));
-    out[1] = (char)('0' + (value % 10));
-    out[2] = '\0';
+static inline int16_t divs32_by76_bounded(int32_t v) {
+    bool neg = (v < 0);
+    uint32_t uv = neg ? (uint32_t)(-v) : (uint32_t)v;
+    /* Exact for the bounded range used here (|v| <= ~3500). */
+    uint32_t q = (uv * 6899UL) >> 19;
+    return neg ? -(int16_t)q : (int16_t)q;
 }
 
 static inline uint8_t idx_to_sec_arc(uint8_t idx, uint8_t count) {
     uint16_t sec_x2;
     if (count <= 1U) {
-        sec_x2 = (uint16_t)((MENU_ARC_START_POINTS_X2 + MENU_ARC_END_POINTS_X2) / 2U);
+        sec_x2 = (uint16_t)((MENU_ARC_START_POINTS_X2 + MENU_ARC_END_POINTS_X2) >> 1);
     } else {
         if (idx == 0U) return MENU_ARC_START_POINTS_X2;
         if (idx >= (uint8_t)(count - 1U)) return MENU_ARC_END_POINTS_X2;
         uint16_t span_x2 = (uint16_t)(MENU_ARC_END_POINTS_X2 - MENU_ARC_START_POINTS_X2);
         sec_x2 = (uint16_t)(MENU_ARC_START_POINTS_X2 +
-                            ((((uint32_t)idx * (uint32_t)span_x2) + ((uint32_t)(count - 1U) / 2UL)) /
+                            ((((uint32_t)idx * (uint32_t)span_x2) + ((uint32_t)(count - 1U) >> 1)) /
                              (uint32_t)(count - 1U)));
     }
     return (uint8_t)sec_x2;
 }
 
 static inline void arc_point_to_xy(uint8_t sec_x2, uint8_t radius, int *x, int *y) {
-    uint8_t sec = (uint8_t)((sec_x2 / 2U) % NUM_CLOCK_POINTS);
-    uint8_t next = (uint8_t)((sec + 1U) % NUM_CLOCK_POINTS);
+    uint8_t sec = (uint8_t)(sec_x2 >> 1);
+    uint8_t next = (uint8_t)(sec + 1U);
+    if (next >= NUM_CLOCK_POINTS) {
+        next = 0U;
+    }
 
     int16_t dx_x2 = (int16_t)(((int16_t)SEC_POINTS[sec][0] - (int16_t)MENU_GEOM_CENTER_X) * 2);
     int16_t dy_x2 = (int16_t)(((int16_t)SEC_POINTS[sec][1] - (int16_t)MENU_GEOM_CENTER_Y) * 2);
@@ -64,8 +85,8 @@ static inline void arc_point_to_xy(uint8_t sec_x2, uint8_t radius, int *x, int *
                           ((int16_t)SEC_POINTS[next][1] - (int16_t)MENU_GEOM_CENTER_Y));
     }
 
-    int16_t sx = (int16_t)(((int32_t)dx_x2 * (int32_t)radius) / (int32_t)(2 * MENU_GEOM_RADIUS));
-    int16_t sy = (int16_t)(((int32_t)dy_x2 * (int32_t)radius) / (int32_t)(2 * MENU_GEOM_RADIUS));
+    int16_t sx = divs32_by76_bounded((int32_t)dx_x2 * (int32_t)radius);
+    int16_t sy = divs32_by76_bounded((int32_t)dy_x2 * (int32_t)radius);
     *x = MENU_CENTER_X + sx;
     *y = MENU_CENTER_Y + sy;
 }
@@ -78,8 +99,8 @@ static void draw_center_label(const char *text) {
     char line1[12];
     char line2[12];
     size_t len = strlen(text);
-    uint8_t max_chars = (uint8_t)((MENU_INNER_RADIUS * 2) / 6);
-    if (max_chars > 11) max_chars = 11;
+    uint8_t max_chars = FastMath_Div6U8((uint8_t)(MENU_INNER_RADIUS * 2U));
+    if (max_chars > MENU_CENTER_LABEL_MAX_CHARS) max_chars = MENU_CENTER_LABEL_MAX_CHARS;
 
     line1[0] = '\0';
     line2[0] = '\0';
@@ -100,12 +121,13 @@ static void draw_center_label(const char *text) {
         line2[sizeof(line2) - 1] = '\0';
     }
 
-    uint8_t line1_w = (uint8_t)(strlen(line1) * 6);
-    uint8_t line2_w = (uint8_t)(strlen(line2) * 6);
-    uint8_t l1x = (uint8_t)(MENU_CENTER_X - (line1_w / 2));
-    uint8_t l2x = (uint8_t)(MENU_CENTER_X - (line2_w / 2));
-    uint8_t l1y = (line2[0] == '\0') ? (uint8_t)(MENU_CENTER_Y - 3) : (uint8_t)(MENU_CENTER_Y - 7);
-    uint8_t l2y = (uint8_t)(MENU_CENTER_Y + 1);
+    uint8_t line1_w = WatchUi_CharsToPx6(strlen(line1));
+    uint8_t line2_w = WatchUi_CharsToPx6(strlen(line2));
+    uint8_t l1x = (uint8_t)(MENU_CENTER_X - (line1_w >> 1));
+    uint8_t l2x = (uint8_t)(MENU_CENTER_X - (line2_w >> 1));
+    uint8_t l1y = (line2[0] == '\0') ? (uint8_t)(MENU_CENTER_Y - MENU_CENTER_LABEL_SINGLE_Y_OFFSET)
+                                     : (uint8_t)(MENU_CENTER_Y - MENU_CENTER_LABEL_TOP_Y_OFFSET);
+    uint8_t l2y = (uint8_t)(MENU_CENTER_Y + MENU_CENTER_LABEL_BOTTOM_Y_OFFSET);
 
     if (s_center_label_valid) {
         if (s_center_prev_line1[0] != '\0') {
@@ -135,69 +157,79 @@ static void draw_center_label(const char *text) {
 }
 
 static void draw_menu_header(const char* title) {
-    oledC_DrawRectangle(0, MENU_HEADER_Y, 95, MENU_HEADER_Y + MENU_HEADER_H, COLOR_BG);
-    oledC_DrawStringSolid(MENU_TITLE_X, MENU_TITLE_Y, 1, 1, (uint8_t*)title, COLOR_ACCENT, COLOR_BG);
+    WatchState_t* state = Watch_GetState();
+    oledC_DrawRectangle(0, MENU_HEADER_Y, MENU_SCREEN_MAX_X, MENU_HEADER_Y + MENU_HEADER_H, COLOR_BG);
+    if (state->menu_state == MENU_TIME_FORMAT) {
+        oledC_DrawStringSolid(MENU_TITLE_X, MENU_TITLE_ALT_Y, 1, 1, (uint8_t*)title, COLOR_ACCENT, COLOR_BG);
+    } else {
+        oledC_DrawStringSolid(MENU_TITLE_X, MENU_TITLE_Y, 1, 1, (uint8_t*)title, COLOR_ACCENT, COLOR_BG);
+    }
     s_last_header_title = title;
 }
 
-static uint8_t format_small_time(char* buf, size_t buf_len, const WatchState_t* state) {
+static uint8_t small_time_x_start(const WatchState_t* state) {
+    uint8_t chars = (state->time_format == FORMAT_12H) ? MENU_TIME_CHARS_12H : MENU_TIME_CHARS_24H;
+    uint8_t width = WatchUi_TextWidth(chars, MENU_FONT_W, MENU_FONT_SCALE, MENU_FONT_GAP);
+    return WatchUi_RightX96(width);
+}
+
+static void draw_small_time_common(const WatchState_t* state) {
+    uint8_t x = small_time_x_start(state);
+    uint8_t step = WatchUi_GlyphAdvance(MENU_FONT_W, MENU_FONT_SCALE, MENU_FONT_GAP);
     uint8_t hour = state->current_time.hour;
     bool is_pm = false;
-    uint8_t text_w = 0;
+
     if (state->time_format == FORMAT_12H) {
         hour = Timekeeper_Convert24to12(hour, &is_pm);
-        snprintf(buf, buf_len, "%02d:%02d:%02d %s",
-                 hour, state->current_time.minute, state->current_time.second,
-                 is_pm ? "PM" : "AM");
-        text_w = (uint8_t)(11 * 6);
-    } else {
-        snprintf(buf, buf_len, "%02d:%02d:%02d",
-                 hour, state->current_time.minute, state->current_time.second);
-        text_w = (uint8_t)(8 * 6);
     }
 
-    int x = 96 - text_w;
-    if (x < 0) x = 0;
-    return (uint8_t)x;
+    oledC_DrawRectangle(0, MENU_HEADER_Y,
+                        MENU_SCREEN_MAX_X, MENU_HEADER_Y + MENU_HEADER_H,
+                        COLOR_BG);
+    if (s_last_header_title) {
+        if (state->menu_state == MENU_TIME_FORMAT) {
+            oledC_DrawStringSolid(MENU_TITLE_X, MENU_TITLE_ALT_Y, 1, 1, (uint8_t*)s_last_header_title, COLOR_ACCENT, COLOR_BG);
+        } else {
+            oledC_DrawStringSolid(MENU_TITLE_X, MENU_TITLE_Y, 1, 1, (uint8_t*)s_last_header_title, COLOR_ACCENT, COLOR_BG);
+            if (state->menu_state == MENU_DISPLAY_MODE) {
+                oledC_DrawStringSolid(MENU_BACK_ARROW_X, MENU_TITLE_Y, 1, 1, (uint8_t*)"<", COLOR_DIM, COLOR_BG);
+            }
+        }
+    }
+
+    WatchUi_DrawNN(hour, x, MENU_TIME_Y, 1U, 1U, COLOR_DIM, COLOR_BG);
+    x = (uint8_t)(x + (uint8_t)(2U * step));
+    WatchUi_DrawColon(x, MENU_TIME_Y, 1U, 1U, COLOR_DIM, COLOR_BG);
+    x = (uint8_t)(x + step);
+
+    WatchUi_DrawNN(state->current_time.minute, x, MENU_TIME_Y, 1U, 1U, COLOR_DIM, COLOR_BG);
+    x = (uint8_t)(x + (uint8_t)(2U * step));
+    WatchUi_DrawColon(x, MENU_TIME_Y, 1U, 1U, COLOR_DIM, COLOR_BG);
+    x = (uint8_t)(x + step);
+
+    WatchUi_DrawNN(state->current_time.second, x, MENU_TIME_Y, 1U, 1U, COLOR_DIM, COLOR_BG);
+    x = (uint8_t)(x + (uint8_t)(2U * step));
+
+    if (state->time_format == FORMAT_12H) {
+        x = (uint8_t)(x + step); // visual spacing before AM/PM
+        oledC_DrawStringSolid(x, MENU_TIME_Y, 1, 1, (uint8_t*)(is_pm ? "PM" : "AM"), COLOR_DIM, COLOR_BG);
+    }
+
+    s_last_small_time = state->current_time;
+    s_last_small_time_format = state->time_format;
 }
 
 static void draw_small_time_update(void) {
     WatchState_t* state = Watch_GetState();
     if (state->current_time.second != s_last_small_time.second ||
         state->time_format != s_last_small_time_format) {
-        char new_str[12];
-        uint8_t x = format_small_time(new_str, sizeof(new_str), state);
-        oledC_DrawRectangle(0, MENU_HEADER_Y,
-                            95, MENU_HEADER_Y + MENU_HEADER_H,
-                            COLOR_BG);
-        if (s_last_header_title) {
-            oledC_DrawStringSolid(MENU_TITLE_X, MENU_TITLE_Y, 1, 1, (uint8_t*)s_last_header_title, COLOR_ACCENT, COLOR_BG);
-            if (state->menu_state == MENU_DISPLAY_MODE) {
-                oledC_DrawStringSolid(2, MENU_TITLE_Y, 1, 1, (uint8_t*)"<", COLOR_DIM, COLOR_BG);
-            }
-        }
-        oledC_DrawStringSolid(x, MENU_TIME_Y, 1, 1, (uint8_t*)new_str, COLOR_DIM, COLOR_BG);
-        s_last_small_time = state->current_time;
-        s_last_small_time_format = state->time_format;
+        draw_small_time_common(state);
     }
 }
 
 static void draw_small_time_full(void) {
     WatchState_t* state = Watch_GetState();
-    char new_str[12];
-    uint8_t x = format_small_time(new_str, sizeof(new_str), state);
-    oledC_DrawRectangle(0, MENU_HEADER_Y,
-                        95, MENU_HEADER_Y + MENU_HEADER_H,
-                        COLOR_BG);
-    if (s_last_header_title) {
-        oledC_DrawStringSolid(MENU_TITLE_X, MENU_TITLE_Y, 1, 1, (uint8_t*)s_last_header_title, COLOR_ACCENT, COLOR_BG);
-        if (state->menu_state == MENU_DISPLAY_MODE) {
-            oledC_DrawStringSolid(2, MENU_TITLE_Y, 1, 1, (uint8_t*)"<", COLOR_DIM, COLOR_BG);
-        }
-    }
-    oledC_DrawStringSolid(x, MENU_TIME_Y, 1, 1, (uint8_t*)new_str, COLOR_DIM, COLOR_BG);
-    s_last_small_time = state->current_time;
-    s_last_small_time_format = state->time_format;
+    draw_small_time_common(state);
 }
 
 static void draw_radial_item(uint8_t idx, bool selected) {
@@ -208,26 +240,26 @@ static void draw_radial_item(uint8_t idx, bool selected) {
     if (s_active_radial == &s_main_menu_cfg && idx == 1U) {
         WatchState_t* state = Watch_GetState();
         const char* tf = (state->time_format == FORMAT_12H) ? "12H" : "24H";
-        uint8_t w = (uint8_t)(strlen(tf) * 6);
+        uint8_t w = WatchUi_CharsToPx6(strlen(tf));
         if (selected) {
             oledC_DrawCircle(x, y, MENU_RING_RADIUS, COLOR_PRIMARY);
-            oledC_DrawStringSolid((uint8_t)(x - (w / 2)), (uint8_t)(y - 3), 1, 1, (uint8_t*)tf, COLOR_BG, COLOR_PRIMARY);
+            oledC_DrawStringSolid((uint8_t)(x - (w >> 1)), (uint8_t)(y - 3), 1, 1, (uint8_t*)tf, COLOR_BG, COLOR_PRIMARY);
         } else {
             oledC_DrawCircle(x, y, MENU_RING_RADIUS, COLOR_BG);
-            oledC_DrawStringSolid((uint8_t)(x - (w / 2)), (uint8_t)(y - 3), 1, 1, (uint8_t*)tf, COLOR_PRIMARY, COLOR_BG);
+            oledC_DrawStringSolid((uint8_t)(x - (w >> 1)), (uint8_t)(y - 3), 1, 1, (uint8_t*)tf, COLOR_PRIMARY, COLOR_BG);
         }
         return;
     }
 
     if (s_active_radial == &s_format_menu_cfg) {
         const char* tf = (idx == 0U) ? "12H" : "24H";
-        uint8_t w = (uint8_t)(strlen(tf) * 6);
+        uint8_t w = WatchUi_CharsToPx6(strlen(tf));
         if (selected) {
             oledC_DrawCircle(x, y, MENU_RING_RADIUS, COLOR_PRIMARY);
-            oledC_DrawStringSolid((uint8_t)(x - (w / 2)), (uint8_t)(y - 3), 1, 1, (uint8_t*)tf, COLOR_BG, COLOR_PRIMARY);
+            oledC_DrawStringSolid((uint8_t)(x - (w >> 1)), (uint8_t)(y - 3), 1, 1, (uint8_t*)tf, COLOR_BG, COLOR_PRIMARY);
         } else {
             oledC_DrawCircle(x, y, MENU_RING_RADIUS, COLOR_BG);
-            oledC_DrawStringSolid((uint8_t)(x - (w / 2)), (uint8_t)(y - 3), 1, 1, (uint8_t*)tf, COLOR_PRIMARY, COLOR_BG);
+            oledC_DrawStringSolid((uint8_t)(x - (w >> 1)), (uint8_t)(y - 3), 1, 1, (uint8_t*)tf, COLOR_PRIMARY, COLOR_BG);
         }
         return;
     }
@@ -244,7 +276,7 @@ static void draw_radial_item(uint8_t idx, bool selected) {
     palette[1] = icon_asset->palette[1];
     palette[2] = icon_asset->palette[2];
     palette[3] = icon_asset->palette[3];
-    const uint8_t icon_offset = (uint8_t)((MENU_ICON_SIZE - 1U) / 2U);
+    const uint8_t icon_offset = (uint8_t)((MENU_ICON_SIZE - 1U) >> 1);
     oledC_DrawBitmapIndexed2bpp((uint8_t)(x - icon_offset),
                                 (uint8_t)(y - icon_offset),
                                 MENU_ICON_SIZE, MENU_ICON_SIZE,
@@ -261,7 +293,7 @@ static void draw_radial_menu_full(const RadialMenuConfig_t* cfg) {
     s_active_radial = cfg;
     cfg->radial->draw_item = draw_radial_item;
     cfg->radial->draw_center = draw_radial_center;
-    oledC_DrawRectangle(0, 12, 95, 95, COLOR_BG);
+    oledC_DrawRectangle(0, MENU_CONTENT_TOP_Y, MENU_SCREEN_MAX_X, MENU_SCREEN_MAX_X, COLOR_BG);
     draw_menu_header(cfg->title);
     draw_small_time_full();
     if (cfg->draw_inner_circle) {
@@ -312,9 +344,12 @@ static void get_edit_ring_params(MenuState_t state, uint8_t field, uint8_t* coun
 }
 
 static bool edit_label_at_index(uint8_t idx, uint8_t count, uint8_t step) {
+    uint8_t reduced = idx;
     if (idx == 0U || idx == (uint8_t)(count - 1U)) return true;
-    if ((idx % step) != 0) return false;
-    return true;
+    while (reduced >= step) {
+        reduced = (uint8_t)(reduced - step);
+    }
+    return reduced == 0U;
 }
 
 static void fill_edit_spec(MenuState_t state, EditRingSpec_t* spec, char* center_text) {
@@ -333,9 +368,9 @@ static void fill_edit_spec(MenuState_t state, EditRingSpec_t* spec, char* center
             spec->label_offset = 0;
             spec->selected = s_temp_time.minute;
         }
-        format_2d(s_temp_time.hour, &center_text[0]);
+        Watch_Format2D(s_temp_time.hour, &center_text[0]);
         center_text[2] = ':';
-        format_2d(s_temp_time.minute, &center_text[3]);
+        Watch_Format2D(s_temp_time.minute, &center_text[3]);
         center_text[5] = '\0';
     } else if (state == MENU_SET_DATE) {
         spec->title = "DATE";
@@ -350,9 +385,9 @@ static void fill_edit_spec(MenuState_t state, EditRingSpec_t* spec, char* center
             spec->label_offset = 1;
             spec->selected = (uint8_t)(s_temp_date.month - 1);
         }
-        format_2d(s_temp_date.day, &center_text[0]);
+        Watch_Format2D(s_temp_date.day, &center_text[0]);
         center_text[2] = '/';
-        format_2d(s_temp_date.month, &center_text[3]);
+        Watch_Format2D(s_temp_date.month, &center_text[3]);
         center_text[5] = '\0';
     } else if (state == MENU_POMODORO) {
         spec->title = "POMO";
@@ -368,10 +403,10 @@ static void fill_edit_spec(MenuState_t state, EditRingSpec_t* spec, char* center
             spec->selected = (uint8_t)(s_temp_pomo_break - 1);
         }
         center_text[0] = 'W';
-        format_2d(s_temp_pomo_work, &center_text[1]);
+        Watch_Format2D(s_temp_pomo_work, &center_text[1]);
         center_text[3] = ' ';
         center_text[4] = 'B';
-        format_2d(s_temp_pomo_break, &center_text[5]);
+        Watch_Format2D(s_temp_pomo_break, &center_text[5]);
         center_text[7] = '\0';
     } else {
         spec->title = "ALARM";
@@ -386,9 +421,9 @@ static void fill_edit_spec(MenuState_t state, EditRingSpec_t* spec, char* center
             spec->label_offset = 0;
             spec->selected = s_temp_alarm.minute;
         }
-        format_2d(s_temp_alarm.hour, &center_text[0]);
+        Watch_Format2D(s_temp_alarm.hour, &center_text[0]);
         center_text[2] = ':';
-        format_2d(s_temp_alarm.minute, &center_text[3]);
+        Watch_Format2D(s_temp_alarm.minute, &center_text[3]);
         center_text[5] = '\0';
     }
 }
@@ -403,9 +438,10 @@ static void draw_edit_ring_labels(MenuState_t state, uint8_t field) {
         if (!edit_label_at_index(i, count, step)) continue;
         int x, y;
         radial_idx_to_xy_arc(i, count, MENU_EDIT_LABEL_RADIUS, &x, &y);
-        char label[3];
-        format_2d((uint8_t)(i + offset), label);
-        oledC_DrawStringSolid((uint8_t)(x - 6), (uint8_t)(y - 3), 1, 1, (uint8_t*)label, COLOR_DIM, COLOR_BG);
+        WatchUi_DrawNN((uint8_t)(i + offset),
+                       (uint8_t)(x - MENU_EDIT_LABEL_X_OFFSET),
+                       (uint8_t)(y - MENU_EDIT_LABEL_Y_OFFSET),
+                       1U, 1U, COLOR_DIM, COLOR_BG);
     }
 }
 
@@ -454,7 +490,7 @@ static void draw_edit_core(MenuState_t state, bool clear_ring_only) {
 }
 
 static void draw_edit_full(MenuState_t state) {
-    oledC_DrawRectangle(0, 12, 95, 95, COLOR_BG);
+    oledC_DrawRectangle(0, MENU_CONTENT_TOP_Y, MENU_SCREEN_MAX_X, MENU_SCREEN_MAX_X, COLOR_BG);
     draw_menu_header(edit_title_for_state(state));
     draw_small_time_full();
     draw_edit_core(state, false);
@@ -515,8 +551,9 @@ void Menu_DrawFull(void) {
         case MENU_POMODORO: draw_edit_full(MENU_POMODORO); break;
         case MENU_ALARM_TOGGLE: draw_radial_menu_full(&s_alarm_toggle_cfg); break;
         default:
-            oledC_DrawRectangle(0, 12, 95, 95, COLOR_BG);
-            oledC_DrawStringSolid(10, 40, 1, 1, (uint8_t*)"Coming Soon", COLOR_PRIMARY, COLOR_BG);
+            oledC_DrawRectangle(0, MENU_CONTENT_TOP_Y, MENU_SCREEN_MAX_X, MENU_SCREEN_MAX_X, COLOR_BG);
+            oledC_DrawStringSolid(WatchUi_CenterX96(WatchUi_CharsToPx6(strlen(MENU_FALLBACK_TEXT))),
+                                  MENU_FALLBACK_TEXT_Y, 1, 1, (uint8_t*)MENU_FALLBACK_TEXT, COLOR_PRIMARY, COLOR_BG);
             break;
     }
 }
@@ -559,3 +596,4 @@ void Menu_DrawPartial(void) {
         draw_edit_value_for_state(state->menu_state);
     }
 }
+

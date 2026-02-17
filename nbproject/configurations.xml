@@ -14,6 +14,11 @@
       <logicalFolder name="adcDriver" displayName="adcDriver" projectFiles="true">
         <itemPath>adcDriver/ADC.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="flash_generated"
+                     displayName="flash_generated"
+                     projectFiles="true">
+        <itemPath>flash_generated/flash.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="i2cDriver" displayName="i2cDriver" projectFiles="true">
         <itemPath>i2cDriver/I2C.h</itemPath>
       </logicalFolder>
@@ -54,6 +59,11 @@
           <itemPath>WatchApp/pomodoroTimer/pomodoro.h</itemPath>
         </logicalFolder>
         <logicalFolder name="shared" displayName="shared" projectFiles="true">
+          <itemPath>WatchApp/shared/fast_math.h</itemPath>
+          <itemPath>WatchApp/shared/watch_format.h</itemPath>
+          <itemPath>WatchApp/shared/ui_layout.h</itemPath>
+          <itemPath>WatchApp/shared/watch_ui_widgets.h</itemPath>
+          <itemPath>WatchApp/shared/watch_settings_store.h</itemPath>
           <itemPath>WatchApp/shared/watch_state.h</itemPath>
           <itemPath>WatchApp/shared/watch_types.h</itemPath>
         </logicalFolder>
@@ -110,6 +120,11 @@
       <logicalFolder name="adcDriver" displayName="adcDriver" projectFiles="true">
         <itemPath>adcDriver/ADC.c</itemPath>
       </logicalFolder>
+      <logicalFolder name="flash_generated"
+                     displayName="flash_generated"
+                     projectFiles="true">
+        <itemPath>flash_generated/flash.s</itemPath>
+      </logicalFolder>
       <logicalFolder name="i2cDriver" displayName="i2cDriver" projectFiles="true">
         <itemPath>i2cDriver/I2C.c</itemPath>
       </logicalFolder>
@@ -130,6 +145,7 @@
         <itemPath>switchDriver/Switch.c</itemPath>
       </logicalFolder>
       <logicalFolder name="System" displayName="System" projectFiles="true">
+        <itemPath>System/config_bits.c</itemPath>
         <itemPath>System/clock.c</itemPath>
         <itemPath>System/delay.c</itemPath>
         <itemPath>System/interrupt_manager.c</itemPath>
@@ -148,6 +164,7 @@
           <itemPath>WatchApp/pomodoroTimer/pomodoro.c</itemPath>
         </logicalFolder>
         <logicalFolder name="shared" displayName="shared" projectFiles="true">
+          <itemPath>WatchApp/shared/watch_ui_widgets.c</itemPath>
           <itemPath>WatchApp/shared/watch_state.c</itemPath>
         </logicalFolder>
         <logicalFolder name="watchCore" displayName="watchCore" projectFiles="true">
@@ -715,6 +732,7 @@
         <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
         <property key="debugoptions.debug-startup" value="Use system settings"/>
         <property key="debugoptions.reset-behaviour" value="Use system settings"/>
+        <property key="firmware.download.all" value="false"/>
         <property key="lastid" value=""/>
         <property key="memories.configurationmemory" value="true"/>
         <property key="memories.dataflash" value="true"/>

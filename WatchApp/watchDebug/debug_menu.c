@@ -7,6 +7,9 @@
 #ifdef DEBUG_MODE
 
 #include "../shared/watch_state.h"
+#include "../shared/watch_settings_store.h"
+#include "../shared/ui_layout.h"
+#include "../shared/watch_format.h"
 #include "../watchInput/potentiometer.h"
 #include "../../accel3Driver/ACCEL3.h"
 #include "../../oledDriver/oledC.h"
@@ -40,6 +43,14 @@ static char s_last_date_step_msg[22] = "";
 static Time_t s_last_time = {0xFF, 0xFF, 0xFF};
 static TimeFormat_t s_last_time_format = FORMAT_24H;
 
+static uint8_t pot_percent_0_to_100(uint16_t pot_raw) {
+    uint32_t pct = (((uint32_t)pot_raw * 100U) + 512UL) >> 10;
+    if (pct > 100U) {
+        pct = 100U;
+    }
+    return (uint8_t)pct;
+}
+
 static void draw_header(const char* title) {
     oledC_DrawRectangle(0, DEBUG_HEADER_Y, 95, DEBUG_HEADER_Y + DEBUG_HEADER_H, COLOR_BG);
     oledC_DrawStringSolid(DEBUG_TITLE_X, DEBUG_TITLE_Y, 1, 1, (uint8_t*)title, COLOR_ACCENT, COLOR_BG);
@@ -56,11 +67,11 @@ static void draw_time_full(void) {
         snprintf(buf, sizeof(buf), "%02d:%02d:%02d %s",
                  hour, state->current_time.minute, state->current_time.second,
                  is_pm ? "PM" : "AM");
-        oledC_DrawStringSolid((uint8_t)(96 - (11 * 6)), DEBUG_TIME_Y, 1, 1, (uint8_t*)buf, COLOR_DIM, COLOR_BG);
+        oledC_DrawStringSolid(WatchUi_RightX96(WatchUi_CharsToPx6(11U)), DEBUG_TIME_Y, 1, 1, (uint8_t*)buf, COLOR_DIM, COLOR_BG);
     } else {
         snprintf(buf, sizeof(buf), "%02d:%02d:%02d",
                  hour, state->current_time.minute, state->current_time.second);
-        oledC_DrawStringSolid((uint8_t)(96 - (8 * 6)), DEBUG_TIME_Y, 1, 1, (uint8_t*)buf, COLOR_DIM, COLOR_BG);
+        oledC_DrawStringSolid(WatchUi_RightX96(WatchUi_CharsToPx6(8U)), DEBUG_TIME_Y, 1, 1, (uint8_t*)buf, COLOR_DIM, COLOR_BG);
     }
     s_last_time = state->current_time;
     s_last_time_format = state->time_format;
@@ -96,6 +107,7 @@ static void debug_increment_date(void) {
 
     Timekeeper_SetDate(&next);
     state->current_date = next;
+    (void)WatchSettingsStore_SaveState(state);
     {
         char prev_buf[6];
         char next_buf[6];
@@ -136,7 +148,7 @@ void DebugMenu_DrawFull(void) {
     int16_t ax = 0, ay = 0, az = 0;
     bool accel_ok = (ACCEL3_ReadXYZ(&ax, &ay, &az) == ACCEL3_OK);
     uint16_t pot_raw = Pot_GetRaw();
-    uint8_t pot_pct = (uint8_t)((pot_raw * 100U) / 1023U);
+    uint8_t pot_pct = pot_percent_0_to_100(pot_raw);
 
     oledC_DrawRectangle(0, 12, 95, 95, COLOR_BG);
     draw_header("DEBUG");
@@ -189,7 +201,7 @@ void DebugMenu_DrawUpdate(void) {
     int16_t ax = 0, ay = 0, az = 0;
     bool accel_ok = (ACCEL3_ReadXYZ(&ax, &ay, &az) == ACCEL3_OK);
     uint16_t pot_raw = Pot_GetRaw();
-    uint8_t pot_pct = (uint8_t)((pot_raw * 100U) / 1023U);
+    uint8_t pot_pct = pot_percent_0_to_100(pot_raw);
 
     if (!s_debug_drawn) {
         DebugMenu_DrawFull();
@@ -263,19 +275,25 @@ void DebugMenu_HandleInput(ButtonEvent_t btn) {
 
     if (btn == BTN_S2_SHORT) {
         WatchState_t* state = Watch_GetState();
-        uint32_t now = (uint32_t)state->current_time.hour * 3600U +
-                       (uint32_t)state->current_time.minute * 60U +
-                       (uint32_t)state->current_time.second;
-        uint32_t to_next_min = (state->current_time.second == 0) ? 0U : (60U - state->current_time.second);
-        uint32_t target = now + to_next_min;
-        uint8_t hour = (uint8_t)((target / 3600U) % 24U);
-        uint8_t minute = (uint8_t)((target / 60U) % 60U);
+        uint8_t hour = state->current_time.hour;
+        uint8_t minute = state->current_time.minute;
+        if (state->current_time.second != 0U) {
+            minute++;
+            if (minute >= 60U) {
+                minute = 0U;
+                hour++;
+                if (hour >= 24U) {
+                    hour = 0U;
+                }
+            }
+        }
 
         state->alarm.hour = hour;
         state->alarm.minute = minute;
         state->alarm.enabled = true;
         state->alarm.triggered = false;
         state->alarm.trigger_count = 0;
+        (void)WatchSettingsStore_SaveState(state);
         state->needs_redraw = true;
         DebugMenu_Exit();
     }

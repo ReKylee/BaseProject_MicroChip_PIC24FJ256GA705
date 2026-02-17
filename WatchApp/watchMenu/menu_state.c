@@ -55,6 +55,7 @@ MenuStateData_t g_menu_data = {
 };
 
 #define MENU_EVENT_QUEUE_SIZE 8
+#define MENU_EVENT_QUEUE_MASK (MENU_EVENT_QUEUE_SIZE - 1U)
 static MenuEvent_t s_menu_events[MENU_EVENT_QUEUE_SIZE];
 static uint8_t s_menu_evt_head = 0;
 static uint8_t s_menu_evt_tail = 0;
@@ -64,7 +65,7 @@ static bool menu_evt_is_full(uint8_t next_head) {
 }
 
 bool MenuEvent_Push(MenuEvent_t ev) {
-    uint8_t next_head = (uint8_t)((s_menu_evt_head + 1) % MENU_EVENT_QUEUE_SIZE);
+    uint8_t next_head = (uint8_t)((s_menu_evt_head + 1U) & MENU_EVENT_QUEUE_MASK);
     if (menu_evt_is_full(next_head)) {
         return false;
     }
@@ -78,7 +79,7 @@ bool MenuEvent_Pop(MenuEvent_t* ev) {
         return false;
     }
     *ev = s_menu_events[s_menu_evt_tail];
-    s_menu_evt_tail = (uint8_t)((s_menu_evt_tail + 1) % MENU_EVENT_QUEUE_SIZE);
+    s_menu_evt_tail = (uint8_t)((s_menu_evt_tail + 1U) & MENU_EVENT_QUEUE_MASK);
     return true;
 }
 

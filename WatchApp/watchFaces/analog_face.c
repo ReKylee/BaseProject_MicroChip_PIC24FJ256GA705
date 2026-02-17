@@ -35,9 +35,13 @@ static uint8_t s_last_sec = 255;
 static Date_t s_last_date_drawn;
 static bool s_last_alarm_drawn;
 
+static inline uint8_t mul5_u8(uint8_t v) {
+    return (uint8_t)((v << 2) + v);
+}
+
 static void draw_markers(void) {
     for (uint8_t i = 0; i < 12; i++) {
-        uint8_t idx = i * 5;
+        uint8_t idx = mul5_u8(i);
         uint8_t width = (i == 0 || i == 3 || i == 6 || i == 9) ? MARKER_MAJOR_WIDTH : MARKER_MINOR_WIDTH;
         oledC_DrawLine(HOUR_POINTS[idx][0], HOUR_POINTS[idx][1],
                 MIN_POINTS[idx][0], MIN_POINTS[idx][1],
@@ -67,7 +71,11 @@ static void draw_hands_full(uint8_t hour, uint8_t min, uint8_t sec) {
 }
 
 static void draw_marker_at(uint8_t sec_idx) {
-    if ((sec_idx % 5) != 0) return;
+    uint8_t rem = sec_idx;
+    while (rem >= 5U) {
+        rem = (uint8_t)(rem - 5U);
+    }
+    if (rem != 0U) return;
     uint8_t marker_idx = sec_idx;
     uint8_t width = (marker_idx == 0 || marker_idx == 15 || marker_idx == 30 || marker_idx == 45)
         ? MARKER_MAJOR_WIDTH
@@ -92,7 +100,13 @@ static void restore_after_second(uint8_t old_sec, uint8_t hour_idx, uint8_t min_
 }
 
 static uint8_t compute_hour_idx(uint8_t hour, uint8_t min) {
-    return (uint8_t)((hour % 12) * 5 + min / 12);
+    uint8_t hour12 = (hour >= 12U) ? (uint8_t)(hour - 12U) : hour;
+    uint8_t minute_bucket = 0U;
+    if (min >= 12U) minute_bucket = 1U;
+    if (min >= 24U) minute_bucket = 2U;
+    if (min >= 36U) minute_bucket = 3U;
+    if (min >= 48U) minute_bucket = 4U;
+    return (uint8_t)(mul5_u8(hour12) + minute_bucket);
 }
 
 static void draw_hands(uint8_t hour, uint8_t min, uint8_t sec) {

@@ -3,6 +3,7 @@
  */
 
 #include "watch_face_common.h"
+#include "../shared/watch_format.h"
 #include "../watchMenu/menu_icons.h"
 
 // ============================================================================

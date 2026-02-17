@@ -47,7 +47,6 @@
 #endif
 
 #include "xc.h"
-#include "stdint.h"
 
 #ifndef SYSTEM_H
 #define	SYSTEM_H

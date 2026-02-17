@@ -9,6 +9,7 @@
 #include "../System/delay.h"
 #include "watchFaces/alarm_face.h"
 #include "shared/watch_state.h"
+#include "shared/watch_settings_store.h"
 #include "watchCore/timekeeper.h"
 #include "watchFaces/digital_face.h"
 #include "watchMenu/menu.h"
@@ -90,11 +91,27 @@ static void app_set_default_datetime(void) {
     Timekeeper_SetDate(&default_date);
 }
 
+static void app_restore_settings(void) {
+    WatchState_t* state = Watch_GetState();
+    if (!WatchSettingsStore_LoadState(state)) {
+        app_set_default_datetime();
+        (void)WatchSettingsStore_SaveState(state);
+        return;
+    }
+
+    if (!Timekeeper_SetTime(&state->current_time)) {
+        app_set_default_datetime();
+        (void)WatchSettingsStore_SaveState(state);
+        return;
+    }
+    Timekeeper_SetDate(&state->current_date);
+}
+
 void APP_InitializeHardware(void) {
     app_init_core();
     app_init_leds();
     app_init_inputs();
     app_handle_accel_init_error();
     app_init_modules();
-    app_set_default_datetime();
+    app_restore_settings();
 }

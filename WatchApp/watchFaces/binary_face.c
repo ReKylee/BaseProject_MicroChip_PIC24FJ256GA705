@@ -5,6 +5,7 @@
 #include "binary_face.h"
 #include "../shared/watch_state.h"
 #include "../shared/watch_types.h"
+#include "../shared/watch_format.h"
 #include "../watchCore/timekeeper.h"
 #include "watch_face_common.h"
 #include "../../oledDriver/oledC.h"
@@ -23,7 +24,13 @@
 #define GRID_ROWS       4
 #define GRID_COLS       6
 #define SCREEN_W        96
-#define SCREEN_H        96
+#define BINARY_GRID_TOP_Y 20
+#define BINARY_LABEL_X_OFFSET 4
+#define BINARY_LABEL_Y_GAP 16
+#define BINARY_BIT_LABEL_X 2
+#define BINARY_BIT_LABEL_Y_OFFSET 4
+#define BINARY_DATE_TEXT_W 30
+#define BINARY_DATE_Y 82
 
 static uint8_t s_origin_x = 0;
 static uint8_t s_origin_y = 0;
@@ -62,30 +69,34 @@ static inline uint8_t get_bit(uint8_t value, uint8_t bit_pos) {
 static void init_dot_positions(void) {
     uint8_t grid_w = (GRID_COLS - 1) * DOT_SPACING + 2 * COL_SPACING_FIX;
     uint8_t grid_h = (GRID_ROWS - 1) * DOT_SPACING;
-    s_origin_x = (uint8_t)((SCREEN_W - grid_w) / 2);
-    s_origin_y = 20;
+    s_origin_x = (uint8_t)((SCREEN_W - grid_w) >> 1);
+    s_origin_y = BINARY_GRID_TOP_Y;
 
     for (uint8_t col = 0; col < GRID_COLS; col++) {
         for (uint8_t row = 0; row < GRID_ROWS; row++) {
-            uint8_t x = s_origin_x + col * DOT_SPACING + (col / 2) * COL_SPACING_FIX;
+            uint8_t x = s_origin_x + col * DOT_SPACING + (col >> 1) * COL_SPACING_FIX;
             uint8_t y = s_origin_y + row * DOT_SPACING;
             s_dot_pos[col][row].x = x;
             s_dot_pos[col][row].y = y;
         }
     }
 
-    s_label_x[0] = s_origin_x + 4;
-    s_label_x[1] = s_origin_x + DOT_SPACING * 2 + COL_SPACING_FIX + 4;
-    s_label_x[2] = s_origin_x + DOT_SPACING * 4 + COL_SPACING_FIX * 2 + 4;
-    s_label_y = s_origin_y + grid_h + 16;
+    s_label_x[0] = s_origin_x + BINARY_LABEL_X_OFFSET;
+    s_label_x[1] = s_origin_x + DOT_SPACING * 2 + COL_SPACING_FIX + BINARY_LABEL_X_OFFSET;
+    s_label_x[2] = s_origin_x + DOT_SPACING * 4 + COL_SPACING_FIX * 2 + BINARY_LABEL_X_OFFSET;
+    s_label_y = s_origin_y + grid_h + BINARY_LABEL_Y_GAP;
 
     for (uint8_t row = 0; row < GRID_ROWS; row++) {
-        s_bit_labels_y[row] = s_origin_y + row * DOT_SPACING - 4;
+        s_bit_labels_y[row] = s_origin_y + row * DOT_SPACING - BINARY_BIT_LABEL_Y_OFFSET;
     }
 }
 
+static void split_2d(uint8_t value, uint8_t* tens, uint8_t* ones) {
+    Watch_SplitDigits10(value, tens, ones);
+}
+
 static void draw_dot(uint8_t x, uint8_t y, bool on, uint16_t color_on) {
-    uint8_t half = DOT_SIZE / 2;
+    uint8_t half = DOT_SIZE >> 1;
     oledC_DrawRectangle(x - half - 1, y - half - 1, x + half + 1, y + half + 1, COLOR_BG);
     if (on) {
         oledC_DrawCircle(x, y, half, color_on);
@@ -109,12 +120,12 @@ void BinaryFace_Init(void) {
 
     for (uint8_t row = 0; row < 4; row++) {
 
-        oledC_DrawStringSolid(2, s_bit_labels_y[row], 1, 1, (uint8_t[]) {
+        oledC_DrawStringSolid(BINARY_BIT_LABEL_X, s_bit_labels_y[row], 1, 1, (uint8_t[]) {
             s_bit_labels[row], 0}, COLOR_TEXT, COLOR_BG);
     }
 
-    uint8_t sep1_x = (uint8_t)((s_dot_pos[1][0].x + s_dot_pos[2][0].x) / 2);
-    uint8_t sep2_x = (uint8_t)((s_dot_pos[3][0].x + s_dot_pos[4][0].x) / 2);
+    uint8_t sep1_x = (uint8_t)((s_dot_pos[1][0].x + s_dot_pos[2][0].x) >> 1);
+    uint8_t sep2_x = (uint8_t)((s_dot_pos[3][0].x + s_dot_pos[4][0].x) >> 1);
     uint8_t sep_y0 = s_dot_pos[0][1].y;
     uint8_t sep_y1 = s_dot_pos[0][2].y;
     oledC_DrawCircle(sep1_x, sep_y0, 1, COLOR_DIM);
@@ -124,7 +135,7 @@ void BinaryFace_Init(void) {
 
     for (uint8_t col = 0; col < 6; col++) {
         for (uint8_t row = 0; row < 4; row++) {
-            oledC_DrawRing(s_dot_pos[col][row].x, s_dot_pos[col][row].y, DOT_SIZE / 2, 1, COLOR_DIM);
+            oledC_DrawRing(s_dot_pos[col][row].x, s_dot_pos[col][row].y, DOT_SIZE >> 1, 1, COLOR_DIM);
         }
     }
 
@@ -159,9 +170,14 @@ void BinaryFace_DrawUpdate(void) {
         last_hour = Timekeeper_Convert24to12(s_last_time_drawn.hour, &was_pm);
     }
 
-    uint8_t digits[6] = {hour / 10, hour % 10, now.minute / 10, now.minute % 10, now.second / 10, now.second % 10};
-    uint8_t last_digits[6] = {last_hour / 10, last_hour % 10, s_last_time_drawn.minute / 10, s_last_time_drawn.minute % 10,
-        s_last_time_drawn.second / 10, s_last_time_drawn.second % 10};
+    uint8_t digits[6];
+    uint8_t last_digits[6];
+    split_2d(hour, &digits[0], &digits[1]);
+    split_2d(now.minute, &digits[2], &digits[3]);
+    split_2d(now.second, &digits[4], &digits[5]);
+    split_2d(last_hour, &last_digits[0], &last_digits[1]);
+    split_2d(s_last_time_drawn.minute, &last_digits[2], &last_digits[3]);
+    split_2d(s_last_time_drawn.second, &last_digits[4], &last_digits[5]);
 
     for (uint8_t col = 0; col < 6; col++) {
         if (digits[col] == last_digits[col]) continue;
@@ -180,9 +196,9 @@ void BinaryFace_DrawUpdate(void) {
 
     s_last_time_drawn = now;
 
-    uint8_t date_text_w = 30;
-    uint8_t date_x = (uint8_t)((SCREEN_W - date_text_w) / 2);
-    WatchFace_DrawDate(date_x, 82, &state->current_date, &s_last_date_drawn, COLOR_DIM, COLOR_BG);
+    uint8_t date_text_w = BINARY_DATE_TEXT_W;
+    uint8_t date_x = (uint8_t)((SCREEN_W - date_text_w) >> 1);
+    WatchFace_DrawDate(date_x, BINARY_DATE_Y, &state->current_date, &s_last_date_drawn, COLOR_DIM, COLOR_BG);
 
     if (state->alarm.enabled != s_last_alarm_drawn) {
         WatchFace_DrawAlarmIcon(ALARM_X, ALARM_Y, ALARM_W, ALARM_H, state->alarm.enabled);

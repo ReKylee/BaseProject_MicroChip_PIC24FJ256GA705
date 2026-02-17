@@ -61,7 +61,7 @@ void AlarmFace_DrawUpdate(void) {
         return;
     }
 
-    bool flash = (state->current_time.second % 2) == 0;
+    bool flash = (state->current_time.second & 1U) == 0U;
 
     if (flash != s_last_flash_state) {
         oledC_sendCommand(flash ? OLEDC_CMD_SET_DISPLAY_MODE_INVERSE

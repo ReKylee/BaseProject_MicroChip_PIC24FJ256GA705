@@ -9,6 +9,10 @@
 #define MENU_ICON_SIZE 16
 #endif
 
+#define MENU_SCREEN_W 96
+#define MENU_SCREEN_H 96
+#define MENU_SCREEN_MAX_X (MENU_SCREEN_W - 1)
+
 #define MENU_CENTER_X 47
 #define MENU_CENTER_Y 52
 #define MENU_RADIUS 32
@@ -25,6 +29,9 @@
 #define MENU_TIME_Y 1
 #define MENU_TITLE_X 2
 #define MENU_TITLE_Y 1
+#define MENU_TITLE_ALT_Y 13
+#define MENU_BACK_ARROW_X 2
+#define MENU_CONTENT_TOP_Y 12
 
 // Geometry reference for SEC_POINTS scaling
 #define MENU_GEOM_CENTER_X 47

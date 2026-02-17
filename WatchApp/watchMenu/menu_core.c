@@ -14,13 +14,11 @@ static uint8_t pot_select(uint16_t raw, uint8_t min, uint8_t max, uint16_t hyste
 
     if (raw > 1023U) raw = 1023U;
     uint16_t count = (uint16_t)max - (uint16_t)min + 1U;
-    uint16_t count_m1 = (uint16_t)(count - 1U);
-    uint16_t target_u16 = 0U;
-    if (count_m1 > 0U) {
-        // Centered bins across full 0..1023 range (nearest, not floor).
-        target_u16 = (uint16_t)((((uint32_t)raw * (uint32_t)count_m1) + 511UL) / 1023UL);
+    uint16_t target_u16 = (uint16_t)((((uint32_t)raw * (uint32_t)count) + 512UL) >> 10);
+    if (target_u16 >= count) {
+        target_u16 = (uint16_t)(count - 1U);
     }
-    uint8_t target = (uint8_t)(target_u16 + min);
+    uint8_t target = (uint8_t)((uint16_t)min + target_u16);
 
     if (*last_raw == 0xFFFF) {
         *last_raw = raw;
@@ -28,29 +26,13 @@ static uint8_t pot_select(uint16_t raw, uint8_t min, uint8_t max, uint16_t hyste
         return target;
     }
 
-    if (target == *last_sel) {
+    uint16_t raw_diff = (raw >= *last_raw) ? (uint16_t)(raw - *last_raw) : (uint16_t)(*last_raw - raw);
+    if (target == *last_sel || raw_diff < hysteresis) {
         *last_raw = raw;
         return *last_sel;
     }
 
-    uint16_t sel_idx = (uint16_t)(*last_sel - min);
-    uint32_t denom = (uint32_t)(2U * count_m1);
-    uint16_t lower = 0U;
-    uint16_t upper = 1023U;
-
-    if (sel_idx > 0U) {
-        lower = (uint16_t)((((uint32_t)(2U * sel_idx - 1U) * 1023UL) + (denom / 2UL)) / denom);
-    }
-    if (sel_idx < count_m1) {
-        upper = (uint16_t)((((uint32_t)(2U * sel_idx + 1U) * 1023UL) + (denom / 2UL)) / denom);
-    }
-
-    if ((raw + hysteresis) < lower && *last_sel > min) {
-        *last_sel = target;
-    } else if (raw > (uint16_t)(upper + hysteresis) && *last_sel < max) {
-        *last_sel = target;
-    }
-
+    *last_sel = target;
     *last_raw = raw;
     return *last_sel;
 }
@@ -67,10 +49,9 @@ bool MenuCore_HandleRange(uint16_t raw, uint8_t min, uint8_t max, uint16_t hyste
 
     if (raw > 1023U) raw = 1023U;
     uint16_t count = (uint16_t)max - (uint16_t)min + 1U;
-    uint16_t count_m1 = (uint16_t)(count - 1U);
-    uint16_t idx = 0U;
-    if (count_m1 > 0U) {
-        idx = (uint16_t)((((uint32_t)raw * (uint32_t)count_m1) + 511UL) / 1023UL);
+    uint16_t idx = (uint16_t)((((uint32_t)raw * (uint32_t)count) + 512UL) >> 10);
+    if (idx >= count) {
+        idx = (uint16_t)(count - 1U);
     }
     uint8_t mapped = (uint8_t)((uint16_t)min + idx);
 
