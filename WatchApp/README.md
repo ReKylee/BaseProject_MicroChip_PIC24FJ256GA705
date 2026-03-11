@@ -11,6 +11,7 @@ It includes:
 - Settings menu
 - Pomodoro timer
 - Optional debug screen
+- Flash-backed settings persistence
 
 ## Quick Start
 
@@ -97,10 +98,27 @@ Mode constant: `MODE_DEBUG` (only when `DEBUG_MODE` is enabled)
 
 ### Pomodoro
 
-- Work and break cycles
-- Session counter
-- Progress bar
+- Work and break cycles (short + long break)
+- Session counter (completed work sessions)
+- Cycles target (number of work sessions before stopping)
+- Progress bar showing elapsed time within the current phase
 - Pause and reset
+
+Pomodoro edit fields (menu):
+- `W` = work minutes
+- `B` = short break minutes
+- `C` = cycles target
+
+Long break timing uses `long_break_after_sessions`.
+
+## Persistence
+
+Settings are stored in flash and restored on boot. This preserves time/date, alarm, and pomodoro settings across reset/power cycle. Reprogramming may erase the stored data depending on programmer settings.
+
+## Build Configuration Notes
+
+- `default` configuration: `-O2`
+- `debug` configuration: no optimization (`-O0`)
 
 ## Folder Guide
 

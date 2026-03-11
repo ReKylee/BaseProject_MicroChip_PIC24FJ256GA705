@@ -140,7 +140,6 @@ static void start_break(WatchState_t* state) {
     if (state->pomodoro.work_sessions >= state->pomodoro.long_break_after_sessions) {
         state->pomodoro.state = POMODORO_LONG_BREAK;
         state->pomodoro.remaining_seconds = minutes_to_seconds_u8(state->pomodoro.long_break_minutes);
-        state->pomodoro.work_sessions = 0;
     } else {
         state->pomodoro.state = POMODORO_SHORT_BREAK;
         state->pomodoro.remaining_seconds = minutes_to_seconds_u8(state->pomodoro.short_break_minutes);
@@ -152,6 +151,7 @@ static void finish_cycle_to_idle(WatchState_t* state) {
     state->pomodoro.state = POMODORO_IDLE;
     state->pomodoro.remaining_seconds = minutes_to_seconds_u8(state->pomodoro.work_minutes);
     state->pomodoro.paused = false;
+    state->pomodoro.work_sessions = 0;
 }
 
 static void draw_time_full(uint16_t remaining_seconds) {
@@ -248,6 +248,7 @@ static void draw_session_counter(WatchState_t* state, uint8_t sessions, uint8_t 
         }
     }
 }
+
 
 static void draw_pause_indicator(bool paused) {
     uint8_t text_w = WatchUi_CharsToPx6(POMO_PAUSE_TEXT_CHARS);
