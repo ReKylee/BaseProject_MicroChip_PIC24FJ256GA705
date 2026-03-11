@@ -31,25 +31,25 @@ const IconAsset_t* const s_alarm_toggle_icons[] = {&s_asset_alarm_toggle, &s_ass
 
 MenuStateData_t g_menu_data = {
     .radial_selection = 0,
-    .last_radial_selection = 0xFF,
-    .display_last_selection = 0xFF,
-    .format_last_selection = 0xFF,
-    .alarm_last_selection = 0xFF,
+    .last_radial_selection = CACHE_INVALID_U8,
+    .display_last_selection = CACHE_INVALID_U8,
+    .format_last_selection = CACHE_INVALID_U8,
+    .alarm_last_selection = CACHE_INVALID_U8,
     .main_last_sel = 0,
     .display_last_sel = 0,
     .format_last_sel = 0,
     .alarm_last_sel = 0,
-    .pot_filtered = 0xFFFF,
-    .pot_last_raw = 0xFFFF,
-    .main_last_raw = 0xFFFF,
-    .display_last_raw = 0xFFFF,
-    .format_last_raw = 0xFFFF,
-    .alarm_last_raw = 0xFFFF,
-    .edit_last_raw = 0xFFFF,
+    .pot_filtered = CACHE_INVALID_U16,
+    .pot_last_raw = CACHE_INVALID_U16,
+    .main_last_raw = CACHE_INVALID_U16,
+    .display_last_raw = CACHE_INVALID_U16,
+    .format_last_raw = CACHE_INVALID_U16,
+    .alarm_last_raw = CACHE_INVALID_U16,
+    .edit_last_raw = CACHE_INVALID_U16,
     .edit_last_val = 0,
-    .edit_last_field = 0xFF,
-    .edit_last_draw_val = 0xFF,
-    .edit_last_draw_field = 0xFF,
+    .edit_last_field = CACHE_INVALID_U8,
+    .edit_last_draw_val = CACHE_INVALID_U8,
+    .edit_last_draw_field = CACHE_INVALID_U8,
     .skip_next_partial = false,
     .edit_full_drawn = false,
 };
@@ -241,15 +241,15 @@ void MenuState_OnChange(MenuState_t new_state, bool seed_pot, uint16_t pot_value
     WatchState_t* state = Watch_GetState();
     state->menu_state = new_state;
 
-    s_main_last_raw = 0xFFFF;
-    s_display_last_raw = 0xFFFF;
-    s_format_last_raw = 0xFFFF;
-    s_alarm_last_raw = 0xFFFF;
-    s_edit_last_raw = 0xFFFF;
+    s_main_last_raw = CACHE_INVALID_U16;
+    s_display_last_raw = CACHE_INVALID_U16;
+    s_format_last_raw = CACHE_INVALID_U16;
+    s_alarm_last_raw = CACHE_INVALID_U16;
+    s_edit_last_raw = CACHE_INVALID_U16;
     s_edit_last_val = 0;
-    s_edit_last_field = 0xFF;
-    s_edit_last_draw_val = 0xFF;
-    s_edit_last_draw_field = 0xFF;
+    s_edit_last_field = CACHE_INVALID_U8;
+    s_edit_last_draw_val = CACHE_INVALID_U8;
+    s_edit_last_draw_field = CACHE_INVALID_U8;
     MenuState_SetEditFullDrawn(false);
 
     s_last_radial_selection = s_radial_selection;
@@ -262,8 +262,8 @@ void MenuState_OnChange(MenuState_t new_state, bool seed_pot, uint16_t pot_value
     s_format_last_sel = state->time_format;
     s_alarm_last_sel = state->alarm.enabled ? 1 : 0;
 
-    s_pot_filtered = seed_pot ? pot_value : 0xFFFF;
-    s_pot_last_raw = seed_pot ? pot_value : 0xFFFF;
+    s_pot_filtered = seed_pot ? pot_value : CACHE_INVALID_U16;
+    s_pot_last_raw = seed_pot ? pot_value : CACHE_INVALID_U16;
     MenuState_SetSkipNextPartial(true);
 
     MenuEvent_Clear();

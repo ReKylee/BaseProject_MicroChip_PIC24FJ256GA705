@@ -3,6 +3,7 @@
  */
 
 #include "menu_core.h"
+#include "../shared/watch_types.h"
 
 static uint8_t pot_select(uint16_t raw, uint8_t min, uint8_t max, uint16_t hysteresis,
                           uint16_t *last_raw, uint8_t *last_sel) {
@@ -20,7 +21,7 @@ static uint8_t pot_select(uint16_t raw, uint8_t min, uint8_t max, uint16_t hyste
     }
     uint8_t target = (uint8_t)((uint16_t)min + target_u16);
 
-    if (*last_raw == 0xFFFF) {
+    if (*last_raw == CACHE_INVALID_U16) {
         *last_raw = raw;
         *last_sel = target;
         return target;
@@ -55,7 +56,7 @@ bool MenuCore_HandleRange(uint16_t raw, uint8_t min, uint8_t max, uint16_t hyste
     }
     uint8_t mapped = (uint8_t)((uint16_t)min + idx);
 
-    if (*last_raw == 0xFFFF) {
+    if (*last_raw == CACHE_INVALID_U16) {
         *last_raw = raw;
         *last_val = *value;
         return false;
@@ -76,9 +77,9 @@ bool MenuCore_HandleRange(uint16_t raw, uint8_t min, uint8_t max, uint16_t hyste
 
 void MenuCore_ResetState(const MenuRadial_t* menu) {
     if (!menu) return;
-    if (menu->last_selection) *menu->last_selection = 0xFF;
+    if (menu->last_selection) *menu->last_selection = CACHE_INVALID_U8;
     if (menu->last_sel) *menu->last_sel = 0;
-    if (menu->last_raw) *menu->last_raw = 0xFFFF;
+    if (menu->last_raw) *menu->last_raw = CACHE_INVALID_U16;
 }
 
 void MenuCore_DrawRadialFull(const MenuRadial_t* menu) {
@@ -100,7 +101,7 @@ void MenuCore_DrawRadialPartial(const MenuRadial_t* menu) {
     uint8_t sel = menu->get_selection();
     if (sel == *menu->last_selection) return;
 
-    if (*menu->last_selection != 0xFF) {
+    if (*menu->last_selection != CACHE_INVALID_U8) {
         menu->draw_item(*menu->last_selection, false);
     }
     menu->draw_item(sel, true);

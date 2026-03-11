@@ -28,19 +28,19 @@
 
 static DisplayMode_t s_prev_mode = MODE_WATCH;
 static bool s_debug_drawn = false;
-static uint16_t s_dbg_last_pot_raw = 0xFFFF;
-static uint8_t s_dbg_last_pot_pct = 0xFF;
+static uint16_t s_dbg_last_pot_raw = CACHE_INVALID_U16;
+static uint8_t s_dbg_last_pot_pct = CACHE_INVALID_U8;
 static int16_t s_dbg_last_ax = 0x7FFF;
 static int16_t s_dbg_last_ay = 0x7FFF;
 static int16_t s_dbg_last_az = 0x7FFF;
-static uint8_t s_dbg_last_alarm_hour = 0xFF;
-static uint8_t s_dbg_last_alarm_min = 0xFF;
-static uint8_t s_dbg_last_alarm_en = 0xFF;
-static uint8_t s_dbg_last_date_day = 0xFF;
-static uint8_t s_dbg_last_date_month = 0xFF;
+static uint8_t s_dbg_last_alarm_hour = CACHE_INVALID_U8;
+static uint8_t s_dbg_last_alarm_min = CACHE_INVALID_U8;
+static uint8_t s_dbg_last_alarm_en = CACHE_INVALID_U8;
+static uint8_t s_dbg_last_date_day = CACHE_INVALID_U8;
+static uint8_t s_dbg_last_date_month = CACHE_INVALID_U8;
 static char s_date_step_msg[22] = "DT STEP READY";
 static char s_last_date_step_msg[22] = "";
-static Time_t s_last_time = {0xFF, 0xFF, 0xFF};
+static Time_t s_last_time = {CACHE_INVALID_U8, CACHE_INVALID_U8, CACHE_INVALID_U8};
 static TimeFormat_t s_last_time_format = FORMAT_24H;
 
 static uint8_t pot_percent_0_to_100(uint16_t pot_raw) {

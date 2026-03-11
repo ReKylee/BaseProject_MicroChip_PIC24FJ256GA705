@@ -42,13 +42,13 @@
 #define FONT_GAP 1
 
 static PomodoroState_t s_last_state = POMODORO_IDLE;
-static uint16_t s_last_remaining = 0xFFFF;
-static uint8_t s_last_sessions = 0xFF;
+static uint16_t s_last_remaining = CACHE_INVALID_U16;
+static uint8_t s_last_sessions = CACHE_INVALID_U8;
 static bool s_last_paused = false;
-static uint8_t s_last_fill_width = 0xFF;
-static uint16_t s_last_total = 0xFFFF;
-static uint8_t s_last_min = 0xFF;
-static uint8_t s_last_sec = 0xFF;
+static uint8_t s_last_fill_width = CACHE_INVALID_U8;
+static uint16_t s_last_total = CACHE_INVALID_U16;
+static uint8_t s_last_min = CACHE_INVALID_U8;
+static uint8_t s_last_sec = CACHE_INVALID_U8;
 
 static uint16_t minutes_to_seconds_u8(uint8_t minutes) {
     return (uint16_t)FastMath_Mul60U32FromU8(minutes);
@@ -59,26 +59,18 @@ static uint8_t mul11_u8(uint8_t v) {
 }
 
 static uint8_t compute_fill_width(uint16_t elapsed, uint16_t total) {
-    uint32_t scaled = (uint32_t)elapsed * (uint32_t)POMO_BAR_W;
-    uint8_t q = 0U;
     if (total == 0U) {
         return 0U;
     }
-    while (scaled >= total && q < POMO_BAR_W) {
-        scaled -= total;
-        q++;
-    }
-    return q;
+    uint32_t scaled = (uint32_t)elapsed * (uint32_t)POMO_BAR_W;
+    uint8_t q = (uint8_t)(scaled / (uint32_t)total);
+    return (q > POMO_BAR_W) ? POMO_BAR_W : q;
 }
 
 static void split_minutes_seconds(uint16_t total_seconds, uint8_t* minutes, uint8_t* seconds) {
-    uint8_t mins = 0U;
-    while (total_seconds >= 60U) {
-        total_seconds = (uint16_t)(total_seconds - 60U);
-        mins++;
-    }
+    uint8_t mins = FastMath_Div60U16(total_seconds);
     *minutes = mins;
-    *seconds = (uint8_t)total_seconds;
+    *seconds = (uint8_t)(total_seconds - (uint16_t)FastMath_Mul60U32FromU8(mins));
 }
 
 static void get_time_layout(WatchUi_DualTimeLayout_t* layout) {
@@ -102,30 +94,22 @@ static void clear_label_area(void) {
                         COLOR_BG);
 }
 
-static const char* get_state_label(PomodoroState_t state) {
-    switch (state) {
-        case POMODORO_WORK: return "WORK";
-        case POMODORO_SHORT_BREAK: return "BREAK";
-        case POMODORO_LONG_BREAK: return "LONG";
-        default: return "READY";
-    }
-}
+typedef struct {
+    const char* label;
+    uint8_t label_len;
+    uint16_t color;
+} PomodoroStateInfo_t;
 
-static uint8_t get_state_label_len(PomodoroState_t state) {
-    switch (state) {
-        case POMODORO_WORK: return 4;
-        case POMODORO_SHORT_BREAK: return 5;
-        case POMODORO_LONG_BREAK: return 4;
-        default: return 5;
-    }
-}
-static uint16_t get_state_color(PomodoroState_t state) {
-    switch (state) {
-        case POMODORO_WORK: return COLOR_WARNING;
-        case POMODORO_SHORT_BREAK: return COLOR_SUCCESS;
-        case POMODORO_LONG_BREAK: return COLOR_SUCCESS;
-        default: return COLOR_DIM;
-    }
+static const PomodoroStateInfo_t s_state_info[] = {
+    [POMODORO_IDLE]        = {"READY", 5, COLOR_DIM},
+    [POMODORO_WORK]        = {"WORK",  4, COLOR_WARNING},
+    [POMODORO_SHORT_BREAK] = {"BREAK", 5, COLOR_SUCCESS},
+    [POMODORO_LONG_BREAK]  = {"LONG",  4, COLOR_SUCCESS},
+};
+
+static const PomodoroStateInfo_t* get_state_info(PomodoroState_t state) {
+    if (state > POMODORO_LONG_BREAK) state = POMODORO_IDLE;
+    return &s_state_info[state];
 }
 
 static uint16_t get_total_seconds(WatchState_t* state) {
@@ -215,7 +199,7 @@ static void draw_progress_bar_partial(uint16_t remaining, uint16_t total) {
     }
     uint16_t elapsed = (remaining > total) ? 0 : (uint16_t)(total - remaining);
     uint8_t fill_width = compute_fill_width(elapsed, total);
-    if (s_last_fill_width == 0xFF) {
+    if (s_last_fill_width == CACHE_INVALID_U8) {
         draw_progress_bar_full(remaining, total);
         return;
     }
@@ -319,19 +303,17 @@ void Pomodoro_Draw(void) {
     
     draw_session_counter(state, state->pomodoro.work_sessions);
     
-    const char* state_label = get_state_label(state->pomodoro.state);
-    uint16_t label_color = get_state_color(state->pomodoro.state);
+    const PomodoroStateInfo_t* info = get_state_info(state->pomodoro.state);
     uint16_t total_seconds = get_total_seconds(state);
 
-    uint8_t label_len = get_state_label_len(state->pomodoro.state);
-    uint8_t label_w = mul11_u8(label_len);
+    uint8_t label_w = mul11_u8(info->label_len);
     uint8_t label_x = WatchUi_CenterX96(label_w);
-    oledC_DrawStringSolid(label_x, POMO_LABEL_Y, 2, 1, (uint8_t*)state_label, label_color, COLOR_BG);
-    
+    oledC_DrawStringSolid(label_x, POMO_LABEL_Y, 2, 1, (uint8_t*)info->label, info->color, COLOR_BG);
+
     draw_time_full(state->pomodoro.remaining_seconds);
-    
+
     draw_progress_bar_full(state->pomodoro.remaining_seconds, total_seconds);
-    
+
     draw_pause_indicator(state->pomodoro.paused);
 
     s_last_state = state->pomodoro.state;
@@ -346,16 +328,14 @@ void Pomodoro_DrawUpdate(void) {
 
     if (state->pomodoro.state != s_last_state ||
         state->pomodoro.work_sessions != s_last_sessions) {
-        const char* state_label = get_state_label(state->pomodoro.state);
-        uint16_t label_color = get_state_color(state->pomodoro.state);
+        const PomodoroStateInfo_t* info = get_state_info(state->pomodoro.state);
         uint16_t total_seconds = get_total_seconds(state);
-        uint8_t label_len = get_state_label_len(state->pomodoro.state);
-        uint8_t label_w = mul11_u8(label_len);
+        uint8_t label_w = mul11_u8(info->label_len);
         uint8_t label_x = WatchUi_CenterX96(label_w);
 
         draw_session_counter(state, state->pomodoro.work_sessions);
         clear_label_area();
-        oledC_DrawStringSolid(label_x, POMO_LABEL_Y, 2, 1, (uint8_t*)state_label, label_color, COLOR_BG);
+        oledC_DrawStringSolid(label_x, POMO_LABEL_Y, 2, 1, (uint8_t*)info->label, info->color, COLOR_BG);
         draw_time_full(state->pomodoro.remaining_seconds);
         draw_progress_bar_full(state->pomodoro.remaining_seconds, total_seconds);
 

@@ -10,7 +10,6 @@
 #include "../shared/watch_state.h"
 #include "../../oledDriver/oledC.h"
 #include "../../oledDriver/oledC_shapes.h"
-#include <stdio.h>
 #include <string.h>
 
 // ============================================================================
@@ -35,9 +34,9 @@
 // STATE
 // ============================================================================
 
-static uint8_t s_last_hour = 255;
-static uint8_t s_last_min = 255;
-static uint8_t s_last_sec = 255;
+static uint8_t s_last_hour = CACHE_INVALID_U8;
+static uint8_t s_last_min = CACHE_INVALID_U8;
+static uint8_t s_last_sec = CACHE_INVALID_U8;
 static Date_t s_last_date_drawn;
 static bool s_last_alarm_drawn;
 
@@ -150,7 +149,7 @@ static void draw_hands(uint8_t hour, uint8_t min, uint8_t sec) {
     bool min_changed = (s_last_min != min);
     bool sec_changed = (s_last_sec != sec);
 
-    if (s_last_hour == 255 || s_last_min == 255 || s_last_sec == 255) {
+    if (s_last_hour == CACHE_INVALID_U8 || s_last_min == CACHE_INVALID_U8 || s_last_sec == CACHE_INVALID_U8) {
         hour_changed = min_changed = sec_changed = true;
     }
 
@@ -166,9 +165,9 @@ static void draw_hands(uint8_t hour, uint8_t min, uint8_t sec) {
         draw_second_hand(sec, COLOR_ACCENT);
         draw_center_dot();
     } else {
-        if (hour_changed && s_last_hour != 255) erase_hand(HOUR_POINTS, s_last_hour, HOUR_HAND_W);
-        if (min_changed && s_last_min != 255) erase_hand(MIN_POINTS, s_last_min, MIN_HAND_W);
-        if (sec_changed && s_last_sec != 255) erase_second_hand(s_last_sec);
+        if (hour_changed && s_last_hour != CACHE_INVALID_U8) erase_hand(HOUR_POINTS, s_last_hour, HOUR_HAND_W);
+        if (min_changed && s_last_min != CACHE_INVALID_U8) erase_hand(MIN_POINTS, s_last_min, MIN_HAND_W);
+        if (sec_changed && s_last_sec != CACHE_INVALID_U8) erase_second_hand(s_last_sec);
 
         if (hour_changed || min_changed || sec_changed) {
             draw_markers();
@@ -197,7 +196,7 @@ void AnalogFace_Init(void) {
     s_last_alarm_drawn = state->alarm.enabled;
     WatchFace_DrawAlarmIcon(ALARM_X, ALARM_Y, ALARM_W, ALARM_H, s_last_alarm_drawn);
 
-    s_last_hour = s_last_min = s_last_sec = 255;
+    s_last_hour = s_last_min = s_last_sec = CACHE_INVALID_U8;
 }
 
 void AnalogFace_DrawUpdate(void) {

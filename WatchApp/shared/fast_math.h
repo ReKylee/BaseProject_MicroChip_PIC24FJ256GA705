@@ -73,6 +73,15 @@ static inline uint8_t FastMath_SubMod60U8(uint8_t value, uint8_t delta) {
 }
 
 /**
+ * @brief Compute floor(value / 60) via reciprocal multiplication.
+ * @param value 16-bit unsigned value in [0, 3600].
+ * @return floor(value / 60), exact for the bounded range.
+ */
+static inline uint8_t FastMath_Div60U16(uint16_t value) {
+    return (uint8_t)(((uint32_t)value * 2185UL) >> 17);
+}
+
+/**
  * @brief Absolute difference between two 16-bit unsigned values.
  * @return |a - b|.
  */

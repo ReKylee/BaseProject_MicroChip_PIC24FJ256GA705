@@ -232,6 +232,15 @@ static void draw_small_time_full(void) {
     draw_small_time_common(state);
 }
 
+static void draw_text_radial_node(int x, int y, const char* text, bool selected) {
+    uint8_t w = WatchUi_CharsToPx6(strlen(text));
+    uint16_t circle_color = selected ? COLOR_PRIMARY : COLOR_BG;
+    uint16_t fg = selected ? COLOR_BG : COLOR_PRIMARY;
+    uint16_t bg = selected ? COLOR_PRIMARY : COLOR_BG;
+    oledC_DrawCircle(x, y, MENU_RING_RADIUS, circle_color);
+    oledC_DrawStringSolid((uint8_t)(x - (w >> 1)), (uint8_t)(y - 3), 1, 1, (uint8_t*)text, fg, bg);
+}
+
 static void draw_radial_item(uint8_t idx, bool selected) {
     if (!s_active_radial) return;
     int x, y;
@@ -240,39 +249,22 @@ static void draw_radial_item(uint8_t idx, bool selected) {
     if (s_active_radial == &s_main_menu_cfg && idx == 1U) {
         WatchState_t* state = Watch_GetState();
         const char* tf = (state->time_format == FORMAT_12H) ? "12H" : "24H";
-        uint8_t w = WatchUi_CharsToPx6(strlen(tf));
-        if (selected) {
-            oledC_DrawCircle(x, y, MENU_RING_RADIUS, COLOR_PRIMARY);
-            oledC_DrawStringSolid((uint8_t)(x - (w >> 1)), (uint8_t)(y - 3), 1, 1, (uint8_t*)tf, COLOR_BG, COLOR_PRIMARY);
-        } else {
-            oledC_DrawCircle(x, y, MENU_RING_RADIUS, COLOR_BG);
-            oledC_DrawStringSolid((uint8_t)(x - (w >> 1)), (uint8_t)(y - 3), 1, 1, (uint8_t*)tf, COLOR_PRIMARY, COLOR_BG);
-        }
+        draw_text_radial_node(x, y, tf, selected);
         return;
     }
 
     if (s_active_radial == &s_format_menu_cfg) {
         const char* tf = (idx == 0U) ? "12H" : "24H";
-        uint8_t w = WatchUi_CharsToPx6(strlen(tf));
-        if (selected) {
-            oledC_DrawCircle(x, y, MENU_RING_RADIUS, COLOR_PRIMARY);
-            oledC_DrawStringSolid((uint8_t)(x - (w >> 1)), (uint8_t)(y - 3), 1, 1, (uint8_t*)tf, COLOR_BG, COLOR_PRIMARY);
-        } else {
-            oledC_DrawCircle(x, y, MENU_RING_RADIUS, COLOR_BG);
-            oledC_DrawStringSolid((uint8_t)(x - (w >> 1)), (uint8_t)(y - 3), 1, 1, (uint8_t*)tf, COLOR_PRIMARY, COLOR_BG);
-        }
+        draw_text_radial_node(x, y, tf, selected);
         return;
     }
+
     const IconAsset_t* icon_asset = s_active_radial->get_icon ? s_active_radial->get_icon(idx) : s_active_radial->icons[idx];
     const uint8_t* icon = icon_asset->pixels;
     uint16_t palette[4];
-    if (selected) {
-        oledC_DrawCircle(x, y, MENU_RING_RADIUS, COLOR_PRIMARY);
-        palette[0] = COLOR_PRIMARY;
-    } else {
-        oledC_DrawCircle(x, y, MENU_RING_RADIUS, COLOR_BG);
-        palette[0] = COLOR_BG;
-    }
+    uint16_t bg_color = selected ? COLOR_PRIMARY : COLOR_BG;
+    oledC_DrawCircle(x, y, MENU_RING_RADIUS, bg_color);
+    palette[0] = bg_color;
     palette[1] = icon_asset->palette[1];
     palette[2] = icon_asset->palette[2];
     palette[3] = icon_asset->palette[3];
@@ -309,38 +301,27 @@ static void draw_radial_menu_partial(const RadialMenuConfig_t* cfg) {
     MenuCore_DrawRadialPartial(cfg->radial);
 }
 
-static void get_edit_ring_params(MenuState_t state, uint8_t field, uint8_t* count, uint8_t* step, uint8_t* offset) {
-    if (state == MENU_SET_TIME || state == MENU_SET_ALARM) {
-        if (field == 0) {
-            *count = 24;
-            *step = 2;
-            *offset = 0;
-        } else {
-            *count = 60;
-            *step = 5;
-            *offset = 0;
-        }
-    } else if (state == MENU_SET_DATE) {
-        if (field == 0) {
-            *count = 31;
-            *step = 5;
-            *offset = 1;
-        } else {
-            *count = 12;
-            *step = 1;
-            *offset = 1;
-        }
-    } else {
-        if (field == 0) {
-            *count = 60;
-            *step = 5;
-            *offset = 1;
-        } else {
-            *count = 30;
-            *step = 5;
-            *offset = 1;
-        }
-    }
+typedef struct {
+    uint8_t count;
+    uint8_t step;
+    uint8_t offset;
+} EditFieldGeom_t;
+
+typedef struct {
+    const char* title;
+    EditFieldGeom_t fields[2];
+} EditStateGeom_t;
+
+static const EditStateGeom_t s_edit_geom[] = {
+    [MENU_SET_TIME]  = {"TIME",  {{24, 2, 0}, {60, 5, 0}}},
+    [MENU_SET_DATE]  = {"DATE",  {{31, 5, 1}, {12, 1, 1}}},
+    [MENU_SET_ALARM] = {"ALARM", {{24, 2, 0}, {60, 5, 0}}},
+    [MENU_POMODORO]  = {"POMO",  {{60, 5, 1}, {30, 5, 1}}},
+};
+
+static const EditFieldGeom_t* get_edit_field_geom(MenuState_t state, uint8_t field) {
+    if (field > 1U) field = 1U;
+    return &s_edit_geom[state].fields[field];
 }
 
 static bool edit_label_at_index(uint8_t idx, uint8_t count, uint8_t step) {
@@ -352,56 +333,32 @@ static bool edit_label_at_index(uint8_t idx, uint8_t count, uint8_t step) {
     return reduced == 0U;
 }
 
-static void fill_edit_spec(MenuState_t state, EditRingSpec_t* spec, char* center_text) {
-    WatchState_t* w = Watch_GetState();
-    uint8_t field = w->menu_edit_field;
+static uint8_t get_edit_selected(MenuState_t state, uint8_t field, const EditFieldGeom_t* geom) {
+    uint8_t raw;
     if (state == MENU_SET_TIME) {
-        spec->title = "TIME";
-        if (field == 0) {
-            spec->count = 24;
-            spec->label_step = 2;
-            spec->label_offset = 0;
-            spec->selected = s_temp_time.hour;
-        } else {
-            spec->count = 60;
-            spec->label_step = 5;
-            spec->label_offset = 0;
-            spec->selected = s_temp_time.minute;
-        }
+        raw = (field == 0) ? s_temp_time.hour : s_temp_time.minute;
+    } else if (state == MENU_SET_DATE) {
+        raw = (field == 0) ? s_temp_date.day : s_temp_date.month;
+    } else if (state == MENU_POMODORO) {
+        raw = (field == 0) ? s_temp_pomo_work : s_temp_pomo_break;
+    } else {
+        raw = (field == 0) ? s_temp_alarm.hour : s_temp_alarm.minute;
+    }
+    return (geom->offset > 0U) ? (uint8_t)(raw - geom->offset) : raw;
+}
+
+static void format_edit_center(MenuState_t state, char* center_text) {
+    if (state == MENU_SET_TIME) {
         Watch_Format2D(s_temp_time.hour, &center_text[0]);
         center_text[2] = ':';
         Watch_Format2D(s_temp_time.minute, &center_text[3]);
         center_text[5] = '\0';
     } else if (state == MENU_SET_DATE) {
-        spec->title = "DATE";
-        if (field == 0) {
-            spec->count = 31;
-            spec->label_step = 5;
-            spec->label_offset = 1;
-            spec->selected = (uint8_t)(s_temp_date.day - 1);
-        } else {
-            spec->count = 12;
-            spec->label_step = 1;
-            spec->label_offset = 1;
-            spec->selected = (uint8_t)(s_temp_date.month - 1);
-        }
         Watch_Format2D(s_temp_date.day, &center_text[0]);
         center_text[2] = '/';
         Watch_Format2D(s_temp_date.month, &center_text[3]);
         center_text[5] = '\0';
     } else if (state == MENU_POMODORO) {
-        spec->title = "POMO";
-        if (field == 0) {
-            spec->count = 60;
-            spec->label_step = 5;
-            spec->label_offset = 1;
-            spec->selected = (uint8_t)(s_temp_pomo_work - 1);
-        } else {
-            spec->count = 30;
-            spec->label_step = 5;
-            spec->label_offset = 1;
-            spec->selected = (uint8_t)(s_temp_pomo_break - 1);
-        }
         center_text[0] = 'W';
         Watch_Format2D(s_temp_pomo_work, &center_text[1]);
         center_text[3] = ' ';
@@ -409,18 +366,6 @@ static void fill_edit_spec(MenuState_t state, EditRingSpec_t* spec, char* center
         Watch_Format2D(s_temp_pomo_break, &center_text[5]);
         center_text[7] = '\0';
     } else {
-        spec->title = "ALARM";
-        if (field == 0) {
-            spec->count = 24;
-            spec->label_step = 2;
-            spec->label_offset = 0;
-            spec->selected = s_temp_alarm.hour;
-        } else {
-            spec->count = 60;
-            spec->label_step = 5;
-            spec->label_offset = 0;
-            spec->selected = s_temp_alarm.minute;
-        }
         Watch_Format2D(s_temp_alarm.hour, &center_text[0]);
         center_text[2] = ':';
         Watch_Format2D(s_temp_alarm.minute, &center_text[3]);
@@ -428,17 +373,25 @@ static void fill_edit_spec(MenuState_t state, EditRingSpec_t* spec, char* center
     }
 }
 
-static void draw_edit_ring_labels(MenuState_t state, uint8_t field) {
-    uint8_t count = 0;
-    uint8_t step = 1;
-    uint8_t offset = 0;
-    get_edit_ring_params(state, field, &count, &step, &offset);
+static void fill_edit_spec(MenuState_t state, EditRingSpec_t* spec, char* center_text) {
+    uint8_t field = Watch_GetState()->menu_edit_field;
+    const EditFieldGeom_t* geom = get_edit_field_geom(state, field);
+    spec->title = s_edit_geom[state].title;
+    spec->count = geom->count;
+    spec->label_step = geom->step;
+    spec->label_offset = geom->offset;
+    spec->selected = get_edit_selected(state, field, geom);
+    format_edit_center(state, center_text);
+}
 
-    for (uint8_t i = 0; i < count; i++) {
-        if (!edit_label_at_index(i, count, step)) continue;
+static void draw_edit_ring_labels(MenuState_t state, uint8_t field) {
+    const EditFieldGeom_t* geom = get_edit_field_geom(state, field);
+
+    for (uint8_t i = 0; i < geom->count; i++) {
+        if (!edit_label_at_index(i, geom->count, geom->step)) continue;
         int x, y;
-        radial_idx_to_xy_arc(i, count, MENU_EDIT_LABEL_RADIUS, &x, &y);
-        WatchUi_DrawNN((uint8_t)(i + offset),
+        radial_idx_to_xy_arc(i, geom->count, MENU_EDIT_LABEL_RADIUS, &x, &y);
+        WatchUi_DrawNN((uint8_t)(i + geom->offset),
                        (uint8_t)(x - MENU_EDIT_LABEL_X_OFFSET),
                        (uint8_t)(y - MENU_EDIT_LABEL_Y_OFFSET),
                        1U, 1U, COLOR_DIM, COLOR_BG);
@@ -458,14 +411,16 @@ static void draw_edit_tick(uint8_t value, uint8_t count, uint16_t color) {
     oledC_DrawCircle(x, y, MENU_EDIT_TICK_RADIUS, color);
 }
 
+static bool is_edit_state(MenuState_t state) {
+    return state == MENU_SET_TIME ||
+           state == MENU_SET_DATE ||
+           state == MENU_SET_ALARM ||
+           state == MENU_POMODORO;
+}
+
 static const char* edit_title_for_state(MenuState_t state) {
-    switch (state) {
-        case MENU_SET_TIME: return "TIME";
-        case MENU_SET_DATE: return "DATE";
-        case MENU_SET_ALARM: return "ALARM";
-        case MENU_POMODORO: return "POMO";
-        default: return "EDIT";
-    }
+    if (is_edit_state(state)) return s_edit_geom[state].title;
+    return "EDIT";
 }
 
 static void set_edit_draw_cache(uint8_t selected, uint8_t field) {
@@ -506,7 +461,7 @@ static void draw_edit_value_update(MenuState_t state) {
     uint8_t field = Watch_GetState()->menu_edit_field;
     fill_edit_spec(state, &spec, center_text);
 
-    if (!MenuState_IsEditFullDrawn() || s_edit_last_draw_val == 0xFF ||
+    if (!MenuState_IsEditFullDrawn() || s_edit_last_draw_val == CACHE_INVALID_U8 ||
         s_edit_last_draw_field != field) {
         draw_edit_field_update(state);
         return;
@@ -518,13 +473,6 @@ static void draw_edit_value_update(MenuState_t state) {
         draw_center_label(center_text);
         s_edit_last_draw_val = spec.selected;
     }
-}
-
-static bool is_edit_state(MenuState_t state) {
-    return state == MENU_SET_TIME ||
-           state == MENU_SET_DATE ||
-           state == MENU_SET_ALARM ||
-           state == MENU_POMODORO;
 }
 
 static void draw_edit_field_for_state(MenuState_t state) {

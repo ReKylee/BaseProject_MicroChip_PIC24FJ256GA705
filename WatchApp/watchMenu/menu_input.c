@@ -14,8 +14,8 @@ static bool edit_field_init(uint8_t field) {
     if (s_edit_last_field != field) {
         s_edit_last_raw = s_pot_filtered;
         s_edit_last_field = field;
-        s_edit_last_draw_val = 0xFF;
-        s_edit_last_draw_field = 0xFF;
+        s_edit_last_draw_val = CACHE_INVALID_U8;
+        s_edit_last_draw_field = CACHE_INVALID_U8;
         MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_EDIT_FIELD, .state = Watch_GetState()->menu_state});
         return true;
     }
@@ -53,7 +53,7 @@ static bool edit_handle_buttons(const EditInputConfig_t* cfg, uint8_t field, But
         if (field < 1) {
             state->menu_edit_field++;
             s_edit_last_draw_field = state->menu_edit_field;
-            s_edit_last_draw_val = 0xFF;
+            s_edit_last_draw_val = CACHE_INVALID_U8;
             s_edit_last_field = state->menu_edit_field;
             s_edit_last_raw = s_pot_filtered;
             MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_EDIT_FIELD, .state = state->menu_state});
@@ -151,7 +151,7 @@ static void commit_pomodoro(void) {
 void Menu_Init(void) {
     memset(&s_last_small_time, 0, sizeof(Time_t));
     s_last_small_time.second = 99;
-    s_last_radial_selection = 0xFF;
+    s_last_radial_selection = CACHE_INVALID_U8;
     MenuState_OnChange(MENU_MAIN, false, 0);
     MenuState_SetSkipNextPartial(false);
 }
@@ -177,7 +177,7 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
     bool pot_changed = true;
     uint16_t pot_delta = 0;
 
-    if (s_pot_last_raw == 0xFFFF) {
+    if (s_pot_last_raw == CACHE_INVALID_U16) {
         s_pot_last_raw = pot_value;
     }
     pot_delta = (pot_value > s_pot_last_raw) ? (pot_value - s_pot_last_raw) : (s_pot_last_raw - pot_value);
@@ -186,7 +186,7 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
         pot_changed = false;
     }
 
-    if (s_pot_filtered == 0xFFFF) {
+    if (s_pot_filtered == CACHE_INVALID_U16) {
         s_pot_filtered = pot_value;
     } else {
         if (pot_delta >= POT_FAST_THRESHOLD) {
@@ -228,49 +228,29 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
         if (handle_simple_radial_state(&s_format_menu_radial, btn, pot_value, pot_changed, pot_delta)) changed = true;
     } else if (state->menu_state == MENU_ALARM_TOGGLE) {
         if (handle_simple_radial_state(&s_alarm_toggle_radial, btn, pot_value, pot_changed, pot_delta)) changed = true;
-    } else if (state->menu_state == MENU_SET_TIME) {
-        EditInputConfig_t cfg = {0, 23, 0, 59, &s_temp_time.hour, &s_temp_time.minute, commit_set_time};
-        changed |= edit_field_init(state->menu_edit_field);
-        s_edit_last_val = (state->menu_edit_field == 0) ? s_temp_time.hour : s_temp_time.minute;
-        bool value_changed = edit_handle_range(&cfg, state->menu_edit_field, pot_changed, pot_delta);
-        if (value_changed) {
-            changed = true;
-            MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_EDIT_VALUE, .state = state->menu_state});
+    } else {
+        EditInputConfig_t cfg;
+        bool is_edit = true;
+        switch (state->menu_state) {
+            case MENU_SET_TIME:  cfg = (EditInputConfig_t){0, 23, 0, 59, &s_temp_time.hour, &s_temp_time.minute, commit_set_time}; break;
+            case MENU_SET_DATE:  cfg = (EditInputConfig_t){1, 31, 1, 12, &s_temp_date.day, &s_temp_date.month, commit_set_date}; break;
+            case MENU_SET_ALARM: cfg = (EditInputConfig_t){0, 23, 0, 59, &s_temp_alarm.hour, &s_temp_alarm.minute, commit_set_alarm}; break;
+            case MENU_POMODORO:  cfg = (EditInputConfig_t){1, 60, 1, 30, &s_temp_pomo_work, &s_temp_pomo_break, commit_pomodoro}; break;
+            default: is_edit = false; break;
         }
-        if (edit_handle_buttons(&cfg, state->menu_edit_field, btn, pot_value)) changed = true;
-    } else if (state->menu_state == MENU_SET_DATE) {
-        EditInputConfig_t cfg = {1, 31, 1, 12, &s_temp_date.day, &s_temp_date.month, commit_set_date};
-        changed |= edit_field_init(state->menu_edit_field);
-        s_edit_last_val = (state->menu_edit_field == 0) ? s_temp_date.day : s_temp_date.month;
-        bool date_changed = edit_handle_range(&cfg, state->menu_edit_field, pot_changed, pot_delta);
-        if (clamp_temp_date()) {
-            date_changed = true;
+        if (is_edit) {
+            changed |= edit_field_init(state->menu_edit_field);
+            s_edit_last_val = (state->menu_edit_field == 0) ? *cfg.val0 : *cfg.val1;
+            bool value_changed = edit_handle_range(&cfg, state->menu_edit_field, pot_changed, pot_delta);
+            if (state->menu_state == MENU_SET_DATE && clamp_temp_date()) {
+                value_changed = true;
+            }
+            if (value_changed) {
+                changed = true;
+                MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_EDIT_VALUE, .state = state->menu_state});
+            }
+            if (edit_handle_buttons(&cfg, state->menu_edit_field, btn, pot_value)) changed = true;
         }
-        if (date_changed) {
-            changed = true;
-            MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_EDIT_VALUE, .state = state->menu_state});
-        }
-        if (edit_handle_buttons(&cfg, state->menu_edit_field, btn, pot_value)) changed = true;
-    } else if (state->menu_state == MENU_SET_ALARM) {
-        EditInputConfig_t cfg = {0, 23, 0, 59, &s_temp_alarm.hour, &s_temp_alarm.minute, commit_set_alarm};
-        changed |= edit_field_init(state->menu_edit_field);
-        s_edit_last_val = (state->menu_edit_field == 0) ? s_temp_alarm.hour : s_temp_alarm.minute;
-        bool value_changed = edit_handle_range(&cfg, state->menu_edit_field, pot_changed, pot_delta);
-        if (value_changed) {
-            changed = true;
-            MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_EDIT_VALUE, .state = state->menu_state});
-        }
-        if (edit_handle_buttons(&cfg, state->menu_edit_field, btn, pot_value)) changed = true;
-    } else if (state->menu_state == MENU_POMODORO) {
-        EditInputConfig_t cfg = {1, 60, 1, 30, &s_temp_pomo_work, &s_temp_pomo_break, commit_pomodoro};
-        changed |= edit_field_init(state->menu_edit_field);
-        s_edit_last_val = (state->menu_edit_field == 0) ? s_temp_pomo_work : s_temp_pomo_break;
-        bool value_changed = edit_handle_range(&cfg, state->menu_edit_field, pot_changed, pot_delta);
-        if (value_changed) {
-            changed = true;
-            MenuEvent_Push((MenuEvent_t){.type = MENU_EVT_EDIT_VALUE, .state = state->menu_state});
-        }
-        if (edit_handle_buttons(&cfg, state->menu_edit_field, btn, pot_value)) changed = true;
     }
 
     if (changed && !state->needs_full_redraw) state->needs_redraw = true;

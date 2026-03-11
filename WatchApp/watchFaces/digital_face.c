@@ -55,18 +55,6 @@ static uint8_t s_last_progress_count;
 // PRIVATE HELPERS
 // ============================================================================
 
-static uint8_t glyph_stride(uint8_t scale) {
-    return (uint8_t)((5U * scale) + 1U);
-}
-
-static uint8_t text_visual_width(uint8_t chars, uint8_t scale) {
-    uint8_t stride = glyph_stride(scale);
-    if (chars == 0U) {
-        return 0U;
-    }
-    return (uint8_t)((chars * stride) - 1U);
-}
-
 static void clear_ampm_area(void) {
     oledC_DrawRectangle((uint8_t)(DIGITAL_AMPM_X - 1U), (uint8_t)(DIGITAL_AMPM_Y - 1U),
                         (uint8_t)(DIGITAL_AMPM_X + 14U), (uint8_t)(DIGITAL_AMPM_Y + 9U),
@@ -95,31 +83,31 @@ static void draw_top_meta(const WatchState_t* state, bool is_pm) {
     s_last_alarm_drawn = state->alarm.enabled;
 }
 
-static void draw_big_time(uint8_t hour, uint8_t minute) {
-    const uint8_t hh_w = text_visual_width(2U, DIGITAL_TIME_SCALE_X);
-    const uint8_t colon_w = text_visual_width(1U, DIGITAL_TIME_SCALE_X);
-    const uint8_t mm_w = text_visual_width(2U, DIGITAL_TIME_SCALE_X);
-    const uint8_t gap = 1U;
-    const uint8_t total_w = (uint8_t)(hh_w + gap + colon_w + gap + mm_w);
-    const uint8_t hh_x = WatchUi_CenterX96(total_w);
-    const uint8_t colon_x = (uint8_t)(hh_x + hh_w + gap);
-    const uint8_t mm_x = (uint8_t)(colon_x + colon_w + gap);
+static void get_big_time_layout(WatchUi_DualTimeLayout_t* layout) {
+    WatchUi_ComputeDualTimeLayout(SCREEN_W, 2U, 2U,
+                                  DIGITAL_TIME_SCALE_X, DIGITAL_TIME_SCALE_X, DIGITAL_TIME_SCALE_X,
+                                  5U, 1U, 1U, layout);
+}
 
-    WatchUi_DrawNN(hour, hh_x, DIGITAL_TIME_Y,
+static void draw_big_time(uint8_t hour, uint8_t minute) {
+    WatchUi_DualTimeLayout_t layout;
+    get_big_time_layout(&layout);
+
+    WatchUi_DrawNN(hour, layout.left_x, DIGITAL_TIME_Y,
                    DIGITAL_TIME_SCALE_X, DIGITAL_TIME_SCALE_Y,
                    COLOR_PRIMARY, COLOR_BG);
 
-    WatchUi_DrawColon(colon_x, DIGITAL_TIME_Y,
+    WatchUi_DrawColon(layout.colon_x, DIGITAL_TIME_Y,
                       DIGITAL_TIME_SCALE_X, DIGITAL_TIME_SCALE_Y,
                       COLOR_PRIMARY, COLOR_BG);
 
-    WatchUi_DrawNN(minute, mm_x, DIGITAL_TIME_Y,
+    WatchUi_DrawNN(minute, layout.right_x, DIGITAL_TIME_Y,
                    DIGITAL_TIME_SCALE_X, DIGITAL_TIME_SCALE_Y,
                    COLOR_PRIMARY, COLOR_BG);
 }
 
 static void draw_seconds_value(uint8_t second) {
-    uint8_t sec_w = text_visual_width(2U, DIGITAL_SECONDS_SCALE);
+    uint8_t sec_w = WatchUi_TextWidth(2U, 5U, DIGITAL_SECONDS_SCALE, 1U);
     uint8_t sec_x = WatchUi_CenterX96(sec_w);
     WatchUi_DrawNN(second, sec_x, DIGITAL_SECONDS_Y,
                    DIGITAL_SECONDS_SCALE, DIGITAL_SECONDS_SCALE,
@@ -200,7 +188,7 @@ static void draw_progress_to_count(uint8_t count) {
 static void update_progress_from_second(uint8_t second) {
     uint8_t target = (uint8_t)(second + 1U);
 
-    if (s_last_progress_count == 0xFFU) {
+    if (s_last_progress_count == CACHE_INVALID_U8) {
         draw_progress_to_count(target);
         return;
     }
@@ -269,11 +257,11 @@ void DigitalFace_Init(void) {
     memset(&s_last_time_drawn, 0, sizeof(Time_t));
     memset(&s_last_date_drawn, 0, sizeof(Date_t));
 
-    s_last_time_drawn.second = 0xFFU;
+    s_last_time_drawn.second = CACHE_INVALID_U8;
     s_last_format_drawn = FORMAT_24H;
     s_last_alarm_drawn = false;
     s_last_is_pm = false;
-    s_last_progress_count = 0xFFU;
+    s_last_progress_count = CACHE_INVALID_U8;
 }
 
 void DigitalFace_Draw(void) {
