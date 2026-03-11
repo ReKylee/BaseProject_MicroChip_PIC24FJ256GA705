@@ -309,18 +309,20 @@ typedef struct {
 
 typedef struct {
     const char* title;
-    EditFieldGeom_t fields[2];
+    uint8_t field_count;
+    EditFieldGeom_t fields[3];
 } EditStateGeom_t;
 
 static const EditStateGeom_t s_edit_geom[] = {
-    [MENU_SET_TIME]  = {"TIME",  {{24, 2, 0}, {60, 5, 0}}},
-    [MENU_SET_DATE]  = {"DATE",  {{31, 5, 1}, {12, 1, 1}}},
-    [MENU_SET_ALARM] = {"ALARM", {{24, 2, 0}, {60, 5, 0}}},
-    [MENU_POMODORO]  = {"POMO",  {{60, 5, 1}, {30, 5, 1}}},
+    [MENU_SET_TIME]  = {"TIME",  2U, {{24, 2, 0}, {60, 5, 0}, {0, 0, 0}}},
+    [MENU_SET_DATE]  = {"DATE",  2U, {{31, 5, 1}, {12, 1, 1}, {0, 0, 0}}},
+    [MENU_SET_ALARM] = {"ALARM", 2U, {{24, 2, 0}, {60, 5, 0}, {0, 0, 0}}},
+    [MENU_POMODORO]  = {"POMO",  3U, {{60, 5, 1}, {30, 5, 1}, {8, 1, 1}}},
 };
 
 static const EditFieldGeom_t* get_edit_field_geom(MenuState_t state, uint8_t field) {
-    if (field > 1U) field = 1U;
+    uint8_t max_field = (uint8_t)(s_edit_geom[state].field_count - 1U);
+    if (field > max_field) field = max_field;
     return &s_edit_geom[state].fields[field];
 }
 
@@ -340,7 +342,9 @@ static uint8_t get_edit_selected(MenuState_t state, uint8_t field, const EditFie
     } else if (state == MENU_SET_DATE) {
         raw = (field == 0) ? s_temp_date.day : s_temp_date.month;
     } else if (state == MENU_POMODORO) {
-        raw = (field == 0) ? s_temp_pomo_work : s_temp_pomo_break;
+        if (field == 0) raw = s_temp_pomo_work;
+        else if (field == 1) raw = s_temp_pomo_break;
+        else raw = s_temp_pomo_cycles;
     } else {
         raw = (field == 0) ? s_temp_alarm.hour : s_temp_alarm.minute;
     }
@@ -364,7 +368,10 @@ static void format_edit_center(MenuState_t state, char* center_text) {
         center_text[3] = ' ';
         center_text[4] = 'B';
         Watch_Format2D(s_temp_pomo_break, &center_text[5]);
-        center_text[7] = '\0';
+        center_text[7] = ' ';
+        center_text[8] = 'C';
+        Watch_Format2D(s_temp_pomo_cycles, &center_text[9]);
+        center_text[11] = '\0';
     } else {
         Watch_Format2D(s_temp_alarm.hour, &center_text[0]);
         center_text[2] = ':';
@@ -431,7 +438,7 @@ static void set_edit_draw_cache(uint8_t selected, uint8_t field) {
 
 static void draw_edit_core(MenuState_t state, bool clear_ring_only) {
     EditRingSpec_t spec;
-    char center_text[9];
+    char center_text[12];
     uint8_t field = Watch_GetState()->menu_edit_field;
     fill_edit_spec(state, &spec, center_text);
 
@@ -544,4 +551,3 @@ void Menu_DrawPartial(void) {
         draw_edit_value_for_state(state->menu_state);
     }
 }
-

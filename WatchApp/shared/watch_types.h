@@ -119,6 +119,7 @@ typedef struct {
     uint8_t short_break_minutes;
     uint8_t long_break_minutes;
     uint8_t long_break_after_sessions;
+    uint8_t cycles_target; // Number of work sessions before stopping
 } Pomodoro_t;
 
 // ============================================================================

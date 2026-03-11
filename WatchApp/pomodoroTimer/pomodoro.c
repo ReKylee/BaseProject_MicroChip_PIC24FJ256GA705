@@ -121,6 +121,15 @@ static uint16_t get_total_seconds(WatchState_t* state) {
     }
 }
 
+static uint16_t get_bar_color(PomodoroState_t state) {
+    switch (state) {
+        case POMODORO_WORK: return COLOR_WARNING;
+        case POMODORO_SHORT_BREAK:
+        case POMODORO_LONG_BREAK: return COLOR_SUCCESS;
+        default: return COLOR_DIM;
+    }
+}
+
 static void start_work_session(WatchState_t* state) {
     state->pomodoro.state = POMODORO_WORK;
     state->pomodoro.remaining_seconds = minutes_to_seconds_u8(state->pomodoro.work_minutes);
@@ -136,6 +145,12 @@ static void start_break(WatchState_t* state) {
         state->pomodoro.state = POMODORO_SHORT_BREAK;
         state->pomodoro.remaining_seconds = minutes_to_seconds_u8(state->pomodoro.short_break_minutes);
     }
+    state->pomodoro.paused = false;
+}
+
+static void finish_cycle_to_idle(WatchState_t* state) {
+    state->pomodoro.state = POMODORO_IDLE;
+    state->pomodoro.remaining_seconds = minutes_to_seconds_u8(state->pomodoro.work_minutes);
     state->pomodoro.paused = false;
 }
 
@@ -173,7 +188,7 @@ static void draw_time_partial(uint16_t remaining_seconds) {
     }
 }
 
-static void draw_progress_bar_full(uint16_t remaining, uint16_t total) {
+static void draw_progress_bar_full(uint16_t remaining, uint16_t total, uint16_t color) {
     oledC_DrawRectangle(POMO_BAR_X - 1, POMO_BAR_Y - 1,
                         POMO_BAR_X + POMO_BAR_W + 1, POMO_BAR_Y + POMO_BAR_H + 1,
                         COLOR_DIM);
@@ -185,28 +200,28 @@ static void draw_progress_bar_full(uint16_t remaining, uint16_t total) {
     if (fill_width > 0) {
         oledC_DrawRectangle(POMO_BAR_X, POMO_BAR_Y,
                             (uint8_t)(POMO_BAR_X + fill_width), (uint8_t)(POMO_BAR_Y + POMO_BAR_H),
-                            COLOR_SUCCESS);
+                            color);
     }
     s_last_fill_width = fill_width;
     s_last_total = total;
 }
 
-static void draw_progress_bar_partial(uint16_t remaining, uint16_t total) {
+static void draw_progress_bar_partial(uint16_t remaining, uint16_t total, uint16_t color) {
     if (total == 0) return;
     if (s_last_total != total) {
-        draw_progress_bar_full(remaining, total);
+        draw_progress_bar_full(remaining, total, color);
         return;
     }
     uint16_t elapsed = (remaining > total) ? 0 : (uint16_t)(total - remaining);
     uint8_t fill_width = compute_fill_width(elapsed, total);
     if (s_last_fill_width == CACHE_INVALID_U8) {
-        draw_progress_bar_full(remaining, total);
+        draw_progress_bar_full(remaining, total, color);
         return;
     }
     if (fill_width > s_last_fill_width) {
         oledC_DrawRectangle((uint8_t)(POMO_BAR_X + s_last_fill_width), POMO_BAR_Y,
                             (uint8_t)(POMO_BAR_X + fill_width), (uint8_t)(POMO_BAR_Y + POMO_BAR_H),
-                            COLOR_SUCCESS);
+                            color);
     } else if (fill_width < s_last_fill_width) {
         oledC_DrawRectangle((uint8_t)(POMO_BAR_X + fill_width), POMO_BAR_Y,
                             (uint8_t)(POMO_BAR_X + s_last_fill_width), (uint8_t)(POMO_BAR_Y + POMO_BAR_H),
@@ -215,8 +230,11 @@ static void draw_progress_bar_partial(uint16_t remaining, uint16_t total) {
     s_last_fill_width = fill_width;
 }
 
-static void draw_session_counter(WatchState_t* state, uint8_t sessions) {
-    uint8_t count = state->pomodoro.long_break_after_sessions;
+static void draw_session_counter(WatchState_t* state, uint8_t sessions, uint8_t total) {
+    uint8_t count = total;
+    if (count == 0U) {
+        count = state->pomodoro.long_break_after_sessions;
+    }
     uint8_t total_w = (uint8_t)((count - 1U) * POMO_SESSION_SPACING);
     uint8_t x0 = WatchUi_CenterX96(total_w);
 
@@ -289,7 +307,11 @@ void Pomodoro_Update(void) {
             state->pomodoro.work_sessions++;
             start_break(state);
         } else {
-            start_work_session(state);
+            if (state->pomodoro.work_sessions >= state->pomodoro.cycles_target) {
+                finish_cycle_to_idle(state);
+            } else {
+                start_work_session(state);
+            }
         }
     }
     
@@ -301,7 +323,7 @@ void Pomodoro_Draw(void) {
     
     oledC_setBackground(COLOR_BG);
     
-    draw_session_counter(state, state->pomodoro.work_sessions);
+    draw_session_counter(state, state->pomodoro.work_sessions, state->pomodoro.cycles_target);
     
     const PomodoroStateInfo_t* info = get_state_info(state->pomodoro.state);
     uint16_t total_seconds = get_total_seconds(state);
@@ -312,7 +334,8 @@ void Pomodoro_Draw(void) {
 
     draw_time_full(state->pomodoro.remaining_seconds);
 
-    draw_progress_bar_full(state->pomodoro.remaining_seconds, total_seconds);
+    draw_progress_bar_full(state->pomodoro.remaining_seconds, total_seconds,
+                           get_bar_color(state->pomodoro.state));
 
     draw_pause_indicator(state->pomodoro.paused);
 
@@ -333,11 +356,12 @@ void Pomodoro_DrawUpdate(void) {
         uint8_t label_w = mul11_u8(info->label_len);
         uint8_t label_x = WatchUi_CenterX96(label_w);
 
-        draw_session_counter(state, state->pomodoro.work_sessions);
+        draw_session_counter(state, state->pomodoro.work_sessions, state->pomodoro.cycles_target);
         clear_label_area();
         oledC_DrawStringSolid(label_x, POMO_LABEL_Y, 2, 1, (uint8_t*)info->label, info->color, COLOR_BG);
         draw_time_full(state->pomodoro.remaining_seconds);
-        draw_progress_bar_full(state->pomodoro.remaining_seconds, total_seconds);
+        draw_progress_bar_full(state->pomodoro.remaining_seconds, total_seconds,
+                               get_bar_color(state->pomodoro.state));
 
         draw_pause_indicator(state->pomodoro.paused);
 
@@ -351,7 +375,8 @@ void Pomodoro_DrawUpdate(void) {
 
     if (state->pomodoro.remaining_seconds != s_last_remaining) {
         draw_time_partial(state->pomodoro.remaining_seconds);
-        draw_progress_bar_partial(state->pomodoro.remaining_seconds, get_total_seconds(state));
+        draw_progress_bar_partial(state->pomodoro.remaining_seconds, get_total_seconds(state),
+                                  get_bar_color(state->pomodoro.state));
         s_last_remaining = state->pomodoro.remaining_seconds;
     }
 

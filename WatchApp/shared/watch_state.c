@@ -116,6 +116,7 @@ void Watch_InitState(void) {
     g_watch_state.pomodoro.short_break_minutes = 5;
     g_watch_state.pomodoro.long_break_minutes = 15;
     g_watch_state.pomodoro.long_break_after_sessions = 4;
+    g_watch_state.pomodoro.cycles_target = 4;
     g_watch_state.pomodoro.remaining_seconds = (uint16_t)FastMath_Mul60U32FromU8(g_watch_state.pomodoro.work_minutes);
     g_watch_state.pomodoro.work_sessions = 0;
     g_watch_state.pomodoro.paused = false;
@@ -174,6 +175,11 @@ void WatchSettingsStore_FromState(const WatchState_t* state, WatchSettingsSnapsh
     out->alarm_hour = state->alarm.hour;
     out->alarm_minute = state->alarm.minute;
     out->alarm_enabled = state->alarm.enabled ? 1U : 0U;
+    out->pomo_work_minutes = state->pomodoro.work_minutes;
+    out->pomo_short_break_minutes = state->pomodoro.short_break_minutes;
+    out->pomo_long_break_minutes = state->pomodoro.long_break_minutes;
+    out->pomo_long_break_after_sessions = state->pomodoro.long_break_after_sessions;
+    out->pomo_cycles_target = state->pomodoro.cycles_target;
 }
 
 void WatchSettingsStore_ApplyToState(const WatchSettingsSnapshot_t* in, WatchState_t* state) {
@@ -188,6 +194,22 @@ void WatchSettingsStore_ApplyToState(const WatchSettingsSnapshot_t* in, WatchSta
     state->alarm.hour = in->alarm_hour;
     state->alarm.minute = in->alarm_minute;
     state->alarm.enabled = (in->alarm_enabled != 0U);
+
+    if (in->pomo_work_minutes >= 1U && in->pomo_work_minutes <= 60U) {
+        state->pomodoro.work_minutes = in->pomo_work_minutes;
+    }
+    if (in->pomo_short_break_minutes >= 1U && in->pomo_short_break_minutes <= 30U) {
+        state->pomodoro.short_break_minutes = in->pomo_short_break_minutes;
+    }
+    if (in->pomo_long_break_minutes >= 1U && in->pomo_long_break_minutes <= 60U) {
+        state->pomodoro.long_break_minutes = in->pomo_long_break_minutes;
+    }
+    if (in->pomo_long_break_after_sessions >= 1U && in->pomo_long_break_after_sessions <= 12U) {
+        state->pomodoro.long_break_after_sessions = in->pomo_long_break_after_sessions;
+    }
+    if (in->pomo_cycles_target >= 1U && in->pomo_cycles_target <= 8U) {
+        state->pomodoro.cycles_target = in->pomo_cycles_target;
+    }
 }
 
 bool WatchSettingsStore_LoadState(WatchState_t* state) {

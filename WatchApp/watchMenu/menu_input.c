@@ -25,8 +25,9 @@ static bool edit_field_init(uint8_t field) {
 static bool edit_handle_range(const EditInputConfig_t* cfg, uint8_t field, bool pot_changed, uint16_t pot_delta) {
     if (!pot_changed) return false;
     (void)pot_delta;
-    uint8_t min = (field == 0) ? cfg->min0 : cfg->min1;
-    uint8_t max = (field == 0) ? cfg->max0 : cfg->max1;
+    if (field >= cfg->field_count) return false;
+    uint8_t min = cfg->min[field];
+    uint8_t max = cfg->max[field];
     uint8_t span = (uint8_t)(max - min);
     uint16_t hys;
     if (span >= 50) {
@@ -36,10 +37,7 @@ static bool edit_handle_range(const EditInputConfig_t* cfg, uint8_t field, bool 
     } else {
         hys = 18;   // month/small ranges
     }
-    if (field == 0) {
-        return MenuCore_HandleRange(s_pot_filtered, cfg->min0, cfg->max0, hys, &s_edit_last_raw, &s_edit_last_val, cfg->val0);
-    }
-    return MenuCore_HandleRange(s_pot_filtered, cfg->min1, cfg->max1, hys, &s_edit_last_raw, &s_edit_last_val, cfg->val1);
+    return MenuCore_HandleRange(s_pot_filtered, min, max, hys, &s_edit_last_raw, &s_edit_last_val, cfg->val[field]);
 }
 
 static bool edit_handle_buttons(const EditInputConfig_t* cfg, uint8_t field, ButtonEvent_t btn, uint16_t pot_value) {
@@ -50,7 +48,7 @@ static bool edit_handle_buttons(const EditInputConfig_t* cfg, uint8_t field, But
         return false;
     }
     if (btn == BTN_S2_SHORT) {
-        if (field < 1) {
+        if (field + 1U < cfg->field_count) {
             state->menu_edit_field++;
             s_edit_last_draw_field = state->menu_edit_field;
             s_edit_last_draw_val = CACHE_INVALID_U8;
@@ -145,7 +143,9 @@ static void commit_pomodoro(void) {
     WatchState_t* state = Watch_GetState();
     state->pomodoro.work_minutes = s_temp_pomo_work;
     state->pomodoro.short_break_minutes = s_temp_pomo_break;
+    state->pomodoro.cycles_target = s_temp_pomo_cycles;
     Pomodoro_Init();
+    (void)WatchSettingsStore_SaveState(state);
 }
 
 void Menu_Init(void) {
@@ -232,15 +232,15 @@ void Menu_HandleInput(ButtonEvent_t btn, uint16_t pot_value) {
         EditInputConfig_t cfg;
         bool is_edit = true;
         switch (state->menu_state) {
-            case MENU_SET_TIME:  cfg = (EditInputConfig_t){0, 23, 0, 59, &s_temp_time.hour, &s_temp_time.minute, commit_set_time}; break;
-            case MENU_SET_DATE:  cfg = (EditInputConfig_t){1, 31, 1, 12, &s_temp_date.day, &s_temp_date.month, commit_set_date}; break;
-            case MENU_SET_ALARM: cfg = (EditInputConfig_t){0, 23, 0, 59, &s_temp_alarm.hour, &s_temp_alarm.minute, commit_set_alarm}; break;
-            case MENU_POMODORO:  cfg = (EditInputConfig_t){1, 60, 1, 30, &s_temp_pomo_work, &s_temp_pomo_break, commit_pomodoro}; break;
+            case MENU_SET_TIME:  cfg = (EditInputConfig_t){{0, 0, 0}, {23, 59, 0}, {&s_temp_time.hour, &s_temp_time.minute, NULL}, 2U, commit_set_time}; break;
+            case MENU_SET_DATE:  cfg = (EditInputConfig_t){{1, 1, 0}, {31, 12, 0}, {&s_temp_date.day, &s_temp_date.month, NULL}, 2U, commit_set_date}; break;
+            case MENU_SET_ALARM: cfg = (EditInputConfig_t){{0, 0, 0}, {23, 59, 0}, {&s_temp_alarm.hour, &s_temp_alarm.minute, NULL}, 2U, commit_set_alarm}; break;
+            case MENU_POMODORO:  cfg = (EditInputConfig_t){{1, 1, 1}, {60, 30, 8}, {&s_temp_pomo_work, &s_temp_pomo_break, &s_temp_pomo_cycles}, 3U, commit_pomodoro}; break;
             default: is_edit = false; break;
         }
         if (is_edit) {
             changed |= edit_field_init(state->menu_edit_field);
-            s_edit_last_val = (state->menu_edit_field == 0) ? *cfg.val0 : *cfg.val1;
+            s_edit_last_val = *cfg.val[state->menu_edit_field];
             bool value_changed = edit_handle_range(&cfg, state->menu_edit_field, pot_changed, pot_delta);
             if (state->menu_state == MENU_SET_DATE && clamp_temp_date()) {
                 value_changed = true;

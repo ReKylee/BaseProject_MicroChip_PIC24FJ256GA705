@@ -146,6 +146,7 @@ void MenuState_SeedEditBuffers(MenuState_t menu_state) {
     } else if (menu_state == MENU_POMODORO) {
         s_temp_pomo_work = state->pomodoro.work_minutes;
         s_temp_pomo_break = state->pomodoro.short_break_minutes;
+        s_temp_pomo_cycles = state->pomodoro.cycles_target;
     }
 }
 

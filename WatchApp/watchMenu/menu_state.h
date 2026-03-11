@@ -25,6 +25,7 @@ typedef struct {
     Time_t temp_alarm;
     uint8_t temp_pomo_work;
     uint8_t temp_pomo_break;
+    uint8_t temp_pomo_cycles;
     Time_t last_small_time;
 
     // Selection state
@@ -63,6 +64,7 @@ extern MenuStateData_t g_menu_data;
 #define s_temp_alarm (g_menu_data.temp_alarm)
 #define s_temp_pomo_work (g_menu_data.temp_pomo_work)
 #define s_temp_pomo_break (g_menu_data.temp_pomo_break)
+#define s_temp_pomo_cycles (g_menu_data.temp_pomo_cycles)
 #define s_last_small_time (g_menu_data.last_small_time)
 
 #define s_radial_selection (g_menu_data.radial_selection)
@@ -132,12 +134,10 @@ typedef struct {
 } EditRingSpec_t;
 
 typedef struct {
-    uint8_t min0;
-    uint8_t max0;
-    uint8_t min1;
-    uint8_t max1;
-    uint8_t* val0;
-    uint8_t* val1;
+    uint8_t min[3];
+    uint8_t max[3];
+    uint8_t* val[3];
+    uint8_t field_count;
     void (*on_commit)(void);
 } EditInputConfig_t;
 
