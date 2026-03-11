@@ -100,6 +100,7 @@
           <itemPath>WatchApp/watchMenu/menu_core.h</itemPath>
           <itemPath>WatchApp/watchMenu/menu_state.h</itemPath>
           <itemPath>WatchApp/watchMenu/menu_layout.h</itemPath>
+          <itemPath>WatchApp/watchMenu/icon_asset.h</itemPath>
         </logicalFolder>
         <itemPath>WatchApp/app_init.h</itemPath>
         <itemPath>WatchApp/watch_main.h</itemPath>
