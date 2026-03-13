@@ -84,8 +84,11 @@ typedef enum {
 #define I2C1_ACKNOWLEDGE_ENABLE_BIT             I2C1CONLbits.ACKEN
 #define I2C1_ACKNOWLEDGE_DATA_BIT               I2C1CONLbits.ACKDT
 
-#ifndef I2C_RECOVERY_CLOCK_PULSES
-#define I2C_RECOVERY_CLOCK_PULSES 16U
+#ifndef I2C_RECOVERY_MAX_BATCHES
+#define I2C_RECOVERY_MAX_BATCHES      6U
+#endif
+#ifndef I2C_RECOVERY_PULSES_PER_BATCH
+#define I2C_RECOVERY_PULSES_PER_BATCH 9U
 #endif
 
 // ============================================================================
@@ -118,13 +121,13 @@ static void i2c1_master_trb_insert(uint8_t count,
                                    I2C1_TRANSACTION_REQUEST_BLOCK *ptrb_list,
                                    I2C1_MESSAGE_STATUS *pflag);
 static i2c_status_t i2c_wait_status(volatile I2C1_MESSAGE_STATUS *status);
-static void i2c1_bus_recover(void);
+static bool i2c1_bus_recover(void);
 
 // ============================================================================
 // Private Helpers
 // ============================================================================
 
-static void i2c1_bus_recover(void) {
+static bool i2c1_bus_recover(void) {
     // RB8=SCL1, RB9=SDA1. If a slave is holding SDA low, pulse SCL to release it.
     I2C1CONLbits.I2CEN = 0;
     IEC1bits.MI2C1IE = 0;
@@ -137,8 +140,13 @@ static void i2c1_bus_recover(void) {
     LATBbits.LATB8 = 1;
     DELAY_microseconds(5);
 
-    if (PORTBbits.RB9 == 0) {
-        for (uint8_t i = 0; i < I2C_RECOVERY_CLOCK_PULSES; i++) {
+    // Clock out stuck bytes: 9 pulses per batch (one byte + ACK), up to 6 batches
+    // (covers worst-case 6-byte burst read interrupted mid-transfer).
+    for (uint8_t batch = 0; batch < I2C_RECOVERY_MAX_BATCHES; batch++) {
+        if (PORTBbits.RB9 != 0) {
+            break;
+        }
+        for (uint8_t i = 0; i < I2C_RECOVERY_PULSES_PER_BATCH; i++) {
             LATBbits.LATB8 = 0;
             DELAY_microseconds(5);
             LATBbits.LATB8 = 1;
@@ -146,7 +154,7 @@ static void i2c1_bus_recover(void) {
         }
     }
 
-    // Generate a STOP-like condition: SDA low while SCL high, then release SDA.
+    // Generate a STOP condition: SDA low while SCL high, then release SDA.
     TRISBbits.TRISB9 = 0;
     LATBbits.LATB9 = 0;
     DELAY_microseconds(5);
@@ -155,8 +163,14 @@ static void i2c1_bus_recover(void) {
     LATBbits.LATB9 = 1;
     DELAY_microseconds(5);
 
+    // tBUF: bus free time before next START (I2C spec min 4.7us at 100kHz).
+    DELAY_microseconds(10);
+
     TRISBbits.TRISB8 = 1;
     TRISBbits.TRISB9 = 1;
+
+    // Verify SDA is released (high).
+    return (PORTBbits.RB9 != 0);
 }
 
 // ============================================================================
@@ -179,7 +193,11 @@ void i2c_init(const i2c_config_t *cfg) {
 #endif
 
     I2C1CONLbits.I2CEN = 0;
-    i2c1_bus_recover();
+    if (!i2c1_bus_recover()) {
+        // SDA still stuck after first recovery; retry once.
+        DELAY_milliseconds(5);
+        i2c1_bus_recover();
+    }
     I2C1STAT = 0x0000;
     I2C1CONL = 0x0000;
     I2C1CONH = 0x0000;
@@ -192,7 +210,21 @@ void i2c_init(const i2c_config_t *cfg) {
         I2C1BRG = ((FCY / config.bus_hz - FCY / 10000000) - 1);
     }
 
+    i2c1_state = S_MASTER_IDLE;
+    p_i2c1_current = NULL;
+
+    // Errata workaround: the I2C1 module may falsely detect a bus collision on
+    // the first START unless SDA1 is held low for >= 150ns after enabling I2CEN.
+    // Drive SDA low briefly, then release before clearing flags.
+    TRISBbits.TRISB9 = 0;   // SDA as output
+    LATBbits.LATB9 = 0;     // drive SDA low
     I2C1CONLbits.I2CEN = 1;
+    DELAY_microseconds(1);   // errata requires >= 150ns; 1us works at any FCY
+    TRISBbits.TRISB9 = 1;   // release SDA back to input (pull-up restores high)
+    DELAY_microseconds(5);   // let bus settle
+
+    I2C1STATbits.BCL = 0;
+    I2C1_WRITE_COLLISION_STATUS_BIT = 0;
     IFS1bits.MI2C1IF = 0;
     IEC1bits.MI2C1IE = 1;
 
@@ -520,6 +552,7 @@ static i2c_status_t i2c_wait_status(volatile I2C1_MESSAGE_STATUS *status) {
             return I2C_COLLISION;
         case I2C1_MESSAGE_FAIL:
         default:
+            i2c_recover();
             return I2C_COLLISION;
     }
 }

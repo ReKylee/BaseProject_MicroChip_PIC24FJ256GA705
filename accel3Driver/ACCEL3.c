@@ -10,7 +10,6 @@ static ACCEL3_Status_t accel3_try_init_addr(uint8_t addr,
                                             bool* saw_collision,
                                             bool* saw_i2c_error,
                                             bool* saw_id_mismatch) {
-    bool recovered_collision_once = false;
     for (uint8_t attempt = 0; attempt < 3; attempt++) {
         uint8_t devid = 0;
         i2c_status_t st = i2c_readReg(addr, ADXL345_REG_DEVID, &devid);
@@ -19,17 +18,14 @@ static ACCEL3_Status_t accel3_try_init_addr(uint8_t addr,
             *saw_i2c_error = true;
             if (st == I2C_COLLISION) {
                 *saw_collision = true;
-                if (!recovered_collision_once) {
-                    i2c_recover();
-                    recovered_collision_once = true;
-                }
+                i2c_recover();
             }
-            DELAY_milliseconds(2);
+            DELAY_milliseconds(5);
             continue;
         }
         if (devid != 0xE5) {
             *saw_id_mismatch = true;
-            DELAY_milliseconds(2);
+            DELAY_milliseconds(5);
             continue;
         }
 
@@ -39,12 +35,9 @@ static ACCEL3_Status_t accel3_try_init_addr(uint8_t addr,
             *saw_i2c_error = true;
             if (st == I2C_COLLISION) {
                 *saw_collision = true;
-                if (!recovered_collision_once) {
-                    i2c_recover();
-                    recovered_collision_once = true;
-                }
+                i2c_recover();
             }
-            DELAY_milliseconds(2);
+            DELAY_milliseconds(5);
             continue;
         }
         DELAY_milliseconds(2);
@@ -54,12 +47,9 @@ static ACCEL3_Status_t accel3_try_init_addr(uint8_t addr,
             *saw_i2c_error = true;
             if (st == I2C_COLLISION) {
                 *saw_collision = true;
-                if (!recovered_collision_once) {
-                    i2c_recover();
-                    recovered_collision_once = true;
-                }
+                i2c_recover();
             }
-            DELAY_milliseconds(2);
+            DELAY_milliseconds(5);
             continue;
         }
 
