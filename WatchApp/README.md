@@ -58,7 +58,7 @@ Available settings:
 | Set Time     | Hour (0-23), Minute (0-59)                |
 | Set Date     | Day (1-31), Month (1-12)                  |
 | Set Alarm    | Hour (0-23), Minute (0-59)                |
-| Alarm Toggle | Enable / Disable                          |
+| Alarm Toggle | Off / On / Repeat (re-enables after dismiss) |
 | Time Format  | 12H / 24H                                 |
 | Display Mode | Digital / Analog / Binary                 |
 | Pomodoro     | Work mins (W), Break mins (B), Cycles (C) |
@@ -129,7 +129,7 @@ for validation. Persisted fields:
 - Time and date
 - Time format (12H/24H)
 - Active watch face
-- Alarm time and enabled state
+- Alarm time, enabled state, and recurring flag
 - Pomodoro durations and cycles target
 
 Reprogramming may erase the stored data depending on programmer memory settings.

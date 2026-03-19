@@ -156,6 +156,8 @@ extern const RadialMenuConfig_t s_alarm_toggle_cfg;
 void MenuState_OnChange(MenuState_t new_state, bool seed_pot, uint16_t pot_value);
 const IconAsset_t* MenuState_GetMainMenuIcon(uint8_t idx);
 const char* MenuState_GetMainMenuLabel(uint8_t idx);
+const char* MenuState_GetFormatNodeLabel(uint8_t idx);
+const IconAsset_t* MenuState_GetAlarmToggleIcon(uint8_t idx);
 const char* MenuState_GetAlarmToggleLabel(uint8_t idx);
 void MenuState_SetSkipNextPartial(bool skip);
 bool MenuState_ConsumeSkipNextPartial(void);

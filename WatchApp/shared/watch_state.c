@@ -53,6 +53,7 @@ static bool settings_snapshot_is_valid(const WatchSettingsSnapshot_t* s) {
     if (s->watch_face >= (uint8_t)FACE_COUNT_SELECTABLE) return false;
     if (s->alarm_hour > 23U || s->alarm_minute > 59U) return false;
     if (s->alarm_enabled > 1U) return false;
+    if (s->alarm_recurring > 1U) return false;
     return true;
 }
 
@@ -175,6 +176,7 @@ void WatchSettingsStore_FromState(const WatchState_t* state, WatchSettingsSnapsh
     out->alarm_hour = state->alarm.hour;
     out->alarm_minute = state->alarm.minute;
     out->alarm_enabled = state->alarm.enabled ? 1U : 0U;
+    out->alarm_recurring = state->alarm.recurring ? 1U : 0U;
     out->pomo_work_minutes = state->pomodoro.work_minutes;
     out->pomo_short_break_minutes = state->pomodoro.short_break_minutes;
     out->pomo_long_break_minutes = state->pomodoro.long_break_minutes;
@@ -194,6 +196,7 @@ void WatchSettingsStore_ApplyToState(const WatchSettingsSnapshot_t* in, WatchSta
     state->alarm.hour = in->alarm_hour;
     state->alarm.minute = in->alarm_minute;
     state->alarm.enabled = (in->alarm_enabled != 0U);
+    state->alarm.recurring = (in->alarm_recurring != 0U);
 
     if (in->pomo_work_minutes >= 1U && in->pomo_work_minutes <= 60U) {
         state->pomodoro.work_minutes = in->pomo_work_minutes;

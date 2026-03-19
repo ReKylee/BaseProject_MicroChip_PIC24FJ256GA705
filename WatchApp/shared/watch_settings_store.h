@@ -34,6 +34,8 @@ typedef struct {
     uint8_t alarm_minute;
     /** Alarm enabled flag (0/1). */
     uint8_t alarm_enabled;
+    /** Alarm recurring flag (0/1). */
+    uint8_t alarm_recurring;
     /** Pomodoro work minutes (1..60). */
     uint8_t pomo_work_minutes;
     /** Pomodoro short break minutes (1..30). */
@@ -44,8 +46,6 @@ typedef struct {
     uint8_t pomo_long_break_after_sessions;
     /** Pomodoro cycles target (1..8). */
     uint8_t pomo_cycles_target;
-    /** Reserved for forward-compatible expansion. */
-    uint8_t reserved[1];
 } WatchSettingsSnapshot_t;
 
 /**

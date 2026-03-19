@@ -1,116 +1,71 @@
 # Curiosity OLED Base Project
 
-Base MPLAB X project for the **Microchip PIC24FJ256GA705 Curiosity board**.
-This repo is set up as a reusable starting point for board drivers, small demos, and the watch-style app in `WatchApp/`.
+A reusable driver base for the **PIC24FJ256GA705 Curiosity Development Board**, built in MPLAB X with the XC16 compiler. Provides peripheral drivers for the board's OLED display, buttons, potentiometer, LEDs, and I2C/SPI buses, plus support for the MikroElektronika Accel Click (ADXL345).
 
-## What This Project Includes
+The current application built on top of these drivers is a watch project in `WatchApp/`.
 
-### Drivers
+## Requirements
 
-- `ledDriver/`
-  LED and RGB LED control helpers.
-- `switchDriver/`
-  Push-button/switch input helpers.
-- `adcDriver/`
-  ADC setup + raw read utilities (used for potentiometer input).
-- `i2cDriver/`
-  I2C communication helpers.
-- `spiDriver/`
-  SPI communication helpers.
-- `oledDriver/`
-  OLED setup, color handling, shapes, bitmap/text drawing.
-- `accel3Driver/`
-  ADXL345 accelerometer support (read X/Y/Z, basic setup).
-- `Timers/`
-  Timer setup and tick helpers.
-- `System/`
-  Core generated system code (clock, pins, interrupts, delays, traps).
+- **MPLAB X** v6.05+
+- **XC16** compiler v2.10+
+- PIC24FJ256GA705 Curiosity Development Board
+- MikroElektronika Accel Click (ADXL345) on mikroBUS slot (optional, for accelerometer features)
 
-### Application Modules
+## Build
 
-- `WatchApp/`
-  Main watch application logic:
-  - watch faces (digital, analog, binary, alarm)
-  - alarm system
-  - menu system
-  - pomodoro timer
-  - input/display/time managers
-- `flash_generated/`
-  MCC-generated flash driver used by watch settings persistence.
+1. Open the project in MPLAB X.
+2. Select a configuration (`default` for `-O2`, `debug` for `-O0`).
+3. Build and program the board.
 
-WatchApp documentation:
-- English: `WatchApp/README.md`
-- Hebrew: `WatchApp/README_HE.md`
+Entry point: `main.c` currently calls `watch_main()` in `WatchApp/watch_main.c`.
 
-### Examples
+## Drivers
 
-- `Examples/ACCEL3/ADXL345.c`
-  Reads accelerometer values and displays them on OLED.
-- `Examples/RGBEditor/`
-  RGB color editor app with OLED UI + potentiometer/switch control.
-- `Examples/SPI/bitbanging_example.c`
-  Basic SPI bit-banging demonstration.
+Each driver is self-contained in its own folder and can be used independently.
 
-## Build and Run
+| Folder             | Description                                                  |
+| ------------------ | ------------------------------------------------------------ |
+| `oledDriver/`      | 96x96 color OLED: commands, shapes, solid text, 2bpp bitmaps |
+| `i2cDriver/`       | I2C master with bus recovery and PIC24FJ errata workaround   |
+| `spiDriver/`       | SPI communication                                            |
+| `accel3Driver/`    | ADXL345 accelerometer (auto-detect I2C address, XYZ read)    |
+| `adcDriver/`       | ADC for potentiometer input                                  |
+| `switchDriver/`    | Push-button input with debounce                              |
+| `ledDriver/`       | LED and RGB LED control                                      |
+| `Timers/`          | Timer setup and tick helpers                                 |
+| `System/`          | MCC-generated system code (clock, pins, delays, traps)       |
+| `flash_generated/` | MCC-generated flash driver                                   |
 
-1. Open project in **MPLAB X**.
-2. Select target device/configuration.
-3. Build and flash to the Curiosity board.
+### OLED Driver Highlights
 
-Current app entry point:
+- SPI stream ownership for reduced per-pixel overhead during bulk drawing
+- `oledC_DrawStringSolid`: draws foreground and background pixels per glyph, enabling flicker-free text updates without a separate clear step
+- `oledC_DrawBitmapIndexed2bpp`: 4-color palette bitmaps using packed 2-bit indices (row-major, 4 pixels/byte)
+- Original transparent text APIs (`oledC_DrawString`) remain available
 
-- `main.c` -> `watch_main()` in `WatchApp/watch_main.c`
+### I2C Driver Highlights
 
-## Folder Notes
+- Bus recovery for stuck slaves: batched SCL clocking (9 pulses/batch, up to 6 batches) with SDA verification between each
+- PIC24FJ silicon errata workaround: SDA held low for >= 150ns after enabling I2CEN to prevent false bus collision on first START
 
-- `build/`, `dist/`, `.generated_files/` are build/generated outputs.
-- `nbproject/` contains MPLAB project configuration.
+## Examples
 
-## Watch Shared APIs
+Standalone demos that use the drivers above:
 
-Recent watch-side shared helpers are in `WatchApp/shared/`:
+| Folder                              | Description                                |
+| ----------------------------------- | ------------------------------------------ |
+| `Examples/ACCEL3/ADXL345.c`        | Read accelerometer values, display on OLED |
+| `Examples/RGBEditor/`              | RGB color editor with pot/switch control   |
+| `Examples/SPI/bitbanging_example.c` | SPI bit-banging demo                       |
 
-- `fast_math.h`
-  Division/multiplication helpers that avoid heavy runtime div paths for common constants.
-- `watch_format.h`
-  Numeric/date text formatting helpers (`Watch_SplitDigits10`, `Watch_Format2D`, `Watch_FormatDateDDMM`).
-- `watch_ui_widgets.h` and `watch_ui_widgets.c`
-  Shared UI primitives for two-digit rendering, colon rendering, and centered dual-time layout math.
-- `watch_settings_store.h` (implemented in `WatchApp/shared/watch_state.c`)
-  Flash-backed persistence API for loading/saving a compact settings snapshot and applying it to runtime state.
+## WatchApp
 
-## OLED Driver Updates (`oledDriver/`)
+The current application built on these drivers. A watch with multiple faces, alarm, pomodoro timer, and radial settings menu.
 
-The following changes were made in `oledDriver/oledC.c`, `oledDriver/oledC_shapes.c`, and `oledDriver/oledC_shapes.h`:
+Full documentation: [`WatchApp/README.md`](WatchApp/README.md) | [Hebrew](WatchApp/README_HE.md)
 
-1. Streaming performance improvements in `oledC.c`
-- Added explicit stream ownership handling for OLED write/read RAM streaming.
-- Kept SPI open during active pixel streams instead of opening/closing per pixel transfer.
-- Added proper stream stop behavior before sending non-stream commands.
-- Updated write/read paths to require active stream ownership before exchanging pixel data.
-- Result: lower command/transaction overhead during heavy drawing (text, shapes, fills).
+## Icon Credits
 
-2. New solid text APIs in `oledC_shapes`
-- Added `oledC_DrawCharacterSolid(...)`.
-- Added `oledC_DrawStringSolid(...)`.
-- Added declarations in `oledC_shapes.h`.
-- Solid text draws both foreground and background pixels for each glyph cell.
-- This allows faster fixed-area text redraws (no separate clear step required for same-area updates).
-
-3. New indexed palette bitmap API (2bpp)
-- Added `oledC_DrawBitmapIndexed2bpp(...)` in `oledC_shapes`.
-- Supports 4-color palette icons using packed 2-bit indices.
-- Packing format is row-major, 4 pixels per byte:
-  - bits `[7:6]` = pixel 0
-  - bits `[5:4]` = pixel 1
-  - bits `[3:2]` = pixel 2
-  - bits `[1:0]` = pixel 3
-- Uses a single OLED address window and streamed pixel writes for efficiency.
-
-4. Solid glyph raster order fix
-- Fixed pixel traversal order in `oledC_DrawCharacterSolid(...)` to match OLED RAM window expectations.
-- Result: prevents garbled text rendering when using solid text functions.
-
-5. Backward compatibility
-- Existing transparent APIs (`oledC_DrawCharacter`, `oledC_DrawString`) are still present and unchanged.
-- Existing call sites can continue using transparent text where overlay behavior is desired.
+- [famfamfam silk](https://github.com/legacy-icons/famfamfam-silk) (legacy mirror)
+- [tomato 16x16 pixel art](https://www.pixilart.com/art/tomato-16x16-sr2a62a94d910aws3)
+- [rpgiab icon pack](https://zeromatrix.itch.io/rpgiab-icons)

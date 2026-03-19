@@ -75,7 +75,9 @@ void Alarm_Dismiss(void) {
     WatchState_t* state = Watch_GetState();
     state->alarm.triggered = false;
     state->alarm.trigger_count = 0;
-    state->alarm.enabled = false;
+    if (!state->alarm.recurring) {
+        state->alarm.enabled = false;
+    }
     state->display_mode = state->prev_display_mode;
     state->watch_face = state->prev_watch_face;
     oledC_sendCommand(OLEDC_CMD_SET_DISPLAY_MODE_ON, NULL, 0);

@@ -94,23 +94,48 @@ static uint8_t get_display_selection(void) { return Watch_GetState()->watch_face
 static void set_display_selection(uint8_t idx) { Watch_GetState()->watch_face = idx; }
 static uint8_t get_format_selection(void) { return Watch_GetState()->time_format; }
 static void set_format_selection(uint8_t idx) { Watch_GetState()->time_format = (TimeFormat_t)idx; }
-static uint8_t get_alarm_toggle_selection(void) { return Watch_GetState()->alarm.enabled ? 1 : 0; }
-static void set_alarm_toggle_selection(uint8_t idx) { Watch_GetState()->alarm.enabled = (idx != 0); }
+static uint8_t get_alarm_toggle_selection(void) {
+    WatchState_t* state = Watch_GetState();
+    if (state->alarm.recurring) return 2;
+    if (state->alarm.enabled) return 1;
+    return 0;
+}
+static void set_alarm_toggle_selection(uint8_t idx) {
+    WatchState_t* state = Watch_GetState();
+    state->alarm.enabled = (idx != 0);
+    state->alarm.recurring = (idx == 2);
+}
 
 const IconAsset_t* MenuState_GetMainMenuIcon(uint8_t idx) {
     WatchState_t* state = Watch_GetState();
+    if (idx == 1) return NULL;
     if (idx == 5) {
+        if (state->alarm.recurring) return &s_asset_alarm_repeat;
         return state->alarm.enabled ? &s_asset_alarm_on : &s_asset_alarm_toggle;
     }
     return s_menu_icons[idx];
 }
 
 const char* MenuState_GetMainMenuLabel(uint8_t idx) {
+    if (idx == 1) {
+        return (Watch_GetState()->time_format == FORMAT_12H) ? "12H" : "24H";
+    }
     return main_menu[idx].text;
 }
 
+const char* MenuState_GetFormatNodeLabel(uint8_t idx) {
+    return (idx == 0) ? "12H" : "24H";
+}
+
+const IconAsset_t* MenuState_GetAlarmToggleIcon(uint8_t idx) {
+    if (idx == 2) return &s_asset_alarm_repeat;
+    return s_alarm_toggle_icons[idx];
+}
+
 const char* MenuState_GetAlarmToggleLabel(uint8_t idx) {
-    return idx ? "ON" : "OFF";
+    if (idx == 2) return "REPEAT";
+    if (idx == 1) return "ON";
+    return "OFF";
 }
 
 void MenuState_SetSkipNextPartial(bool skip) {
@@ -184,7 +209,7 @@ MenuRadial_t s_format_menu_radial = {
 };
 
 MenuRadial_t s_alarm_toggle_radial = {
-    .count = 2,
+    .count = 3,
     .draw_item = NULL,
     .draw_center = NULL,
     .get_selection = get_alarm_toggle_selection,
@@ -193,6 +218,7 @@ MenuRadial_t s_alarm_toggle_radial = {
     .last_sel = &s_alarm_last_sel,
     .last_raw = &s_alarm_last_raw,
 };
+
 
 const RadialMenuConfig_t s_main_menu_cfg = {
     .title = "MENU",
@@ -221,9 +247,9 @@ const RadialMenuConfig_t s_format_menu_cfg = {
     .radius = 26,
     .draw_inner_circle = true,
     .icons = NULL,
-    .labels = s_time_formats,
+    .labels = NULL,
     .get_icon = NULL,
-    .get_label = NULL,
+    .get_label = MenuState_GetFormatNodeLabel,
     .radial = &s_format_menu_radial,
 };
 
@@ -231,12 +257,13 @@ const RadialMenuConfig_t s_alarm_toggle_cfg = {
     .title = "ALARM",
     .radius = 26,
     .draw_inner_circle = true,
-    .icons = s_alarm_toggle_icons,
+    .icons = NULL,
     .labels = NULL,
-    .get_icon = NULL,
+    .get_icon = MenuState_GetAlarmToggleIcon,
     .get_label = MenuState_GetAlarmToggleLabel,
     .radial = &s_alarm_toggle_radial,
 };
+
 
 void MenuState_OnChange(MenuState_t new_state, bool seed_pot, uint16_t pot_value) {
     WatchState_t* state = Watch_GetState();
@@ -256,12 +283,12 @@ void MenuState_OnChange(MenuState_t new_state, bool seed_pot, uint16_t pot_value
     s_last_radial_selection = s_radial_selection;
     s_display_last_selection = state->watch_face;
     s_format_last_selection = state->time_format;
-    s_alarm_last_selection = state->alarm.enabled ? 1 : 0;
+    s_alarm_last_selection = get_alarm_toggle_selection();
 
     s_main_last_sel = s_radial_selection;
     s_display_last_sel = state->watch_face;
     s_format_last_sel = state->time_format;
-    s_alarm_last_sel = state->alarm.enabled ? 1 : 0;
+    s_alarm_last_sel = get_alarm_toggle_selection();
 
     s_pot_filtered = seed_pot ? pot_value : CACHE_INVALID_U16;
     s_pot_last_raw = seed_pot ? pot_value : CACHE_INVALID_U16;

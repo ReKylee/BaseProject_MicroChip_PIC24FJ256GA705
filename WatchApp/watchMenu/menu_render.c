@@ -246,21 +246,18 @@ static void draw_radial_item(uint8_t idx, bool selected) {
     int x, y;
     radial_idx_to_xy_arc(idx, s_active_radial->radial->count, s_active_radial->radius, &x, &y);
 
-    if (s_active_radial == &s_main_menu_cfg && idx == 1U) {
-        WatchState_t* state = Watch_GetState();
-        const char* tf = (state->time_format == FORMAT_12H) ? "12H" : "24H";
-        draw_text_radial_node(x, y, tf, selected);
+    const IconAsset_t* icon_asset = s_active_radial->get_icon
+        ? s_active_radial->get_icon(idx)
+        : (s_active_radial->icons ? s_active_radial->icons[idx] : NULL);
+
+    if (!icon_asset) {
+        const char* label = s_active_radial->get_label
+            ? s_active_radial->get_label(idx)
+            : (s_active_radial->labels ? s_active_radial->labels[idx] : "?");
+        draw_text_radial_node(x, y, label, selected);
         return;
     }
 
-    if (s_active_radial == &s_format_menu_cfg) {
-        const char* tf = (idx == 0U) ? "12H" : "24H";
-        draw_text_radial_node(x, y, tf, selected);
-        return;
-    }
-
-    const IconAsset_t* icon_asset = s_active_radial->get_icon ? s_active_radial->get_icon(idx) : s_active_radial->icons[idx];
-    const uint8_t* icon = icon_asset->pixels;
     uint16_t palette[4];
     uint16_t bg_color = selected ? COLOR_PRIMARY : COLOR_BG;
     oledC_DrawCircle(x, y, MENU_RING_RADIUS, bg_color);
@@ -272,7 +269,7 @@ static void draw_radial_item(uint8_t idx, bool selected) {
     oledC_DrawBitmapIndexed2bpp((uint8_t)(x - icon_offset),
                                 (uint8_t)(y - icon_offset),
                                 MENU_ICON_SIZE, MENU_ICON_SIZE,
-                                icon, palette);
+                                icon_asset->pixels, palette);
 }
 
 static void draw_radial_center(uint8_t idx) {

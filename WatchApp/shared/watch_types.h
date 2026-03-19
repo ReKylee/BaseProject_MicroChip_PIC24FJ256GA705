@@ -49,6 +49,7 @@ typedef struct {
     uint8_t hour; // 0-23
     uint8_t minute; // 0-59
     bool enabled;
+    bool recurring; // Re-enable after dismiss
     bool triggered;
     uint8_t trigger_count; // For auto-off after 20s
 } Alarm_t;
